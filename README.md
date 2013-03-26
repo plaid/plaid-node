@@ -10,6 +10,16 @@ plaid-node is a node.js client for [Plaid.io](https://plaid.io)
 
 Documentation is available at [https://plaid.io/docs](https://plaid.io/docs).
 
+## Install
+    npm install plaid
+
+## Examples
+```javascript
+var ironio = require('node-ironio')('OAuth token')
+  , project = ironio.projects('Project ID');
+
+// IronMQ
+var q = project.queues('myqueue');
 
 ## License
 
