@@ -26,7 +26,7 @@
     }
   ],
   "readmeFilename": "README.md",
-  "readme": "# node-ironio \n\nnode-ironio is a Node.js client for IronMQ, IronWorker, and IronCache. See http://www.iron.io\nfor more details. node-ironio is inspired by seebees' ironmq module: https://github.com/seebees/ironmq \n\n## Install\n    npm install node-ironio\n\n## Examples\n```javascript\nvar ironio = require('node-ironio')('OAuth token')\n  , project = ironio.projects('Project ID');\n\n// IronMQ\nvar q = project.queues('myqueue');\n\n// Get a message\nq.get(function(err, message) {\n  // do something with the message\n  // then delete it\n  message.del(function(err) {\n\n  });\n  // need more time?\n  // touch the message\n  message.touch(function(err) {\n\n  });\n\n  // can't process the message\n  // release the message\n  message.release(function(err) {\n\n  });\n});\n\n// Enqueue a message\nq.post('message', function(err, res) {\n\n});\n\n// IronCache\nvar c = project.caches('mycache');\n\n// Add an item to the cache\nc.put('key', 'value', function(err) {\n\n});\n\n// Get an item from the cache\nc.get('key', function(err, val) {\n  // do something with the val\n});\n\n// IronWorker\n\n// Enqueue a task\nproject.tasks.queue({ code_name: 'myworker', payload: 'payload' }, function(err, res) {\n\n});\n```\nSee the test directory for more examples. \n\n## Future Work\n* IronWorker code package endpoints\n* CI for uploading IronWorker modules\n* Better configuration handling \n* More documentation and examples\n",
+  "readme": "Plaid.io Client",
   "_id": "plaid@0.0.1",
   "_from": "plaid@~0.0.1",
   "dependencies": {
