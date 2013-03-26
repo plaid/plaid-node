@@ -1,7 +1,7 @@
 plaid-node
 ==============
 
-[![Build Status](https://travis-ci.org/plaid/plaid-node.png)](https://travis-ci.org/plaid/plaid-node)
+<!--[![Build Status](https://travis-ci.org/plaid/plaid-node.png)](https://travis-ci.org/plaid/plaid-node) -->
 
 
 plaid-node is a node.js client for [Plaid.io](https://plaid.io)
