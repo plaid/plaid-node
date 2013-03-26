@@ -20,6 +20,7 @@ var ironio = require('node-ironio')('OAuth token')
 
 // IronMQ
 var q = project.queues('myqueue');
+```
 
 ## License
 
