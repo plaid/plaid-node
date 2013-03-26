@@ -15,11 +15,20 @@ Documentation is available at [https://plaid.io/docs](https://plaid.io/docs).
 
 ## Examples
 ```javascript
-var ironio = require('node-ironio')('OAuth token')
-  , project = ironio.projects('Project ID');
+var plaid = require('plaid')({client_id: '123456', secret: '7891011'});
 
-// IronMQ
-var q = project.queues('myqueue');
+plaid.connect({username: 'demo', password: 'test'}, 'amex', 'w@plaid.io', function(error, response, mfa){
+	
+	//Non MFA
+	console.log(response)
+
+	//MFA
+	if(mfa){
+		response.step({token: '1234'}, function(err, response){
+			//response is accounts and transactions object
+		})
+	}
+});
 ```
 
 ## License
