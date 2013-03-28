@@ -32,6 +32,7 @@
   "dependencies": {
     "underscore": "~1.4.4",
     "request": "~2.16.6",
-    "async": "~0.2.6"
+    "async": "~0.2.6",
+    "forms": "~0.1.4"
   }
 }
