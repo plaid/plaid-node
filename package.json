@@ -27,8 +27,8 @@
   ],
   "readmeFilename": "README.md",
   "readme": "Plaid.io Client",
-  "_id": "plaid@0.0.1",
-  "_from": "plaid@~0.0.1",
+  "_id": "plaid@0.0.2",
+  "_from": "plaid@~0.0.2",
   "dependencies": {
     "underscore": "~1.4.4",
     "request": "~2.16.6",
