@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "plaid.io client",
   "main": "index.js",
   "author": {
