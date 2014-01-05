@@ -36,7 +36,8 @@
   ],
   "devDependencies": {
     "should": "",
-    "mocha": ""
+    "mocha": "",
+    "prompt": "0.2.12"
   },
   "scripts": {
     "test": "make test"

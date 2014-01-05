@@ -11,6 +11,7 @@ var utils  = require('./utils')
 var plaid  = require('../')
   , should = require('should')
   , assert = require('assert')
+  , prompt = require('prompt')
   ;
 
 /**
@@ -23,7 +24,8 @@ var userInfo = utils.getUser()
 			, type    : 'amex'
 			, email   : 'philippe.modard@gmail.com'
 		}
-	, userToken = ''
+	, userToken = '' // Token received after connecting a user
+	, userConnected = false // User connected to the bank
 	;
 
 
@@ -39,7 +41,9 @@ describe('require', function() {
 
 });
 
-describe('connect', function() {
+
+
+describe('connect fail', function() {
 
 	it('fails connecting a user if fake client_id', function(done) {
 
@@ -83,30 +87,69 @@ describe('connect', function() {
 		
 	});
 
-	it.skip('successfully connect a user', function(done) {
+});
 
-		var p = plaid(keys);
+
+
+describe('connect success', function() {
+
+	var p;
+
+	before(function() {
+		userInfo.type.should.equal('bofa', "So far the tests only work for 'bofa' account type");
+	});
+
+	before(function(done) {
+		p = plaid(keys);
 		p.initialized.should.be.true;
+		done();
+	});
 
-		p.connect(userInfo, userInfo.type, userInfo.email, function(err, res, mfa) {
+	it('successfully connect a user', function(done) {
+		this.timeout(100000); // time to answer the question
+
+		p.connect(userInfo, userInfo.type, userInfo.email, {login: true}, function(err, res, mfa) {
 			should.not.exist(err);
+
+			console.log('after connect, mfa : ', mfa);
+
+			res.should.have.property('access_token');
 			userToken = res.access_token;
+
 			if (userInfo.type === 'bofa') {
 				res.should.have.property('success', false);
 				res.should.have.property('mfa');
-				res.should.have.property('access_token');
-				res.should.have.property('error', 'Invalid Login Credentials');
+				res.mfa.should.have.property('question');
 				mfa.should.be.false;
-			} else {} // complete tests for other account types
-			done();
+
+				/**
+				 * Prompt the question.
+				 */
+				var question = res.mfa.question;
+				prompt.start();
+				prompt.get(question, function (err, result) {
+					var answer = result[question];
+					/**
+					 * Send the answer.
+					 */
+					p.step(userToken, answer, function(err, res) {
+						should.not.exist(err);
+						res.should.have.property('success', true);
+						res.should.have.property('access_token');
+						userToken = res.access_token;
+						done();
+					})
+
+				});
+
+			} else { // complete tests for other account types
+				done();
+			}
 		})
 		
 	});
 
 	it('successfully remove a user', function(done) {
-
-		var p = plaid(keys);
-		p.initialized.should.be.true;
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
