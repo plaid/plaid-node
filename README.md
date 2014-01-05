@@ -31,6 +31,23 @@ plaid.connect({username: 'demo', password: 'test'}, 'amex', 'w@plaid.io', functi
 });
 ```
 
+## Test
+To run the tests, you need to :
+  - (apply)[https://plaid.io/signup] for a key
+  - set the user bank information into process variables
+```
+export PLAID_CLIENTID=123456
+export PLAID_SECRET=7890
+export PLAID_USER_USERNAME=username
+export PLAID_USER_PASSWORD=pass
+export PLAID_USER_TYPE=amex
+export PLAID_USER_EMAIL=email@plaid.io
+```
+
+```
+npm test
+```
+
 ## License
 
 ```
