@@ -23,8 +23,9 @@ plaid.connect({username: 'demo', password: 'test'}, 'amex', 'w@plaid.io', functi
 	console.log(response)
 
 	//MFA
-	if(mfa){
-		response.step({token: '1234'}, function(err, response){
+	if (mfa) {
+		var answer_question = "this is my answer"
+		response.step(response.access_token, answer_question, function(err, response){
 			//response is accounts and transactions object
 		})
 	}
@@ -36,6 +37,7 @@ To run the tests, you need to :
   - (apply)[https://plaid.io/signup] for a key
   - set the user bank information into process variables
 The tests work only for a 'bofa' account so far.
+You'll have to provide the answer to a secret question during the tests to validate the connection to the bank.
 ```
 export PLAID_CLIENTID=123456
 export PLAID_SECRET=7890

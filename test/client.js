@@ -111,16 +111,14 @@ describe('connect success', function() {
 		p.connect(userInfo, userInfo.type, userInfo.email, {login: true}, function(err, res, mfa) {
 			should.not.exist(err);
 
-			console.log('after connect, mfa : ', mfa);
-
 			res.should.have.property('access_token');
 			userToken = res.access_token;
 
 			if (userInfo.type === 'bofa') {
 				res.should.have.property('success', false);
+				mfa.should.be.true;
 				res.should.have.property('mfa');
 				res.mfa.should.have.property('question');
-				mfa.should.be.false;
 
 				/**
 				 * Prompt the question.
