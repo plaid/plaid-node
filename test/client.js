@@ -45,9 +45,7 @@ describe('connect', function() {
 		var p = plaid({client_id: 'fake', secret: keys.secret});
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa){
-			res.should.be.type('string');
-			res = JSON.parse(res);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
 			res.should.have.property('success', false);
 			res.should.have.property('error', 'secret and/or client_id invalid');
 			should.not.exist(mfa);
@@ -61,9 +59,7 @@ describe('connect', function() {
 		var p = plaid({client_id: keys.client_id, secret: 'fake'});
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa){
-			res.should.be.type('string');
-			res = JSON.parse(res);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
 			res.should.have.property('success', false);
 			res.should.have.property('error', 'secret and/or client_id invalid');
 			should.not.exist(mfa);
@@ -77,9 +73,7 @@ describe('connect', function() {
 		var p = plaid(keys);
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa){
-			res.should.be.type('string');
-			res = JSON.parse(res);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
 			res.should.have.property('success', false);
 			res.should.have.property('error', 'Invalid Login Credentials');
 			should.not.exist(mfa);
@@ -88,12 +82,12 @@ describe('connect', function() {
 		
 	});
 
-	it('successfully connect a user', function(done) {
+	it.skip('successfully connect a user', function(done) {
 
 		var p = plaid(keys);
 		p.initialized.should.be.true;
 
-		p.connect(userInfo, userInfo.type, userInfo.email, function(err, res, mfa){
+		p.connect(userInfo, userInfo.type, userInfo.email, function(err, res, mfa) {
 			console.log('err : ', err);
 			console.log('res : ', res);
 			console.log('mfa : ', mfa);
