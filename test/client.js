@@ -135,6 +135,7 @@ describe('connect success', function() {
 						res.should.have.property('success', true);
 						res.should.have.property('access_token');
 						userToken = res.access_token;
+						console.log('userToken : ', userToken);
 						done();
 					})
 
@@ -145,6 +146,18 @@ describe('connect success', function() {
 			}
 		})
 		
+	});
+
+	it('successfully get a user transactions', function(done) {
+
+		p.get(userToken, function(err, res) {
+			should.not.exist(err);
+			res.should.have.property('success', true);
+			res.should.have.property('accounts');
+			res.should.have.property('transactions');
+			done();
+		});
+
 	});
 
 	it('successfully remove a user', function(done) {
