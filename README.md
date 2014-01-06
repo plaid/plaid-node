@@ -17,6 +17,9 @@ Documentation is available at [https://plaid.io/docs](https://plaid.io/docs).
 ```javascript
 var plaid = require('plaid')({client_id: '123456', secret: '7891011'});
 
+/**
+ * Connect/Add a user.
+ */
 plaid.connect({username: 'demo', password: 'test'}, 'amex', 'w@plaid.io', function(error, response, mfa){
 	
 	//Non MFA
@@ -29,6 +32,14 @@ plaid.connect({username: 'demo', password: 'test'}, 'amex', 'w@plaid.io', functi
 			//response is accounts and transactions object
 		})
 	}
+});
+
+/**
+ * Get a user's transactions, using the access_token
+ */
+plaid.get(access_token, function(err, res) {
+  console.log('Accounts : ', res.accounts);
+  console.log('Transactions : ', res.transactions);
 });
 ```
 
