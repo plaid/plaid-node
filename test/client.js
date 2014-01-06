@@ -108,7 +108,9 @@ describe('connect success', function() {
 	it('successfully connect a user', function(done) {
 		this.timeout(100000); // time to answer the question
 
-		p.connect(userInfo, userInfo.type, userInfo.email, {login: true}, function(err, res, mfa) {
+		var options = {login: true};
+
+		p.connect(userInfo, userInfo.type, userInfo.email, options, function(err, res, mfa) {
 			should.not.exist(err);
 
 			res.should.have.property('access_token');
@@ -130,10 +132,15 @@ describe('connect success', function() {
 					/**
 					 * Send the answer.
 					 */
-					p.step(userToken, answer, function(err, res) {
+					p.step(userToken, answer, options, function(err, res) {
 						should.not.exist(err);
 						res.should.have.property('success', true);
 						res.should.have.property('access_token');
+						res.should.have.property('accounts');
+						res.should.have.property('transactions');
+						if (options.login === true) {
+							res.transactions.should.have.lengthOf(0);
+						}
 						userToken = res.access_token;
 						console.log('userToken : ', userToken);
 						done();
