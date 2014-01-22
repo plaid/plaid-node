@@ -1,38 +1,52 @@
 {
   "name": "plaid",
   "version": "0.0.4",
-  "description": "plaid.io client",
+  "description": "Plaid.com client",
   "main": "index.js",
   "author": {
     "name": "William Hockey",
-    "email": "william@plaid.io"
+    "email": "william@plaid.com"
   },
+  "contributors": [
+    "Philippe Modard <philippe.modard@gmail.com>"
+  ],
   "keywords": [
     "plaid",
     "transactions",
-    "plaid.io"
+    "plaid.io",
+    "plaid.com"
   ],
+  "dependencies": {
+    "underscore": "1.5.2",
+    "request": "~2.16.6",
+    "async": "~0.2.6",
+    "forms": "~0.1.4"
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/plaidtech/plaid-node.git"
+    "url": "git://github.com/plaid/plaid-node.git"
   },
   "bugs": {
-    "url": "http://github.com/plaidtech/plaid-node/issues"
+    "url": "http://github.com/plaid/plaid-node/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/plaidtech/plaid-node/raw/master/LICENSE"
+      "url": "https://github.com/plaid/plaid-node/blob/master/LICENSE"
     }
   ],
+  "devDependencies": {
+    "should": "",
+    "mocha": "",
+    "prompt": "0.2.12"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "main": "index",
+  "directories": {
+    "test": "test"
+  },
   "readmeFilename": "README.md",
-  "readme": "Plaid.io Client",
-  "_id": "plaid@0.0.2",
-  "_from": "plaid@~0.0.2",
-  "dependencies": {
-    "underscore": "~1.4.4",
-    "request": "~2.16.6",
-    "async": "~0.2.6",
-    "forms": "~0.1.4"
-  }
+  "readme": "Plaid.com Client"
 }
