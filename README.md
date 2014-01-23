@@ -27,7 +27,7 @@ plaid.connect({username: 'demo', password: 'test'}, 'type', 'test@plaid.com', fu
 	//MFA
 	if (mfa) {
 		var answer_question = "this is my answer";
-		response.step(response.access_token, answer_question, function(err, response){
+		plaid.step(response.access_token, answer_question, function(err, response){
 			//response is accounts and transactions object
 		})
 	}
