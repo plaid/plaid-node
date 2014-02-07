@@ -214,3 +214,60 @@ describe('connect success (American Express)', function() {
 	});
 
 });
+
+
+/**
+ * Citi.
+ */
+describe('connect success (Citi)', function() {
+
+	var p, type;
+
+	before(function(done) {
+		type = 'citi';
+		p = plaid(keys);
+		p.initialized.should.be.true;
+		done();
+	});
+
+	it('successfully connect a user', function(done) {
+
+		var options = {login: true};
+
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+			should.not.exist(err);
+
+			res.should.have.property('access_token');
+			userToken = res.access_token;
+
+			mfa.should.be.false;
+			res.should.have.property('accounts');
+			res.should.have.property('transactions').with.lengthOf(0);
+			done();
+
+		})
+		
+	});
+
+	it('successfully get a user transactions', function(done) {
+
+		p.get(userToken, function(err, res) {
+			should.not.exist(err);
+			res.should.have.property('accounts');
+			res.should.have.property('transactions');
+			done();
+		});
+
+	});
+
+	it('successfully remove a user', function(done) {
+
+		p.remove(userToken, function(err, res, mfa) {
+			should.not.exist(err);
+			// res.should.have.property('message', 'Successfully removed from system');
+			done();
+		})
+		
+	});
+
+});

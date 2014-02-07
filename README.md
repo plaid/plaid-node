@@ -54,5 +54,10 @@ export PLAID_SECRET=7890
 npm test
 ```
 
+Tests are writtent for these institutions: 
+ - amex
+ - bofa
+ - citi
+
 ## License
 [MIT](https://github.com/plaid/plaid-node/blob/master/LICENSE)
