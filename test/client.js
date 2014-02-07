@@ -11,7 +11,6 @@ var utils  = require('./utils')
 var plaid  = require('../')
   , should = require('should')
   , assert = require('assert')
-  , prompt = require('prompt')
   ;
 
 /**
@@ -50,10 +49,9 @@ describe('connect fail', function() {
 		var p = plaid({client_id: 'fake', secret: keys.secret});
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
-			res.should.have.property('success', false);
-			res.should.have.property('error', 'secret and/or client_id invalid');
-			should.not.exist(mfa);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+			err.should.have.property('code', 1102);
+			err.should.have.property('message', 'secret or client_id invalid');
 			done();
 		})
 		
@@ -64,10 +62,9 @@ describe('connect fail', function() {
 		var p = plaid({client_id: keys.client_id, secret: 'fake'});
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
-			res.should.have.property('success', false);
-			res.should.have.property('error', 'secret and/or client_id invalid');
-			should.not.exist(mfa);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+			err.should.have.property('code', 1102);
+			err.should.have.property('message', 'secret or client_id invalid');
 			done();
 		})
 		
@@ -78,10 +75,9 @@ describe('connect fail', function() {
 		var p = plaid(keys);
 		p.initialized.should.be.true;
 
-		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res, mfa) {
-			res.should.have.property('success', false);
-			res.should.have.property('error', 'Invalid Login Credentials');
-			should.not.exist(mfa);
+		p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+			err.should.have.property('code', 1200);
+			err.should.have.property('message', 'invalid credentials');
 			done();
 		})
 		
@@ -91,66 +87,48 @@ describe('connect fail', function() {
 
 
 
-describe('connect success', function() {
+describe('connect success (Bank Of America)', function() {
 
-	var p;
-
-	before(function() {
-		userInfo.type.should.equal('bofa', "So far the tests only work for 'bofa' account type");
-	});
+	var p, type;
 
 	before(function(done) {
+		type = 'bofa';
 		p = plaid(keys);
 		p.initialized.should.be.true;
 		done();
 	});
 
 	it('successfully connect a user', function(done) {
-		this.timeout(100000); // time to answer the question
 
 		var options = {login: true};
 
-		p.connect(userInfo, userInfo.type, userInfo.email, options, function(err, res, mfa) {
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {			
 			should.not.exist(err);
 
 			res.should.have.property('access_token');
 			userToken = res.access_token;
 
-			if (userInfo.type === 'bofa') {
-				res.should.have.property('success', false);
-				mfa.should.be.true;
-				res.should.have.property('mfa');
-				res.mfa.should.have.property('question');
+			mfa.should.be.true;
+			res.should.have.property('type', 'questions');
+			res.should.have.property('mfa').with.lengthOf(1);
+			res.mfa[0].should.have.property('question');
 
-				/**
-				 * Prompt the question.
-				 */
-				var question = res.mfa.question;
-				prompt.start();
-				prompt.get(question, function (err, result) {
-					var answer = result[question];
-					/**
-					 * Send the answer.
-					 */
-					p.step(userToken, answer, options, function(err, res) {
-						should.not.exist(err);
-						res.should.have.property('success', true);
-						res.should.have.property('access_token');
-						res.should.have.property('accounts');
-						res.should.have.property('transactions');
-						if (options.login === true) {
-							res.transactions.should.have.lengthOf(0);
-						}
-						userToken = res.access_token;
-						console.log('userToken : ', userToken);
-						done();
-					})
+			/**
+			 * Answer the question.
+			 */
+			var answer = userInfo.mfa_question;
 
-				});
+			p.step(userToken, answer, options, function(err, res) {
+				should.not.exist(err);
 
-			} else { // complete tests for other account types
+				res.should.have.property('access_token');
+				res.should.have.property('accounts');
+				res.should.have.property('transactions').with.lengthOf(0);
+				userToken = res.access_token;
+
 				done();
-			}
+			});
+
 		})
 		
 	});
@@ -159,7 +137,6 @@ describe('connect success', function() {
 
 		p.get(userToken, function(err, res) {
 			should.not.exist(err);
-			res.should.have.property('success', true);
 			res.should.have.property('accounts');
 			res.should.have.property('transactions');
 			done();
@@ -171,8 +148,7 @@ describe('connect success', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			res.should.have.property('success', true);
-			res.should.have.property('message', 'Successfully removed from system');
+			// res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		

@@ -45,16 +45,9 @@ plaid.get(access_token, function(err, res) {
 ## Test
 To run the tests, you need to :
   - [Sign up](https://plaid.com/signup) for a key
-  - Set the user bank information into process variables
-The tests work only for a 'bofa' account so far.
-You'll have to provide the answer to a secret question during the tests to validate the connection to the bank.
 ```
 export PLAID_CLIENTID=123456
 export PLAID_SECRET=7890
-export PLAID_USER_USERNAME=username
-export PLAID_USER_PASSWORD=pass
-export PLAID_USER_TYPE=bofa
-export PLAID_USER_EMAIL=test@plaid.com
 ```
 
 ```
