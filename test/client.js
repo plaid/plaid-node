@@ -18,8 +18,8 @@ var plaid  = require('../')
  */
 var userInfo = utils.getUser()
 	, fakeUserInfo = {
-				username: 'fake'
-			, password: 'test'
+				username: 'plaid_test'
+			, password: 'fake'
 			, type    : 'amex'
 			, email   : 'philippe.modard@gmail.com'
 		}
@@ -86,7 +86,9 @@ describe('connect fail', function() {
 });
 
 
-
+/**
+ * Bank Of America.
+ */
 describe('connect success (Bank Of America)', function() {
 
 	var p, type;
@@ -128,6 +130,63 @@ describe('connect success (Bank Of America)', function() {
 
 				done();
 			});
+
+		})
+		
+	});
+
+	it('successfully get a user transactions', function(done) {
+
+		p.get(userToken, function(err, res) {
+			should.not.exist(err);
+			res.should.have.property('accounts');
+			res.should.have.property('transactions');
+			done();
+		});
+
+	});
+
+	it('successfully remove a user', function(done) {
+
+		p.remove(userToken, function(err, res, mfa) {
+			should.not.exist(err);
+			// res.should.have.property('message', 'Successfully removed from system');
+			done();
+		})
+		
+	});
+
+});
+
+
+/**
+ * American Express.
+ */
+describe('connect success (American Express)', function() {
+
+	var p, type;
+
+	before(function(done) {
+		type = 'amex';
+		p = plaid(keys);
+		p.initialized.should.be.true;
+		done();
+	});
+
+	it('successfully connect a user', function(done) {
+
+		var options = {login: true};
+
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+			should.not.exist(err);
+
+			res.should.have.property('access_token');
+			userToken = res.access_token;
+
+			mfa.should.be.false;
+			res.should.have.property('accounts');
+			res.should.have.property('transactions').with.lengthOf(0);
+			done();
 
 		})
 		
