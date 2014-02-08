@@ -58,6 +58,8 @@ Tests are writtent for these institutions:
  - amex
  - bofa
  - citi
+ - wells
+ - chase
 
 ## License
 [MIT](https://github.com/plaid/plaid-node/blob/master/LICENSE)

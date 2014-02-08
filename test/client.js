@@ -271,3 +271,134 @@ describe('connect success (Citi)', function() {
 	});
 
 });
+
+
+/**
+ * Wells Farfo.
+ */
+describe('connect success (Wells Farfo)', function() {
+
+	var p, type;
+
+	before(function(done) {
+		type = 'wells';
+		p = plaid(keys);
+		p.initialized.should.be.true;
+		done();
+	});
+
+	it('successfully connect a user', function(done) {
+
+		var options = {login: true};
+
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+			should.not.exist(err);
+
+			res.should.have.property('access_token');
+			userToken = res.access_token;
+
+			mfa.should.be.false;
+			res.should.have.property('accounts');
+			res.should.have.property('transactions').with.lengthOf(0);
+			done();
+
+		})
+		
+	});
+
+	it('successfully get a user transactions', function(done) {
+
+		p.get(userToken, function(err, res) {
+			should.not.exist(err);
+			res.should.have.property('accounts');
+			res.should.have.property('transactions');
+			done();
+		});
+
+	});
+
+	it('successfully remove a user', function(done) {
+
+		p.remove(userToken, function(err, res, mfa) {
+			should.not.exist(err);
+			// res.should.have.property('message', 'Successfully removed from system');
+			done();
+		})
+		
+	});
+
+});
+
+
+/**
+ * Chase.
+ */
+describe('connect success (Chase)', function() {
+
+	var p, type;
+
+	before(function(done) {
+		type = 'chase';
+		p = plaid(keys);
+		p.initialized.should.be.true;
+		done();
+	});
+
+	it('successfully connect a user', function(done) {
+
+		var options = {login: true};
+
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+			should.not.exist(err);
+
+			res.should.have.property('access_token');
+			userToken = res.access_token;
+
+			mfa.should.be.true;
+			res.should.have.property('type', 'device');
+			res.should.have.property('mfa');
+			res.mfa.should.have.property('message');
+			res.mfa.message.should.contain('Code sent to');
+
+			/**
+			 * Answer the question.
+			 */
+			var answer = userInfo.mfa_code;
+
+			p.step(userToken, answer, options, function(err, res) {
+				should.not.exist(err);
+
+				res.should.have.property('access_token');
+				res.should.have.property('accounts');
+				res.should.have.property('transactions').with.lengthOf(0);
+				userToken = res.access_token;
+
+				done();
+			});
+
+		})
+		
+	});
+
+	it('successfully get a user transactions', function(done) {
+
+		p.get(userToken, function(err, res) {
+			should.not.exist(err);
+			res.should.have.property('accounts');
+			res.should.have.property('transactions');
+			done();
+		});
+
+	});
+
+	it('successfully remove a user', function(done) {
+
+		p.remove(userToken, function(err, res, mfa) {
+			should.not.exist(err);
+			// res.should.have.property('message', 'Successfully removed from system');
+			done();
+		})
+		
+	});
+
+});
