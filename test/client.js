@@ -150,7 +150,7 @@ describe('connect success (Bank Of America)', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			// res.should.have.property('message', 'Successfully removed from system');
+			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		
@@ -207,7 +207,7 @@ describe('connect success (American Express)', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			// res.should.have.property('message', 'Successfully removed from system');
+			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		
@@ -264,7 +264,7 @@ describe('connect success (Citi)', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			// res.should.have.property('message', 'Successfully removed from system');
+			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		
@@ -321,7 +321,7 @@ describe('connect success (Wells Farfo)', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			// res.should.have.property('message', 'Successfully removed from system');
+			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		
@@ -395,7 +395,7 @@ describe('connect success (Chase)', function() {
 
 		p.remove(userToken, function(err, res, mfa) {
 			should.not.exist(err);
-			// res.should.have.property('message', 'Successfully removed from system');
+			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
 		
