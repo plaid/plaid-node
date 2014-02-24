@@ -11,6 +11,7 @@ var utils  = require('./utils')
 var plaid  = require('../')
   , should = require('should')
   , assert = require('assert')
+  , _      = require('underscore')
   ;
 
 /**
@@ -397,6 +398,49 @@ describe('connect success (Chase)', function() {
 			should.not.exist(err);
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
+		})
+		
+	});
+
+});
+
+/**
+ * Issue when the same module is called for 2 banks.
+ */
+describe('Clear global variables', function() {
+
+	var p, type;
+
+	before(function(done) {
+		type = 'bofa';
+		p = plaid(keys);
+		p.initialized.should.be.true;
+		done();
+	});
+
+	it('successfully connect a user', function(done) {
+
+		var options = {login: true};
+
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {			
+			should.not.exist(err);
+			userToken = res.access_token;
+
+			var answer = userInfo.mfa_question;
+			p.step(userToken, answer, options, function(err, res) {
+				should.not.exist(err);
+				res.should.have.property('transactions').with.lengthOf(0);
+
+				type = 'amex'; 
+				var info = _.pick(userInfo, 'username', 'password');
+				p.connect(info, type, userInfo.email, options, function(err, res, mfa) {
+					should.not.exist(err);
+					res.should.have.property('transactions').with.lengthOf(0);
+					done();
+				});
+
+			});
+
 		})
 		
 	});
