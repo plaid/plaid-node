@@ -54,7 +54,7 @@ describe('connect fail', function() {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
-    })
+    });
 
   });
 
@@ -67,7 +67,7 @@ describe('connect fail', function() {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
-    })
+    });
 
   });
 
@@ -80,7 +80,7 @@ describe('connect fail', function() {
       err.should.have.property('code', 1200);
       err.should.have.property('message', 'invalid credentials');
       done();
-    })
+    });
 
   });
 
@@ -132,7 +132,7 @@ describe('connect success (Bank Of America)', function() {
         done();
       });
 
-    })
+    });
 
   });
 
@@ -153,7 +153,7 @@ describe('connect success (Bank Of America)', function() {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
-    })
+    });
 
   });
 
@@ -189,7 +189,7 @@ describe('connect success (American Express)', function() {
       res.should.have.property('transactions').with.lengthOf(0);
       done();
 
-    })
+    });
 
   });
 
@@ -210,7 +210,7 @@ describe('connect success (American Express)', function() {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
-    })
+    });
 
   });
 
@@ -246,7 +246,7 @@ describe('connect success (Citi)', function() {
       res.should.have.property('transactions').with.lengthOf(0);
       done();
 
-    })
+    });
 
   });
 
@@ -267,7 +267,7 @@ describe('connect success (Citi)', function() {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
-    })
+    });
 
   });
 
@@ -303,7 +303,7 @@ describe('connect success (Wells Fargo)', function() {
       res.should.have.property('transactions').with.lengthOf(0);
       done();
 
-    })
+    });
 
   });
 
@@ -324,7 +324,7 @@ describe('connect success (Wells Fargo)', function() {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
-    })
+    });
 
   });
 
@@ -377,7 +377,7 @@ describe('connect success (Chase)', function() {
         done();
       });
 
-    })
+    });
 
   });
 
@@ -398,7 +398,7 @@ describe('connect success (Chase)', function() {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
-    })
+    });
 
   });
 
@@ -441,7 +441,7 @@ describe('Clear global variables', function() {
 
       });
 
-    })
+    });
 
   });
 
