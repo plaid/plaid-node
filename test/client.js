@@ -19,11 +19,11 @@ var plaid  = require('../'),
  */
 var userInfo = utils.getUser(),
     fakeUserInfo = {
-        username: 'plaid_test',
-        password: 'fake',
-        type    : 'amex',
-        email   : 'philippe.modard@gmail.com'
-    },
+  username: 'plaid_test',
+  password: 'fake',
+  type    : 'amex',
+  email   : 'philippe.modard@gmail.com'
+},
     userToken = '', // Token received after connecting a user
     userConnected = false // User connected to the bank
   ;
