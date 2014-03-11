@@ -1,4 +1,5 @@
 /* global before, describe, it */
+var assert = require('assert');
 
 /**
  * Keys.
@@ -36,7 +37,7 @@ describe('require', function() {
 
   it('fails if no authentification is passed', function() {
     var p = plaid();
-    p.initialized.should.be.false;
+    assert.strictEqual(p.initialized, false);
   });
 
 });
@@ -48,7 +49,7 @@ describe('connect fail', function() {
   it('fails connecting a user if fake client_id', function(done) {
 
     var p = plaid({client_id: 'fake', secret: keys.secret});
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
@@ -62,7 +63,7 @@ describe('connect fail', function() {
   it('fails connecting a user if fake secret', function(done) {
 
     var p = plaid({client_id: keys.client_id, secret: 'fake'});
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
@@ -76,7 +77,7 @@ describe('connect fail', function() {
   it('fails connecting a fake user', function(done) {
 
     var p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
@@ -100,7 +101,7 @@ describe('connect success (Bank Of America)', function() {
   before(function(done) {
     type = 'bofa';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
@@ -115,7 +116,7 @@ describe('connect success (Bank Of America)', function() {
       res.should.have.property('access_token');
       userToken = res.access_token;
 
-      mfa.should.be.true;
+      assert.strictEqual(mfa, true);
       res.should.have.property('type', 'questions');
       res.should.have.property('mfa').with.lengthOf(1);
       res.mfa[0].should.have.property('question');
@@ -174,7 +175,7 @@ describe('connect success (American Express)', function() {
   before(function(done) {
     type = 'amex';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
@@ -189,7 +190,7 @@ describe('connect success (American Express)', function() {
       res.should.have.property('access_token');
       userToken = res.access_token;
 
-      mfa.should.be.false;
+      assert.strictEqual(mfa, false);
       res.should.have.property('accounts');
       res.should.have.property('transactions').with.lengthOf(0);
       done();
@@ -232,7 +233,7 @@ describe('connect success (Citi)', function() {
   before(function(done) {
     type = 'citi';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
@@ -247,7 +248,7 @@ describe('connect success (Citi)', function() {
       res.should.have.property('access_token');
       userToken = res.access_token;
 
-      mfa.should.be.false;
+      assert.strictEqual(mfa, false);
       res.should.have.property('accounts');
       res.should.have.property('transactions').with.lengthOf(0);
       done();
@@ -290,7 +291,7 @@ describe('connect success (Wells Fargo)', function() {
   before(function(done) {
     type = 'wells';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
@@ -305,7 +306,7 @@ describe('connect success (Wells Fargo)', function() {
       res.should.have.property('access_token');
       userToken = res.access_token;
 
-      mfa.should.be.false;
+      assert.strictEqual(mfa, false);
       res.should.have.property('accounts');
       res.should.have.property('transactions').with.lengthOf(0);
       done();
@@ -348,7 +349,7 @@ describe('connect success (Chase)', function() {
   before(function(done) {
     type = 'chase';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
@@ -363,7 +364,7 @@ describe('connect success (Chase)', function() {
       res.should.have.property('access_token');
       userToken = res.access_token;
 
-      mfa.should.be.true;
+      assert.strictEqual(mfa, true);
       res.should.have.property('type', 'device');
       res.should.have.property('mfa');
       res.mfa.should.have.property('message');
@@ -422,7 +423,7 @@ describe('Clear global variables', function() {
   before(function(done) {
     type = 'bofa';
     p = plaid(keys);
-    p.initialized.should.be.true;
+    assert.strictEqual(p.initialized, true);
     done();
   });
 
