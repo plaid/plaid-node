@@ -359,7 +359,7 @@ describe('connect success (Chase)', function() {
 			res.should.have.property('type', 'device');
 			res.should.have.property('mfa');
 			res.mfa.should.have.property('message');
-			res.mfa.message.should.contain('Code sent to');
+			res.mfa.message.should.containEql('Code sent to');
 
 			/**
 			 * Answer the question.
