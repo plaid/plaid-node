@@ -1,31 +1,31 @@
 /**
  * Keys.
  */
-var utils  = require('./utils')
-  , keys    = utils.getKeys()
+var utils  = require('./utils'),
+    keys    = utils.getKeys()
   ;
 
 /**
  * Module dependencies.
  */
-var plaid  = require('../')
-  , should = require('should')
-  , assert = require('assert')
-  , _      = require('underscore')
+var plaid  = require('../'),
+    should = require('should'),
+    assert = require('assert'),
+    _      = require('underscore')
   ;
 
 /**
  * Variables.
  */
-var userInfo = utils.getUser()
-  , fakeUserInfo = {
-        username: 'plaid_test'
-      , password: 'fake'
-      , type    : 'amex'
-      , email   : 'philippe.modard@gmail.com'
-    }
-  , userToken = '' // Token received after connecting a user
-  , userConnected = false // User connected to the bank
+var userInfo = utils.getUser(),
+    fakeUserInfo = {
+        username: 'plaid_test',
+        password: 'fake',
+        type    : 'amex',
+        email   : 'philippe.modard@gmail.com'
+    },
+    userToken = '', // Token received after connecting a user
+    userConnected = false // User connected to the bank
   ;
 
 
