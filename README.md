@@ -20,7 +20,7 @@ var plaid = require('plaid')({client_id: '123456', secret: '7891011'});
  * Connect/Add a user.
  */
 plaid.connect({username: 'demo', password: 'test'}, 'type', 'test@plaid.com', function(error, response, mfa){
-	
+
 	//Non MFA
 	console.log(response)
 
@@ -45,6 +45,7 @@ plaid.get(access_token, function(err, res) {
 ## Test
 To run the tests, you need to :
   - [Sign up](https://plaid.com/signup) for a key
+  - If no keys are provided, the default sandbox only keys will be used
 ```
 export PLAID_CLIENTID=123456
 export PLAID_SECRET=7890
@@ -54,7 +55,7 @@ export PLAID_SECRET=7890
 npm test
 ```
 
-Tests are writtent for these institutions: 
+Tests are writtent for these institutions:
  - amex
  - bofa
  - citi
