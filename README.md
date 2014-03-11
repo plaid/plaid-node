@@ -55,7 +55,7 @@ export PLAID_SECRET=7890
 npm test
 ```
 
-Tests are writtent for these institutions:
+Tests are written for these institutions:
  - amex
  - bofa
  - citi
