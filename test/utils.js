@@ -1,12 +1,9 @@
 module.exports = {
 
   getKeys: function() {
-    var client_id = process.env.PLAID_CLIENTID || 'test_id',
-        secret = process.env.PLAID_SECRET || 'test_secret';
-
     return {
-      client_id: client_id,
-      secret: secret
+      client_id: process.env.PLAID_CLIENTID || 'test_id',
+      secret: process.env.PLAID_SECRET || 'test_secret'
     };
   },
 
