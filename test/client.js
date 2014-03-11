@@ -50,7 +50,8 @@ describe('connect fail', function() {
     var p = plaid({client_id: 'fake', secret: keys.secret});
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
+              function(err) {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
@@ -63,7 +64,8 @@ describe('connect fail', function() {
     var p = plaid({client_id: keys.client_id, secret: 'fake'});
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
+              function(err) {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
@@ -76,7 +78,8 @@ describe('connect fail', function() {
     var p = plaid(keys);
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
+              function(err) {
       err.should.have.property('code', 1200);
       err.should.have.property('message', 'invalid credentials');
       done();
@@ -105,7 +108,8 @@ describe('connect success (Bank Of America)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
       should.not.exist(err);
 
       res.should.have.property('access_token');
@@ -178,7 +182,8 @@ describe('connect success (American Express)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
       should.not.exist(err);
 
       res.should.have.property('access_token');
@@ -235,7 +240,8 @@ describe('connect success (Citi)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
       should.not.exist(err);
 
       res.should.have.property('access_token');
@@ -292,7 +298,8 @@ describe('connect success (Wells Fargo)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
       should.not.exist(err);
 
       res.should.have.property('access_token');
@@ -349,7 +356,8 @@ describe('connect success (Chase)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
       should.not.exist(err);
 
       res.should.have.property('access_token');
