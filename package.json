@@ -37,11 +37,10 @@
   ],
   "devDependencies": {
     "should": "",
-    "mocha": "",
-    "prompt": "0.2.12"
+    "mocha": ""
   },
   "scripts": {
-    "test": "make test"
+    "test": "NODE_ENV=test make test"
   },
   "main": "index",
   "directories": {

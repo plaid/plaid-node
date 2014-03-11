@@ -13,10 +13,13 @@ module.exports = {
 
 	getUser: function() {
 		return {
-				username : process.env.PLAID_USER_USERNAME
-			, password : process.env.PLAID_USER_PASSWORD
-			, type     : process.env.PLAID_USER_TYPE
-			, email    : process.env.PLAID_USER_EMAIL
+				username : 'plaid_test'
+			, password : 'plaid_good'
+			, locked_password : 'plaid_locked'
+			, type     : 'bofa'
+			, email    : 'test@plaid.com'
+			, mfa_question : 'tomato'
+			, mfa_code : 1234
 		};
 	},
 
