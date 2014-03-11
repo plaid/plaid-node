@@ -1,7 +1,7 @@
 Plaid node.js client
 ==============
 
-<!--[![Build Status](https://travis-ci.org/plaid/plaid-node.png)](https://travis-ci.org/plaid/plaid-node) -->
+![alt text](https://circleci.com/gh/plaid/plaid-node.png?circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)
 
 
 plaid-node is a node.js client for [Plaid](https://plaid.com)
