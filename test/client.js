@@ -1,3 +1,5 @@
+/* global before, describe, it */
+
 /**
  * Keys.
  */
