@@ -36,11 +36,9 @@
     }
   ],
   "devDependencies": {
-    "should": "",
-    "mocha": ""
-  },
-  "scripts": {
-    "test": "NODE_ENV=test make test"
+    "jshint": "2.4.x",
+    "mocha": "1.18.x",
+    "should": "3.1.x"
   },
   "main": "index",
   "directories": {
