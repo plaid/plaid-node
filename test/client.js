@@ -1,22 +1,17 @@
 /* global before, describe, it */
 var assert = require('assert');
 
-/**
- * Keys.
- */
-var utils = require('./utils'),
-    keys = utils.getKeys();
+var should = require('should');
+var _ = require('underscore');
 
-/**
- * Module dependencies.
- */
-var plaid = require('../'),
-    should = require('should'),
-    _ = require('underscore');
+var plaid = require('..');
+var utils = require('./utils');
+
 
 /**
  * Variables.
  */
+var keys = utils.getKeys();
 var userInfo = utils.getUser();
 var fakeUserInfo = {
   username: 'plaid_test',
