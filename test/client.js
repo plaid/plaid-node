@@ -10,7 +10,6 @@ var utils  = require('./utils'),
  */
 var plaid  = require('../'),
     should = require('should'),
-    assert = require('assert'),
     _      = require('underscore')
   ;
 
@@ -24,8 +23,7 @@ var userInfo = utils.getUser(),
   type    : 'amex',
   email   : 'philippe.modard@gmail.com'
 },
-    userToken = '', // Token received after connecting a user
-    userConnected = false // User connected to the bank
+    userToken = '' // Token received after connecting a user
   ;
 
 
@@ -50,7 +48,7 @@ describe('connect fail', function() {
     var p = plaid({client_id: 'fake', secret: keys.secret});
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
@@ -63,7 +61,7 @@ describe('connect fail', function() {
     var p = plaid({client_id: keys.client_id, secret: 'fake'});
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
       err.should.have.property('code', 1102);
       err.should.have.property('message', 'secret or client_id invalid');
       done();
@@ -76,7 +74,7 @@ describe('connect fail', function() {
     var p = plaid(keys);
     p.initialized.should.be.true;
 
-    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err, res) {
+    p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email, function(err) {
       err.should.have.property('code', 1200);
       err.should.have.property('message', 'invalid credentials');
       done();
@@ -149,7 +147,7 @@ describe('connect success (Bank Of America)', function() {
 
   it('successfully remove a user', function(done) {
 
-    p.remove(userToken, function(err, res, mfa) {
+    p.remove(userToken, function(err, res) {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
@@ -206,7 +204,7 @@ describe('connect success (American Express)', function() {
 
   it('successfully remove a user', function(done) {
 
-    p.remove(userToken, function(err, res, mfa) {
+    p.remove(userToken, function(err, res) {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
@@ -263,7 +261,7 @@ describe('connect success (Citi)', function() {
 
   it('successfully remove a user', function(done) {
 
-    p.remove(userToken, function(err, res, mfa) {
+    p.remove(userToken, function(err, res) {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
@@ -320,7 +318,7 @@ describe('connect success (Wells Fargo)', function() {
 
   it('successfully remove a user', function(done) {
 
-    p.remove(userToken, function(err, res, mfa) {
+    p.remove(userToken, function(err, res) {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
@@ -394,7 +392,7 @@ describe('connect success (Chase)', function() {
 
   it('successfully remove a user', function(done) {
 
-    p.remove(userToken, function(err, res, mfa) {
+    p.remove(userToken, function(err, res) {
       should.not.exist(err);
       res.should.have.property('message', 'Successfully removed from system');
       done();
@@ -422,7 +420,7 @@ describe('Clear global variables', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
+    p.connect(userInfo, type, userInfo.email, options, function(err, res) {
       should.not.exist(err);
       userToken = res.access_token;
 
@@ -433,7 +431,7 @@ describe('Clear global variables', function() {
 
         type = 'amex';
         var info = _.pick(userInfo, 'username', 'password');
-        p.connect(info, type, userInfo.email, options, function(err, res, mfa) {
+        p.connect(info, type, userInfo.email, options, function(err, res) {
           should.not.exist(err);
           res.should.have.property('transactions').with.lengthOf(0);
           done();
