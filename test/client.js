@@ -4,30 +4,27 @@ var assert = require('assert');
 /**
  * Keys.
  */
-var utils  = require('./utils'),
-    keys    = utils.getKeys()
-  ;
+var utils = require('./utils'),
+    keys = utils.getKeys();
 
 /**
  * Module dependencies.
  */
-var plaid  = require('../'),
+var plaid = require('../'),
     should = require('should'),
-    _      = require('underscore')
-  ;
+    _ = require('underscore');
 
 /**
  * Variables.
  */
-var userInfo = utils.getUser(),
-    fakeUserInfo = {
+var userInfo = utils.getUser();
+var fakeUserInfo = {
   username: 'plaid_test',
   password: 'fake',
-  type    : 'amex',
-  email   : 'philippe.modard@gmail.com'
-},
-    userToken = '' // Token received after connecting a user
-  ;
+  type: 'amex',
+  email: 'philippe.modard@gmail.com'
+};
+var userToken = ''; // Token received after connecting a user
 
 
 /**
