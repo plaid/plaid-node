@@ -55,7 +55,7 @@ describe('connect fail', function() {
 			err.should.have.property('message', 'secret or client_id invalid');
 			done();
 		})
-		
+
 	});
 
 	it('fails connecting a user if fake secret', function(done) {
@@ -68,7 +68,7 @@ describe('connect fail', function() {
 			err.should.have.property('message', 'secret or client_id invalid');
 			done();
 		})
-		
+
 	});
 
 	it('fails connecting a fake user', function(done) {
@@ -81,7 +81,7 @@ describe('connect fail', function() {
 			err.should.have.property('message', 'invalid credentials');
 			done();
 		})
-		
+
 	});
 
 });
@@ -105,7 +105,7 @@ describe('connect success (Bank Of America)', function() {
 
 		var options = {login: true};
 
-		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {			
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
 			should.not.exist(err);
 
 			res.should.have.property('access_token');
@@ -133,7 +133,7 @@ describe('connect success (Bank Of America)', function() {
 			});
 
 		})
-		
+
 	});
 
 	it('successfully get a user transactions', function(done) {
@@ -154,7 +154,7 @@ describe('connect success (Bank Of America)', function() {
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
-		
+
 	});
 
 });
@@ -190,7 +190,7 @@ describe('connect success (American Express)', function() {
 			done();
 
 		})
-		
+
 	});
 
 	it('successfully get a user transactions', function(done) {
@@ -211,7 +211,7 @@ describe('connect success (American Express)', function() {
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
-		
+
 	});
 
 });
@@ -247,7 +247,7 @@ describe('connect success (Citi)', function() {
 			done();
 
 		})
-		
+
 	});
 
 	it('successfully get a user transactions', function(done) {
@@ -268,7 +268,7 @@ describe('connect success (Citi)', function() {
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
-		
+
 	});
 
 });
@@ -277,7 +277,7 @@ describe('connect success (Citi)', function() {
 /**
  * Wells Farfo.
  */
-describe('connect success (Wells Farfo)', function() {
+describe('connect success (Wells Fargo)', function() {
 
 	var p, type;
 
@@ -304,7 +304,7 @@ describe('connect success (Wells Farfo)', function() {
 			done();
 
 		})
-		
+
 	});
 
 	it('successfully get a user transactions', function(done) {
@@ -325,7 +325,7 @@ describe('connect success (Wells Farfo)', function() {
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
-		
+
 	});
 
 });
@@ -359,7 +359,7 @@ describe('connect success (Chase)', function() {
 			res.should.have.property('type', 'device');
 			res.should.have.property('mfa');
 			res.mfa.should.have.property('message');
-			res.mfa.message.should.contain('Code sent to');
+			res.mfa.message.should.containEql('Code sent to');
 
 			/**
 			 * Answer the question.
@@ -378,7 +378,7 @@ describe('connect success (Chase)', function() {
 			});
 
 		})
-		
+
 	});
 
 	it('successfully get a user transactions', function(done) {
@@ -399,7 +399,7 @@ describe('connect success (Chase)', function() {
 			res.should.have.property('message', 'Successfully removed from system');
 			done();
 		})
-		
+
 	});
 
 });
@@ -422,7 +422,7 @@ describe('Clear global variables', function() {
 
 		var options = {login: true};
 
-		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {			
+		p.connect(userInfo, type, userInfo.email, options, function(err, res, mfa) {
 			should.not.exist(err);
 			userToken = res.access_token;
 
@@ -431,7 +431,7 @@ describe('Clear global variables', function() {
 				should.not.exist(err);
 				res.should.have.property('transactions').with.lengthOf(0);
 
-				type = 'amex'; 
+				type = 'amex';
 				var info = _.pick(userInfo, 'username', 'password');
 				p.connect(info, type, userInfo.email, options, function(err, res, mfa) {
 					should.not.exist(err);
@@ -442,7 +442,7 @@ describe('Clear global variables', function() {
 			});
 
 		})
-		
+
 	});
 
 });
