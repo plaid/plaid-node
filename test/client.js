@@ -1,6 +1,7 @@
 /* global before, describe, it */
 var assert = require('assert');
 
+var CANON = require('canon');
 var _ = require('underscore');
 
 var plaid = require('..');
@@ -38,6 +39,13 @@ describe('initialization', function() {
       return err.constructor === Error &&
              err.message === 'Invalid config object';
     });
+  });
+
+  it('does not mutate the config object', function() {
+    var config = {client_id: 'foo', secret: 'bar'};
+    plaid(config);
+    assert.strictEqual(CANON.stringify(config),
+                       CANON.stringify({client_id: 'foo', secret: 'bar'}));
   });
 
 });

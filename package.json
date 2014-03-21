@@ -36,6 +36,7 @@
     }
   ],
   "devDependencies": {
+    "canon": "0.3.x",
     "jshint": "2.4.x",
     "mocha": "1.18.x"
   },
