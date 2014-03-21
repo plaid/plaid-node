@@ -61,6 +61,8 @@ Tests are written for these institutions:
  - citi
  - wells
  - chase
+ - us
+ - usaa
 
 ## License
 [MIT](https://github.com/plaid/plaid-node/blob/master/LICENSE)
