@@ -24,11 +24,20 @@ var userToken = ''; // Token received after connecting a user
 /**
  * Tests
  */
-describe('require', function() {
+describe('initialization', function() {
 
   it('fails if no authentication is passed', function() {
     var p = plaid();
     assert.strictEqual(p.initialized, false);
+  });
+
+  it('throws if passed an invalid config object', function() {
+    assert.throws(function() {
+      plaid({foo: 42});
+    }, function(err) {
+      return err.constructor === Error &&
+             err.message === 'Invalid config object';
+    });
   });
 
 });
