@@ -40,6 +40,9 @@
     "mocha": "1.18.x",
     "should": "3.1.x"
   },
+  "scripts": {
+    "test": "NODE_ENV=test make test"
+  },
   "main": "index",
   "directories": {
     "test": "test"
