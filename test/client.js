@@ -27,7 +27,7 @@ var userToken = ''; // Token received after connecting a user
  */
 describe('require', function() {
 
-  it('fails if no authentification is passed', function() {
+  it('fails if no authentication is passed', function() {
     var p = plaid();
     assert.strictEqual(p.initialized, false);
   });
@@ -274,7 +274,7 @@ describe('connect success (Citi)', function() {
 
 
 /**
- * Wells Farfo.
+ * Wells Fargo.
  */
 describe('connect success (Wells Fargo)', function() {
 
