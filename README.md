@@ -1,7 +1,7 @@
 Plaid node.js client
 ==============
 
-<!--[![Build Status](https://travis-ci.org/plaid/plaid-node.png)](https://travis-ci.org/plaid/plaid-node) -->
+![alt text](https://circleci.com/gh/plaid/plaid-node.png?circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)
 
 
 plaid-node is a node.js client for [Plaid](https://plaid.com)
@@ -20,7 +20,7 @@ var plaid = require('plaid')({client_id: '123456', secret: '7891011'});
  * Connect/Add a user.
  */
 plaid.connect({username: 'demo', password: 'test'}, 'type', 'test@plaid.com', function(error, response, mfa){
-	
+
 	//Non MFA
 	console.log(response)
 
@@ -45,6 +45,7 @@ plaid.get(access_token, function(err, res) {
 ## Test
 To run the tests, you need to :
   - [Sign up](https://plaid.com/signup) for a key
+  - If no keys are provided, the default sandbox only keys will be used
 ```
 export PLAID_CLIENTID=123456
 export PLAID_SECRET=7890
@@ -54,7 +55,7 @@ export PLAID_SECRET=7890
 npm test
 ```
 
-Tests are writtent for these institutions: 
+Tests are written for these institutions:
  - amex
  - bofa
  - citi
