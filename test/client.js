@@ -1,7 +1,7 @@
 /* global before, describe, it */
 var assert = require('assert');
 
-var should = require('should');
+var CANON = require('canon');
 var _ = require('underscore');
 
 var plaid = require('..');
@@ -25,11 +25,27 @@ var userToken = ''; // Token received after connecting a user
 /**
  * Tests
  */
-describe('require', function() {
+describe('initialization', function() {
 
-  it('fails if no authentification is passed', function() {
+  it('fails if no authentication is passed', function() {
     var p = plaid();
     assert.strictEqual(p.initialized, false);
+  });
+
+  it('throws if passed an invalid config object', function() {
+    assert.throws(function() {
+      plaid({foo: 42});
+    }, function(err) {
+      return err.constructor === Error &&
+             err.message === 'Invalid config object';
+    });
+  });
+
+  it('does not mutate the config object', function() {
+    var config = {client_id: 'foo', secret: 'bar'};
+    plaid(config);
+    assert.strictEqual(CANON.stringify(config),
+                       CANON.stringify({client_id: 'foo', secret: 'bar'}));
   });
 
 });
@@ -45,8 +61,8 @@ describe('connect fail', function() {
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
-      err.should.have.property('code', 1102);
-      err.should.have.property('message', 'secret or client_id invalid');
+      assert.strictEqual(err.code, 1102);
+      assert.strictEqual(err.message, 'secret or client_id invalid');
       done();
     });
 
@@ -59,8 +75,8 @@ describe('connect fail', function() {
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
-      err.should.have.property('code', 1102);
-      err.should.have.property('message', 'secret or client_id invalid');
+      assert.strictEqual(err.code, 1102);
+      assert.strictEqual(err.message, 'secret or client_id invalid');
       done();
     });
 
@@ -73,8 +89,8 @@ describe('connect fail', function() {
 
     p.connect(fakeUserInfo, fakeUserInfo.type, fakeUserInfo.email,
               function(err) {
-      err.should.have.property('code', 1200);
-      err.should.have.property('message', 'invalid credentials');
+      assert.strictEqual(err.code, 1200);
+      assert.strictEqual(err.message, 'invalid credentials');
       done();
     });
 
@@ -103,15 +119,16 @@ describe('connect success (Bank Of America)', function() {
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, true);
-      res.should.have.property('type', 'questions');
-      res.should.have.property('mfa').with.lengthOf(1);
-      res.mfa[0].should.have.property('question');
+      assert.strictEqual(res.type, 'questions');
+      assert.strictEqual(repr(res.mfa), '[object Array]');
+      assert.strictEqual(res.mfa.length, 1);
+      assert.strictEqual(_.has(res.mfa[0], 'question'), true);
 
       /**
        * Answer the question.
@@ -119,11 +136,12 @@ describe('connect success (Bank Of America)', function() {
       var answer = userInfo.mfa_question;
 
       p.step(userToken, answer, options, function(err, res) {
-        should.not.exist(err);
+        assert.strictEqual(err, null);
 
-        res.should.have.property('access_token');
-        res.should.have.property('accounts');
-        res.should.have.property('transactions').with.lengthOf(0);
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
         userToken = res.access_token;
 
         done();
@@ -136,9 +154,9 @@ describe('connect success (Bank Of America)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -147,8 +165,8 @@ describe('connect success (Bank Of America)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -177,14 +195,15 @@ describe('connect success (American Express)', function() {
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, false);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions').with.lengthOf(0);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(repr(res.transactions), '[object Array]');
+      assert.strictEqual(res.transactions.length, 0);
       done();
 
     });
@@ -194,9 +213,9 @@ describe('connect success (American Express)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -205,8 +224,8 @@ describe('connect success (American Express)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -235,14 +254,15 @@ describe('connect success (Citi)', function() {
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, false);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions').with.lengthOf(0);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(repr(res.transactions), '[object Array]');
+      assert.strictEqual(res.transactions.length, 0);
       done();
 
     });
@@ -252,9 +272,9 @@ describe('connect success (Citi)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -263,8 +283,8 @@ describe('connect success (Citi)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -274,7 +294,7 @@ describe('connect success (Citi)', function() {
 
 
 /**
- * Wells Farfo.
+ * Wells Fargo.
  */
 describe('connect success (Wells Fargo)', function() {
 
@@ -293,14 +313,15 @@ describe('connect success (Wells Fargo)', function() {
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, false);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions').with.lengthOf(0);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(repr(res.transactions), '[object Array]');
+      assert.strictEqual(res.transactions.length, 0);
       done();
 
     });
@@ -310,9 +331,9 @@ describe('connect success (Wells Fargo)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -321,8 +342,8 @@ describe('connect success (Wells Fargo)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -351,17 +372,14 @@ describe('connect success (Chase)', function() {
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, true);
-      res.should.have.property('type', 'device');
-      res.should.have.property('mfa');
-      res.mfa.should.have.property('message');
-      var message = res.mfa.message;
-      message.should.containEql('Code sent to');
+      assert.strictEqual(res.type, 'device');
+      assert.strictEqual(res.mfa.message.indexOf('Code sent to'), 0);
 
       /**
        * Answer the question.
@@ -369,11 +387,12 @@ describe('connect success (Chase)', function() {
       var answer = userInfo.mfa_code;
 
       p.step(userToken, answer, options, function(err, res) {
-        should.not.exist(err);
+        assert.strictEqual(err, null);
 
-        res.should.have.property('access_token');
-        res.should.have.property('accounts');
-        res.should.have.property('transactions').with.lengthOf(0);
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
         userToken = res.access_token;
 
         done();
@@ -386,9 +405,9 @@ describe('connect success (Chase)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -397,8 +416,8 @@ describe('connect success (Chase)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -425,19 +444,21 @@ describe('Clear global variables', function() {
     var options = {login: true};
 
     p.connect(userInfo, type, userInfo.email, options, function(err, res) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
       userToken = res.access_token;
 
       var answer = userInfo.mfa_question;
       p.step(userToken, answer, options, function(err, res) {
-        should.not.exist(err);
-        res.should.have.property('transactions').with.lengthOf(0);
+        assert.strictEqual(err, null);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
 
         type = 'amex';
         var info = _.pick(userInfo, 'username', 'password');
         p.connect(info, type, userInfo.email, options, function(err, res) {
-          should.not.exist(err);
-          res.should.have.property('transactions').with.lengthOf(0);
+          assert.strictEqual(err, null);
+          assert.strictEqual(repr(res.transactions), '[object Array]');
+          assert.strictEqual(res.transactions.length, 0);
           done();
         });
 
@@ -464,21 +485,22 @@ describe('connect success (US Bank)', function() {
     done();
   });
 
-  it('successfully connect a user', function(done) {
+   it('successfully connect a user', function(done) {
 
     var options = {login: true};
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, true);
-      res.should.have.property('type', 'questions');
-      res.should.have.property('mfa').with.lengthOf(1);
-      res.mfa[0].should.have.property('question');
+      assert.strictEqual(res.type, 'questions');
+      assert.strictEqual(repr(res.mfa), '[object Array]');
+      assert.strictEqual(res.mfa.length, 1);
+      assert.strictEqual(_.has(res.mfa[0], 'question'), true);
 
       /**
        * Answer the question.
@@ -486,11 +508,12 @@ describe('connect success (US Bank)', function() {
       var answer = userInfo.mfa_question;
 
       p.step(userToken, answer, options, function(err, res) {
-        should.not.exist(err);
+        assert.strictEqual(err, null);
 
-        res.should.have.property('access_token');
-        res.should.have.property('accounts');
-        res.should.have.property('transactions').with.lengthOf(0);
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
         userToken = res.access_token;
 
         done();
@@ -503,9 +526,9 @@ describe('connect success (US Bank)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -514,8 +537,8 @@ describe('connect success (US Bank)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
@@ -538,21 +561,22 @@ describe('connect success (USAA)', function() {
     done();
   });
 
-  it('successfully connect a user', function(done) {
+   it('successfully connect a user', function(done) {
 
     var options = {login: true};
 
     p.connect(userInfo, type, userInfo.email, options,
               function(err, res, mfa) {
-      should.not.exist(err);
+      assert.strictEqual(err, null);
 
-      res.should.have.property('access_token');
+      assert.strictEqual(_.has(res, 'access_token'), true);
       userToken = res.access_token;
 
       assert.strictEqual(mfa, true);
-      res.should.have.property('type', 'questions');
-      res.should.have.property('mfa').with.lengthOf(1);
-      res.mfa[0].should.have.property('question');
+      assert.strictEqual(res.type, 'questions');
+      assert.strictEqual(repr(res.mfa), '[object Array]');
+      assert.strictEqual(res.mfa.length, 1);
+      assert.strictEqual(_.has(res.mfa[0], 'question'), true);
 
       /**
        * Answer the question.
@@ -560,10 +584,12 @@ describe('connect success (USAA)', function() {
       var answer = userInfo.mfa_question;
 
       p.step(userToken, answer, options, function(err, res) {
-        should.not.exist(err);
-        res.should.have.property('access_token');
-        res.should.have.property('accounts');
-        res.should.have.property('transactions').with.lengthOf(0);
+        assert.strictEqual(err, null);
+
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
         userToken = res.access_token;
 
         done();
@@ -576,9 +602,9 @@ describe('connect success (USAA)', function() {
   it('successfully get a user transactions', function(done) {
 
     p.get(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('accounts');
-      res.should.have.property('transactions');
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
       done();
     });
 
@@ -587,11 +613,16 @@ describe('connect success (USAA)', function() {
   it('successfully remove a user', function(done) {
 
     p.remove(userToken, function(err, res) {
-      should.not.exist(err);
-      res.should.have.property('message', 'Successfully removed from system');
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
       done();
     });
 
   });
 
 });
+
+// repr :: a -> String
+function repr(val) {
+  return Object.prototype.toString.call(val);
+}
