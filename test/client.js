@@ -471,6 +471,157 @@ describe('Clear global variables', function() {
 });
 
 
+/**
+ * US Bank.
+ */
+describe('connect success (US Bank)', function() {
+
+  var p, type;
+
+  before(function(done) {
+    type = 'us';
+    p = plaid(keys);
+    assert.strictEqual(p.initialized, true);
+    done();
+  });
+
+   it('successfully connect a user', function(done) {
+
+    var options = {login: true};
+
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
+      assert.strictEqual(err, null);
+
+      assert.strictEqual(_.has(res, 'access_token'), true);
+      userToken = res.access_token;
+
+      assert.strictEqual(mfa, true);
+      assert.strictEqual(res.type, 'questions');
+      assert.strictEqual(repr(res.mfa), '[object Array]');
+      assert.strictEqual(res.mfa.length, 1);
+      assert.strictEqual(_.has(res.mfa[0], 'question'), true);
+
+      /**
+       * Answer the question.
+       */
+      var answer = userInfo.mfa_question;
+
+      p.step(userToken, answer, options, function(err, res) {
+        assert.strictEqual(err, null);
+
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
+        userToken = res.access_token;
+
+        done();
+      });
+
+    });
+
+  });
+
+  it('successfully get a user transactions', function(done) {
+
+    p.get(userToken, function(err, res) {
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
+      done();
+    });
+
+  });
+
+  it('successfully remove a user', function(done) {
+
+    p.remove(userToken, function(err, res) {
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
+      done();
+    });
+
+  });
+
+});
+
+
+/**
+ * USAA.
+ */
+describe('connect success (USAA)', function() {
+
+  var p, type;
+
+  before(function(done) {
+    type = 'usaa';
+    p = plaid(keys);
+    assert.strictEqual(p.initialized, true);
+    done();
+  });
+
+   it('successfully connect a user', function(done) {
+
+    var options = {login: true};
+
+    p.connect(userInfo, type, userInfo.email, options,
+              function(err, res, mfa) {
+      assert.strictEqual(err, null);
+
+      assert.strictEqual(_.has(res, 'access_token'), true);
+      userToken = res.access_token;
+
+      assert.strictEqual(mfa, true);
+      assert.strictEqual(res.type, 'questions');
+      assert.strictEqual(repr(res.mfa), '[object Array]');
+      assert.strictEqual(res.mfa.length, 1);
+      assert.strictEqual(_.has(res.mfa[0], 'question'), true);
+
+      /**
+       * Answer the question.
+       */
+      var answer = userInfo.mfa_question;
+
+      p.step(userToken, answer, options, function(err, res) {
+        assert.strictEqual(err, null);
+
+        assert.strictEqual(_.has(res, 'access_token'), true);
+        assert.strictEqual(_.has(res, 'accounts'), true);
+        assert.strictEqual(repr(res.transactions), '[object Array]');
+        assert.strictEqual(res.transactions.length, 0);
+        userToken = res.access_token;
+
+        done();
+      });
+
+    });
+
+  });
+
+  it('successfully get a user transactions', function(done) {
+
+    p.get(userToken, function(err, res) {
+      assert.strictEqual(err, null);
+      assert.strictEqual(_.has(res, 'accounts'), true);
+      assert.strictEqual(_.has(res, 'transactions'), true);
+      done();
+    });
+
+  });
+
+  it('successfully remove a user', function(done) {
+
+    p.remove(userToken, function(err, res) {
+      assert.strictEqual(err, null);
+      assert.strictEqual(res.message, 'Successfully removed from system');
+      done();
+    });
+
+  });
+
+});
+
 // repr :: a -> String
 function repr(val) {
   return Object.prototype.toString.call(val);

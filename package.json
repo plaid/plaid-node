@@ -40,6 +40,9 @@
     "jshint": "2.4.x",
     "mocha": "1.18.x"
   },
+  "scripts": {
+    "test": "NODE_ENV=test make test"
+  },
   "main": "index",
   "directories": {
     "test": "test"
