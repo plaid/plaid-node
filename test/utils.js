@@ -15,7 +15,7 @@ module.exports = {
       type: 'bofa',
       email: 'test@plaid.com',
       mfa_question: 'tomato',
-      mfa_code: 1234,
+      mfa_code: '1234',
     };
   },
 
