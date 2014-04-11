@@ -38,7 +38,8 @@
   "devDependencies": {
     "canon": "0.3.x",
     "jshint": "2.5.x",
-    "mocha": "1.18.x"
+    "mocha": "1.18.x",
+    "semver": "2.2.x"
   },
   "scripts": {
     "test": "NODE_ENV=test make test"
