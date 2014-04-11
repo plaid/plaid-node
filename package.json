@@ -1,8 +1,8 @@
 {
   "name": "plaid",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Plaid.com client",
-  "main": "index.js",
+  "main": "index",
   "author": {
     "name": "William Hockey",
     "email": "william@plaid.com"
@@ -44,7 +44,6 @@
   "scripts": {
     "test": "NODE_ENV=test make test"
   },
-  "main": "index",
   "directories": {
     "test": "test"
   },
