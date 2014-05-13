@@ -1,18 +1,16 @@
+JSCS = node_modules/.bin/jscs
 JSHINT = node_modules/.bin/jshint
 MOCHA = node_modules/.bin/mocha --reporter spec --timeout 5000
 NPM = npm
 SEMVER = node_modules/.bin/semver
 
-FIND_JS_FILES = find . -name '*.js' -not -path './node_modules/*' -print0
+SRC = $(shell find . -name '*.js' -not -path './node_modules/*')
 
 
 .PHONY: lint
 lint:
-	$(FIND_JS_FILES) | xargs -0 $(JSHINT)
-	$(FIND_JS_FILES) | GREP_COLOR=41 xargs -0 grep --color '	' >&2 ; \
-		if [ $$? = 0 ] ; then echo Error: Tab character found. >&2 ; exit 1 ; fi
-	$(FIND_JS_FILES) | GREP_COLOR=41 xargs -0 grep --color ' \+$$' >&2 ; \
-		if [ $$? = 0 ] ; then echo Error: Trailing whitespace. >&2 ; exit 1 ; fi
+	@$(JSHINT) -- $(SRC)
+	@$(JSCS) -- $(SRC)
 
 
 .PHONY: release-patch release-minor release-major
