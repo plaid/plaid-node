@@ -36,7 +36,7 @@
     }
   ],
   "devDependencies": {
-    "canon": "0.3.x",
+    "canon": "0.4.x",
     "jshint": "2.5.x",
     "mocha": "1.18.x",
     "semver": "2.2.x"
