@@ -565,8 +565,11 @@ describe('connect success (USAA)', function() {
 
     var options = {login: true};
 
-    p.connect(userInfo, type, userInfo.email, options,
-              function(err, res, mfa) {
+    p.connect({
+      username: 'plaid_test',
+      password: 'plaid_good',
+      pin: '1234',
+    }, type, userInfo.email, options, function(err, res, mfa) {
       assert.strictEqual(err, null);
 
       assert.strictEqual(_.has(res, 'access_token'), true);
