@@ -40,7 +40,7 @@
     "jscs": "1.4.x",
     "jshint": "2.5.x",
     "mocha": "1.18.x",
-    "semver": "2.2.x"
+    "xyz": "0.3.x"
   },
   "scripts": {
     "test": "NODE_ENV=test make test"
