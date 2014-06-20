@@ -1,4 +1,7 @@
+'use strict';
+
 /* global before, describe, it */
+
 var assert = require('assert');
 
 var CANON = require('canon');
