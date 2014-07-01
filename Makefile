@@ -2,7 +2,7 @@ JSCS = node_modules/.bin/jscs
 JSHINT = node_modules/.bin/jshint
 MOCHA = node_modules/.bin/mocha --reporter spec --timeout 5000
 NPM = npm
-XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z
+XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:plaid/plaid-node.git
 
 SRC = $(shell find . -name '*.js' -not -path './node_modules/*')
 
