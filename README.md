@@ -7,7 +7,7 @@ Plaid node.js client
 plaid-node is a node.js client for [Plaid](https://plaid.com)
 
 ## Documentation
-Documentation is available at [https://plaid.com/v2/docs](https://plaid.com/v2/docs).
+Documentation is available at [https://plaid.com/docs](https://plaid.com/docs).
 
 ## Install
     npm install plaid
