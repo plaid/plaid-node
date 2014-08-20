@@ -20,7 +20,7 @@
     "underscore": "1.5.2",
     "request": "~2.16.6",
     "async": "~0.2.6",
-    "forms": "~0.1.4"
+    "forms": "~0.9.1"
   },
   "repository": {
     "type": "git",
