@@ -17,7 +17,7 @@
     "plaid.com"
   ],
   "dependencies": {
-    "underscore": "1.5.2",
+    "underscore": "1.7.x",
     "request": "~2.40.0",
     "async": "~0.2.6",
     "forms": "~0.9.1"
