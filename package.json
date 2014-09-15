@@ -37,7 +37,7 @@
   ],
   "devDependencies": {
     "canon": "0.4.x",
-    "jscs": "1.4.x",
+    "jscs": "1.6.x",
     "jshint": "2.5.x",
     "mocha": "1.21.x",
     "xyz": "0.4.x"
