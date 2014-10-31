@@ -3,10 +3,6 @@
   "version": "0.1.1",
   "description": "Plaid.com client",
   "main": "index",
-  "author": {
-    "name": "William Hockey",
-    "email": "william@plaid.com"
-  },
   "contributors": [
     "Philippe Modard <philippe.modard@gmail.com>"
   ],
