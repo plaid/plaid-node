@@ -20,7 +20,7 @@ var fakeUserInfo = {
   username: 'plaid_test',
   password: 'fake',
   type: 'amex',
-  email: 'philippe.modard@gmail.com'
+  email: 'philippe.modard@gmail.com',
 };
 var userToken = ''; // Token received after connecting a user
 

@@ -33,7 +33,7 @@
   ],
   "devDependencies": {
     "canon": "0.4.x",
-    "jscs": "1.7.x",
+    "jscs": "1.8.x",
     "jshint": "2.5.x",
     "mocha": "2.x.x",
     "xyz": "0.5.x"
