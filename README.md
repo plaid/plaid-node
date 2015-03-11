@@ -14,19 +14,19 @@ Documentation is available at [https://plaid.com/docs](https://plaid.com/docs).
 
 ## Examples
 ```javascript
-var plaid = require('plaid')({client_id: '123456', secret: '7891011'});
+var plaid = require('plaid')({client_id: 'test_id', secret: 'test_secret'});
 
 /**
  * Connect/Add a user.
  */
-plaid.connect({username: 'demo', password: 'test'}, 'type', 'test@plaid.com', function(error, response, mfa){
+plaid.connect({username: 'plaid_test', password: 'plaid_good'}, 'bofa', 'user@example.com', function(error, response, mfa){
 
 	//Non MFA
 	console.log(response)
 
 	//MFA
 	if (mfa) {
-		var answer_question = "this is my answer";
+		var answer_question = 'tomato';
 		plaid.step(response.access_token, answer_question, function(err, response){
 			//response is accounts and transactions object
 		})
