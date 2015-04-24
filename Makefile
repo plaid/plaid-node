@@ -1,10 +1,9 @@
-JSCS = node_modules/.bin/jscs
-JSHINT = node_modules/.bin/jshint
-MOCHA = node_modules/.bin/mocha --reporter spec --timeout 5000
-NPM = npm
+ISTANBUL = node --harmony node_modules/.bin/istanbul
+JSCS = node_modules/.bin/jscs --config .jscsrc
+JSHINT = node_modules/.bin/jshint --config .jshintrc
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:plaid/plaid-node.git
 
-SRC = $(shell find . -name '*.js' -not -path './node_modules/*')
+SRC = $(shell find . -name '*.js' -not -path './node_modules/*' -not -path './coverage/*')
 
 
 .PHONY: lint
@@ -13,16 +12,11 @@ lint:
 	@$(JSCS) -- $(SRC)
 
 
-.PHONY: release-major release-minor release-patch
-release-major release-minor release-patch:
-	@$(XYZ) --increment $(@:release-%=%)
-
-
 .PHONY: setup
 setup:
-	$(NPM) install
+	npm install
 
 
 .PHONY: test
 test:
-	$(MOCHA)
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 10000
