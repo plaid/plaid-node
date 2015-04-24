@@ -209,9 +209,8 @@ plaidClient.addConnectUser('chase', {
 });
 ```
 
-Retrieve transactions for an American Express account for the last thirty days:
+Retrieve transactions for a connect user for the last thirty days:
 ```javascript
-// Add a Chase user using the list:true option
 plaidClient.getConnectUser(access_token, {
   gte: '30 days ago',
 }, function(err, response) {
