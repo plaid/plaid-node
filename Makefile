@@ -20,3 +20,7 @@ setup:
 .PHONY: test
 test:
 	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 10000
+
+.PHONY: release-major release-minor release-patch
+release-major release-minor release-patch:
+	@$(XYZ) --increment $(@:release-%=%)

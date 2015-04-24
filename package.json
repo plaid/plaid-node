@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -28,6 +28,7 @@
     "jscs": "1.8.x",
     "jshint": "2.5.x",
     "mocha": "2.2.x",
-    "proxyquire": "1.4.x"
+    "proxyquire": "1.4.x",
+    "xyz": "0.5.x"
   }
 }
