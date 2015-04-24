@@ -226,7 +226,7 @@ Associate a new webhook with a connect user (webhook PATCH):
 plaidClient.patchConnectUser(access_token, {}, {
   webhook: 'http://requestb.in',
 }, function(err, mfaResponse, response) {
-  // The webhook URI shoudl receive a code 4 webhook acknowledged webhook
+  // The webhook URI should receive a code 4 "webhook acknowledged" webhook
 });
 
 ```
