@@ -1,23 +1,11 @@
 {
   "name": "plaid",
   "version": "0.1.1",
-  "description": "Plaid.com client",
-  "main": "index",
-  "contributors": [
-    "Philippe Modard <philippe.modard@gmail.com>"
-  ],
+  "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
-    "transactions",
-    "plaid.io",
     "plaid.com"
   ],
-  "dependencies": {
-    "underscore": "1.7.x",
-    "request": "~2.40.0",
-    "async": "~0.2.6",
-    "forms": "~0.9.1"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/plaid/plaid-node.git"
@@ -31,19 +19,15 @@
       "url": "https://github.com/plaid/plaid-node/blob/master/LICENSE"
     }
   ],
+  "dependencies": {
+    "ramda": "0.13.x",
+    "request": "2.55.x"
+  },
   "devDependencies": {
-    "canon": "0.4.x",
+    "istanbul": "0.3.x",
     "jscs": "1.8.x",
     "jshint": "2.5.x",
-    "mocha": "2.x.x",
-    "xyz": "0.5.x"
-  },
-  "scripts": {
-    "test": "NODE_ENV=test make test"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "readmeFilename": "README.md",
-  "readme": "Plaid.com Client"
+    "mocha": "2.2.x",
+    "proxyquire": "1.4.x"
+  }
 }
