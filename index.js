@@ -195,6 +195,19 @@ Plaid.Client.prototype.patchInfoUser =
 Plaid.Client.prototype.deleteInfoUser =
   R.partial(Plaid.Client.prototype._deleteUser, 'info');
 
+
+// exchangeToken
+Plaid.Client.prototype.exchangeToken = function(public_token, callback) {
+  this._authenticatedRequest({
+    uri: this.env + '/exchange_token',
+    method: 'POST',
+    body: {
+      public_token: public_token,
+    },
+    includeMfaResponse: false,
+  }, callback);
+};
+
 // Balance
 Plaid.Client.prototype.getBalance = function(access_token, callback) {
   this._authenticatedRequest({

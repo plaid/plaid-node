@@ -52,6 +52,21 @@ describe('Plaid Client - Balance', function() {
   });
 });
 
+describe('Plaid Client - Exchange Token', function() {
+  var client =
+    new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
+
+  it('returns an access_token', function(done) {
+    client.exchangeToken('test,chase,connected', function(err, res) {
+      eq(err, null);
+
+      eq(res.access_token, 'test_chase');
+
+      done();
+    });
+  });
+});
+
 describe('Plaid Client - Upgrade', function() {
   var client =
     new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
