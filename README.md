@@ -168,7 +168,7 @@ Bank of America question-based MFA flow:
 var plaid = require('plaid');
 
 // Initialize a client
-var plaidClient = new plaid.client('test_id', 'test_secret', plaid.environments.tartan);
+var plaidClient = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
 
 // Add a BofA auth user going through question-based MFA
 plaidClient.addAuthUser('bofa', {
