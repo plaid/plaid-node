@@ -1,6 +1,8 @@
 plaid-node
 ==============
 
+![alt text](https://circleci.com/gh/plaid/plaid-node.png?circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)
+
 plaid-node is a node.js client for the [Plaid API](https://plaid.com).
 
 This module was recently refactored and released as version `1.0.0`.  The previous
@@ -111,6 +113,9 @@ plaidClient.getBalance(access_token, callback);
 
 // upgradeUser(String, String, Object?, Function)
 plaidClient.upgradeUser(access_token, upgrade_to, options, callback);
+
+// exchangeToken(String, Function)
+plaidClient.exchangeToken(public_token, callback);
 ```
 
 **All parameters except `options` are required.**
@@ -127,7 +132,7 @@ function callback(err, mfaResponse, response) {
 ```
 All `add`, `step`, and `patch` related requests can return a MFA response.  `upgradeUser` can also return MFA responses.
 
-For `delete`, `get`, and `getBalance` requests, callbacks are in the form:
+For `delete`, `get`, `getBalance`, and `exchangeToken` requests, callbacks are in the form:
 
 ```javascript
 function callback(err, response) {
@@ -147,7 +152,7 @@ function callback(err, response) {
   if (err != null) {
     if (err.code != null) {
       // This is a Plaid error
-      console.log(err.code + ': '+ err.message);
+      console.log(err.code + ': ' + err.message);
     } else {
       // This is a connection error, an Error object
       console.log(err.toString());
