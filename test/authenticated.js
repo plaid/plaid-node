@@ -71,6 +71,18 @@ describe('Plaid Client - Upgrade', function() {
   var client =
     new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
 
+  it('does not require an options parameter',
+    function(done) {
+    client.upgradeUser('test_chase', 'info', function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      assert(R.has('info', res));
+      done();
+    });
+  });
+
   it('upgrades a user successfully', function(done) {
     client.upgradeUser('test_chase', 'connect', {}, function(err, mfa, res) {
       eq(err, null);

@@ -223,6 +223,11 @@ Plaid.Client.prototype.getBalance = function(access_token, callback) {
 // Upgrade
 Plaid.Client.prototype.upgradeUser =
   function(access_token, upgrade_to, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+
   this._authenticatedRequest({
     uri: this.env + '/upgrade',
     method: 'POST',
