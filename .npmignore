@@ -1,0 +1,6 @@
+/test/
+/.gitignore
+/.jscsrc
+/.jshintrc
+/Makefile
+/circle.yml
