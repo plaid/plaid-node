@@ -3,4 +3,5 @@
 /.jscsrc
 /.jshintrc
 /Makefile
+/PUBLISHING.md
 /circle.yml
