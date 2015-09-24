@@ -1,4 +1,4 @@
-plaid-node
+plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg&circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 ==============
 
 A node.js client library for the [Plaid API][1].
@@ -6,7 +6,6 @@ A node.js client library for the [Plaid API][1].
 This module was recently refactored and released as version `1.0.x`.  The previous
 version, `0.1.1`, is still available via npm.
 
-![CircleCI Badge](https://circleci.com/gh/plaid/plaid-node.png?circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)
 
 ## Table of Contents
 
