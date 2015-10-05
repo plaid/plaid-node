@@ -107,3 +107,27 @@ describe('Plaid.getInstitutions', function() {
   });
 
 });
+
+describe('Plaid.searchInstitutions', function() {
+
+  it('returns long tail Plaid institutions with search term and product', function(done) {
+    Plaid.searchInstitutions('charles', 'connect', null, Plaid.environments.tartan, function(err, res) {
+      eq(err, null);
+
+      assert(R.is(Array, res));
+
+      done();
+    });
+  });
+
+  it('returns one institution if id is passed and ignores other params', function(done) {
+    Plaid.searchInstitutions('charles', 'connect', '15671', Plaid.environments.tartan, function(err, res) {
+      eq(err, null);
+
+      assert(R.is(Object, res));
+
+      done();
+    });
+  });
+
+});

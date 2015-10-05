@@ -45,6 +45,7 @@ plaid.getCategories(plaid_env, callback);
 
 plaid.getInstitution(institution_id, plaid_env, callback);
 plaid.getInstitutions(plaid_env, callback);
+plaid.searchInstitutions(search_term, product, institution_id, plaid_env, callback);
 ```
 
 `plaid_env` dictates which Plaid API environment you will access.  Values are:

@@ -274,6 +274,20 @@ Plaid.getInstitutions = function(env, callback) {
   }, callback);
 };
 
+Plaid.searchInstitutions = function(searchTerm, product, id, env, callback) {
+  var uri = null;
+  if (id)
+    uri = env + '/institutions/search?id=' + id;
+  else
+    uri = env + '/institutions/search?q=' + searchTerm + '&p=' + product;
+
+  this._publicRequest({
+    uri: uri,
+    method: 'GET',
+    body: {},
+  }, callback);
+};
+
 function handleApiResponse(err, res, $body, includeMfaResponse, callback) {
   if (res != null) {
     $body = R.assoc('statusCode', res.statusCode, $body);
