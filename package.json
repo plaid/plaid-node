@@ -20,7 +20,7 @@
     }
   ],
   "dependencies": {
-    "ramda": "0.17.x",
+    "ramda": "0.18.x",
     "request": "2.64.x"
   },
   "devDependencies": {

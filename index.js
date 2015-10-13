@@ -161,39 +161,39 @@ Plaid.Client.prototype._authenticatedRequest = function(options, callback) {
 
 // Auth
 Plaid.Client.prototype.addAuthUser =
-  R.partial(Plaid.Client.prototype._addUser, 'auth');
+  R.partial(Plaid.Client.prototype._addUser, ['auth']);
 Plaid.Client.prototype.getAuthUser =
-  R.partial(Plaid.Client.prototype._getUser, 'auth');
+  R.partial(Plaid.Client.prototype._getUser, ['auth']);
 Plaid.Client.prototype.stepAuthUser =
-  R.partial(Plaid.Client.prototype._stepUser, 'auth');
+  R.partial(Plaid.Client.prototype._stepUser, ['auth']);
 Plaid.Client.prototype.patchAuthUser =
-  R.partial(Plaid.Client.prototype._patchUser, 'auth');
+  R.partial(Plaid.Client.prototype._patchUser, ['auth']);
 Plaid.Client.prototype.deleteAuthUser =
-  R.partial(Plaid.Client.prototype._deleteUser, 'auth');
+  R.partial(Plaid.Client.prototype._deleteUser, ['auth']);
 
 // Connect
 Plaid.Client.prototype.addConnectUser =
-  R.partial(Plaid.Client.prototype._addUser, 'connect');
+  R.partial(Plaid.Client.prototype._addUser, ['connect']);
 Plaid.Client.prototype.getConnectUser =
-  R.partial(Plaid.Client.prototype._getUser, 'connect');
+  R.partial(Plaid.Client.prototype._getUser, ['connect']);
 Plaid.Client.prototype.stepConnectUser =
-  R.partial(Plaid.Client.prototype._stepUser, 'connect');
+  R.partial(Plaid.Client.prototype._stepUser, ['connect']);
 Plaid.Client.prototype.patchConnectUser =
-  R.partial(Plaid.Client.prototype._patchUser, 'connect');
+  R.partial(Plaid.Client.prototype._patchUser, ['connect']);
 Plaid.Client.prototype.deleteConnectUser =
-  R.partial(Plaid.Client.prototype._deleteUser, 'connect');
+  R.partial(Plaid.Client.prototype._deleteUser, ['connect']);
 
 // Info
 Plaid.Client.prototype.addInfoUser =
-  R.partial(Plaid.Client.prototype._addUser, 'info');
+  R.partial(Plaid.Client.prototype._addUser, ['info']);
 Plaid.Client.prototype.getInfoUser =
-  R.partial(Plaid.Client.prototype._getUser, 'info');
+  R.partial(Plaid.Client.prototype._getUser, ['info']);
 Plaid.Client.prototype.stepInfoUser =
-  R.partial(Plaid.Client.prototype._stepUser, 'info');
+  R.partial(Plaid.Client.prototype._stepUser, ['info']);
 Plaid.Client.prototype.patchInfoUser =
-  R.partial(Plaid.Client.prototype._patchUser, 'info');
+  R.partial(Plaid.Client.prototype._patchUser, ['info']);
 Plaid.Client.prototype.deleteInfoUser =
-  R.partial(Plaid.Client.prototype._deleteUser, 'info');
+  R.partial(Plaid.Client.prototype._deleteUser, ['info']);
 
 
 // exchangeToken
