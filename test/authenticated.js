@@ -57,6 +57,16 @@ describe('Plaid Client - Exchange Token', function() {
     new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
 
   it('returns an access_token', function(done) {
+    client.exchangeToken('test,chase,connected', null, function(err, res) {
+      eq(err, null);
+
+      eq(res.access_token, 'test_chase');
+
+      done();
+    });
+  });
+
+  it('does not require an account_id parameter', function(done) {
     client.exchangeToken('test,chase,connected', function(err, res) {
       eq(err, null);
 
