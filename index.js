@@ -197,11 +197,17 @@ Plaid.Client.prototype.deleteInfoUser =
 
 
 // exchangeToken
-Plaid.Client.prototype.exchangeToken = function(public_token, callback) {
+Plaid.Client.prototype.exchangeToken =
+  function(public_token, account_id, callback) {
+  if (typeof account_id === 'function') {
+    callback = account_id;
+    account_id = null;
+  }
   this._authenticatedRequest({
     uri: this.env + '/exchange_token',
     method: 'POST',
     body: {
+      account_id: account_id,
       public_token: public_token,
     },
     includeMfaResponse: false,
