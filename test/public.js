@@ -107,3 +107,34 @@ describe('Plaid.getInstitutions', function() {
   });
 
 });
+
+describe('Plaid.searchInstitutions', function() {
+
+  it('returns a single institution given an "id"', function(done) {
+    Plaid.searchInstitutions({
+      id: 'bofa',
+    }, Plaid.environments.tartan, function(err, res) {
+      eq(err, null);
+
+      eq(res.id, 'bofa');
+      eq(R.type(res), 'Object');
+
+      done();
+    });
+  });
+
+  it('returns a list of institutions given a "product" and "query"',
+    function(done) {
+    Plaid.searchInstitutions({
+      product: 'connect',
+      query: 'suntrust',
+    }, Plaid.environments.tartan, function(err, res) {
+      eq(err, null);
+
+      eq(R.type(res), 'Array');
+
+      done();
+    });
+  });
+
+});

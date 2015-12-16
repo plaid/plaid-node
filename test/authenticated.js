@@ -735,3 +735,23 @@ describe('Plaid.Client - Info', function() {
 
 });
 
+describe('Plaid.Client - Longtail Institutions', function() {
+  var client =
+    new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
+
+  // The /institutions/longtail endpoint requires additional permissions
+  // to access. Accessing it with the sandbox client ID and secret returns
+  // an error, which we test here.
+  it('Plaid.Client.getLongtailInstitutions returns institutions',
+    function(done) {
+    client.getLongtailInstitutions({}, function(err, res) {
+      eq(err, null);
+
+      eq(R.type(res.results), 'Array');
+      eq(R.type(res.total_count), 'Number');
+
+      done();
+    });
+  });
+
+});
