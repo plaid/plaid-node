@@ -21,11 +21,11 @@
   ],
   "dependencies": {
     "ramda": "0.18.x",
-    "request": "2.64.x"
+    "request": "2.67.x"
   },
   "devDependencies": {
-    "istanbul": "0.3.x",
-    "jscs": "2.1.x",
+    "istanbul": "0.4.x",
+    "jscs": "2.7.x",
     "jshint": "2.8.x",
     "mocha": "2.3.x",
     "proxyquire": "1.7.x",
