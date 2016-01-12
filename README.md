@@ -258,6 +258,20 @@ plaidClient.exchangeToken(public_token, function(err, res) {
 
 ```
 
+Exchange a `public_token` and `account_id` from the [Plaid + Stripe][9] ACH
+integration for a Plaid access token and a [Stripe bank account token][10]:
+
+```javascript
+plaidClient.exchangeToken(public_token, account_id, function(err, res) {
+  var access_token = res.access_token;
+  var stripe_token = res.stripe_bank_account_token;
+
+  // Use the access_token to make make Plaid API requests.
+  // Use the Stripe token to make Stripe ACH API requests.
+});
+
+```
+
 ## Promise Support
 
 You can "promisify" this library using a third-party Promise utility library such as [Bluebird][4].
@@ -306,4 +320,6 @@ Code coverage information is written to `/coverage`.
 [5]: https://github.com/petkaantonov/bluebird/blob/master/API.md#promisepromisifyallobject-target--object-options---object
 [6]: https://github.com/plaid/plaid-node/issues/new
 [7]: https://github.com/plaid/plaid-node/blob/master/LICENSE
-[8]: https://github.com/plaid/link
+[8]: https://plaid.com/docs/link
+[9]: https://plaid.com/docs/link/stripe
+[10]: https://stripe.com/docs/api#create_bank_account_token
