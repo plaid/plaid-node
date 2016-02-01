@@ -388,7 +388,7 @@ describe('Plaid.Client - Auth', function() {
     client.deleteAuthUser('test_chase', {}, function(err, res) {
       eq(err, null);
 
-      eq(res.message, 'Successfully removed from system');
+      eq(res.message, 'Successfully removed from your account');
 
       done();
     });
@@ -399,7 +399,7 @@ describe('Plaid.Client - Auth', function() {
     client.deleteAuthUser('test_chase', function(err, res) {
       eq(err, null);
 
-      eq(res.message, 'Successfully removed from system');
+      eq(res.message, 'Successfully removed from your account');
 
       done();
     });
@@ -579,7 +579,7 @@ describe('Plaid.Client - Connect', function() {
     client.deleteConnectUser('test_chase', {}, function(err, res) {
       eq(err, null);
 
-      eq(res.message, 'Successfully removed from system');
+      eq(res.message, 'Successfully removed from your account');
 
       done();
     });
@@ -727,7 +727,7 @@ describe('Plaid.Client - Info', function() {
     client.deleteInfoUser('test_chase', {}, function(err, res) {
       eq(err, null);
 
-      eq(res.message, 'Successfully removed from system');
+      eq(res.message, 'Successfully removed from your account');
 
       done();
     });
