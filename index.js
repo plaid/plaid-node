@@ -1,5 +1,7 @@
 'use strict';
 
+var querystring = require('querystring');
+
 var R = require('ramda');
 var request = require('request');
 
@@ -246,6 +248,15 @@ Plaid.Client.prototype.upgradeUser =
   }, callback);
 };
 
+// Longtail Institutions
+Plaid.Client.prototype.getLongtailInstitutions = function(options, callback) {
+  this._authenticatedRequest({
+    uri: this.env + '/institutions/longtail',
+    method: 'POST',
+    body: options,
+  }, callback);
+};
+
 // Public Routes
 
 Plaid.getCategory = function(category_id, env, callback) {
@@ -275,6 +286,19 @@ Plaid.getInstitution = function(institution_id, env, callback) {
 Plaid.getInstitutions = function(env, callback) {
   this._publicRequest({
     uri: env + '/institutions',
+    method: 'GET',
+    body: {},
+  }, callback);
+};
+
+Plaid.searchInstitutions = function(options, env, callback) {
+  var qs = querystring.stringify(R.reject(R.isNil, {
+    id: options.id,
+    p: options.product,
+    q: options.query,
+  }));
+  this._publicRequest({
+    uri: env + '/institutions/search?' + qs,
     method: 'GET',
     body: {},
   }, callback);
