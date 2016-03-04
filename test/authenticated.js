@@ -587,6 +587,154 @@ describe('Plaid.Client - Connect', function() {
 
 });
 
+describe('Plaid.Client - Income', function() {
+  var client =
+    new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
+
+  it('Plaid.Client.addIncomeUser returns accounts and income for a  ' +
+     'non-MFA user', function(done) {
+    client.addIncomeUser('wells', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      assert(R.has('income', res));
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addIncomeUser returns questions for a MFA question user',
+    function(done) {
+    client.addIncomeUser('bofa', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'questions');
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addIncomeUser returns list of send_methods for a ' +
+     'MFA device user when options.list === true', function(done) {
+    client.addIncomeUser('chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {
+      list: true,
+    }, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'list');
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addIncomeUser returns a code sent message for MFA device ' +
+     'user when options.list !== true', function(done) {
+    client.addIncomeUser('chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepIncomeUser accepts a send_method in options',
+    function(done) {
+    client.stepIncomeUser('test_chase', '', {
+      send_method: {type: 'phone'},
+    }, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepIncomeUser returns accounts and income for ' +
+     'valid MFA question answer', function(done) {
+    client.stepIncomeUser('test_bofa', 'tomato', {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      assert(R.has('income', res));
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepIncomeUser returns accounts and income for ' +
+     'valid MFA code answer', function(done) {
+    client.stepIncomeUser('test_chase', '1234', {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      assert(R.has('income', res));
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.getIncomeUser returns accounts and income',
+    function(done) {
+    client.getIncomeUser('test_chase', {}, function(err, res) {
+      eq(err, null);
+
+      assert(R.has('accounts', res));
+      assert(R.has('income', res));
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.patchIncomeUser patches a user', function(done) {
+    client.patchIncomeUser('test_chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.deleteIncomeUser deletes a user', function(done) {
+    client.deleteIncomeUser('test_chase', {}, function(err, res) {
+      eq(err, null);
+
+      eq(res.message, 'Successfully removed from your account');
+
+      done();
+    });
+  });
+
+});
+
 describe('Plaid.Client - Info', function() {
   var client =
     new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
@@ -725,6 +873,154 @@ describe('Plaid.Client - Info', function() {
 
   it('Plaid.Client.deleteInfoUser deletes a user', function(done) {
     client.deleteInfoUser('test_chase', {}, function(err, res) {
+      eq(err, null);
+
+      eq(res.message, 'Successfully removed from your account');
+
+      done();
+    });
+  });
+
+});
+
+describe('Plaid.Client - Risk', function() {
+  var client =
+    new Plaid.Client('test_id', 'test_secret', Plaid.environments.tartan);
+
+  it('Plaid.Client.addRiskUser returns accounts and risk for a  ' +
+     'non-MFA user', function(done) {
+    client.addRiskUser('wells', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      R.forEach(R.pipe(R.has('risk'), assert), res.accounts);
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addRiskUser returns questions for a MFA question user',
+    function(done) {
+    client.addRiskUser('bofa', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'questions');
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addRiskUser returns list of send_methods for a ' +
+     'MFA device user when options.list === true', function(done) {
+    client.addRiskUser('chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {
+      list: true,
+    }, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'list');
+
+      done();
+    });
+
+  });
+
+  it('Plaid.Client.addRiskUser returns a code sent message for MFA device ' +
+     'user when options.list !== true', function(done) {
+    client.addRiskUser('chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepRiskUser accepts a send_method in options',
+    function(done) {
+    client.stepRiskUser('test_chase', '', {
+      send_method: {type: 'phone'},
+    }, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepRiskUser returns accounts and risk for ' +
+     'valid MFA question answer', function(done) {
+    client.stepRiskUser('test_bofa', 'tomato', {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      R.forEach(R.pipe(R.has('risk'), assert), res.accounts);
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.stepRiskUser returns accounts and risk for ' +
+     'valid MFA code answer', function(done) {
+    client.stepRiskUser('test_chase', '1234', {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(mfa, null);
+
+      assert(R.has('accounts', res));
+      R.forEach(R.pipe(R.has('risk'), assert), res.accounts);
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.getRiskUser returns accounts and risk',
+    function(done) {
+    client.getRiskUser('test_chase', {}, function(err, res) {
+      eq(err, null);
+
+      assert(R.has('accounts', res));
+      R.forEach(R.pipe(R.has('risk'), assert), res.accounts);
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.patchRiskUser patches a user', function(done) {
+    client.patchRiskUser('test_chase', {
+      username: 'plaid_test',
+      password: 'plaid_good',
+    }, {}, function(err, mfa, res) {
+      eq(err, null);
+      eq(res, null);
+
+      eq(mfa.type, 'device');
+
+      done();
+    });
+  });
+
+  it('Plaid.Client.deleteRiskUser deletes a user', function(done) {
+    client.deleteRiskUser('test_chase', {}, function(err, res) {
       eq(err, null);
 
       eq(res.message, 'Successfully removed from your account');

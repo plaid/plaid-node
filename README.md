@@ -109,6 +109,17 @@ plaidClient.patchConnectUser(access_token, credentials, options, callback);
 // deleteConnectUser(String, Object?, Function)
 plaidClient.deleteConnectUser(access_token, options, callback);
 
+// addIncomeUser(String, Object, Object?, Function)
+plaidClient.addIncomeUser(institution_type, credentials, options, callback);
+// stepIncomeUser(String, String, Object, Function)
+plaidClient.stepIncomeUser(access_token, mfaResponse, options, callback);
+// getIncomeUser(String, Object?, Function)
+plaidClient.getIncomeUser(access_token, options, callback);
+// patchIncomeUser(String, Object, Object?, Function)
+plaidClient.patchIncomeUser(access_token, credentials, options, callback);
+// deleteIncomeUser(String, Object?, Function)
+plaidClient.deleteIncomeUser(access_token, options, callback);
+
 // addInfoUser(String, Object, Object?, Function)
 plaidClient.addInfoUser(institution_type, credentials, options, callback);
 // stepInfoUser(String, String, Object, Function)
@@ -119,6 +130,18 @@ plaidClient.getInfoUser(access_token, options, callback);
 plaidClient.patchInfoUser(access_token, credentials, options, callback);
 // deleteInfoUser(String, Object?, Function)
 plaidClient.deleteInfoUser(access_token, options, callback);
+
+// addRiskUser(String, Object, Object?, Function)
+plaidClient.addRiskUser(institution_type, credentials, options, callback);
+// stepRiskUser(String, String, Object, Function)
+plaidClient.stepRiskUser(access_token, mfaResponse, options, callback);
+// getRiskUser(String, Object?, Function)
+plaidClient.getRiskUser(access_token, options, callback);
+// patchRiskUser(String, Object, Object?, Function)
+plaidClient.patchRiskUser(access_token, credentials, options, callback);
+// deleteRiskUser(String, Object?, Function)
+plaidClient.deleteIncomeUser(access_token, options, callback);
+
 
 // getBalance(String, Function)
 plaidClient.getBalance(access_token, callback);
