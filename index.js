@@ -185,6 +185,18 @@ Plaid.Client.prototype.patchConnectUser =
 Plaid.Client.prototype.deleteConnectUser =
   R.partial(Plaid.Client.prototype._deleteUser, ['connect']);
 
+// Income
+Plaid.Client.prototype.addIncomeUser =
+  R.partial(Plaid.Client.prototype._addUser, ['income']);
+Plaid.Client.prototype.getIncomeUser =
+  R.partial(Plaid.Client.prototype._getUser, ['income']);
+Plaid.Client.prototype.stepIncomeUser =
+  R.partial(Plaid.Client.prototype._stepUser, ['income']);
+Plaid.Client.prototype.patchIncomeUser =
+  R.partial(Plaid.Client.prototype._patchUser, ['income']);
+Plaid.Client.prototype.deleteIncomeUser =
+  R.partial(Plaid.Client.prototype._deleteUser, ['income']);
+
 // Info
 Plaid.Client.prototype.addInfoUser =
   R.partial(Plaid.Client.prototype._addUser, ['info']);
@@ -196,6 +208,18 @@ Plaid.Client.prototype.patchInfoUser =
   R.partial(Plaid.Client.prototype._patchUser, ['info']);
 Plaid.Client.prototype.deleteInfoUser =
   R.partial(Plaid.Client.prototype._deleteUser, ['info']);
+
+// Risk
+Plaid.Client.prototype.addRiskUser =
+  R.partial(Plaid.Client.prototype._addUser, ['risk']);
+Plaid.Client.prototype.getRiskUser =
+  R.partial(Plaid.Client.prototype._getUser, ['risk']);
+Plaid.Client.prototype.stepRiskUser =
+  R.partial(Plaid.Client.prototype._stepUser, ['risk']);
+Plaid.Client.prototype.patchRiskUser =
+  R.partial(Plaid.Client.prototype._patchUser, ['risk']);
+Plaid.Client.prototype.deleteRiskUser =
+  R.partial(Plaid.Client.prototype._deleteUser, ['risk']);
 
 
 // exchangeToken
