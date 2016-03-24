@@ -326,6 +326,25 @@ client.getAuthUserAsync('test_chase').then(function(authResponse) {
 });
 ```
 
+Callbacks that expect more than one argument pose a challenge for Bluebird. For Plaid API functions that may
+return an mfa response, use the bluebird `multiarg` option to get an array.
+
+```javascript
+ar bluebird = require('bluebird');
+var plaid = require('plaid');
+
+var client = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
+var addAuthUserAsync = bluebird.promisify(client.addAuthUser, {context: client, multiArgs: true});
+
+addAuthUserAsync('bofa', {
+  'plaid_test',
+  'plaid_good',
+}).then(responses => {
+  var mfaResponse = responses[0];
+  var response = responses[1];
+});
+```
+
 ## Support
 
 Open an [issue][6]!
