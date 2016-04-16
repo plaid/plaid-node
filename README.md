@@ -330,7 +330,7 @@ Callbacks that expect more than one argument pose a challenge for Bluebird. For 
 return an mfa response, use the bluebird `multiarg` option to get an array.
 
 ```javascript
-ar bluebird = require('bluebird');
+var bluebird = require('bluebird');
 var plaid = require('plaid');
 
 var client = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
