@@ -337,8 +337,8 @@ var client = new plaid.Client('test_id', 'test_secret', plaid.environments.tarta
 var addAuthUserAsync = bluebird.promisify(client.addAuthUser, {context: client, multiArgs: true});
 
 addAuthUserAsync('bofa', {
-  'plaid_test',
-  'plaid_good',
+  username: 'plaid_test',
+  password: 'plaid_good'
 }).then(responses => {
   var mfaResponse = responses[0];
   var response = responses[1];
