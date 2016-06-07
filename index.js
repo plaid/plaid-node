@@ -209,6 +209,10 @@ Plaid.Client.prototype.patchInfoUser =
 Plaid.Client.prototype.deleteInfoUser =
   R.partial(Plaid.Client.prototype._deleteUser, ['info']);
 
+// Credit
+Plaid.Client.prototype.getCreditUser = 
+  R.partial(Plaid.Client.prototype._addUser, ['credit']);
+
 // Risk
 Plaid.Client.prototype.addRiskUser =
   R.partial(Plaid.Client.prototype._addUser, ['risk']);
