@@ -210,8 +210,8 @@ Plaid.Client.prototype.deleteInfoUser =
   R.partial(Plaid.Client.prototype._deleteUser, ['info']);
 
 // Credit
-Plaid.Client.prototype.getCreditUser = 
-  R.partial(Plaid.Client.prototype._addUser, ['creditdetails']);
+Plaid.Client.prototype.getCreditUser =
+  R.partial(Plaid.Client.prototype._getUser, ['creditdetails']);
 
 // Risk
 Plaid.Client.prototype.addRiskUser =
