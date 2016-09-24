@@ -287,7 +287,7 @@ Plaid.getCategory = function(category_id, env, callback) {
   this._publicRequest({
     uri: env + '/categories/' + category_id,
     method: 'GET',
-    body: {},
+    json:true
   }, callback);
 };
 
@@ -295,7 +295,7 @@ Plaid.getCategories = function(env, callback) {
   this._publicRequest({
     uri: env + '/categories',
     method: 'GET',
-    body: {},
+    json:true
   }, callback);
 };
 
@@ -303,7 +303,6 @@ Plaid.getInstitution = function(institution_id, env, callback) {
   this._publicRequest({
     uri: env + '/institutions/' + institution_id,
     method: 'GET',
-    body: {},
   }, callback);
 };
 
@@ -311,7 +310,7 @@ Plaid.getInstitutions = function(env, callback) {
   this._publicRequest({
     uri: env + '/institutions',
     method: 'GET',
-    body: {},
+    json:true
   }, callback);
 };
 
@@ -324,7 +323,7 @@ Plaid.searchInstitutions = function(options, env, callback) {
   this._publicRequest({
     uri: env + '/institutions/search?' + qs,
     method: 'GET',
-    body: {},
+    json:true
   }, callback);
 };
 
