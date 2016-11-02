@@ -3,10 +3,6 @@ plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg
 
 A node.js client library for the [Plaid API][1].
 
-This module was recently refactored and released as version `1.0.x`.  The previous
-version, `0.1.1`, is still available via npm.
-
-
 ## Table of Contents
 
 - [plaid-node](#plaid-node)
