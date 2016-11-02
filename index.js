@@ -131,6 +131,7 @@ Plaid._publicRequest = function(options, callback) {
     uri: options.uri,
     method: options.method,
     json: options.body,
+    timeout: 120000
   }, function(err, res, $body) {
     if (err != null) {
       callback(err, null);
@@ -148,6 +149,7 @@ Plaid.Client.prototype._authenticatedRequest = function(options, callback) {
   }
 
   request({
+    timeout: 120000,
     uri: options.uri,
     method: options.method,
     json: R.merge({
