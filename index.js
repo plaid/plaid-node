@@ -289,6 +289,18 @@ Plaid.Client.prototype.getLongtailInstitutions = function(options, callback) {
   }, callback);
 };
 
+Plaid.Client.prototype.getAllInstitutions = function(options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+  this._authenticatedRequest({
+    uri: this.env + '/institutions/all',
+    method: 'POST',
+    body: options,
+  }, callback);
+};
+
 // Public Routes
 
 Plaid.getCategory = function(category_id, env, callback) {
