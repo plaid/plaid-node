@@ -331,7 +331,10 @@ Plaid.searchInstitutions = function(options, env, callback) {
 
 function handleApiResponse(err, res, $body, includeMfaResponse, callback) {
   if (res != null) {
-    $body = R.assoc('statusCode', res.statusCode, $body);
+    $body = R.merge({
+      statusCode: res.statusCode,
+      request_id: res.headers['x-request-id'],
+    }, $body);
   }
 
   if (includeMfaResponse) {
