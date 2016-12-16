@@ -12,6 +12,15 @@ Plaid.environments = {
   tartan: 'https://tartan.plaid.com',
 };
 
+Plaid.setProxy = function(proxyUrl){
+  if(R.isNil(proxyUrl)){
+    return "proxy url can not be null";
+  }else{
+    request = request.defaults({'proxy': proxyUrl});
+    return "proxy url updated";
+  }  
+}; 
+
 Plaid.Client = function(client_id, secret, env) {
   if (R.isNil(client_id)) {
     throw new Error('Missing Plaid "client_id"');

@@ -138,3 +138,12 @@ describe('Plaid.searchInstitutions', function() {
   });
 
 });
+
+describe('Plaid.setProxy', function() {
+  it('sets  a proxy url to plaid requests', function(done) {
+    var result = Plaid.setProxy("example.com");
+     eq(result, 'proxy url updated');
+     done();
+  });
+
+});
