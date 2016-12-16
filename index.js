@@ -13,7 +13,12 @@ Plaid.environments = {
 };
 
 Plaid.setProxy = function(proxyUrl){
-  request = request.defaults({'proxy': proxyUrl})
+  if(R.isNil(proxyUrl)){
+    return "proxy url can not be null";
+  }else{
+    request = request.defaults({'proxy': proxyUrl});
+    return "proxy url updated";
+  }  
 }; 
 
 Plaid.Client = function(client_id, secret, env) {
