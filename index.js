@@ -339,6 +339,20 @@ Plaid.searchInstitutions = function(options, env, callback) {
   }, callback);
 };
 
+// simplified `/institutions/all` endpoint
+// Replaces the deprecated `/institutions/search` endpoint
+Plaid.searchAllInstitutions = function(options, env, callback) {
+  var qs = querystring.stringify(R.reject(R.isNil, {
+    id: options.id,
+    p: options.product,
+    q: options.query,
+  }));
+  this._publicRequest({
+    uri: env + '/institutions/all/search?' + qs,
+    method: 'GET',
+  }, callback);
+};
+
 function handleApiResponse(err, res, $body, includeMfaResponse, callback) {
   if (res != null) {
     $body = R.assoc('statusCode', res.statusCode, $body);
