@@ -287,6 +287,16 @@ Plaid.Client.prototype.getLongtailInstitutions = function(options, callback) {
   }, callback);
 };
 
+// simplified `/institutions/all` endpoint
+// Replaces the deprecated Longtail Institutions endpoint
+Plaid.Client.prototype.getAllInstitutions = function(options, callback) {
+  this._authenticatedRequest({
+    uri: this.env + '/institutions/all',
+    method: 'POST',
+    body: options,
+  }, callback);
+};
+
 // Public Routes
 
 Plaid.getCategory = function(category_id, env, callback) {
