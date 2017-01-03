@@ -287,6 +287,16 @@ Plaid.Client.prototype.getLongtailInstitutions = function(options, callback) {
   }, callback);
 };
 
+// simplified `/institutions/all` endpoint
+// Replaces the deprecated Longtail Institutions endpoint
+Plaid.Client.prototype.getAllInstitutions = function(options, callback) {
+  this._authenticatedRequest({
+    uri: this.env + '/institutions/all',
+    method: 'POST',
+    body: options,
+  }, callback);
+};
+
 // Public Routes
 
 Plaid.getCategory = function(category_id, env, callback) {
@@ -325,6 +335,20 @@ Plaid.searchInstitutions = function(options, env, callback) {
   }));
   this._publicRequest({
     uri: env + '/institutions/search?' + qs,
+    method: 'GET',
+  }, callback);
+};
+
+// simplified `/institutions/all` endpoint
+// Replaces the deprecated `/institutions/search` endpoint
+Plaid.searchAllInstitutions = function(options, env, callback) {
+  var qs = querystring.stringify(R.reject(R.isNil, {
+    id: options.id,
+    p: options.product,
+    q: options.query,
+  }));
+  this._publicRequest({
+    uri: env + '/institutions/all/search?' + qs,
     method: 'GET',
   }, callback);
 };

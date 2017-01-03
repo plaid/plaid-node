@@ -48,6 +48,9 @@ plaid.getInstitutions(plaid_env, callback);
 
 plaid.searchInstitutions({id: institutionId}, env, callback);
 plaid.searchInstitutions({product: plaidProduct, query: searchString}, env, callback);
+
+plaid.searchAllInstitutions({id: institutionId}, env, callback);
+plaid.searchAllInstitutions({product: plaidProduct, query: searchString}, env, callback);
 ```
 
 `plaid_env` dictates which Plaid API environment you will access.  Values are:
@@ -154,6 +157,9 @@ plaidClient.exchangeToken(public_token, callback);
 
 // getLongtailInstitutions(Object, Function)
 plaidClient.getLongtailInstitutions(optionsObject, callback);
+
+// getAllInstitutions(Object, Function)
+plaidClient.getAllInstitutions(optionsObject, callback);
 ```
 
 **All parameters except `options` are required.**
