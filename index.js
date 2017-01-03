@@ -131,7 +131,7 @@ Plaid._publicRequest = function(options, callback) {
     uri: options.uri,
     method: options.method,
     json: options.body,
-    timeout: 120000
+    timeout: 300000
   }, function(err, res, $body) {
     if (err != null) {
       callback(err, null);
