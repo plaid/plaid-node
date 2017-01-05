@@ -5,6 +5,14 @@ var querystring = require('querystring');
 var R = require('ramda');
 var request = require('request');
 
+var HttpsAgent = require('agentkeepalive').HttpsAgent;
+
+var httpsAgent = new HttpsAgent({
+  'maxSockets': 200,
+  'maxFreeSockets': 200,
+  'keepAliveTimeout': 300000
+});
+
 var Plaid = module.exports = {};
 
 Plaid.environments = {
@@ -131,7 +139,8 @@ Plaid._publicRequest = function(options, callback) {
     uri: options.uri,
     method: options.method,
     json: options.body,
-    timeout: 300000
+    timeout: 300000,
+    agent: httpsAgent
   }, function(err, res, $body) {
     if (err != null) {
       callback(err, null);
@@ -156,6 +165,7 @@ Plaid.Client.prototype._authenticatedRequest = function(options, callback) {
       client_id: this.client_id,
       secret: this.secret,
     }, options.body),
+    'agent': httpsAgent
   }, function(err, res, body) {
     handleApiResponse(err, res, body, options.includeMfaResponse, callback);
   });
