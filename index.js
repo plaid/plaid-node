@@ -2,6 +2,7 @@
 
 var querystring = require('querystring');
 
+var async = require('async');
 var R = require('ramda');
 var request = require('request');
 
@@ -9,8 +10,30 @@ var Plaid = module.exports = {};
 
 Plaid.environments = {
   production: 'https://api.plaid.com',
-  tartan: 'https://tartan.plaid.com',
+  tartan: 'https://tartan.plaid.com'
 };
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+InterceptorManager.prototype.use = function(cb) {
+  this.handlers.push(cb);
+}
+
+InterceptorManager.prototype.run = function(options, done) {
+  async.eachSeries(this.handlers, function(handler, next) {
+    if (handler !== null && handler !== undefined) {
+      handler(options);
+      next();
+    }
+  }, done);
+}
+
+Plaid.interceptors = {
+  request: new InterceptorManager(),
+  response: new InterceptorManager()
+}
 
 Plaid.Client = function(client_id, secret, env) {
   if (R.isNil(client_id)) {
@@ -137,15 +160,22 @@ Plaid._publicRequest = function(options, callback) {
     $requestOptions = R.assoc('body', options.body, $requestOptions);
   }
 
-  request($requestOptions, function(err, res, $body) {
-    if (err != null) {
-      callback(err, null);
-    } else if (res.statusCode !== 200) {
-      callback(R.assoc('statusCode', res.statusCode, $body), null);
-    } else {
-      callback(null, $body);
-    }
-  });
+  var client_id = this.client_id;
+  var secret = this.secret;
+
+  Plaid.interceptors.request.run($requestOptions, function() {
+    request($requestOptions, function(err, res, $body) {
+      Plaid.interceptors.response.run(res, function() {
+        if (err != null) {
+          callback(err, null);
+        } else if (res.statusCode !== 200) {
+          callback(R.assoc('statusCode', res.statusCode, $body), null);
+        } else {
+          callback(null, $body);
+        }
+      });
+    });
+  })
 };
 
 Plaid.Client.prototype._authenticatedRequest = function(options, callback) {
@@ -153,15 +183,22 @@ Plaid.Client.prototype._authenticatedRequest = function(options, callback) {
     options.body.options = JSON.stringify(options.body.options);
   }
 
-  request({
-    uri: options.uri,
-    method: options.method,
-    json: R.merge({
-      client_id: this.client_id,
-      secret: this.secret,
-    }, options.body),
-  }, function(err, res, body) {
-    handleApiResponse(err, res, body, options.includeMfaResponse, callback);
+  var client_id = this.client_id;
+  var secret = this.secret;
+
+  Plaid.interceptors.request.run(options, function() {
+    request({
+      uri: options.uri,
+      method: options.method,
+      json: R.merge({
+        client_id: client_id,
+        secret: secret,
+      }, options.body),
+    }, function(err, res, body) {
+      Plaid.interceptors.response.run(res, function() {
+        handleApiResponse(err, res, body, options.includeMfaResponse, callback);
+      });
+    });
   });
 };
 
