@@ -143,7 +143,7 @@ plaidClient.getRiskUser(access_token, options, callback);
 // patchRiskUser(String, Object, Object?, Function)
 plaidClient.patchRiskUser(access_token, credentials, options, callback);
 // deleteRiskUser(String, Object?, Function)
-plaidClient.deleteIncomeUser(access_token, options, callback);
+plaidClient.deleteRiskUser(access_token, options, callback);
 
 
 // getBalance(String, Function)
