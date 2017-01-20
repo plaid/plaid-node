@@ -162,7 +162,8 @@ plaidClient.getLongtailInstitutions(optionsObject, callback);
 plaidClient.getAllInstitutions(optionsObject, callback);
 ```
 
-**All parameters except `options` are required.**
+**All parameters except `options` are required. If the options parameter is omitted, the last argument to the function
+will be interpreted as the callback.**
 
 ## Callbacks
 
