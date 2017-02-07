@@ -20,6 +20,7 @@
     }
   ],
   "dependencies": {
+    "async": "^2.1.4",
     "ramda": "0.19.x",
     "request": "2.74.x"
   },
