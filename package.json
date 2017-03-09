@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "1.2.0",
+  "version": "1.9.9",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -8,11 +8,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/plaid/plaid-node.git"
+    "url": "git@github.com:plaid/plaid-node.git"
   },
   "bugs": {
-    "url": "http://github.com/plaid/plaid-node/issues"
+    "url": "https://github.com/plaid/plaid-node/issues"
   },
+  "main": "lib/plaid.js",
   "licenses": [
     {
       "type": "MIT",
@@ -20,15 +21,18 @@
     }
   ],
   "dependencies": {
-    "ramda": "0.19.x",
+    "ramda": "0.23.x",
     "request": "2.74.x"
   },
   "devDependencies": {
+    "async": "2.1.x",
+    "dotenv": "4.0.x",
+    "expect.js": "0.3.x",
     "istanbul": "0.4.x",
-    "jscs": "2.7.x",
-    "jshint": "2.8.x",
-    "mocha": "2.3.x",
-    "proxyquire": "1.7.x",
-    "xyz": "0.5.x"
+    "jscs": "3.0.x",
+    "jshint": "2.9.x",
+    "mocha": "3.2.x",
+    "moment": "2.17.x",
+    "xyz": "2.1.x"
   }
 }
