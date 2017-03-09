@@ -3,23 +3,20 @@ plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg
 
 A node.js client library for the [Plaid API][1].
 
-This module was recently refactored and released as version `1.0.x`.  The previous
-version, `0.1.1`, is still available via npm.
-
+This module was recently refactored and released as version `2.0.x` to support [Plaid's updated API][11].  The previous version, `1.2.0`, is still available via npm (the package is also mirrored as `plaid-legacy`).
 
 ## Table of Contents
 
 - [plaid-node](#plaid-node)
   * [Install](#install)
   * [Getting started](#getting-started)
-    + [Public Endpoints](#public-endpoints)
-    + [Authenticated Endpoints](#authenticated-endpoints)
+  * [Methods](#methods)
   * [Callbacks](#callbacks)
   * [Error Handling](#error-handling)
   * [Examples](#examples)
   * [Promise Support](#promise-support)
   * [Support](#support)
-  * [Tests](#tests)
+  * [Contributing](#contributing)
   * [License](#license)
 
 ## Install
@@ -33,133 +30,86 @@ $ npm install plaid
 The module supports all Plaid API endpoints.  For complete information about the API, head
 to the [docs][2].
 
-### Public Endpoints
-
-Public endpoints (category and institution information) require no authentication and can be accessed as follows:
-
-```javascript
-var plaid = require('plaid');
-
-plaid.getCategory(category_id, plaid_env, callback);
-plaid.getCategories(plaid_env, callback);
-
-plaid.getInstitution(institution_id, plaid_env, callback);
-plaid.getInstitutions(plaid_env, callback);
-
-plaid.searchInstitutions({id: institutionId}, env, callback);
-plaid.searchInstitutions({product: plaidProduct, query: searchString}, env, callback);
-
-plaid.searchAllInstitutions({id: institutionId}, env, callback);
-plaid.searchAllInstitutions({product: plaidProduct, query: searchString}, env, callback);
-```
-
-`plaid_env` dictates which Plaid API environment you will access.  Values are:
-- `plaid.environments.tartan` - use for integration development and testing, creates users on https://tartan.plaid.com
-- `plaid.environments.production` - production use, creates users on https://api.plaid.com
-
-Environments are exported from the module, i.e.:
+All endpoints require a valid `client_id`, `secret`, and `public_key` to
+access and are accessible from a valid instance of a Plaid `Client`:
 
 ```javascript
-var plaid = require('plaid');
+const plaid = require('plaid');
 
-console.log(plaid.environments);
-```
-
-### Authenticated Endpoints
-
-Authenticated endpoints require a valid `client_id` and `secret` to access.  You can use the sandbox
-client_id and secret for testing (`test_id` and `test_secret`).
-
-All authenticated endpoints are accessible from an instance of a Plaid `Client`:
-
-```javascript
-var plaid = require('plaid');
-
-var plaidClient = new plaid.Client(client_id, secret, plaid_env);
+const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, options);
 ```
 
 The `plaid_env` parameter dictates which Plaid API environment you will access. Values are:
-- `plaid.environments.tartan` - use for integration development and testing, creates users on https://tartan.plaid.com
-- `plaid.environments.production` - production use, creates users on https://api.plaid.com
+- `plaid.environments.production` - production use, creates `Item`s on https://production.plaid.com
+- `plaid.environments.development` - use for integration development and testing, creates `Item`s on https://development.plaid.com
+- `plaid.environments.sandbox` - quickly build out your integration with stateful test data, creates `Item`s on https://sandbox.plaid.com
+
+The `options` parameter is optional and allows for clients to override the default options used to make requests. e.g.
+
+```javascript
+const patientClient = new plaid.Client(client_id, secret, public_key, plaid_env, {
+  timeout: 10 * 60 * 1000, // 30 minutes
+  agent: 'Patient Agent'
+});
+```
+
+See [here][12] for a complete list of options. The default timeout for requests is 10 minutes.
+
+## Methods
 
 Once an instance of the client has been created you use the following methods:
 
 ```javascript
-var plaid = require('plaid');
+const plaid = require('plaid');
 
 // Initialize client
-var plaidClient = new plaid.Client(client_id, secret, plaid_env);
+const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, options);
 
-// addAuthUser(String, Object, Object?, Function)
-plaidClient.addAuthUser(institution_type, credentials, options, callback);
-// stepAuthUser(String, String, Object?, Function)
-plaidClient.stepAuthUser(access_token, mfaResponse, options, callback);
-// getAuthUser(String, Object?, Function)
-plaidClient.getAuthUser(access_token, options, callback);
-// patchAuthUser(String, Object, Object? Function)
-plaidClient.patchAuthUser(access_token, credentials, options, callback);
-// deleteAuthUser(String, Object?, Function)
-plaidClient.deleteAuthUser(access_token, options, callback);
+// createPublicToken(String, Function)
+plaidClient.createPublicToken(access_token, cb);
+// exchangePublicToken(String, Function)
+plaidClient.exchangePublicToken(public_token, cb);
+// createProcessorToken(String, String, String, Function)
+plaidClient.createProcessorToken(access_token, account_id, processor, cb);
 
-// addConnectUser(String, Object, Object?, Function)
-plaidClient.addConnectUser(institution_type, credentials, options, callback);
-// stepConnectUser(String, String, Object?, Function)
-plaidClient.stepConnectUser(access_token, mfaResponse, options, callback);
-// getConnectUser(String, Object?, Function)
-plaidClient.getConnectUser(access_token, options, callback);
-// patchConnectUser(String, Object, Object?, Function)
-plaidClient.patchConnectUser(access_token, credentials, options, callback);
-// deleteConnectUser(String, Object?, Function)
-plaidClient.deleteConnectUser(access_token, options, callback);
+// invalidateAccessToken(String, Function)
+plaidClient.invalidateAccessToken(access_token, cb);
+// updateAccessTokenVersion(String, Function)
+plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
+// deleteItem(String, Function)
+plaidClient.deleteItem(access_token, cb);
+// getItem(String, Function)
+plaidClient.getItem(access_token, cb);
+// updateItemWebhook(String, String, Function)
+plaidClient.updateItemWebhook(access_token, webhook, cb);
 
-// addIncomeUser(String, Object, Object?, Function)
-plaidClient.addIncomeUser(institution_type, credentials, options, callback);
-// stepIncomeUser(String, String, Object, Function)
-plaidClient.stepIncomeUser(access_token, mfaResponse, options, callback);
-// getIncomeUser(String, Object?, Function)
-plaidClient.getIncomeUser(access_token, options, callback);
-// patchIncomeUser(String, Object, Object?, Function)
-plaidClient.patchIncomeUser(access_token, credentials, options, callback);
-// deleteIncomeUser(String, Object?, Function)
-plaidClient.deleteIncomeUser(access_token, options, callback);
+// getAccounts(String, Object?, Function)
+plaidClient.getAccounts(access_token, options, cb);
+// getBalance(String, Object?, Function)
+plaidClient.getBalance(access_token, options, cb);
+// getAuth(String, Object?, Function)
+plaidClient.getAuth(access_token, options, cb);
+// getIdentity(String, Function)
+plaidClient.getIdentity(access_token, cb);
+// getCreditDetails(String, Function)
+plaidClient.getCreditDetails(access_token, cb);
 
-// addInfoUser(String, Object, Object?, Function)
-plaidClient.addInfoUser(institution_type, credentials, options, callback);
-// stepInfoUser(String, String, Object, Function)
-plaidClient.stepInfoUser(access_token, mfaResponse, options, callback);
-// getInfoUser(String, Object?, Function)
-plaidClient.getInfoUser(access_token, options, callback);
-// patchInfoUser(String, Object, Object?, Function)
-plaidClient.patchInfoUser(access_token, credentials, options, callback);
-// deleteInfoUser(String, Object?, Function)
-plaidClient.deleteInfoUser(access_token, options, callback);
+// getTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
+plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 
-// addRiskUser(String, Object, Object?, Function)
-plaidClient.addRiskUser(institution_type, credentials, options, callback);
-// stepRiskUser(String, String, Object, Function)
-plaidClient.stepRiskUser(access_token, mfaResponse, options, callback);
-// getRiskUser(String, Object?, Function)
-plaidClient.getRiskUser(access_token, options, callback);
-// patchRiskUser(String, Object, Object?, Function)
-plaidClient.patchRiskUser(access_token, credentials, options, callback);
-// deleteRiskUser(String, Object?, Function)
-plaidClient.deleteRiskUser(access_token, options, callback);
+// getInstitutions(Number, Number, Function);
+plaidClient.getInstitutions(count, offset, cb);
+// getInstitutionsById(String, Object?, Function)
+plaidClient.getInstitutionById(institution_id, options, cb);
+// searchInstitutionsByName(String, [String], Object?, Function)
+plaidClient.searchInstitutionsByName(query, products, options, cb);
 
+// getCategories(Function)
+plaidClient.getCategories(cb);
 
-// getBalance(String, Function)
-plaidClient.getBalance(access_token, callback);
-
-// upgradeUser(String, String, Object?, Function)
-plaidClient.upgradeUser(access_token, upgrade_to, options, callback);
-
-// exchangeToken(String, Function)
-plaidClient.exchangeToken(public_token, callback);
-
-// getLongtailInstitutions(Object, Function)
-plaidClient.getLongtailInstitutions(optionsObject, callback);
-
-// getAllInstitutions(Object, Function)
-plaidClient.getAllInstitutions(optionsObject, callback);
+// resetLogin(String, Function)
+// Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
+plaidClient.resetLogin(access_token, cb);
 ```
 
 **All parameters except `options` are required. If the options parameter is omitted, the last argument to the function
@@ -167,17 +117,7 @@ will be interpreted as the callback.**
 
 ## Callbacks
 
-For a request that could potentially return a MFA response, callbacks are in the form:
-
-```javascript
-function callback(err, mfaResponse, response) {
-  // err can be a network error or a Plaid API error (i.e. invalid credentials)
-  // mfaResponse can be any type of Plaid MFA flow
-}
-```
-All `add`, `step`, and `patch` related requests can return a MFA response.  `upgradeUser` can also return MFA responses.
-
-For `delete`, `get`, `getBalance`, and `exchangeToken` requests, callbacks are in the form:
+All requests have callbacks of the following form:
 
 ```javascript
 function callback(err, response) {
@@ -195,9 +135,9 @@ between a Plaid error and a standard Error instance:
 ```javascript
 function callback(err, response) {
   if (err != null) {
-    if (err.code != null) {
+    if (err.error_code != null) {
       // This is a Plaid error
-      console.log(err.code + ': ' + err.message);
+      console.log(err.error_code + ': ' + err.error_message);
     } else {
       // This is a connection error, an Error object
       console.log(err.toString());
@@ -208,173 +148,136 @@ function callback(err, response) {
 
 ## Examples
 
-Bank of America question-based MFA flow:
-```javascript
-var plaid = require('plaid');
-
-// Initialize a client
-var plaidClient = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
-
-// Add a BofA auth user going through question-based MFA
-plaidClient.addAuthUser('bofa', {
-  username: 'plaid_test',
-  password: 'plaid_good',
-}, function(err, mfaResponse, response) {
-  if (err != null) {
-    // Bad request - invalid credentials, account locked, etc.
-    console.error(err);
-  } else if (mfaResponse != null) {
-    plaidClient.stepAuthUser(mfaResponse.access_token, 'tomato', {},
-    function(err, mfaRes, response) {
-      console.log(response.accounts);
-    });
-  } else {
-    // No MFA required - response body has accounts
-    console.log(response.accounts);
-  }
-});
-```
-
-Chase device-based MFA flow, including using the `list:true` option to allow the user select
-the device to send their security code to:
-```javascript
-// Add a Chase user using the list:true option
-plaidClient.addConnectUser('chase', {
-  username: 'plaid_test',
-  password: 'plaid_good',
-}, {
-  list: true,
-}, function(err, mfaRes, response) {
-  // mfaRes.mfa is a list of send_methods
-  plaidClient.stepConnectUser(mfaRes.access_token, null, {
-    send_method: mfaRes.mfa[0],
-  }, function(err, mfaRes, response) {
-    // code was sent to the device we specified
-    plaidClient.stepConnectUser(mfaRes.access_token, '1234', function(err, mfaRes, res) {
-      // We now have accounts and transactions
-      console.log('# transactions: ' + res.transactions.length);
-      console.log('access token: ' + res.access_token);
-    });
-  });
-});
-```
-
-Retrieve transactions for a connect user for the last thirty days:
-```javascript
-plaidClient.getConnectUser(access_token, {
-  gte: '30 days ago',
-}, function(err, response) {
-  console.log('You have ' + response.transactions.length +
-              ' transactions from the last thirty days.');
-});
-```
-
-Associate a new webhook with a connect user (webhook PATCH):
-
-```javascript
-// Credentials are not required in this case
-plaidClient.patchConnectUser(access_token, {}, {
-  webhook: 'http://requestb.in',
-}, function(err, mfaResponse, response) {
-  // The webhook URI should receive a code 4 "webhook acknowledged" webhook
-});
-```
-
-Exchange a `public_token` from [Plaid Link][8] for a Plaid access token and then
+Exchange a `public_token` from [Plaid Link][6] for a Plaid `access_token` and then
 retrieve account data:
 
 ```javascript
-plaidClient.exchangeToken(public_token, function(err, res) {
-  var access_token = res.access_token;
+plaidClient.exchangePublicToken(public_token, function(err, res) {
+  const access_token = res.access_token;
 
-  plaidClient.getAuthUser(access_token, function(err, res) {
+  plaidClient.getAccounts(access_token, function(err, res) {
     console.log(res.accounts);
   });
 });
-
 ```
 
-Exchange a `public_token` and `account_id` from the [Plaid + Stripe][9] ACH
-integration for a Plaid access token and a [Stripe bank account token][10]:
+Retrieve transactions for a transactions user for the last thirty days:
 
 ```javascript
-plaidClient.exchangeToken(public_token, account_id, function(err, res) {
-  var access_token = res.access_token;
-  var stripe_token = res.stripe_bank_account_token;
 
-  // Use the access_token to make make Plaid API requests.
-  // Use the Stripe token to make Stripe ACH API requests.
+const now = moment();
+const today = now.format('YYYY-MM-DD');
+const thirtyDaysAgo = now.subtract(30, 'days').format('YYYY-MM-DD');
+
+plaidClient.getTransactions(access_token, thirtyDaysAgo, today, (err, res) => {
+  console.log(`You have ${res.transactions.length} transactions from the last thirty days.`);
+});
+```
+
+Get accounts for a particular `Item`:
+
+```javascript
+plaidClient.getAccounts(access_token, {
+  account_ids: ['123456790']
+}, (err, res) => {
+  console.log(res.accounts);
 });
 
+// The library also juggles arguments, when options is omitted
+
+plaidClient.getAccounts(access_token, (err, res) => {
+  console.log(res.accounts);
+});
 ```
 
 ## Promise Support
 
-You can "promisify" this library using a third-party Promise utility library such as [Bluebird][4].
+Every method returns a promise, so you don't have to use the callbacks.
 
-For example, using Bluebird's [`promisifyAll`][5] functionality, we can do:
+API methods that return either a success or an error can be used with the
+usual `then/else` paradigm, e.g.
 
 ```javascript
-var bluebird = require('bluebird');
-var plaid = require('plaid');
-
-// Promisify the plaid module
-bluebird.promisifyAll(plaid);
-
-var client = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
-
-// bluebird.promisifyAll(plaid) creates a promsified version of each method
-// in the client library suffixed with "Async"
-// i.e. getAuthUser's promsified counterpart is getAuthUserAsync
-client.getAuthUserAsync('test_chase').then(function(authResponse) {
-  console.log('You have ' + authResponse.accounts.length + ' accounts!');
-}).catch(function(err) {
-  console.error(err);
+plaidPromise.then(successResponse => {
+  // ...
+}).catch(err => {
+  // ...
 });
 ```
 
-Callbacks that expect more than one argument pose a challenge for Bluebird. For Plaid API functions that may
-return an mfa response, use the bluebird `multiarg` option to get an array.
+Plaid API methods that may return an MFA response pass an array of responses
+to the next promise. The first element of the array is the `mfaResponse`, and
+the second element is the `successResponse`. You can use destructuring to
+improve readability.
+
+For example:
 
 ```javascript
-var bluebird = require('bluebird');
-var plaid = require('plaid');
+const plaid = require('plaid');
 
-var client = new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
-var addAuthUserAsync = bluebird.promisify(client.addAuthUser, {context: client, multiArgs: true});
+const plaidClient = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, plaid.environments.SANDBOX);
 
-addAuthUserAsync('bofa', {
-  username: 'plaid_test',
-  password: 'plaid_good'
-}).then(responses => {
-  var mfaResponse = responses[0];
-  var response = responses[1];
+plaidClient.getInstitutions(1, 0).then(successResponse => {
+  return successResponse.institutions;
+}).catch(err => {
+  throw new Error(`Unreachable code block for example: ${err}`);
+}).then(institutions => {
+  const institution = institutions[0];
+  const institutionId = institution.institution_id;
+  const products = ['transactions', 'info', 'numbers'];
+
+  const credentials = {
+    username: 'user_good',
+    password: 'pass_good'
+  };
+
+  return plaidClient.createItem(credentials, institutionId, products);
+}).then(([mfaResponse, successResponse]) => {
+  if (mfaResponse) {
+    throw new Error(`Unreachable code block for example: ${mfaResponse}`);
+  }
+
+  return plaidClient.getAccounts(successResponse.access_token);
+}).catch(err => {
+  throw new Error(`Unreachable code block for example: ${err}`);
+}).then(successResponse => {
+  console.log(successResponse.accounts);
+});
+```
+
+The following is also valid:
+
+```javascript
+const promise = plaidClient.createItem(credentials, institutionId, products);
+
+promise.then(array => {
+  const mfaResponse = array[0];
+  const successResponse = array[1];
+
+  // do something
+}).catch(err => {
+  console.log(err);
 });
 ```
 
 ## Support
 
-Open an [issue][6]!
+Open an [issue][4]!
 
-## Tests
+## Contributing
 
-```console
-$ make test
-```
-
-Code coverage information is written to `/coverage`.
+Click [here][7]!
 
 ## License
-[MIT][7]
-
+[MIT][5]
 
 [1]: https://plaid.com
 [2]: https://plaid.com/docs
-[3]: https://plaid.com/docs/#response-codes
-[4]: https://github.com/petkaantonov/bluebird
-[5]: https://github.com/petkaantonov/bluebird/blob/master/API.md#promisepromisifyallobject-target--object-options---object
-[6]: https://github.com/plaid/plaid-node/issues/new
-[7]: https://github.com/plaid/plaid-node/blob/master/LICENSE
-[8]: https://plaid.com/docs/link
+[4]: https://github.com/plaid/plaid-node/issues/new
+[5]: https://github.com/plaid/plaid-node/blob/master/LICENSE
+[6]: https://plaid.com/docs/api#creating-items-with-plaid-link
+[7]: ./CONTRIBUTING.md
 [9]: https://plaid.com/docs/link/stripe
 [10]: https://stripe.com/docs/api#create_bank_account_token
+[11]: https://blog.plaid.com/improving-our-api/
+[12]: https://github.com/request/request/blob/master/README.md#requestoptions-callback
