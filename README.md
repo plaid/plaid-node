@@ -3,7 +3,7 @@ plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg
 
 A node.js client library for the [Plaid API][1].
 
-This module was recently refactored and released as version `2.0.x` to support [Plaid's updated API][11].  The previous version, `1.2.0`, is still available via npm (the package is also mirrored as `plaid-legacy`).
+**Note:** This module was recently refactored and released as version `2.0.x` to support [Plaid's updated API][11]. The previous module version, 1.2.0, and API legacy documentation, is still available via npm and mirroed as [`plaid-legacy`][13]. 
 
 ## Table of Contents
 
@@ -281,3 +281,4 @@ Click [here][7]!
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
 [12]: https://github.com/request/request/blob/master/README.md#requestoptions-callback
+[13]: https://github.com/plaid/plaid-node-legacy
