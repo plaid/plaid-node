@@ -112,7 +112,7 @@ describe('Plaid.Client - Auth', function() {
   // Mocked client simulates connection failures
   var mocked_plaid = proxyquire('../', {
     request: function(body, callback) {
-      callback(new Error('foobar'));
+      callback(new Error('foobar'), {status: 402, headers: {}});
     },
   });
   var mocked_client = new mocked_plaid.Client(

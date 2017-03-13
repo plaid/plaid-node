@@ -354,7 +354,7 @@ Plaid.searchAllInstitutions = function(options, env, callback) {
 };
 
 function handleApiResponse(err, res, $body, includeMfaResponse, callback) {
-  if (res != null) {
+  if (res != null && typeof $body != "undefined") {
     $body = R.merge({
       statusCode: res.statusCode,
       request_id: res.headers['x-request-id'],
