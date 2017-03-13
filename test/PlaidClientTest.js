@@ -2,19 +2,19 @@
 
 /* global before, beforeEach, describe, it */
 
-var crypto = require('crypto');
+const crypto = require('crypto');
 
-var async = require('async');
-var dotenv = require('dotenv');
-var expect = require('expect.js');
-var moment = require('moment');
-var R = require('ramda');
+const async = require('async');
+const dotenv = require('dotenv');
+const expect = require('expect.js');
+const moment = require('moment');
+const R = require('ramda');
 
-var plaid = require('../');
-var testConstants = require('./testConstants.js');
+const plaid = require('../');
+const testConstants = require('./testConstants.js');
 
 dotenv.config();
-var {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
+const {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
 
 describe('plaid.Client', () => {
 
@@ -24,7 +24,7 @@ describe('plaid.Client', () => {
       plaid.environments.sandbox);
   });
 
-  describe('varructor', () => {
+  describe('constructor', () => {
     it('throws for missing client_id', () => {
       expect(() => {
         plaid.Client(null, SECRET, PUBLIC_KEY, plaid.environments.sandbox);
@@ -72,7 +72,7 @@ describe('plaid.Client', () => {
 
   describe('endpoints', () => {
 
-    var now = moment().format('YYYY-MM-DD');
+    const now = moment().format('YYYY-MM-DD');
     let testAccessToken;
 
     before(cb => {
@@ -175,7 +175,7 @@ describe('plaid.Client', () => {
               });
             },
             (mfaResponse, cb) => {
-              var accessToken = mfaResponse.access_token;
+              const accessToken = mfaResponse.access_token;
 
               pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
                 testConstants.MFA_RESPONSES.SELECTIONS, {},
@@ -207,7 +207,7 @@ describe('plaid.Client', () => {
               });
             },
             (mfaResponse, cb) => {
-              var accessToken = mfaResponse.access_token;
+              const accessToken = mfaResponse.access_token;
 
               pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
                 testConstants.MFA_RESPONSES.SELECTIONS,
@@ -239,7 +239,7 @@ describe('plaid.Client', () => {
               });
             },
             (successResponse, cb) => {
-              var accessToken = successResponse.access_token;
+              const accessToken = successResponse.access_token;
 
               pCl.resetLogin(accessToken, (err, successResponse) => {
                 expect(err).to.be(null);
@@ -301,7 +301,7 @@ describe('plaid.Client', () => {
               });
             },
             (successResponse, cb) => {
-              var accessToken = successResponse.access_token;
+              const accessToken = successResponse.access_token;
 
               pCl.createPublicToken(accessToken, (err, successResponse) => {
                 expect(err).to.be(null);
@@ -327,7 +327,7 @@ describe('plaid.Client', () => {
           // Generate a dummy legacy access token, a 160 character hex string
           // We only test the failure case here since we can't generate a
           // valid legacy access_token
-          var dummyAccessToken = crypto.randomBytes(80).toString('hex');
+          const dummyAccessToken = crypto.randomBytes(80).toString('hex');
           pCl.updateAccessTokenVersion(dummyAccessToken,
             (err, successResponse) => {
               void successResponse;
@@ -392,7 +392,7 @@ describe('plaid.Client', () => {
               });
             },
             (successResponse, cb) => {
-              var accessToken = successResponse.access_token;
+              const accessToken = successResponse.access_token;
               pCl.updateItemWebhook(accessToken,
                                     'https://fooWebhook.com',
                                     (err, successResponse) => {
@@ -670,7 +670,7 @@ describe('plaid.Client', () => {
 
   describe('create an item and complete MFA flow', () => {
     it('device', cb => {
-      var credentials = {
+      const credentials = {
         username: testConstants.USERNAME,
         password: testConstants.PASSWORDS.MFA_DEVICE
       };
@@ -690,7 +690,7 @@ describe('plaid.Client', () => {
           accessToken = mfaResponse.access_token;
 
           // arbitrarily choose the first device option
-          var chosenDevice = R.head(mfaResponse.device_list);
+          const chosenDevice = R.head(mfaResponse.device_list);
 
           pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
             [chosenDevice.device_id], cb);
@@ -716,7 +716,7 @@ describe('plaid.Client', () => {
     });
 
     it('selections', cb => {
-      var credentials = {
+      const credentials = {
         username: testConstants.USERNAME,
         password: testConstants.PASSWORDS.MFA_SELECTIONS
       };
@@ -749,7 +749,7 @@ describe('plaid.Client', () => {
 
     it('questions_1_1', cb => {
       // 2 rounds, 2 questions each
-      var credentials = {
+      const credentials = {
         username: testConstants.USERNAME,
         password: testConstants.PASSWORDS.MFA_QUESTIONS_1_1
       };
@@ -785,7 +785,7 @@ describe('plaid.Client', () => {
 
     it('questions_2_2', cb => {
       // 2 rounds, 2 questions each
-      var credentials = {
+      const credentials = {
         username: testConstants.USERNAME,
         password: testConstants.PASSWORDS.MFA_QUESTIONS_2_2
       };
@@ -833,7 +833,7 @@ describe('plaid.Client', () => {
     let testAccessToken;
 
     beforeEach(cb => {
-      var createItem = pCl.createItem({
+      const createItem = pCl.createItem({
         username: testConstants.USERNAME,
         password: testConstants.PASSWORDS.GOOD
       }, testConstants.INSTITUTION, testConstants.PRODUCTS, {});
