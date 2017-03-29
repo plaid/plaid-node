@@ -91,6 +91,8 @@ plaidClient.getBalance(access_token, options, cb);
 plaidClient.getAuth(access_token, options, cb);
 // getIdentity(String, Function)
 plaidClient.getIdentity(access_token, cb);
+// getIncome(String, Function)
+plaidClient.getIncome(access_token, cb);
 // getCreditDetails(String, Function)
 plaidClient.getCreditDetails(access_token, cb);
 
