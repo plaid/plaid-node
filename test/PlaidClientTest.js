@@ -499,6 +499,18 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('income - error case', cb => {
+        pCl.getIncome(testAccessToken, (err, successResponse) => {
+          // Income is not a supported product for the dummy institution
+          // that we are using, so just test that the endpoint returns
+          // an appropriate error.
+          expect(err.error_code).to.be('PRODUCTS_NOT_SUPPORTED');
+          expect(successResponse).to.be(undefined);
+
+          cb();
+        });
+      });
+
       it('credit details', cb => {
         pCl.getCreditDetails(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
