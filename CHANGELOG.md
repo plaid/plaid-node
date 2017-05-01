@@ -1,3 +1,7 @@
+## 2.0.4
+
+- Add `createStripeToken` helper method (alias of `createProcessorToken(access_token, account_id, 'stripe', 'callback')`)
+
 ## 2.0.3
 
 - Remove failing `POST /income/get` integration test
