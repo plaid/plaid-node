@@ -1,3 +1,8 @@
+## 2.0.5
+
+- Fix promise support for `createStripeToken` ([#129](https://github.com/plaid/plaid-node/pull/129))
+- Fix type error for unexpected response body types [#128](https://github.com/plaid/plaid-node/pull/128))
+
 ## 2.0.4
 
 - Add `createStripeToken` helper method (alias of `createProcessorToken(access_token, account_id, 'stripe', 'callback')`)
