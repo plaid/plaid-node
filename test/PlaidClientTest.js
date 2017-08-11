@@ -555,15 +555,6 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('deactivate transactions', cb => {
-        pCl.deactivateTransactions(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.status_code).to.be(200);
-
-          cb();
-        });
-      });
     });
 
     describe('institutions', () => {
