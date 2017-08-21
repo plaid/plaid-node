@@ -220,7 +220,7 @@ For example:
 ```javascript
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, plaid.environments.SANDBOX);
+const plaidClient = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, plaid.environments.sandbox);
 
 plaidClient.getInstitutions(1, 0).then(successResponse => {
   return successResponse.institutions;
