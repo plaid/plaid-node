@@ -84,7 +84,6 @@ declare module 'plaid' {
     url_account_locked: string | null;
     url_account_setup: string | null;
     url_forgotten_password: string | null;
-    video: null; // This field has been deprecated.
   }
 
   interface InstitutionWithContactData extends Institution {
