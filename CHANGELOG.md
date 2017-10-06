@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Add typescript typings ([#132](https://github.com/plaid/plaid-node/pull/132))
+
 ## 2.0.5
 
 - Fix promise support for `createStripeToken` ([#129](https://github.com/plaid/plaid-node/pull/129))
