@@ -1,7 +1,7 @@
 declare module 'plaid' {
   import { CoreOptions } from 'request';
 
-  type Callback<T> = (err: Error, response: T) => void;
+  type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
 
   interface AccessTokenFn<T> {
@@ -205,6 +205,10 @@ declare module 'plaid' {
     public_token: string;
   }
 
+  interface CreateProcessorTokenResponse extends BaseResponse {
+    processor_token: string;
+  }
+
   interface RotateAccessTokenResponse extends BaseResponse {
     new_access_token: string;
   }
@@ -260,20 +264,20 @@ declare module 'plaid' {
     createProcessorToken(accessToken: string,
                          accountId: string,
                          processor: string,
-                         cb: Callback<any>,
+                         cb: Callback<CreateProcessorTokenResponse>,
     ): void;
     createProcessorToken(accessToken: string,
                          accountId: string,
                          processor: string,
-    ): Promise<any>;
+    ): Promise<CreateProcessorTokenResponse>;
 
     createStripeToken(accessToken: string,
                       accountId: string,
-                      cb: Callback<any>,
+                      cb: Callback<CreateProcessorTokenResponse>,
     ): void;
     createStripeToken(accessToken: string,
                       accountId: string,
-    ): Promise<any>;
+    ): Promise<CreateProcessorTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
@@ -362,23 +366,23 @@ declare module 'plaid' {
     ): void;
 
     getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: any,
+                        options?: Object,
     ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(institutionId: string,
                         cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(institutionId: string,
-                        options: any,
+                        options: Object,
                         cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
     searchInstitutionsByName(query: string,
                              products: Array<string>,
-                             options: any,
+                             options: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     searchInstitutionsByName(query: string,
                              products: Array<string>,
-                             options: any,
+                             options: Object,
                              cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 

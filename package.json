@@ -35,6 +35,7 @@
     "jshint": "2.9.x",
     "mocha": "3.2.x",
     "moment": "2.17.x",
+    "typescript": "2.5.x",
     "xyz": "2.1.x"
   }
 }
