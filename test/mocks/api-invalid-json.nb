@@ -1,0 +1,5 @@
+>> POST /institutions/get_by_id
+>> ={"public_key":"xxx","institution_id":"ins_3"}
+<< 400
+<< content-type: application/json; charset=utf-8
+<< =<html>invalidJsonIsTheWorst</html>
