@@ -1,3 +1,7 @@
+## 2.1.1
+
+- Fix handling of non-JSON bodies ([#136](https://github.com/plaid/plaid-node/issues/136))
+
 ## 2.1.0
 
 - Add typescript typings ([#132](https://github.com/plaid/plaid-node/pull/132))
