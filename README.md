@@ -74,8 +74,8 @@ plaidClient.createProcessorToken(access_token, account_id, processor, cb);
 plaidClient.invalidateAccessToken(access_token, cb);
 // updateAccessTokenVersion(String, Function)
 plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
-// deleteItem(String, Function)
-plaidClient.deleteItem(access_token, cb);
+// removeItem(String, Function)
+plaidClient.removeItem(access_token, cb);
 // getItem(String, Function)
 plaidClient.getItem(access_token, cb);
 // updateItemWebhook(String, String, Function)
