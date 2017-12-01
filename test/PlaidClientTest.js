@@ -376,6 +376,43 @@ describe('plaid.Client', () => {
           ], cb);
         });
 
+        it('invalidate an access_token, then remove the item', cb => {
+          async.waterfall([
+            cb => {
+              pCl.createItem({
+                username: testConstants.USERNAME,
+                password: testConstants.PASSWORDS.GOOD
+              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
+              (err, mfaResponse, successResponse) => {
+                expect(err).to.be(null);
+                expect(mfaResponse).to.be(null);
+                expect(successResponse).to.be.ok();
+
+                cb(null, successResponse);
+              });
+            },
+            (successResponse, cb) => {
+              pCl.invalidateAccessToken(successResponse.access_token,
+              (err, successResponse) => {
+                expect(err).to.be(null);
+                expect(successResponse).to.be.ok();
+                expect(successResponse.status_code).to.be(200);
+
+                cb(null, successResponse.new_access_token);
+              });
+            },
+            (newAccessToken, cb) => {
+              pCl.removeItem(newAccessToken, (err, successResponse) => {
+                expect(err).to.be(null);
+                expect(successResponse).to.be.ok();
+                expect(successResponse.removed).to.be(true);
+
+                cb();
+              });
+            }
+          ], cb);
+        });
+
         it('update webhook', cb => {
           async.waterfall([
             cb => {

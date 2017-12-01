@@ -217,6 +217,10 @@ declare module 'plaid' {
     deleted: true;
   }
 
+  interface ItemRemoveResponse extends BaseResponse {
+    removed: true;
+  }
+
   interface ResetLoginResponse extends BaseResponse {
     reset_login: true;
   }
@@ -288,6 +292,8 @@ declare module 'plaid' {
     ): void;
 
     deleteItem: AccessTokenFn<ItemDeleteResponse>;
+
+    removeItem: AccessTokenFn<ItemRemoveResponse>;
 
     getItem: AccessTokenFn<ItemResponse>;
 
