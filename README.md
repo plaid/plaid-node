@@ -208,59 +208,85 @@ plaidPromise.then(successResponse => {
 });
 ```
 
-Plaid API methods that may return an MFA response pass an array of responses
-to the next promise. The first element of the array is the `mfaResponse`, and
-the second element is the `successResponse`. You can use destructuring to
-improve readability.
-
 For example:
 
 ```javascript
+'use strict';
+
+const bodyParser = require('body-parser');
+const express = require('express');
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, plaid.environments.sandbox);
+const plaidClient = new plaid.Client(
+  process.env.PLAID_CLIENT_ID,
+  process.env.PLAID_SECRET,
+  process.env.PUBLIC_KEY,
+  plaid.environments.sandbox
+);
 
-plaidClient.getInstitutions(1, 0).then(successResponse => {
-  return successResponse.institutions;
-}).catch(err => {
-  throw new Error(`Unreachable code block for example: ${err}`);
-}).then(institutions => {
-  const institution = institutions[0];
-  const institutionId = institution.institution_id;
-  const products = ['transactions', 'info', 'numbers'];
+const app = express();
+const port = process.env.PORT || 3000;
 
-  const credentials = {
-    username: 'user_good',
-    password: 'pass_good'
-  };
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
-  return plaidClient.createItem(credentials, institutionId, products);
-}).then(([mfaResponse, successResponse]) => {
-  if (mfaResponse) {
-    throw new Error(`Unreachable code block for example: ${mfaResponse}`);
-  }
+app.post('/plaid_exchange', (req, res) => {
+  var public_token = req.body.public_token;
 
-  return plaidClient.getAccounts(successResponse.access_token);
-}).catch(err => {
-  throw new Error(`Unreachable code block for example: ${err}`);
-}).then(successResponse => {
-  console.log(successResponse.accounts);
+  plaidClient.exchangePublicToken(public_token).then(res => {
+    const access_token = res.access_token;
+
+    plaidClient.getAccounts(access_token).then(res => {
+      console.log(res.accounts);
+    });
+  }).catch(err => {
+    // If error_type is null, it indicates a network or runtime error.
+    if (err.error_type == null) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // Indicates plaid API error
+    console.log('/exchange token returned an error', {
+      error_type: err.error_type,
+      error_code: res.statusCode,
+      error_message: err.error_message,
+      display_message: err.display_message,
+      request_id: err.request_id,
+      status_code: err.status_code,
+    });
+
+    // Inspect error_type to handle the error in your application
+    switch(err.error_type) {
+        case 'INVALID_REQUEST':
+          // ...
+          break;
+        case 'INVALID_INPUT':
+          // ...
+          break;
+        case 'RATE_LIMIT_EXCEEDED':
+          // ...
+          break;
+        case 'API_ERROR':
+          // ...
+          break;
+        case 'ITEM_ERROR':
+          // ...
+          break;
+        default:
+          // fallthrough
+    }
+
+    res.sendStatus(500);
+  });
 });
-```
 
-The following is also valid:
-
-```javascript
-const promise = plaidClient.createItem(credentials, institutionId, products);
-
-promise.then(array => {
-  const mfaResponse = array[0];
-  const successResponse = array[1];
-
-  // do something
-}).catch(err => {
-  console.log(err);
+app.listen(port, () => {
+  console.log(`Listening on port ${ port }`);
 });
+
 ```
 
 ## Support
