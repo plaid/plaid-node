@@ -1,5 +1,5 @@
-declare module 'plaid' {
-  import { CoreOptions } from 'request';
+declare module "plaid" {
+  import { CoreOptions } from "request";
 
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
@@ -37,7 +37,7 @@ declare module 'plaid' {
     name: string | null;
     official_name: string | null;
     subtype: string | null;
-    type: string  | null;
+    type: string | null;
   }
 
   interface Category {
@@ -65,13 +65,14 @@ declare module 'plaid' {
   interface Credential {
     name: string;
     label: string;
-    type: 'text' | 'password';
+    type: "text" | "password";
   }
 
   interface Institution {
     credentials: Array<Credential>;
     has_mfa: boolean;
     institution_id: string;
+    logo?: string | null;
     mfa: Array<string>;
     name: string;
     products: Array<string>;
@@ -168,7 +169,7 @@ declare module 'plaid' {
       payment_processor: string | null;
       ppd_id: string | null;
       reason: string | null;
-      reference_number: string | null
+      reference_number: string | null;
     };
     pending: boolean | null;
     pending_transaction_id: string | null;
@@ -225,11 +226,13 @@ declare module 'plaid' {
     reset_login: true;
   }
 
-  interface GetInstitutionsResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionsResponse<T extends Institution>
+    extends BaseResponse {
     institutions: Array<T>;
   }
 
-  interface GetInstitutionByIdResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionByIdResponse<T extends Institution>
+    extends BaseResponse {
     institution: T;
   }
 
@@ -250,45 +253,47 @@ declare module 'plaid' {
   }
 
   class Client {
-    constructor (
+    constructor(
       clientId: string,
       secret: string,
       publicKey: string,
       env: string,
-      options?: CoreOptions,
-    )
+      options?: CoreOptions
+    );
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
-    exchangePublicToken(publicToken: string,
-                        cb: Callback<TokenResponse>,
-    ): void;
+    exchangePublicToken(publicToken: string, cb: Callback<TokenResponse>): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
-                         cb: Callback<CreateProcessorTokenResponse>,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string,
+      cb: Callback<CreateProcessorTokenResponse>
     ): void;
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string
     ): Promise<CreateProcessorTokenResponse>;
 
-    createStripeToken(accessToken: string,
-                      accountId: string,
-                      cb: Callback<CreateProcessorTokenResponse>,
+    createStripeToken(
+      accessToken: string,
+      accountId: string,
+      cb: Callback<CreateProcessorTokenResponse>
     ): void;
-    createStripeToken(accessToken: string,
-                      accountId: string,
+    createStripeToken(
+      accessToken: string,
+      accountId: string
     ): Promise<CreateProcessorTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
-    updateAccessTokenVersion(legacyAccessToken: string,
-    ): Promise<TokenResponse>;
-    updateAccessTokenVersion(legacyAccessToken: string,
-                             cb: Callback<TokenResponse>,
+    updateAccessTokenVersion(legacyAccessToken: string): Promise<TokenResponse>;
+    updateAccessTokenVersion(
+      legacyAccessToken: string,
+      cb: Callback<TokenResponse>
     ): void;
 
     deleteItem: AccessTokenFn<ItemDeleteResponse>;
@@ -297,45 +302,47 @@ declare module 'plaid' {
 
     getItem: AccessTokenFn<ItemResponse>;
 
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string
     ): Promise<ItemResponse>;
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
-                      cb: Callback<ItemResponse>,
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string,
+      cb: Callback<ItemResponse>
     ): void;
 
-    getAccounts(accessToken: string,
-                options?: ItemRequestOptions,
+    getAccounts(
+      accessToken: string,
+      options?: ItemRequestOptions
     ): Promise<AccountsResponse>;
-    getAccounts(accessToken: string,
-                cb: Callback<AccountsResponse>,
-    ): void;
-    getAccounts(accessToken: string,
-                options: ItemRequestOptions,
-                cb: Callback<AccountsResponse>,
+    getAccounts(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getAccounts(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>
     ): void;
 
-    getBalance(accessToken: string,
-               options?: ItemRequestOptions,
+    getBalance(
+      accessToken: string,
+      options?: ItemRequestOptions
     ): Promise<AccountsResponse>;
-    getBalance(accessToken: string,
-               cb: Callback<AccountsResponse>,
-    ): void;
-    getBalance(accessToken: string,
-               options: ItemRequestOptions,
-               cb: Callback<AccountsResponse>,
+    getBalance(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getBalance(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>
     ): void;
 
-    getAuth(accessToken: string,
-            options?: ItemRequestOptions,
+    getAuth(
+      accessToken: string,
+      options?: ItemRequestOptions
     ): Promise<AccountsResponse>;
-    getAuth(accessToken: string,
-            cb: Callback<AccountsResponse>,
-    ): void;
-    getAuth(accessToken: string,
-            options: ItemRequestOptions,
-            cb: Callback<AccountsResponse>,
+    getAuth(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getAuth(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>
     ): void;
 
     // getIdentity(String, Function)
@@ -346,50 +353,60 @@ declare module 'plaid' {
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options?: TransactionsRequestOptions,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: TransactionsRequestOptions
     ): Promise<TransactionsResponse>;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      cb: Callback<TransactionsResponse>
     ): void;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options: TransactionsRequestOptions,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options: TransactionsRequestOptions,
+      cb: Callback<TransactionsResponse>
     ): void;
 
-    getInstitutions(count: number,
-                    offset: number,
+    getInstitutions(
+      count: number,
+      offset: number
     ): Promise<GetInstitutionsResponse<Institution>>;
-    getInstitutions(count: number,
-                    offset: number,
-                    cb: Callback<GetInstitutionsResponse<Institution>>,
+    getInstitutions(
+      count: number,
+      offset: number,
+      cb: Callback<GetInstitutionsResponse<Institution>>
     ): void;
 
-    getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: Object,
+    getInstitutionById<T extends Institution>(
+      institutionId: string,
+      options?: Object
     ): Promise<GetInstitutionByIdResponse<T>>;
-    getInstitutionById(institutionId: string,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    getInstitutionById(
+      institutionId: string,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>
     ): void;
-    getInstitutionById(institutionId: string,
-                        options: Object,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    getInstitutionById(
+      institutionId: string,
+      options: Object,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>
     ): void;
 
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object
     ): Promise<GetInstitutionsResponse<Institution>>;
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
-                             cb: Callback<GetInstitutionsResponse<Institution>>,
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object,
+      cb: Callback<GetInstitutionsResponse<Institution>>
     ): void;
 
     getCategories(): Promise<CategoriesResponse>;
@@ -399,9 +416,9 @@ declare module 'plaid' {
   }
 
   interface PlaidEnvironments {
-    production: 'https://production.plaid.com';
-    sandbox: 'https://sandbox.plaid.com';
-    development: 'https://development.plaid.com';
+    production: "https://production.plaid.com";
+    sandbox: "https://sandbox.plaid.com";
+    development: "https://development.plaid.com";
     [env: string]: string;
   }
   const environments: PlaidEnvironments;
