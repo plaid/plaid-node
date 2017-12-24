@@ -1,4 +1,5 @@
-plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg&circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
+plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg&circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)](https://circleci.com/gh/plaid/plaid-node) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fplaid%2Fplaid-node.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fplaid%2Fplaid-node?ref=badge_shield)
+ [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 ==============
 
 A node.js client library for the [Plaid API][1].
@@ -16,6 +17,9 @@ A node.js client library for the [Plaid API][1].
   * [Support](#support)
   * [Contributing](#contributing)
   * [License](#license)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fplaid%2Fplaid-node.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fplaid%2Fplaid-node?ref=badge_large)
 
 ## Install
 
