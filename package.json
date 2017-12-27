@@ -2,10 +2,16 @@
   "name": "plaid",
   "version": "2.2.0",
   "description": "A node.js client for the Plaid API",
-  "keywords": [
-    "plaid",
-    "plaid.com"
-  ],
+  "keywords": ["plaid", "plaid.com"],
+  "prettier": {
+    "useTabs": false,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "jsxBracketSameLine": true,
+    "semi": false
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:plaid/plaid-node.git"
