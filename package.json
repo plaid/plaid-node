@@ -34,7 +34,7 @@
     "jscs": "3.0.x",
     "jshint": "2.9.x",
     "mocha": "3.2.x",
-    "moment": "2.17.x",
+    "moment": "2.19.x",
     "nock": "9.1.x",
     "nockingbird": "0.2.x",
     "typescript": "2.5.x",
