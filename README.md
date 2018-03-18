@@ -138,7 +138,7 @@ between a Plaid error and a standard Error instance:
 ```javascript
 function callback(err, response) {
   if (err != null) {
-    if (err.error_code != null) {
+    if (plaid.isPlaidError(err)) {
       // This is a Plaid error
       console.log(err.error_code + ': ' + err.error_message);
     } else {
@@ -242,8 +242,8 @@ app.post('/plaid_exchange', (req, res) => {
       console.log(res.accounts);
     });
   }).catch(err => {
-    // If error_type is null, it indicates a network or runtime error.
-    if (err.error_type == null) {
+    // Indicates a network or runtime error.
+    if (!plaid.isPlaidError(err)) {
       res.sendStatus(500);
       return;
     }
@@ -302,6 +302,7 @@ Click [here][7]!
 
 [1]: https://plaid.com
 [2]: https://plaid.com/docs
+[3]: https://plaid.com/docs/api/#errors-overview
 [4]: https://github.com/plaid/plaid-node/issues/new
 [5]: https://github.com/plaid/plaid-node/blob/master/LICENSE
 [6]: https://plaid.com/docs/api#creating-items-with-plaid-link
