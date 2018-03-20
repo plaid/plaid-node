@@ -363,6 +363,17 @@ declare module 'plaid' {
                     cb: Callback<TransactionsResponse>,
     ): void;
 
+    // getAllTransactions(String, Date, Date, Function)
+    getAllTransactions(accessToken: string,
+                       startDate: Iso8601DateString,
+                       endDate: Iso8601DateString,
+    ): Promise<Array<Account>>;
+    getAllTransactions(accessToken: string,
+                       startDate: Iso8601DateString,
+                       endDate: Iso8601DateString,
+                       cb: Callback<Array<Account>>,
+    ): void;
+
     getInstitutions(count: number,
                     offset: number,
     ): Promise<GetInstitutionsResponse<Institution>>;

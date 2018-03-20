@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const expect = require('expect.js');
 const moment = require('moment');
 const R = require('ramda');
+const sinon = require('sinon');
 
 const plaid = require('../');
 const testConstants = require('./testConstants.js');
@@ -547,51 +548,111 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('transactions', cb => {
-        async.waterfall([
-          cb => {
-            pCl.createItem({
-              username: testConstants.USERNAME,
-              password: testConstants.PASSWORDS.GOOD
-            }, testConstants.INSTITUTION, testConstants.PRODUCTS, {
-              transactions: {
-                start_date: now,
-                end_date: now,
-                await_results: true
+      describe('transactions', () => {
+        let accessToken;
+        beforeEach(done => {
+          pCl.createItem({
+            username: testConstants.USERNAME,
+            password: testConstants.PASSWORDS.GOOD
+          }, testConstants.INSTITUTION, testConstants.PRODUCTS, {
+            transactions: {
+              start_date: now,
+              end_date: now,
+              await_results: true
+            }
+          },
+          (err, mfaResponse, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+
+            accessToken = successResponse.access_token;
+            done();
+          });
+        });
+
+        it('normal flow', cb => {
+          pCl.getTransactions(accessToken, now, now, {},
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.transactions).to.be.an(Array);
+
+            cb();
+          });
+        });
+
+        it('all transactions', cb => {
+          pCl.getAllTransactions(accessToken, now, now,
+          (err, transactions) => {
+            expect(err).to.be(null);
+            expect(transactions).to.be.an(Array);
+
+            cb();
+          });
+        });
+
+        it('all < 500 transactions with correct pagination', cb => {
+          sinon.stub(pCl, 'getTransactions').callsFake(
+            (access_token, start_date, end_date, options) => {
+              if (options.offset === 0) {
+                return Promise.resolve({
+                  transactions: R.range(0, 200),
+                  total_transactions: 200,
+                });
+              } else {
+                throw new Error('Invalid nonzero offset value');
               }
-            },
-            (err, mfaResponse, successResponse) => {
-              expect(err).to.be(null);
-              expect(successResponse).to.be.ok();
-
-              cb(null, successResponse.access_token);
             });
-          }, (accessToken, cb) => {
-            pCl.getTransactions(accessToken, now, now, {},
-            (err, successResponse) => {
+
+          pCl.getAllTransactions(accessToken, now, now,
+            (err, transactions) => {
               expect(err).to.be(null);
-              expect(successResponse).to.be.ok();
-              expect(successResponse.transactions).to.be.an(Array);
-
-              cb();
+              expect(transactions).to.eql(R.range(0, 200));
             });
-          }
-        ], cb);
-      });
-
-      it('transactions (w/o options arg) (with 400)', cb => {
-        pCl.getTransactions('invalid token', now, now,
-        (err, successResponse) => {
-          expect(err).to.be.ok();
-          expect(successResponse).not.to.be.ok();
-          expect(err.status_code).to.be(400);
-          expect(err.request_id).to.be.ok();
-          expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
 
           cb();
         });
-      });
 
+        it('all > 500 transactions with correct pagination', cb => {
+          sinon.stub(pCl, 'getTransactions').callsFake(
+            (access_token, start_date, end_date, options) => {
+              let transactionsResponse = {
+                total_transactions: 1200,
+              };
+              if (options.offset === 0) {
+                transactionsResponse.transactions = R.range(0, 500);
+              } else if (options.offset === 500) {
+                transactionsResponse.transactions = R.range(500, 1000);
+              } else if (options.offset === 1000) {
+                transactionsResponse.transactions = R.range(1000, 1200);
+              } else {
+                throw new Error('Invalid offset value');
+              }
+              return Promise.resolve(transactionsResponse);
+            });
+
+          pCl.getAllTransactions(accessToken, now, now,
+            (err, transactions) => {
+              expect(err).to.be(null);
+              expect(transactions).to.eql(R.range(0, 1200));
+            });
+
+          cb();
+        });
+
+        it('transactions (w/o options arg) (with 400)', cb => {
+          pCl.getTransactions('invalid token', now, now,
+          (err, successResponse) => {
+            expect(err).to.be.ok();
+            expect(successResponse).not.to.be.ok();
+            expect(err.status_code).to.be(400);
+            expect(err.request_id).to.be.ok();
+            expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
+
+            cb();
+          });
+        });
+      });
     });
 
     describe('institutions', () => {
