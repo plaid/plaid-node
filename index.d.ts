@@ -405,4 +405,6 @@ declare module 'plaid' {
     [env: string]: string;
   }
   const environments: PlaidEnvironments;
+
+  export function isPlaidError(err: any): err is PlaidError;
 }
