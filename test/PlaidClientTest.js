@@ -594,6 +594,114 @@ describe('plaid.Client', () => {
 
     });
 
+    describe('assets', () => {
+      var days_requested = 60;
+      var options = {
+        client_report_id: "reportid123",
+        user: {
+          client_user_id: "userid123",
+          first_name: "first",
+          middle_name: "middle",
+          last_name: "last",
+          ssn: "999-60-1111",
+          phone_number: "(123)456-7890",
+          email: "hello@test.com",
+        },
+      };
+      var auditor_id = "fannie_mae";
+
+      var createAssetReport = (cb) => {
+        pCl.createAssetReport([testAccessToken], days_requested, options,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.asset_report_token).to.be.ok();
+          expect(response.asset_report_id).to.be.ok();
+
+          cb(null, response.asset_report_token);
+        });
+      }
+
+      var getAssetReport = async (asset_report_token, num_retries_remaining, cb) => {
+        if (num_retries_remaining <= 0) {
+          throw new Error('Ran out of retries while polling for asset report');
+        }
+
+        pCl.getAssetReport(asset_report_token, async (err, response) => {
+          if (err) {
+            if (err.status_code === 400) {
+              await sleep(1000);
+              await getAssetReport(asset_report_token, num_retries_remaining - 1, cb);
+            } else {
+              throw new Error('Unexpected error while polling for asset report', err);
+            }
+          } else {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.report).to.be.ok();
+
+            cb(null, asset_report_token);
+          }
+        });
+      }
+
+      var getAssetReportPdf = (asset_report_token, cb) => {
+        pCl.getAssetReportPdf(asset_report_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+
+          cb(null, asset_report_token);
+        });
+      }
+
+      var createAuditCopy = (asset_report_token, cb) => {
+        pCl.createAuditCopy(asset_report_token, auditor_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.audit_copy_token).to.be.ok();
+
+          cb(null, asset_report_token, response.audit_copy_token);
+        });
+      }
+
+      var removeAuditCopy = (asset_report_token, audit_copy_token, cb) => {
+        pCl.removeAuditCopy(audit_copy_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.removed).to.be(true);
+
+          cb(null, asset_report_token);
+        });
+      }
+
+      var removeAssetReport = (asset_report_token, cb) => {
+        pCl.removeAssetReport(asset_report_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+
+          // TODO(dfish): This is a bug. We need to change this to `true`
+          // before merging.
+          expect(response.removed).to.be(false);
+
+          cb();
+        });
+      }
+
+      it('successfully goes through the entire flow', cb => {
+        async.waterfall([
+          createAssetReport,
+          (asset_report_token, cb) => {
+            getAssetReport(asset_report_token, 20, cb);
+          },
+          getAssetReportPdf,
+          createAuditCopy,
+          removeAuditCopy,
+          removeAssetReport,
+        ], cb);
+      });
+    });
+
     describe('institutions', () => {
 
       it('get', cb => {
@@ -1035,3 +1143,7 @@ describe('plaid.Client', () => {
     });
   });
 });
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
