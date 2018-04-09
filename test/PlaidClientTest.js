@@ -630,7 +630,7 @@ describe('plaid.Client', () => {
 
         pCl.getAssetReport(asset_report_token, async (err, response) => {
           if (err) {
-            if (err.status_code === 400) {
+            if (err.status_code === 400 && err.error_code === "PRODUCT_NOT_READY") {
               await sleep(1000);
               await getAssetReport(asset_report_token, num_retries_remaining - 1, cb);
             } else {

@@ -26,13 +26,13 @@ declare module 'plaid' {
   }
 
   interface AssetReportUser {
-    client_user_id: string;
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-    ssn: string;
-    phone_number: string;
-    email: string;
+    client_user_id?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    ssn?: string;
+    phone_number?: string;
+    email?: string;
   }
 
   interface AssetReportCreateOptions {
