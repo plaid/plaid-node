@@ -597,18 +597,18 @@ describe('plaid.Client', () => {
     describe('assets', () => {
       var days_requested = 60;
       var options = {
-        client_report_id: "reportid123",
+        client_report_id: 'reportid123',
         user: {
-          client_user_id: "userid123",
-          first_name: "first",
-          middle_name: "middle",
-          last_name: "last",
-          ssn: "999-60-1111",
-          phone_number: "(123)456-7890",
-          email: "hello@test.com",
+          client_user_id: 'userid123',
+          first_name: 'first',
+          middle_name: 'middle',
+          last_name: 'last',
+          ssn: '999-60-1111',
+          phone_number: '(123)456-7890',
+          email: 'hello@test.com',
         },
       };
-      var auditor_id = "fannie_mae";
+      var auditor_id = 'fannie_mae';
 
       var createAssetReport = (cb) => {
         pCl.createAssetReport([testAccessToken], days_requested, options,
@@ -621,20 +621,25 @@ describe('plaid.Client', () => {
 
           cb(null, response.asset_report_token);
         });
-      }
+      };
 
-      var getAssetReport = async (asset_report_token, num_retries_remaining, cb) => {
+      var getAssetReport =
+        (asset_report_token, num_retries_remaining, cb) => {
         if (num_retries_remaining <= 0) {
           throw new Error('Ran out of retries while polling for asset report');
         }
 
-        pCl.getAssetReport(asset_report_token, async (err, response) => {
+        pCl.getAssetReport(asset_report_token, (err, response) => {
           if (err) {
-            if (err.status_code === 400 && err.error_code === "PRODUCT_NOT_READY") {
-              await sleep(1000);
-              await getAssetReport(asset_report_token, num_retries_remaining - 1, cb);
+            if (err.status_code === 400 &&
+                err.error_code === 'PRODUCT_NOT_READY') {
+              setTimeout(() => {
+                getAssetReport(
+                  asset_report_token, num_retries_remaining - 1, cb);
+              }, 1000);
             } else {
-              throw new Error('Unexpected error while polling for asset report', err);
+              throw new Error(
+                'Unexpected error while polling for asset report', err);
             }
           } else {
             expect(err).to.be(null);
@@ -644,7 +649,7 @@ describe('plaid.Client', () => {
             cb(null, asset_report_token);
           }
         });
-      }
+      };
 
       var getAssetReportPdf = (asset_report_token, cb) => {
         pCl.getAssetReportPdf(asset_report_token, (err, response) => {
@@ -653,17 +658,18 @@ describe('plaid.Client', () => {
 
           cb(null, asset_report_token);
         });
-      }
+      };
 
       var createAuditCopy = (asset_report_token, cb) => {
-        pCl.createAuditCopy(asset_report_token, auditor_id, (err, response) => {
+        pCl.createAuditCopy(asset_report_token, auditor_id,
+          (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.audit_copy_token).to.be.ok();
 
           cb(null, asset_report_token, response.audit_copy_token);
         });
-      }
+      };
 
       var removeAuditCopy = (asset_report_token, audit_copy_token, cb) => {
         pCl.removeAuditCopy(audit_copy_token, (err, response) => {
@@ -673,7 +679,7 @@ describe('plaid.Client', () => {
 
           cb(null, asset_report_token);
         });
-      }
+      };
 
       var removeAssetReport = (asset_report_token, cb) => {
         pCl.removeAssetReport(asset_report_token, (err, response) => {
@@ -686,7 +692,7 @@ describe('plaid.Client', () => {
 
           cb();
         });
-      }
+      };
 
       it('successfully goes through the entire flow', cb => {
         async.waterfall([
@@ -1143,7 +1149,3 @@ describe('plaid.Client', () => {
     });
   });
 });
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
