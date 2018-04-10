@@ -685,10 +685,7 @@ describe('plaid.Client', () => {
         pCl.removeAssetReport(asset_report_token, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
-
-          // TODO(dfish): This is a bug. We need to change this to `true`
-          // before merging.
-          expect(response.removed).to.be(false);
+          expect(response.removed).to.be(true);
 
           cb();
         });
