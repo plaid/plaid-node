@@ -27,7 +27,7 @@ setup:
 
 .PHONY: test
 test: build-ts
-	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 40000
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 60000
 
 
 # verify that tsc can build our definition file

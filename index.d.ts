@@ -3,6 +3,7 @@ declare module 'plaid' {
 
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
+  type Iso8601DateTimeString = string; // YYYY-MM-DDTHH:MM:SSZ
 
   interface AccessTokenFn<T> {
     (accessToken: string): Promise<T>;
@@ -24,20 +25,38 @@ declare module 'plaid' {
     offset?: number;
   }
 
+  interface AssetReportUser {
+    client_user_id?: string | null;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    ssn?: string | null;
+    phone_number?: string | null;
+    email?: string | null;
+  }
+
+  interface AssetReportCreateOptions {
+    client_report_id?: string | null;
+    user?: AssetReportUser;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
-  interface Account {
+  interface AccountCommon {
     account_id: string;
-    balances: {
-      available: number | null;
-      current: number | null;
-      limit: number | null;
-    };
     mask: string | null;
     name: string | null;
     official_name: string | null;
     subtype: string | null;
     type: string  | null;
+  }
+
+  interface Account extends AccountCommon {
+    balances: {
+      available: number | null;
+      current: number | null;
+      limit: number | null;
+    };
   }
 
   interface Category {
@@ -51,6 +70,17 @@ declare module 'plaid' {
     error_code: string;
     error_message: string;
     display_message: string | null;
+    causes?: Array<Cause>;
+  }
+
+  interface Warning {
+    warning_type: string;
+    warning_code: string;
+    cause: Cause;
+  }
+
+  interface Cause extends PlaidError {
+    item_id: string;
   }
 
   interface Item {
@@ -113,15 +143,36 @@ declare module 'plaid' {
     number_of_income_streams: number;
   }
 
+  interface Identity {
+    addresses: Array<Address>;
+    emails: Array<Email>;
+    names: Array<string>;
+    phone_numbers: Array<PhoneNumber>;
+  }
+
+  interface AccountIdentity {
+    addresses: Array<Address>;
+    emails: Array<Email>;
+    names: Array<string>;
+    phone_numbers: Array<PhoneNumber>;
+  }
+
   interface Address {
     accounts: Array<string>;
-    data: {
-      city: string;
-      state: string;
-      zip: string;
-      street: string;
-    };
+    data: AddressData;
     primary: boolean;
+  }
+
+  interface AccountAddress {
+    data: AddressData;
+    primary: boolean;
+  }
+
+  interface AddressData {
+    city: string;
+    state: string;
+    zip: string;
+    street: string;
   }
 
   interface Email {
@@ -134,13 +185,6 @@ declare module 'plaid' {
     data: string;
     primary: boolean;
     type: string;
-  }
-
-  interface Identity {
-    addresses: Array<Address>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
   }
 
   interface Transaction {
@@ -174,6 +218,48 @@ declare module 'plaid' {
     pending_transaction_id: string | null;
     transaction_id: string;
     transaction_type: string | null;
+  }
+
+  interface AssetReport {
+    asset_report_id: string;
+    client_report_id: string | null;
+    date_generated: Iso8601DateTimeString;
+    days_requested: number;
+    items: Array<AssetReportItem>;
+    user: AssetReportUser;
+  }
+
+  interface AssetReportItem {
+    item_id: string;
+    accounts: Array<AssetReportAccount>;
+    institution_id: string;
+    institution_name: string;
+    date_last_updated: Iso8601DateTimeString;
+  }
+
+  interface AssetReportAccount extends AccountCommon {
+    balances: {
+      available: number | null;
+      current: number | null;
+    };
+    days_available: number;
+    historical_balances: Array<HistoricalBalance>;
+    transactions: Array<AssetReportTransaction>;
+    owners: Array<Identity>;
+  }
+
+  interface HistoricalBalance {
+    date: Iso8601DateString;
+    current: number;
+  }
+
+  interface AssetReportTransaction {
+    account_id: string;
+    transaction_id: string;
+    date: Iso8601DateString;
+    original_description: string | null;
+    pending: boolean | null;
+    amount: number | null;
   }
 
   // RESPONSES
@@ -247,6 +333,28 @@ declare module 'plaid' {
     total_transactions: number;
     transactions: Array<Transaction>;
     item: Item;
+  }
+
+  interface AssetReportCreateResponse extends BaseResponse {
+    asset_report_id: string;
+    asset_report_token: string;
+  }
+
+  interface AssetReportGetResponse extends BaseResponse {
+    report: AssetReport;
+    warnings: Array<Warning>;
+  }
+
+  interface AuditCopyCreateResponse extends BaseResponse {
+    audit_copy_token: string;
+  }
+
+  interface AuditCopyRemoveResponse extends BaseResponse {
+    removed: boolean;
+  }
+
+  interface AssetReportRemoveResponse extends BaseResponse {
+    removed: boolean;
   }
 
   class Client {
@@ -344,6 +452,33 @@ declare module 'plaid' {
     getIncome: AccessTokenFn<IncomeResponse>;
     // getCreditDetails(String, Function)
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
+
+    // createAssetReport([String], Number, Object?, Function)
+    createAssetReport(access_tokens: Array<string>,
+                      days_requested: number,
+                      options: AssetReportCreateOptions,
+                      cb: Callback<AssetReportCreateResponse>): void;
+
+    // getAssetReport(String, Function)
+    getAssetReport(asset_report_token: string,
+                   cb: Callback<AssetReportGetResponse>): void;
+
+    // getAssetReportPdf(String, Function)
+    getAssetReportPdf(asset_report_token: string,
+                      cb: Callback<Buffer>): void;
+
+    // createAuditCopy(String, String, Function)
+    createAuditCopy(asset_report_token: string,
+                    auditor_id: string,
+                    cb: Callback<AuditCopyCreateResponse>): void;
+
+    // removeAuditCopy(String, Function)
+    removeAuditCopy(audit_copy_token: string,
+                    cb: Callback<AuditCopyRemoveResponse>): void;
+
+    // removeAssetReport(String, Function)
+    removeAssetReport(asset_report_token: string,
+                      cb: Callback<AssetReportRemoveResponse>): void;
 
     // getTransactions(String, Date, Date, Object?, Function)
     getTransactions(accessToken: string,

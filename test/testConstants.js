@@ -12,7 +12,7 @@ module.exports = {
     LOGIN_REQUIRED: 'error_ITEM_LOGIN_REQUIRED',
   },
   INSTITUTION: 'ins_109508',
-  PRODUCTS: ['transactions', 'auth'],
+  PRODUCTS: ['transactions', 'auth', 'assets'],
   MFA_RESPONSES: {
     DEVICE: ['1234'],
     QUESTIONS_1_1: [
