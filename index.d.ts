@@ -26,18 +26,18 @@ declare module 'plaid' {
   }
 
   interface AssetReportUser {
-    client_user_id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    ssn?: string;
-    phone_number?: string;
-    email?: string;
+    client_user_id?: string | null;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    ssn?: string | null;
+    phone_number?: string | null;
+    email?: string | null;
   }
 
   interface AssetReportCreateOptions {
-    client_report_id: string;
-    user: AssetReportUser;
+    client_report_id?: string | null;
+    user?: AssetReportUser;
   }
 
   // DATA TYPES //////////////////////////////////////////////////////////////
@@ -234,7 +234,7 @@ declare module 'plaid' {
     accounts: Array<AssetReportAccount>;
     institution_id: string;
     institution_name: string;
-    date_last_updated: string;
+    date_last_updated: Iso8601DateTimeString;
   }
 
   interface AssetReportAccount extends AccountCommon {

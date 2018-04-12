@@ -623,7 +623,7 @@ describe('plaid.Client', () => {
         });
       };
 
-      var getAssetReport =
+      var getAssetReportWithRetries =
         (asset_report_token, num_retries_remaining, cb) => {
         if (num_retries_remaining <= 0) {
           throw new Error('Ran out of retries while polling for asset report');
@@ -634,7 +634,7 @@ describe('plaid.Client', () => {
             if (err.status_code === 400 &&
                 err.error_code === 'PRODUCT_NOT_READY') {
               setTimeout(() => {
-                getAssetReport(
+                getAssetReportWithRetries(
                   asset_report_token, num_retries_remaining - 1, cb);
               }, 1000);
             } else {
@@ -695,7 +695,7 @@ describe('plaid.Client', () => {
         async.waterfall([
           createAssetReport,
           (asset_report_token, cb) => {
-            getAssetReport(asset_report_token, 20, cb);
+            getAssetReportWithRetries(asset_report_token, 20, cb);
           },
           getAssetReportPdf,
           createAuditCopy,

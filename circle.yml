@@ -4,7 +4,7 @@ dependencies:
 
 machine:
   node:
-    version: 8.9
+    version: 6.2.2
 
 test:
   override:
