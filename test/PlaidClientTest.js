@@ -598,6 +598,7 @@ describe('plaid.Client', () => {
       var days_requested = 60;
       var options = {
         client_report_id: 'reportid123',
+        webhook: 'http://wwww.example.com',
         user: {
           client_user_id: 'userid123',
           first_name: 'first',
