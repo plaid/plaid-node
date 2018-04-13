@@ -37,6 +37,7 @@ declare module 'plaid' {
 
   interface AssetReportCreateOptions {
     client_report_id?: string | null;
+    webhook?: string;
     user?: AssetReportUser;
   }
 
