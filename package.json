@@ -26,6 +26,7 @@
     "request": "^2.74.0"
   },
   "devDependencies": {
+    "@types/node": "9.x",
     "@types/request": "0.0.36",
     "async": "2.1.x",
     "dotenv": "4.0.x",
