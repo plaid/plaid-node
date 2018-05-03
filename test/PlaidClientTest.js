@@ -777,12 +777,16 @@ describe('plaid.Client', () => {
 
     describe('sandbox-only', () => {
       it('sandboxPublicTokenCreate', cb => {
-        pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, [testConstants.PRODUCTS[0]], {}, (err, successResponse) => {
+        pCl.sandboxPublicTokenCreate(
+          testConstants.INSTITUTION, [testConstants.PRODUCTS[0]], {},
+          (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.public_token).to.be.ok();
-          // Ensure the generated public_token can be exchanged for an access_token
-          pCl.exchangePublicToken(successResponse.public_token, (err, exchangeSuccessResponse) => {
+          // Ensure the generated public_token can be
+          // exchanged for an access_token
+          pCl.exchangePublicToken(successResponse.public_token,
+                                  (err, exchangeSuccessResponse) => {
             expect(err).to.be(null);
             expect(exchangeSuccessResponse).to.be.ok();
             expect(exchangeSuccessResponse.access_token).to.be.ok();

@@ -539,8 +539,8 @@ declare module 'plaid' {
 
     // sandboxCreatePublicToken(String, Array<sring>,Object?, Function)
     sandboxPublicTokenCreate(institutionId: string,
-                    initialProducts: Array<string>
-                    options?: Object,
+                    initialProducts: Array<string>,
+                    options: Object,
                     cb: Callback<SandboxPublicTokenCreateResponse>
     ): Promise<SandboxPublicTokenCreateResponse>;
   }
