@@ -113,6 +113,8 @@ plaidClient.getCategories(cb);
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
 plaidClient.resetLogin(access_token, cb);
+// Sandbox-only endpoint to create a `public_token`. Useful for writing integration tests without running Link.
+plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
 
 **All parameters except `options` are required. If the options parameter is omitted, the last argument to the function
