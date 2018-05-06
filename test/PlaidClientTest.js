@@ -608,9 +608,8 @@ describe('plaid.Client', () => {
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions).to.eql(R.range(0, 200));
+              cb();
             });
-
-          cb();
         });
 
         it('all > 500 transactions with correct pagination', cb => {
@@ -635,9 +634,8 @@ describe('plaid.Client', () => {
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions).to.eql(R.range(0, 1200));
+              cb();
             });
-
-          cb();
         });
 
         it('transactions (w/o options arg) (with 400)', cb => {
