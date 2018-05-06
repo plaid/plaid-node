@@ -608,6 +608,8 @@ describe('plaid.Client', () => {
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions).to.eql(R.range(0, 200));
+
+              pCl.getTransactions.restore();
               cb();
             });
         });
@@ -634,6 +636,8 @@ describe('plaid.Client', () => {
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions).to.eql(R.range(0, 1200));
+
+              pCl.getTransactions.restore();
               cb();
             });
         });
