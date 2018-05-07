@@ -358,6 +358,10 @@ declare module 'plaid' {
     removed: boolean;
   }
 
+  interface SandboxPublicTokenCreateResponse extends BaseResponse {
+    public_token: string;
+  }
+
   class Client {
     constructor (
       clientId: string,
@@ -543,6 +547,21 @@ declare module 'plaid' {
     getCategories(cb: Callback<CategoriesResponse>): void;
 
     resetLogin: AccessTokenFn<ResetLoginResponse>;
+
+    // sandboxPublicTokenCreate(String, Array<sring>,Object, Function)
+    sandboxPublicTokenCreate(
+      institutionId: string,
+      initialProducts: Array<string>,
+      options: Object,
+      cb: Callback<SandboxPublicTokenCreateResponse>,
+    ): void;
+
+    // sandboxPublicTokenCreate(String, Array<sring>,Object)
+    sandboxPublicTokenCreate(
+      institutionId: string,
+      initialProducts: Array<string>,
+      options?: Object,
+    ): Promise<SandboxPublicTokenCreateResponse>;
   }
 
   interface PlaidEnvironments {
