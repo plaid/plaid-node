@@ -537,11 +537,19 @@ declare module 'plaid' {
 
     resetLogin: AccessTokenFn<ResetLoginResponse>;
 
-    // sandboxCreatePublicToken(String, Array<sring>,Object?, Function)
-    sandboxPublicTokenCreate(institutionId: string,
-                    initialProducts: Array<string>,
-                    options: Object,
-                    cb: Callback<SandboxPublicTokenCreateResponse>
+    // sandboxPublicTokenCreate(String, Array<sring>,Object, Function)
+    sandboxPublicTokenCreate(
+      institutionId: string,
+      initialProducts: Array<string>,
+      options: Object,
+      cb: Callback<SandboxPublicTokenCreateResponse>,
+    ): void;
+
+    // sandboxPublicTokenCreate(String, Array<sring>,Object)
+    sandboxPublicTokenCreate(
+      institutionId: string,
+      initialProducts: Array<string>,
+      options?: Object,
     ): Promise<SandboxPublicTokenCreateResponse>;
   }
 
