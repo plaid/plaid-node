@@ -591,6 +591,40 @@ describe('plaid.Client', () => {
           });
         });
 
+        it('all transactions (promise)', cb => {
+          pCl.getAllTransactions(accessToken, now, now).then(transactions => {
+            expect(transactions).to.be.an(Array);
+
+            cb();
+          }).catch(err => cb(err));
+        });
+
+        it('all transactions (error)', cb => {
+          pCl.getAllTransactions(accessToken, now, -1,
+          (err, transactions) => {
+            expect(err).to.be.ok();
+            expect(err.status_code).to.be(400);
+            expect(err.request_id).to.be.ok();
+            expect(err.error_code).to.equal('INVALID_FIELD');
+            expect(transactions).to.not.be.ok();
+
+            cb();
+          });
+        });
+
+        it('all transactions (error) (promise)', cb => {
+          pCl.getAllTransactions(accessToken, now, -1).then(() => {
+            cb(new Error('unexpected code path for test'));
+          }).catch(err => {
+            expect(err).to.be.ok();
+            expect(err.status_code).to.be(400);
+            expect(err.request_id).to.be.ok();
+            expect(err.error_code).to.equal('INVALID_FIELD');
+
+            cb();
+          });
+        });
+
         it('all < 500 transactions with correct pagination', cb => {
           sinon.stub(pCl, 'getTransactions').callsFake(
             (access_token, start_date, end_date, options) => {
@@ -612,6 +646,30 @@ describe('plaid.Client', () => {
               pCl.getTransactions.restore();
               cb();
             });
+        });
+
+        it('all < 500 transactions with correct pagination (promise)', cb => {
+          sinon.stub(pCl, 'getTransactions').callsFake(
+            (access_token, start_date, end_date, options) => {
+              if (options.offset === 0) {
+                return Promise.resolve({
+                  transactions: R.range(0, 200),
+                  total_transactions: 200,
+                });
+              } else {
+                throw new Error('Invalid nonzero offset value');
+              }
+            });
+
+          pCl.getAllTransactions(accessToken, now, now).then(transactions => {
+            expect(transactions).to.eql(R.range(0, 200));
+
+            pCl.getTransactions.restore();
+            cb();
+          }).catch(err => {
+            pCl.getTransactions.restore();
+            cb(err);
+          });
         });
 
         it('all > 500 transactions with correct pagination', cb => {
@@ -640,6 +698,35 @@ describe('plaid.Client', () => {
               pCl.getTransactions.restore();
               cb();
             });
+        });
+
+        it('all > 500 transactions with correct pagination (promise)', cb => {
+          sinon.stub(pCl, 'getTransactions').callsFake(
+            (access_token, start_date, end_date, options) => {
+              let transactionsResponse = {
+                total_transactions: 1200,
+              };
+              if (options.offset === 0) {
+                transactionsResponse.transactions = R.range(0, 500);
+              } else if (options.offset === 500) {
+                transactionsResponse.transactions = R.range(500, 1000);
+              } else if (options.offset === 1000) {
+                transactionsResponse.transactions = R.range(1000, 1200);
+              } else {
+                throw new Error('Invalid offset value');
+              }
+              return Promise.resolve(transactionsResponse);
+            });
+
+          pCl.getAllTransactions(accessToken, now, now).then(transactions => {
+            expect(transactions).to.eql(R.range(0, 1200));
+
+            pCl.getTransactions.restore();
+            cb();
+          }).catch(err => {
+            pCl.getTransactions.restore();
+            cb(err);
+          });
         });
 
         it('transactions (w/o options arg) (with 400)', cb => {
