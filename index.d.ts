@@ -63,7 +63,7 @@ declare module 'plaid' {
   interface Category {
     type: string;
     hierarchy: Array<string>;
-    id: string;
+    category_id: string;
   }
 
   interface PlaidError {
