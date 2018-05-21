@@ -63,7 +63,7 @@ declare module 'plaid' {
   interface Category {
     type: string;
     hierarchy: Array<string>;
-    id: string;
+    category_id: string;
   }
 
   interface PlaidError {
@@ -507,11 +507,11 @@ declare module 'plaid' {
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-    ): Promise<Array<Account>>;
+    ): Promise<Array<Transaction>>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       cb: Callback<Array<Account>>,
+                       cb: Callback<Array<Transaction>>,
     ): void;
 
     getInstitutions(count: number,
