@@ -25,7 +25,7 @@ $ npm install plaid
 
 ### Versioning
 
-You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `3.x.x` do not support versioning.
+You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` do not support versioning.
 
 ```
 const plaidClient = new plaid.Client(
