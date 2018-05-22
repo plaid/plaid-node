@@ -57,6 +57,8 @@ declare module 'plaid' {
       available: number | null;
       current: number | null;
       limit: number | null;
+      iso_currency_code: string | null;
+      official_currency_code: string | null;
     };
   }
 
@@ -192,6 +194,8 @@ declare module 'plaid' {
     account_id: string;
     account_owner: string | null;
     amount: number | null;
+    iso_currency_code: string | null;
+    official_currency_code: string | null;
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
