@@ -23,6 +23,23 @@ A node.js client library for the [Plaid API][1].
 $ npm install plaid
 ```
 
+### Versioning
+
+You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `3.x.x` do not support versioning.
+
+```
+const plaidClient = new plaid.Client(
+  process.env.PLAID_CLIENT_ID,
+  process.env.PLAID_SECRET,
+  process.env.PUBLIC_KEY,
+  plaid.environments.sandbox,
+  {version: '2018-05-22'}
+);
+```
+
+For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
+
+
 ## Getting started
 
 The module supports all Plaid API endpoints.  For complete information about the API, head
@@ -34,7 +51,7 @@ access and are accessible from a valid instance of a Plaid `Client`:
 ```javascript
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, options);
+const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
 ```
 
 The `plaid_env` parameter dictates which Plaid API environment you will access. Values are:
@@ -61,7 +78,7 @@ Once an instance of the client has been created you use the following methods:
 const plaid = require('plaid');
 
 // Initialize client
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, options);
+const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
 
 // createPublicToken(String, Function)
 plaidClient.createPublicToken(access_token, cb);
@@ -226,7 +243,8 @@ const plaidClient = new plaid.Client(
   process.env.PLAID_CLIENT_ID,
   process.env.PLAID_SECRET,
   process.env.PUBLIC_KEY,
-  plaid.environments.sandbox
+  plaid.environments.sandbox,
+  {version: '2018-05-22'}
 );
 
 const app = express();
@@ -317,3 +335,4 @@ Click [here][7]!
 [11]: https://blog.plaid.com/improving-our-api/
 [12]: https://github.com/request/request/blob/master/README.md#requestoptions-callback
 [13]: https://github.com/plaid/plaid-node-legacy
+[api-upgrades]: https://plaid.com/docs/api-upgrades
