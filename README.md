@@ -114,8 +114,8 @@ plaidClient.getCreditDetails(access_token, cb);
 // getTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 
-// getAllTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Function)
-plaidClient.getAllTransactions(access_token, start_date, end_date, cb);
+// getAllTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
+plaidClient.getAllTransactions(access_token, start_date, end_date, options, cb);
 
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);

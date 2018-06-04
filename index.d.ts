@@ -507,14 +507,21 @@ declare module 'plaid' {
                     cb: Callback<TransactionsResponse>,
     ): void;
 
-    // getAllTransactions(String, Date, Date, Function)
+    // getAllTransactions(String, Date, Date, Object?, Function)
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
+                       options?: ItemRequestOptions
     ): Promise<Array<Transaction>>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
+                       cb: Callback<Array<Transaction>>,
+    ): void;
+    getAllTransactions(accessToken: string,
+                       startDate: Iso8601DateString,
+                       endDate: Iso8601DateString,
+                       options: ItemRequestOptions,
                        cb: Callback<Array<Transaction>>,
     ): void;
 
