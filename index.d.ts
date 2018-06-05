@@ -511,7 +511,7 @@ declare module 'plaid' {
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       options?: ItemRequestOptions
+                       options?: ItemRequestOptions,
     ): Promise<Array<Transaction>>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
