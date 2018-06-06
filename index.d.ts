@@ -25,7 +25,7 @@ declare module 'plaid' {
     offset?: number;
   }
 
-  interface TransactionsAllRequestOptions extends ItemRequestOptions {}
+  interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
 
   interface AssetReportUser {
     client_user_id?: string | null;
@@ -513,7 +513,7 @@ declare module 'plaid' {
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       options?: TransactionsAllRequestOptions,
+                       options?: GetAllTransactionsRequestOptions,
     ): Promise<Array<Transaction>>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
@@ -523,7 +523,7 @@ declare module 'plaid' {
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       options: TransactionsAllRequestOptions,
+                       options: GetAllTransactionsRequestOptions,
                        cb: Callback<Array<Transaction>>,
     ): void;
 
