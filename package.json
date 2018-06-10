@@ -24,11 +24,11 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "ramda": "0.23.x",
-    "request": "^2.74.0"
+    "request": "^2.74.0",
+    "@types/node": "9.x",
+    "@types/request": "0.0.36"
   },
   "devDependencies": {
-    "@types/node": "9.x",
-    "@types/request": "0.0.36",
     "async": "2.1.x",
     "dotenv": "4.0.x",
     "expect.js": "0.3.x",
