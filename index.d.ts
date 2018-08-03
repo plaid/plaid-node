@@ -270,10 +270,10 @@ declare module 'plaid' {
   }
 
   interface ACHNumbers {
-    account: string,
-    account_id: string,
-    routing: string,
-    write_routing: string
+    account: string;
+    account_id: string;
+    routing: string;
+    wire_routing: string;
   }
 
   interface EFTNumbers {
@@ -287,7 +287,6 @@ declare module 'plaid' {
 
   interface BaseResponse {
     request_id: string;
-    status_code: number;
   }
 
   interface AccountsResponse extends BaseResponse {
