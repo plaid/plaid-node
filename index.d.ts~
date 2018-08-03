@@ -298,8 +298,8 @@ declare module 'plaid' {
     accounts: Array<Account>;
     item: Item;
     numbers: {
-      ach: Array<ACHNumbers>;
-      etf: Array<EFTNumbers>;
+      ach: Array<ACHNumbers>,
+      etf: Array<EFTNumbers>
     }
   }
 
