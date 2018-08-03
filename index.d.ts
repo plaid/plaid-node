@@ -269,6 +269,20 @@ declare module 'plaid' {
     amount: number | null;
   }
 
+  interface ACHNumbers {
+    account: string;
+    account_id: string;
+    routing: string;
+    wire_routing: string;
+  }
+
+  interface EFTNumbers {
+    account: string;
+    account_id: string;
+    institution: string;
+    branch: string;
+  }
+
   // RESPONSES
 
   interface BaseResponse {
@@ -278,6 +292,15 @@ declare module 'plaid' {
   interface AccountsResponse extends BaseResponse {
     accounts: Array<Account>;
     item: Item;
+  }
+
+  interface AuthResponse extends BaseResponse {
+    accounts: Array<Account>;
+    item: Item;
+    numbers: {
+      ach: Array<ACHNumbers>;
+      etf: Array<EFTNumbers>;
+    }
   }
 
   interface CreditDetailsResponse extends AccountsResponse {}
@@ -448,13 +471,13 @@ declare module 'plaid' {
 
     getAuth(accessToken: string,
             options?: ItemRequestOptions,
-    ): Promise<AccountsResponse>;
+    ): Promise<AuthResponse>;
     getAuth(accessToken: string,
-            cb: Callback<AccountsResponse>,
+            cb: Callback<AuthResponse>,
     ): void;
     getAuth(accessToken: string,
             options: ItemRequestOptions,
-            cb: Callback<AccountsResponse>,
+            cb: Callback<AuthResponse>,
     ): void;
 
     // getIdentity(String, Function)
