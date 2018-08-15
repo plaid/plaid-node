@@ -375,6 +375,10 @@ declare module 'plaid' {
     warnings: Array<Warning>;
   }
 
+  interface AssetReportGetPdfResponse extends BaseResponse {
+    buffer: Buffer;
+  }
+
   interface AuditCopyCreateResponse extends BaseResponse {
     audit_copy_token: string;
   }
@@ -493,26 +497,41 @@ declare module 'plaid' {
                       options: AssetReportCreateOptions,
                       cb: Callback<AssetReportCreateResponse>): void;
 
+    createAssetReport(access_tokens: Array<string>,
+                      days_requested: number,
+                      options: AssetReportCreateOptions): Promise<AssetReportCreateResponse>;
+
     // getAssetReport(String, Function)
     getAssetReport(asset_report_token: string,
                    cb: Callback<AssetReportGetResponse>): void;
 
+    getAssetReport(asset_report_token: string): Promise<AssetReportGetResponse>;
+
     // getAssetReportPdf(String, Function)
     getAssetReportPdf(asset_report_token: string,
-                      cb: Callback<Buffer>): void;
+                      cb: Callback<AssetReportGetPdfResponse>): void;
+
+    getAssetReportPdf(asset_report_token: string): Promise<AssetReportGetPdfResponse>;
 
     // createAuditCopy(String, String, Function)
     createAuditCopy(asset_report_token: string,
                     auditor_id: string,
                     cb: Callback<AuditCopyCreateResponse>): void;
 
+    createAuditCopy(asset_report_token: string,
+                    auditor_id: string): Promise<AuditCopyCreateResponse>;
+
     // removeAuditCopy(String, Function)
     removeAuditCopy(audit_copy_token: string,
                     cb: Callback<AuditCopyRemoveResponse>): void;
 
+    removeAuditCopy(audit_copy_token: string): Promise<AuditCopyRemoveResponse>;
+
     // removeAssetReport(String, Function)
     removeAssetReport(asset_report_token: string,
                       cb: Callback<AssetReportRemoveResponse>): void;
+
+    removeAssetReport(asset_report_token: string): Promise<AssetReportRemoveResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
     getTransactions(accessToken: string,
