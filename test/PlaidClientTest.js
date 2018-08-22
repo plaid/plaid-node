@@ -846,7 +846,7 @@ describe('plaid.Client', () => {
         async.waterfall([
           createAssetReport,
           (asset_report_token, cb) => {
-            getAssetReportWithRetries(asset_report_token, 20, cb);
+            getAssetReportWithRetries(asset_report_token, 60, cb);
           },
           getAssetReportPdf,
           createAuditCopy,
