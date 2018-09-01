@@ -395,13 +395,17 @@ declare module 'plaid' {
     public_token: string;
   }
 
+  interface ClientOptions extends CoreOptions {
+    version?: '2018-05-22' | '2017-03-08';
+  }
+
   class Client {
     constructor (
       clientId: string,
       secret: string,
       publicKey: string,
       env: string,
-      options?: CoreOptions,
+      options?: ClientOptions,
     )
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
