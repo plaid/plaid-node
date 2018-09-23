@@ -299,7 +299,7 @@ declare module 'plaid' {
     item: Item;
     numbers: {
       ach: Array<ACHNumbers>;
-      etf: Array<EFTNumbers>;
+      eft: Array<EFTNumbers>;
     }
   }
 
