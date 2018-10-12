@@ -813,7 +813,7 @@ describe('plaid.Client', () => {
 
           cb(null, asset_report_token);
         });
-      }
+      };
 
       var refreshAssetReport = (asset_report_token, cb) => {
         pCl.refreshAssetReport(asset_report_token, 60, {}, (err, response) => {
@@ -822,7 +822,7 @@ describe('plaid.Client', () => {
 
           cb(null, asset_report_token);
         });
-      }
+      };
 
       var getAssetReportPdf = (asset_report_token, cb) => {
         pCl.getAssetReportPdf(asset_report_token, (err, response) => {
