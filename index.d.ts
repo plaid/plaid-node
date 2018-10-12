@@ -43,6 +43,8 @@ declare module 'plaid' {
     user?: AssetReportUser;
   }
 
+  type AssetReportRefreshOptions = AssetReportCreateOptions;
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -370,6 +372,9 @@ declare module 'plaid' {
     asset_report_token: string;
   }
 
+  type AssetReportFilterResponse = AssetReportCreateResponse;
+  type AssetReportRefreshResponse = AssetReportCreateResponse;
+
   interface AssetReportGetResponse extends BaseResponse {
     report: AssetReport;
     warnings: Array<Warning>;
@@ -382,6 +387,8 @@ declare module 'plaid' {
   interface AuditCopyCreateResponse extends BaseResponse {
     audit_copy_token: string;
   }
+
+  type AuditCopyGetResponse = AssetReportGetResponse;
 
   interface AuditCopyRemoveResponse extends BaseResponse {
     removed: boolean;
@@ -495,7 +502,7 @@ declare module 'plaid' {
     // getCreditDetails(String, Function)
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
 
-    // createAssetReport([String], Number, Object?, Function)
+    // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
                       days_requested: number,
                       options: AssetReportCreateOptions,
@@ -504,6 +511,24 @@ declare module 'plaid' {
     createAssetReport(access_tokens: Array<string>,
                       days_requested: number,
                       options: AssetReportCreateOptions): Promise<AssetReportCreateResponse>;
+
+    // filterAssetReport(String, [String], Function)
+    filterAssetReport(asset_report_token: string,
+                      account_ids_to_exclude: Array<string>,
+                      cb: Callback<AssetReportFilterResponse>): void;
+
+    filterAssetReport(asset_report_token: string,
+                      account_ids_to_exclude: Array<string>): Promise<AssetReportFilterResponse>;
+
+    // refreshAssetReport(String, Number, Object, Function)
+    refreshAssetReport(asset_report_token: string,
+                       days_requested: number,
+                       options: AssetReportRefreshOptions,
+                       cb: Callback<AssetReportRefreshResponse>): void;
+
+    refreshAssetReport(asset_report_token: string,
+                       days_requested: number,
+                       options: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
 
     // getAssetReport(String, Function)
     getAssetReport(asset_report_token: string,
@@ -524,6 +549,12 @@ declare module 'plaid' {
 
     createAuditCopy(asset_report_token: string,
                     auditor_id: string): Promise<AuditCopyCreateResponse>;
+
+    // getAuditCopy(String, Function)
+    getAuditCopy(audit_copy_token: string,
+                 cb: Callback<AuditCopyGetResponse>): void;
+
+    getAuditCopy(audit_copy_token: string): Promise<AuditCopyGetResponse>;
 
     // removeAuditCopy(String, Function)
     removeAuditCopy(audit_copy_token: string,
