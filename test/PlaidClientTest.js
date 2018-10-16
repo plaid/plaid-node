@@ -759,7 +759,7 @@ describe('plaid.Client', () => {
           email: 'hello@test.com',
         },
       };
-      var auditor_id = 'fannie_mae';
+      var auditor_id = CLIENT_ID;
 
       var createAssetReport = (cb) => {
         pCl.createAssetReport([testAccessToken], days_requested, options,
@@ -797,8 +797,30 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.report).to.be.ok();
 
-            cb(null, asset_report_token);
+            cb(null, asset_report_token, response.report);
           }
+        });
+      };
+
+      var filterAssetReport = (asset_report_token, report, cb) => {
+        var account_ids_to_exclude = [report.items[0].accounts[0].account_id];
+
+        pCl.filterAssetReport(asset_report_token,
+                              account_ids_to_exclude,
+                              (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+
+          cb(null, asset_report_token);
+        });
+      };
+
+      var refreshAssetReport = (asset_report_token, cb) => {
+        pCl.refreshAssetReport(asset_report_token, 60, {}, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+
+          cb(null, asset_report_token);
         });
       };
 
@@ -819,6 +841,15 @@ describe('plaid.Client', () => {
           expect(response.audit_copy_token).to.be.ok();
 
           cb(null, asset_report_token, response.audit_copy_token);
+        });
+      };
+
+      var getAuditCopy = (asset_report_token, audit_copy_token, cb) => {
+        pCl.getAuditCopy(audit_copy_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+
+          cb(null, asset_report_token, audit_copy_token);
         });
       };
 
@@ -848,8 +879,11 @@ describe('plaid.Client', () => {
           (asset_report_token, cb) => {
             getAssetReportWithRetries(asset_report_token, 60, cb);
           },
+          filterAssetReport,
+          refreshAssetReport,
           getAssetReportPdf,
           createAuditCopy,
+          getAuditCopy,
           removeAuditCopy,
           removeAssetReport,
         ], cb);
