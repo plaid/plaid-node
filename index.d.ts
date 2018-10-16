@@ -528,7 +528,7 @@ declare module 'plaid' {
 
     refreshAssetReport(asset_report_token: string,
                        days_requested: number,
-                       options: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
+                       options?: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
 
     // getAssetReport(String, Function)
     getAssetReport(asset_report_token: string,
@@ -638,7 +638,7 @@ declare module 'plaid' {
 
     resetLogin: AccessTokenFn<ResetLoginResponse>;
 
-    // sandboxPublicTokenCreate(String, Array<sring>,Object, Function)
+    // sandboxPublicTokenCreate(String, Array<String>, Object, Function)
     sandboxPublicTokenCreate(
       institutionId: string,
       initialProducts: Array<string>,
@@ -646,7 +646,7 @@ declare module 'plaid' {
       cb: Callback<SandboxPublicTokenCreateResponse>,
     ): void;
 
-    // sandboxPublicTokenCreate(String, Array<sring>,Object)
+    // sandboxPublicTokenCreate(String, Array<String>, Object)
     sandboxPublicTokenCreate(
       institutionId: string,
       initialProducts: Array<string>,
