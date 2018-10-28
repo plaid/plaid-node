@@ -160,7 +160,7 @@ between a Plaid error and a standard Error instance:
 ```javascript
 function callback(err, response) {
   if (err != null) {
-    if (plaid.isPlaidError(err)) {
+    if (err instanceof plaid.PlaidError) {
       // This is a Plaid error
       console.log(err.error_code + ': ' + err.error_message);
     } else {
@@ -266,7 +266,7 @@ app.post('/plaid_exchange', (req, res) => {
     });
   }).catch(err => {
     // Indicates a network or runtime error.
-    if (!plaid.isPlaidError(err)) {
+    if (!(err instanceof plaid.PlaidError)) {
       res.sendStatus(500);
       return;
     }
