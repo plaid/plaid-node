@@ -780,7 +780,12 @@ describe('plaid.Client', () => {
           throw new Error('Ran out of retries while polling for asset report');
         }
 
-        pCl.getAssetReport(asset_report_token, (err, response) => {
+        // By default, we don't want to retrieve the report as an "Assets +
+        // Insights" report. For information about Assets + Insights reports,
+        // see https://plaid.com/docs/#assets.
+        var include_insights = false;
+
+        pCl.getAssetReport(asset_report_token, include_insights, (err, response) => {
           if (err) {
             if (err.status_code === 400 &&
                 err.error_code === 'PRODUCT_NOT_READY') {

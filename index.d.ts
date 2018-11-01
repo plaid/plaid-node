@@ -530,11 +530,13 @@ declare module 'plaid' {
                        days_requested: number,
                        options?: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
 
-    // getAssetReport(String, Function)
+    // getAssetReport(String, Boolean, Function)
     getAssetReport(asset_report_token: string,
+                   include_insights: boolean,
                    cb: Callback<AssetReportGetResponse>): void;
 
-    getAssetReport(asset_report_token: string): Promise<AssetReportGetResponse>;
+    getAssetReport(asset_report_token: string,
+                   include_insights: boolean): Promise<AssetReportGetResponse>;
 
     // getAssetReportPdf(String, Function)
     getAssetReportPdf(asset_report_token: string,
