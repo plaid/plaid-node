@@ -785,7 +785,8 @@ describe('plaid.Client', () => {
         // see https://plaid.com/docs/#retrieve-json-report-request.
         var include_insights = false;
 
-        pCl.getAssetReport(asset_report_token, include_insights, (err, response) => {
+        pCl.getAssetReport(asset_report_token, include_insights,
+          (err, response) => {
           if (err) {
             if (err.status_code === 400 &&
                 err.error_code === 'PRODUCT_NOT_READY') {
@@ -815,7 +816,8 @@ describe('plaid.Client', () => {
 
           // The transactions in an Asset Report with Insights should have a
           // non-null `name` (when available).
-          expect(response.report.items[0].accounts[0].transactions[0].name).to.not.be(null);
+          expect(response.report.items[0].accounts[0].transactions[0].name)
+            .to.not.be(null);
 
           cb(null, asset_report_token, response.report);
         });
