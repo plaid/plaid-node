@@ -780,9 +780,9 @@ describe('plaid.Client', () => {
           throw new Error('Ran out of retries while polling for asset report');
         }
 
-        // By default, we don't want to retrieve the report as an "Assets +
-        // Insights" report. For information about Assets + Insights reports,
-        // see https://plaid.com/docs/#assets.
+        // By default, we don't want to retrieve the report as an Asset Report
+        // with Insights. For information about Asset Reports with Insights,
+        // see https://plaid.com/docs/#retrieve-json-report-request.
         var include_insights = false;
 
         pCl.getAssetReport(asset_report_token, include_insights, (err, response) => {
@@ -802,8 +802,22 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.report).to.be.ok();
 
-            cb(null, asset_report_token, response.report);
+            cb(null, asset_report_token);
           }
+        });
+      };
+
+      var getAssetReportWithInsights = (asset_report_token, cb) => {
+        pCl.getAssetReport(asset_report_token, true, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.report).to.be.ok();
+
+          // The transactions in an Asset Report with Insights should have a
+          // non-null `name` (when available).
+          expect(response.report.items[0].accounts[0].transactions[0].name).to.not.be(null);
+
+          cb(null, asset_report_token, response.report);
         });
       };
 
@@ -884,6 +898,7 @@ describe('plaid.Client', () => {
           (asset_report_token, cb) => {
             getAssetReportWithRetries(asset_report_token, 60, cb);
           },
+          getAssetReportWithInsights,
           filterAssetReport,
           refreshAssetReport,
           getAssetReportPdf,
