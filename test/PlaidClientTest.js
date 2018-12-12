@@ -77,238 +77,27 @@ describe('plaid.Client', () => {
     let testAccessToken;
 
     before(cb => {
-      pCl.createItem({
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.GOOD
-      }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-      (err, mfaResponse, successResponse) => {
+      pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
         expect(err).to.be(null);
-        expect(mfaResponse).to.be(null);
-        testAccessToken = successResponse.access_token;
-
-        cb();
+        pCl.exchangePublicToken(successResponse.public_token, (err, successResponse) => {
+          expect(err).to.be(null);
+          testAccessToken = successResponse.access_token;
+        })
       });
+      cb();
     });
 
     describe('item', () => {
 
-      describe('createItem', () => {
-        it('normal flow', cb => {
-          pCl.createItem({
-            username: testConstants.USERNAME,
-            password: testConstants.PASSWORDS.GOOD
-          }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-          (err, mfaResponse, successResponse) => {
-            expect(err).to.be(null);
-            expect(mfaResponse).to.be(null);
-            expect(successResponse).to.be.ok();
-            expect(successResponse.status_code).to.be(200);
-            expect(successResponse.request_id).to.be.ok();
-
-            cb();
-          });
-        });
-
-        it('normal flow (w/o options arg)', cb => {
-          pCl.createItem({
-            username: testConstants.USERNAME,
-            password: testConstants.PASSWORDS.GOOD
-          }, testConstants.INSTITUTION, testConstants.PRODUCTS,
-          (err, mfaResponse, successResponse) => {
-            expect(err).to.be(null);
-            expect(mfaResponse).to.be(null);
-            expect(successResponse).to.be.ok();
-            expect(successResponse.status_code).to.be(200);
-            expect(successResponse.request_id).to.be.ok();
-
-            cb();
-          });
-        });
-
-        it('mfa flow', cb => {
-          pCl.createItem({
-            username: testConstants.USERNAME,
-            password: testConstants.PASSWORDS.MFA_SELECTIONS
-          }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-          (err, mfaResponse, successResponse) => {
-            expect(err).to.be(null);
-            expect(successResponse).to.be(null);
-            expect(mfaResponse).to.be.ok();
-            expect(mfaResponse.status_code).to.be(210);
-            expect(mfaResponse.request_id).to.be.ok();
-
-            cb();
-          });
-        });
-
-        it('err flow (invalid credentials)', cb => {
-           pCl.createItem({
-            username: testConstants.USERNAME,
-            password: testConstants.PASSWORDS.INVALID,
-          }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-          (err, mfaResponse, successResponse) => {
-            expect(err).to.be.ok();
-            expect(err.status_code).to.be(400);
-            expect(err.request_id).to.be.ok();
-            expect(successResponse).not.to.be.ok();
-            expect(mfaResponse).not.to.be.ok();
-
-            cb();
-          });
-        });
-      });
-
       describe('itemManagement', () => {
-
-        it('mfa', cb => {
-          async.waterfall([
-            cb => {
-             pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.MFA_SELECTIONS
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse).to.be(null);
-                expect(mfaResponse).to.be.ok();
-
-                cb(err, mfaResponse);
-              });
-            },
-            (mfaResponse, cb) => {
-              const accessToken = mfaResponse.access_token;
-
-              pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-                testConstants.MFA_RESPONSES.SELECTIONS, {},
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-                expect(successResponse.status_code).to.be(200);
-
-                cb();
-              });
-            }
-          ], cb);
-        });
-
-        it('mfa (w/o options arg)', cb => {
-          async.waterfall([
-            cb => {
-             pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.MFA_SELECTIONS
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse).to.be(null);
-                expect(mfaResponse).to.be.ok();
-
-                cb(err, mfaResponse);
-              });
-            },
-            (mfaResponse, cb) => {
-              const accessToken = mfaResponse.access_token;
-
-              pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-                testConstants.MFA_RESPONSES.SELECTIONS,
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-                expect(successResponse.status_code).to.be(200);
-
-                cb();
-              });
-            }
-          ], cb);
-        });
-
-        it('update credentials, update credentials (w/o options arg)', cb => {
-          async.waterfall([
-            cb => {
-             pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-
-                cb(null, successResponse);
-              });
-            },
-            (successResponse, cb) => {
-              const accessToken = successResponse.access_token;
-
-              pCl.resetLogin(accessToken, (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse.reset_login);
-
-                cb(null, accessToken);
-              });
-            },
-            (accessToken, cb) => {
-              pCl.updateItemCredentials(accessToken, {
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, {}, (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-                expect(successResponse.status_code).to.be(200);
-
-                cb(null, accessToken);
-              });
-            }, (accessToken, cb) => {
-              pCl.resetLogin(accessToken, (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse.reset_login);
-
-                cb(null, accessToken);
-              });
-            },
-            (accessToken, cb) => {
-              // juggled version
-              pCl.updateItemCredentials(accessToken, {
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-                expect(successResponse.status_code).to.be(200);
-
-                cb(null, accessToken);
-              });
-            }
-          ], cb);
-        });
 
         it('create and exchange a public token', cb => {
           async.waterfall([
             cb => {
-             pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
-                expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-
-                cb(null, successResponse);
-              });
-            },
-            (successResponse, cb) => {
-              const accessToken = successResponse.access_token;
-
-              pCl.createPublicToken(accessToken, (err, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.public_token).to.be.ok();
-
                 cb(null, successResponse.public_token);
               });
             },
@@ -343,15 +132,14 @@ describe('plaid.Client', () => {
         it('invalidate an access_token, then delete the item', cb => {
           async.waterfall([
             cb => {
-              pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
                 expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-
+                cb(null, successResponse);
+              });
+            },
+            (publicTokenResponse, cb) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+                expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
@@ -380,15 +168,14 @@ describe('plaid.Client', () => {
         it('invalidate an access_token, then remove the item', cb => {
           async.waterfall([
             cb => {
-              pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
                 expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-
+                cb(null, successResponse);
+              });
+            },
+            (publicTokenResponse, cb) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+                expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
@@ -417,15 +204,14 @@ describe('plaid.Client', () => {
         it('update webhook', cb => {
           async.waterfall([
             cb => {
-             pCl.createItem({
-                username: testConstants.USERNAME,
-                password: testConstants.PASSWORDS.GOOD
-              }, testConstants.INSTITUTION, testConstants.PRODUCTS, {},
-              (err, mfaResponse, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
                 expect(err).to.be(null);
-                expect(mfaResponse).to.be(null);
-                expect(successResponse).to.be.ok();
-
+                cb(null, successResponse);
+              });
+            },
+            (publicTokenResponse, cb) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+                expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
@@ -550,24 +336,20 @@ describe('plaid.Client', () => {
 
       describe('transactions', () => {
         let accessToken;
-        beforeEach(done => {
-          pCl.createItem({
-            username: testConstants.USERNAME,
-            password: testConstants.PASSWORDS.GOOD
-          }, testConstants.INSTITUTION, testConstants.PRODUCTS, {
-            transactions: {
-              start_date: now,
-              end_date: now,
-              await_results: true
-            }
-          },
-          (err, mfaResponse, successResponse) => {
-            expect(err).to.be(null);
-            expect(successResponse).to.be.ok();
 
-            accessToken = successResponse.access_token;
-            done();
+        beforeEach(done => {
+          pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {
+            transactions: {start_date: now, end_date: now},
+          }, (err, successResponse) => {
+            expect(err).to.be(null);
+            pCl.exchangePublicToken(successResponse.public_token, (err, successResponse) => {
+              expect(err).to.be(null);
+              accessToken = successResponse.access_token;
+              done();
+            })
           });
+
+
         });
 
         it('normal flow', cb => {
@@ -1039,24 +821,6 @@ describe('plaid.Client', () => {
     });
 
     describe('errors', () => {
-      it('MFA bad request (library error)', cb => {
-        // branch is only reachable by mucking with Client's internal state
-        pCl.env = null;
-
-        pCl.updateItemCredentials(testAccessToken, {
-          username: testConstants.USERNAME,
-          password: testConstants.PASSWORDS.GOOD,
-        },
-        (err, mfaResponse, successResponse) => {
-          expect(err).to.be.ok();
-          expect(err.status_code).not.to.be.ok();
-          expect(mfaResponse).not.to.be.ok();
-          expect(successResponse).not.to.be.ok();
-
-          cb();
-        });
-      });
-
       it('no MFA bad request (library error)', cb => {
         pCl.env = null;
 
@@ -1071,184 +835,23 @@ describe('plaid.Client', () => {
     });
   });
 
-  describe('create an item and complete MFA flow', () => {
-    it('device', cb => {
-      const credentials = {
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.MFA_DEVICE
-      };
-
-      let accessToken;
-
-      async.waterfall([
-        cb => {
-          pCl.createItem(credentials, testConstants.INSTITUTION,
-            testConstants.PRODUCTS, cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('device_list');
-          expect(mfaResponse.device_list).to.be.ok();
-          accessToken = mfaResponse.access_token;
-
-          // arbitrarily choose the first device option
-          const chosenDevice = R.head(mfaResponse.device_list);
-
-          pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-            [chosenDevice.device_id], cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('device');
-
-           pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-            testConstants.MFA_RESPONSES.DEVICE, cb);
-        }
-      ], (err, mfaResponse, successResponse) => {
-        expect(err).to.be(null);
-        expect(mfaResponse).to.be(null);
-        expect(successResponse).to.be.ok();
-        expect(successResponse.item).to.be.ok();
-        expect(successResponse.request_id).to.be.ok();
-        expect(successResponse.status_code).to.be(200);
-
-        cb();
-      });
-    });
-
-    it('selections', cb => {
-      const credentials = {
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.MFA_SELECTIONS
-      };
-
-      async.waterfall([
-        cb => {
-          pCl.createItem(credentials, testConstants.INSTITUTION,
-            testConstants.PRODUCTS, cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('selections');
-          expect(mfaResponse.device_list).to.be(null);
-
-          pCl.answerItemMFA(mfaResponse.access_token, mfaResponse.mfa_type,
-            testConstants.MFA_RESPONSES.SELECTIONS, cb);
-        }
-      ], (err, mfaResponse, successResponse) => {
-        expect(err).to.be(null);
-        expect(mfaResponse).to.be(null);
-        expect(successResponse).to.be.ok();
-        expect(successResponse.item).to.be.ok();
-        expect(successResponse.request_id).to.be.ok();
-        expect(successResponse.status_code).to.be(200);
-
-        cb();
-      });
-    });
-
-    it('questions_1_1', cb => {
-      // 2 rounds, 2 questions each
-      const credentials = {
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.MFA_QUESTIONS_1_1
-      };
-
-      let accessToken;
-
-      async.waterfall([
-        cb => {
-          pCl.createItem(credentials, testConstants.INSTITUTION,
-            testConstants.PRODUCTS, cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('questions');
-          expect(mfaResponse.device_list).to.be(null);
-          accessToken = mfaResponse.access_token;
-
-          pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-            testConstants.MFA_RESPONSES.QUESTIONS_1_1[0], cb);
-        },
-      ], (err, mfaResponse, successResponse) => {
-        expect(err).to.be(null);
-        expect(mfaResponse).to.be(null);
-        expect(successResponse).to.be.ok();
-        expect(successResponse.item).to.be.ok();
-        expect(successResponse.request_id).to.be.ok();
-        expect(successResponse.status_code).to.be(200);
-
-        cb();
-      });
-    });
-
-    it('questions_2_2', cb => {
-      // 2 rounds, 2 questions each
-      const credentials = {
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.MFA_QUESTIONS_2_2
-      };
-
-      let accessToken;
-
-      async.waterfall([
-        cb => {
-          pCl.createItem(credentials, testConstants.INSTITUTION,
-            testConstants.PRODUCTS, cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('questions');
-          expect(mfaResponse.device_list).to.be(null);
-          accessToken = mfaResponse.access_token;
-
-          pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-            testConstants.MFA_RESPONSES.QUESTIONS_2_2[0], cb);
-        },
-        (mfaResponse, successResponse, cb) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.mfa_type).to.be('questions');
-          expect(mfaResponse.device_list).to.be(null);
-
-          pCl.answerItemMFA(accessToken, mfaResponse.mfa_type,
-            testConstants.MFA_RESPONSES.QUESTIONS_2_2[1], cb);
-        }
-      ], (err, mfaResponse, successResponse) => {
-        expect(err).to.be(null);
-        expect(mfaResponse).to.be(null);
-        expect(successResponse).to.be.ok();
-        expect(successResponse.item).to.be.ok();
-        expect(successResponse.request_id).to.be.ok();
-        expect(successResponse.status_code).to.be(200);
-
-        cb();
-      });
-    });
-  });
-
   describe('promises', () => {
+    let testPublicToken;
     let testAccessToken;
 
     beforeEach(cb => {
-      const createItem = pCl.createItem({
-        username: testConstants.USERNAME,
-        password: testConstants.PASSWORDS.GOOD
-      }, testConstants.INSTITUTION, testConstants.PRODUCTS, {});
-
-      createItem.then(([mfaResponse, successResponse]) => {
-        testAccessToken = successResponse.access_token;
+      const createItem = pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {});
+      createItem.then(successResponse => {
+        testPublicToken = successResponse.public_token;
+      }).then(() => {
+        pCl.exchangePublicToken(testPublicToken).then(successResponse => {
+          testAccessToken= successResponse.access_token;
+          cb();
+        })
       }).catch(err => {
         void err;
         throw new Error('Unreachable code block for test');
-      }).then(() => {
-        cb();
-      });
+      })
     });
 
     describe('success path', () => {
@@ -1277,78 +880,6 @@ describe('plaid.Client', () => {
           cb();
         });
       });
-
-      it('mfa (success)', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.PASSWORDS.GOOD
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS, {})
-        .then(([mfaResponse, successResponse]) => {
-          expect(mfaResponse).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.status_code).to.be(200);
-          expect(successResponse.request_id).to.be.ok();
-        }).catch(err => {
-          void err;
-          throw new Error('Unreachable code block for test');
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('mfa (success) (w/o options arg)', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.PASSWORDS.GOOD
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS)
-        .then(([mfaResponse, successResponse])  => {
-          expect(mfaResponse).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.status_code).to.be(200);
-          expect(successResponse.request_id).to.be.ok();
-        }).catch(err => {
-          void err;
-          throw new Error('Unreachable code block for test');
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('mfa (mfa)', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.PASSWORDS.MFA_DEVICE
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS, {})
-        .then(([mfaResponse, successResponse]) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.status_code).to.be(210);
-          expect(mfaResponse.request_id).to.be.ok();
-        }).catch(err => {
-          void err;
-          throw new Error('Unreachable code block for test');
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('mfa (mfa) (w/o options arg)', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.PASSWORDS.MFA_DEVICE
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS)
-        .then(([mfaResponse, successResponse]) => {
-          expect(successResponse).to.be(null);
-          expect(mfaResponse).to.be.ok();
-          expect(mfaResponse.status_code).to.be(210);
-          expect(mfaResponse.request_id).to.be.ok();
-        }).catch(err => {
-          void err;
-          throw new Error('Unreachable code block for test');
-        }).then(() => {
-          cb();
-        });
-      });
     });
 
     describe('error path', () => {
@@ -1366,38 +897,6 @@ describe('plaid.Client', () => {
 
       it('normal (w/o options arg)', cb => {
         pCl.getAccounts('promise').then(successResponse => {
-          void successResponse;
-          throw new Error('Unreachable code block for test');
-        }).catch(err => {
-          expect(err).to.be.ok();
-          expect(err.status_code).to.be(400);
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('mfa', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.INVALID
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS, {})
-        .then(([mfaResponse, successResponse])  => {
-          void successResponse;
-          throw new Error('Unreachable code block for test');
-        }).catch(err => {
-          expect(err).to.be.ok();
-          expect(err.status_code).to.be(400);
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('mfa (w/o options arg)', cb => {
-        pCl.createItem({
-          username: testConstants.USERNAME,
-          password: testConstants.INVALID
-        }, testConstants.INSTITUTION, testConstants.PRODUCTS)
-        .then(([mfaResponse, successResponse])  => {
           void successResponse;
           throw new Error('Unreachable code block for test');
         }).catch(err => {
