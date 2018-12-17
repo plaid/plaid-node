@@ -77,12 +77,15 @@ describe('plaid.Client', () => {
     let testAccessToken;
 
     before(cb => {
-      pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
+      pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                                   testConstants.PRODUCTS, {},
+                                   (err, successResponse) => {
         expect(err).to.be(null);
-        pCl.exchangePublicToken(successResponse.public_token, (err, successResponse) => {
+        pCl.exchangePublicToken(successResponse.public_token,
+                                (err, successResponse) => {
           expect(err).to.be(null);
           testAccessToken = successResponse.access_token;
-        })
+        });
       });
       cb();
     });
@@ -94,7 +97,9 @@ describe('plaid.Client', () => {
         it('create and exchange a public token', cb => {
           async.waterfall([
             cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                                           testConstants.PRODUCTS, {},
+                                           (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.public_token).to.be.ok();
@@ -132,13 +137,16 @@ describe('plaid.Client', () => {
         it('invalidate an access_token, then delete the item', cb => {
           async.waterfall([
             cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                                           testConstants.PRODUCTS, {},
+                                           (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
             (publicTokenResponse, cb) => {
-              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token,
+                                      (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
@@ -168,13 +176,16 @@ describe('plaid.Client', () => {
         it('invalidate an access_token, then remove the item', cb => {
           async.waterfall([
             cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                                           testConstants.PRODUCTS, {},
+                                           (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
             (publicTokenResponse, cb) => {
-              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token,
+                                      (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
@@ -204,13 +215,16 @@ describe('plaid.Client', () => {
         it('update webhook', cb => {
           async.waterfall([
             cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {}, (err, successResponse) => {
+              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                                           testConstants.PRODUCTS, {},
+                                           (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
             },
             (publicTokenResponse, cb) => {
-              pCl.exchangePublicToken(publicTokenResponse.public_token, (err, successResponse) => {
+              pCl.exchangePublicToken(publicTokenResponse.public_token,
+                                      (err, successResponse) => {
                 expect(err).to.be(null);
                 cb(null, successResponse);
               });
@@ -338,18 +352,18 @@ describe('plaid.Client', () => {
         let accessToken;
 
         beforeEach(done => {
-          pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {
+          pCl.sandboxPublicTokenCreate(
+            testConstants.INSTITUTION, testConstants.PRODUCTS, {
             transactions: {start_date: now, end_date: now},
           }, (err, successResponse) => {
             expect(err).to.be(null);
-            pCl.exchangePublicToken(successResponse.public_token, (err, successResponse) => {
+            pCl.exchangePublicToken(successResponse.public_token,
+                                    (err, successResponse) => {
               expect(err).to.be(null);
               accessToken = successResponse.access_token;
               done();
-            })
+            });
           });
-
-
         });
 
         it('normal flow', cb => {
@@ -840,18 +854,19 @@ describe('plaid.Client', () => {
     let testAccessToken;
 
     beforeEach(cb => {
-      const createItem = pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION, testConstants.PRODUCTS, {});
+      const createItem = pCl.sandboxPublicTokenCreate(
+        testConstants.INSTITUTION, testConstants.PRODUCTS, {});
       createItem.then(successResponse => {
         testPublicToken = successResponse.public_token;
       }).then(() => {
         pCl.exchangePublicToken(testPublicToken).then(successResponse => {
-          testAccessToken= successResponse.access_token;
+          testAccessToken = successResponse.access_token;
           cb();
-        })
+        });
       }).catch(err => {
         void err;
         throw new Error('Unreachable code block for test');
-      })
+      });
     });
 
     describe('success path', () => {
