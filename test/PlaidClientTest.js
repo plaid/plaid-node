@@ -351,53 +351,58 @@ describe('plaid.Client', () => {
       describe('transactions', () => {
         let accessToken;
 
-        var getTransactionsWithRetries =
-              (accessToken, startDate, endDate, count, offset, num_retries_remaining, cb) => {
-              if (num_retries_remaining <= 0) {
-                throw new Error('Ran out of retries while polling for transactions');
+        var getTransactionsWithRetries = (accessToken, startDate, endDate,
+          count, offset, num_retries_remaining, cb) => {
+          if (num_retries_remaining <= 0) {
+            throw new
+              Error('Ran out of retries while polling for transactions');
+          }
+          pCl.getTransactions(accessToken, startDate, endDate,
+            {count: count, offset: offset}, (err, response) => {
+            if (err) {
+              if (err.status_code === 400 &&
+                  err.error_code === 'PRODUCT_NOT_READY') {
+                setTimeout(() => {
+                  getTransactionsWithRetries(
+                    accessToken, startDate, endDate, count,
+                    offset, num_retries_remaining - 1, cb
+                  );
+                }, 1000);
+              } else {
+                throw new Error(
+                  'Unexpected error while polling for transactions', err);
               }
-              pCl.getTransactions(accessToken, startDate, endDate, {count: count, offset: offset},
-                (err, response) => {
-                if (err) {
-                  if (err.status_code === 400 &&
-                      err.error_code === 'PRODUCT_NOT_READY') {
-                    setTimeout(() => {
-                      getTransactionsWithRetries(
-                        accessToken, startDate, endDate, count, offset, num_retries_remaining - 1, cb);
-                    }, 1000);
-                  } else {
-                    throw new Error(
-                      'Unexpected error while polling for transactions', err);
-                  }
-                } else {
-                  cb(null, response);
-                }
-              });
-            };
+            } else {
+              cb(null, response);
+            }
+          });
+        };
 
-        var getAllTransactionsWithRetries =
-              (accessToken, startDate, endDate, num_retries_remaining, cb) => {
-              if (num_retries_remaining <= 0) {
-                throw new Error('Ran out of retries while polling for all transactions');
+        var getAllTransactionsWithRetries = (accessToken, startDate, endDate,
+          num_retries_remaining, cb) => {
+          if (num_retries_remaining <= 0) {
+            throw new Error(
+              'Ran out of retries while polling for all transactions');
+          }
+          pCl.getAllTransactions(accessToken, startDate, endDate,
+            (err, response) => {
+            if (err) {
+              if (err.status_code === 400 &&
+                  err.error_code === 'PRODUCT_NOT_READY') {
+                setTimeout(() => {
+                  getAllTransactionsWithRetries(
+                    accessToken, startDate, endDate,
+                    num_retries_remaining - 1, cb);
+                }, 1000);
+              } else {
+                throw new Error(
+                  'Unexpected error while polling for all transactions', err);
               }
-              pCl.getAllTransactions(accessToken, startDate, endDate,
-                (err, response) => {
-                if (err) {
-                  if (err.status_code === 400 &&
-                      err.error_code === 'PRODUCT_NOT_READY') {
-                    setTimeout(() => {
-                      getAllTransactionsWithRetries(
-                        accessToken, startDate, endDate, num_retries_remaining - 1, cb);
-                    }, 1000);
-                  } else {
-                    throw new Error(
-                      'Unexpected error while polling for all transactions', err);
-                  }
-                } else {
-                  cb(null, response);
-                }
-              });
-            };
+            } else {
+              cb(null, response);
+            }
+          });
+        };
 
         beforeEach(done => {
           pCl.sandboxPublicTokenCreate(
@@ -436,7 +441,8 @@ describe('plaid.Client', () => {
         });
 
         it.skip('all transactions (promise)', cb => {
-          getAllTransactionsWithRetries(accessToken, now, now, 5).then(transactions => {
+          getAllTransactionsWithRetries(accessToken, now, now, 5).then(
+            transactions => {
             expect(transactions).to.be.an(Array);
 
             cb();
@@ -544,7 +550,8 @@ describe('plaid.Client', () => {
             });
         });
 
-        it.skip('all > 500 transactions with correct pagination (promise)', cb => {
+        it.skip('all > 500 transactions with correct pagination (promise)',
+          cb => {
           sinon.stub(pCl, 'getTransactions').callsFake(
             (access_token, start_date, end_date, options) => {
               let transactionsResponse = {
@@ -562,7 +569,8 @@ describe('plaid.Client', () => {
               return Promise.resolve(transactionsResponse);
             });
 
-          getAllTransactionsWithRetries(accessToken, now, now).then(transactions => {
+          getAllTransactionsWithRetries(accessToken, now, now).then(
+            transactions => {
             expect(transactions).to.eql(R.range(0, 1200));
 
             pCl.getTransactions.restore();
