@@ -351,6 +351,30 @@ describe('plaid.Client', () => {
       describe('transactions', () => {
         let accessToken;
 
+        var getTransactionsWithRetries =
+              (accessToken, startDate, endDate, count, offset, num_retries_remaining, cb) => {
+              if (num_retries_remaining <= 0) {
+                throw new Error('Ran out of retries while polling for transactions');
+              }
+              pCl.getTransactions(accessToken, startDate, endDate, {count: count, offset: offset},
+                (err, response) => {
+                if (err) {
+                  if (err.status_code === 400 &&
+                      err.error_code === 'PRODUCT_NOT_READY') {
+                    setTimeout(() => {
+                      getTransactionsWithRetries(
+                        accessToken, startDate, endDate, count, offset, num_retries_remaining - 1, cb);
+                    }, 1000);
+                  } else {
+                    throw new Error(
+                      'Unexpected error while polling for asset report', err);
+                  }
+                } else {
+                  cb(null, response);
+                }
+              });
+            };
+
         beforeEach(done => {
           pCl.sandboxPublicTokenCreate(
             testConstants.INSTITUTION, testConstants.PRODUCTS, {
@@ -367,7 +391,7 @@ describe('plaid.Client', () => {
         });
 
         it('normal flow', cb => {
-          pCl.getTransactions(accessToken, now, now, {},
+          getTransactionsWithRetries(accessToken, now, now, 100, 0, 5,
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
