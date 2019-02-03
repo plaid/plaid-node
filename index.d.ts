@@ -203,6 +203,27 @@ declare module 'plaid' {
     type: string;
   }
 
+  interface TransactionLocation {
+    address: string | null;
+    city: string | null;
+    lat: number | null;
+    lon: number | null;
+    state: string | null;
+    store_number: string | null;
+    zip: string | null;
+  }
+
+  interface TransactionPaymentMeta {
+    by_order_of: string | null;
+    payee: string | null;
+    payer: string | null;
+    payment_method: string | null;
+    payment_processor: string | null;
+    ppd_id: string | null;
+    reason: string | null;
+    reference_number: string | null
+  }
+
   interface Transaction {
     account_id: string;
     account_owner: string | null;
@@ -212,26 +233,9 @@ declare module 'plaid' {
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
-    location: {
-      address: string | null;
-      city: string | null;
-      lat: number | null;
-      lon: number | null;
-      state: string | null;
-      store_number: string | null;
-      zip: string | null;
-    };
+    location: TransactionLocation;
     name: string | null;
-    payment_meta: {
-      by_order_of: string | null;
-      payee: string | null;
-      payer: string | null;
-      payment_method: string | null;
-      payment_processor: string | null;
-      ppd_id: string | null;
-      reason: string | null;
-      reference_number: string | null
-    };
+    payment_meta: TransactionPaymentMeta;
     pending: boolean | null;
     pending_transaction_id: string | null;
     transaction_id: string;
@@ -278,6 +282,18 @@ declare module 'plaid' {
     original_description: string | null;
     pending: boolean | null;
     amount: number | null;
+
+    // These fields only exist in an Asset Report with Insights. For more, see
+    // https://plaid.com/docs/#retrieve-json-report-request.
+    account_owner?: string;
+    category?: Array<string>;
+    category_id?: string;
+    date_transacted?: string;
+    location?: TransactionLocation;
+    name?: string;
+    payment_meta?: TransactionPaymentMeta;
+    pending_transaction_id?: string;
+    transaction_type?: string;
   }
 
   interface ACHNumbers {
@@ -539,11 +555,13 @@ declare module 'plaid' {
                        days_requested: number,
                        options?: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
 
-    // getAssetReport(String, Function)
+    // getAssetReport(String, Boolean, Function)
     getAssetReport(asset_report_token: string,
+                   include_insights: boolean,
                    cb: Callback<AssetReportGetResponse>): void;
 
-    getAssetReport(asset_report_token: string): Promise<AssetReportGetResponse>;
+    getAssetReport(asset_report_token: string,
+                   include_insights: boolean): Promise<AssetReportGetResponse>;
 
     // getAssetReportPdf(String, Function)
     getAssetReportPdf(asset_report_token: string,
