@@ -924,6 +924,17 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('get with include_institution_data', cb => {
+        pCl.getInstitutions(10, 0, {include_institution_data: true},
+          (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.institutions).to.be.an(Array);
+
+          cb();
+        });
+      });
+
       it('getById', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION, {},
         (err, successResponse) => {
@@ -937,6 +948,18 @@ describe('plaid.Client', () => {
 
       it('getById (w/o options arg)', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION,
+        (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.institution).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('getById with include_institution_data', cb => {
+        pCl.getInstitutionById(testConstants.INSTITUTION,
+          {include_institution_data: true},
         (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -966,6 +989,19 @@ describe('plaid.Client', () => {
 
           cb();
         });
+      });
+
+      it('searches with options include_institution_data', cb => {
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {
+          include_institution_data: true
+        },
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.institutions).to.be.an(Array);
+
+            cb();
+          });
       });
     });
 
