@@ -123,6 +123,12 @@ declare module 'plaid' {
     url_forgotten_password: string | null;
   }
 
+  interface InstitutionWithInstitutionData extends Institution {
+    logo: string;
+    primary_color: string;
+    url: string;
+  }
+
   interface InstitutionWithContactData extends Institution {
     addresses: Array<{
       city: string;
