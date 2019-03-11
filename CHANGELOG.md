@@ -1,3 +1,13 @@
+## 3.0.0
+
+- Remove direct integration endpoints since they are no longer supported
+- `deleteItem` has been renamed `removeItem`
+- Add `PlaidError` implementation
+
+## 2.1.5
+
+- Add `include_display_data` flag to institutions endpoints
+
 ## 2.1.1
 
 - Fix handling of non-JSON bodies ([#136](https://github.com/plaid/plaid-node/issues/136))
