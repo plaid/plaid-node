@@ -442,7 +442,8 @@ describe('plaid.Client', () => {
         });
 
         it('all transactions (promise)', cb => {
-          P.promisify(getAllTransactionsWithRetries)(accessToken, now, now, 5).then(
+          P.promisify(getAllTransactionsWithRetries)
+          (accessToken, now, now, 5).then(
             transactions => {
             expect(transactions).to.be.an(Array);
 
@@ -551,7 +552,8 @@ describe('plaid.Client', () => {
             });
         });
 
-        // Temporarily skipped (see https://github.com/plaid/plaid-node/issues/186)
+        // Temporarily skipped
+        // See https://github.com/plaid/plaid-node/issues/186
         it.skip('all > 500 transactions with correct pagination (promise)',
           cb => {
           sinon.stub(pCl, 'getTransactions').callsFake(
