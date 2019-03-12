@@ -72,7 +72,16 @@ declare module 'plaid' {
     category_id: string;
   }
 
-  interface PlaidError {
+  export class PlaidError extends Error {
+    error_type: string;
+    error_code: string;
+    error_message: string;
+    display_message: string | null;
+    causes?: Array<Cause>;
+  }
+
+  // IPlaidError is a dupliate of PlaidError that is not an instance of Error.
+  export interface IPlaidError {
     error_type: string;
     error_code: string;
     error_message: string;
@@ -86,14 +95,14 @@ declare module 'plaid' {
     cause: Cause;
   }
 
-  interface Cause extends PlaidError {
+  interface Cause extends IPlaidError {
     item_id: string;
   }
 
   interface Item {
     available_products: Array<string>;
     billed_products: Array<string>;
-    error: PlaidError | null;
+    error: IPlaidError | null;
     institution_id: string;
     item_id: string;
     webhook: string;
@@ -685,6 +694,4 @@ declare module 'plaid' {
     [env: string]: string;
   }
   const environments: PlaidEnvironments;
-
-  export function isPlaidError(err: any): err is PlaidError;
 }
