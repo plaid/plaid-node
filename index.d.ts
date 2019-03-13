@@ -358,6 +358,10 @@ declare module 'plaid' {
     processor_token: string;
   }
 
+  interface CreateStripeTokenResponse extends BaseResponse {
+    stripe_bank_account_token: string;
+  }
+
   interface RotateAccessTokenResponse extends BaseResponse {
     new_access_token: string;
   }
@@ -465,11 +469,11 @@ declare module 'plaid' {
 
     createStripeToken(accessToken: string,
                       accountId: string,
-                      cb: Callback<CreateProcessorTokenResponse>,
+                      cb: Callback<CreateStripeTokenResponse>,
     ): void;
     createStripeToken(accessToken: string,
                       accountId: string,
-    ): Promise<CreateProcessorTokenResponse>;
+    ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
