@@ -865,6 +865,39 @@ describe('plaid.Client', () => {
           });
         });
       });
+      it('sandboxItemFireWebhook', cb => {
+        async.waterfall([
+          cb => {
+            pCl.sandboxPublicTokenCreate(
+              testConstants.INSTITUTION,
+              testConstants.PRODUCTS, {
+                webhook: 'http://plaid.com/foo/bar/webhook'
+              }, (err, successResponse) => {
+              expect(err).to.be(null);
+              cb(null, successResponse);
+            });
+          },
+          (publicTokenResponse, cb) => {
+            pCl.exchangePublicToken(publicTokenResponse.public_token,
+                                    (err, successResponse) => {
+              expect(err).to.be(null);
+              cb(null, successResponse);
+            });
+          },
+          (successResponse, cb) => {
+            const accessToken = successResponse.access_token;
+            pCl.sandboxItemFireWebhook(accessToken,
+                                  'DEFAULT_UPDATE',
+                                  (err, successResponse) => {
+              expect(err).to.be(null);
+              expect(successResponse).to.be.ok();
+              expect(successResponse.status_code).to.be(200);
+              expect(successResponse.webhook_fired).to.be(true);
+              cb(null, accessToken);
+            });
+          }
+        ], cb);
+      });
     });
 
     describe('errors', () => {
