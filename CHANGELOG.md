@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Fix flag name for retrieving institution display data, it is `include_optional_metadata`
+
 ## 3.0.0
 
 - Remove direct integration endpoints since they are no longer supported
