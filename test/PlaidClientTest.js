@@ -741,8 +741,8 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('get with include_institution_data', cb => {
-        pCl.getInstitutions(10, 0, {include_institution_data: true},
+      it('get with include_optional_metadata', cb => {
+        pCl.getInstitutions(10, 0, {include_optional_metadata: true},
           (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -774,9 +774,9 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('getById with include_institution_data', cb => {
+      it('getById with include_optional_metadata', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION,
-          {include_institution_data: true},
+          {include_optional_metadata: true},
         (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -808,9 +808,9 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('searches with options include_institution_data', cb => {
+      it('searches with options include_optional_metadata', cb => {
         pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {
-          include_institution_data: true
+          include_optional_metadata: true
         },
           (err, successResponse) => {
             expect(err).to.be(null);
