@@ -203,6 +203,17 @@ declare module 'plaid' {
     type: string;
   }
 
+  interface Holding {
+    account_id: string;
+    symbol: string | null;
+    name: string | null;
+    close_price: number | null;
+    quantity: number | null;
+    value: number | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
   interface PhoneNumber {
     data: string;
     primary: boolean;
@@ -337,6 +348,10 @@ declare module 'plaid' {
   }
 
   interface CreditDetailsResponse extends AccountsResponse {}
+
+  interface HoldingsResponse extends AccountsResponse {
+    holdings: Array<Holding>;
+  }
 
   interface IncomeResponse extends AccountsResponse {
     income: Income;
@@ -536,6 +551,8 @@ declare module 'plaid' {
     getIncome: AccessTokenFn<IncomeResponse>;
     // getCreditDetails(String, Function)
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
+    // getHoldings(String, Function)
+    getHoldings: AccessTokenFn<HoldingsResponse>;
 
     // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
