@@ -194,7 +194,7 @@ describe('plaid.Client', () => {
             (successResponse, cb) => {
               const accessToken = successResponse.access_token;
               pCl.updateItemWebhook(accessToken,
-                                    'https://fooWebhook.com',
+                                    'https://httpstat.us/200',
                                     (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse).to.be.ok();
@@ -577,7 +577,7 @@ describe('plaid.Client', () => {
       var days_requested = 60;
       var options = {
         client_report_id: 'reportid123',
-        webhook: 'http://wwww.example.com',
+        webhook: 'https://httpstat.us/200',
         user: {
           client_user_id: 'userid123',
           first_name: 'first',
@@ -871,7 +871,7 @@ describe('plaid.Client', () => {
             pCl.sandboxPublicTokenCreate(
               testConstants.INSTITUTION,
               testConstants.PRODUCTS, {
-                webhook: 'http://plaid.com/foo/bar/webhook'
+                webhook: 'https://httpstat.us/200'
               }, (err, successResponse) => {
               expect(err).to.be(null);
               cb(null, successResponse);
