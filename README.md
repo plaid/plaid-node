@@ -135,6 +135,8 @@ plaidClient.getCategories(cb);
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
 plaidClient.resetLogin(access_token, cb);
+// Sandbox-only endpoint to trigger a webhook for an Item
+plaidClient.sandboxItemFireWebhook(access_token, webhook_code, cb);
 // Sandbox-only endpoint to create a `public_token`. Useful for writing integration tests without running Link.
 plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
