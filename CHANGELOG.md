@@ -50,3 +50,5 @@
 ## 2.0.0
 
 - Refactor the entire library to support [Plaid's updated API](https://blog.plaid.com/improving-our-api)
+
+[sandbox-item-fire-webhook]: https://plaid.com/docs/#firing-webhooks
