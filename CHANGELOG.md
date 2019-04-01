@@ -1,3 +1,8 @@
+## 3.1.1
+
+- Add support for [`/sandbox/item/fire_webhook`][sandbox-item-fire-webhook] endpoint ([#191](https://github.com/plaid/plaid-node/pull/191))
+- Migrate CI to CircleCI 2.0
+
 ## 3.1.0
 
 - Fix flag name for retrieving institution display data, it is `include_optional_metadata`
