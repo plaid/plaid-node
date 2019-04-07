@@ -45,6 +45,15 @@ declare module 'plaid' {
 
   type AssetReportRefreshOptions = AssetReportCreateOptions;
 
+  interface GetInstitutionRequestOptions {
+    include_optional_metadata?: boolean;
+  }
+
+  interface GetInstitutionsRequestOptions extends GetInstitutionRequestOptions {
+    products?: Array<string>;
+    country_codes?: Array<string>;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -395,6 +404,7 @@ declare module 'plaid' {
 
   interface GetInstitutionsResponse<T extends Institution> extends BaseResponse {
     institutions: Array<T>;
+    total: number;
   }
 
   interface GetInstitutionByIdResponse<T extends Institution> extends BaseResponse {
@@ -664,20 +674,19 @@ declare module 'plaid' {
 
     getInstitutions(count: number,
                     offset: number,
+                    options?: GetInstitutionsRequestOptions,
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(count: number,
                     offset: number,
+                    options: GetInstitutionsRequestOptions,
                     cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
     getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: Object,
+                        options?: GetInstitutionRequestOptions,
     ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(institutionId: string,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
-    ): void;
-    getInstitutionById(institutionId: string,
-                        options: Object,
+                        options: GetInstitutionRequestOptions,
                         cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 

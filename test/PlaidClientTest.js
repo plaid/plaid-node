@@ -748,6 +748,7 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.institutions).to.be.an(Array);
+          expect(successResponse.total).to.be.a('number');
 
           cb();
         });
@@ -759,6 +760,7 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.institutions).to.be.an(Array);
+          expect(successResponse.total).to.be.a('number');
 
           cb();
         });
