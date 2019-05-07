@@ -54,6 +54,11 @@ declare module 'plaid' {
     official_name: string | null;
     subtype: string | null;
     type: string  | null;
+    verification_status:
+      'pending_automatic_verification' |
+      'pending_manual_verification' |
+      'manually_verified' |
+      null;
   }
 
   interface Account extends AccountCommon {
