@@ -22,8 +22,13 @@ describe('plaid.Client', () => {
 
   let pCl;
   beforeEach(() => {
-    pCl = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY,
-      plaid.environments.sandbox);
+    pCl = new plaid.Client(
+      CLIENT_ID,
+      SECRET,
+      PUBLIC_KEY,
+      plaid.environments.sandbox,
+      {version: '2019-05-29'}
+    );
   });
 
   describe('constructor', () => {

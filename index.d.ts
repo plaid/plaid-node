@@ -66,6 +66,10 @@ declare module 'plaid' {
     };
   }
 
+  interface AccountWithIdentity extends Account {
+    owners: Array<Identity>;
+  }
+
   interface Category {
     type: string;
     hierarchy: Array<string>;
@@ -121,6 +125,7 @@ declare module 'plaid' {
     mfa: Array<string>;
     name: string;
     products: Array<string>;
+    country_codes: Array<string>;
   }
 
   interface InstitutionWithDisplayData extends Institution {
@@ -140,11 +145,11 @@ declare module 'plaid' {
 
   interface InstitutionWithContactData extends Institution {
     addresses: Array<{
-      city: string;
-      country: string;
-      state: string;
-      street: Array<string>;
-      zip: string;
+      city?: string;
+      country?: string;
+      region?: string;
+      street?: Array<string>;
+      postal_code?: string;
     }>;
   }
 
@@ -172,13 +177,6 @@ declare module 'plaid' {
     phone_numbers: Array<PhoneNumber>;
   }
 
-  interface AccountIdentity {
-    addresses: Array<Address>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
   interface Address {
     accounts: Array<string>;
     data: AddressData;
@@ -191,10 +189,10 @@ declare module 'plaid' {
   }
 
   interface AddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    city?: string;
+    region?: string;
+    postal_code?: string;
+    street?: string;
   }
 
   interface Email {
@@ -225,9 +223,9 @@ declare module 'plaid' {
     city: string | null;
     lat: number | null;
     lon: number | null;
-    state: string | null;
+    region: string | null;
     store_number: string | null;
-    zip: string | null;
+    postal_code: string | null;
   }
 
   interface TransactionPaymentMeta {
@@ -327,6 +325,18 @@ declare module 'plaid' {
     branch: string;
   }
 
+  interface InternationalNumbers {
+    account_id: string;
+    iban: string;
+    bic: string;
+  }
+
+  interface BACSNumbers {
+    bacs: string;
+    account: string;
+    sort_code: string;
+  }
+
   // RESPONSES
 
   interface BaseResponse {
@@ -344,6 +354,8 @@ declare module 'plaid' {
     numbers: {
       ach: Array<ACHNumbers>;
       eft: Array<EFTNumbers>;
+      international: Array<InternationalNumbers>;
+      bacs: Array<BACSNumbers>;
     }
   }
 
@@ -354,11 +366,10 @@ declare module 'plaid' {
   }
 
   interface IncomeResponse extends AccountsResponse {
-    income: Income;
   }
 
   interface IdentityResponse extends AccountsResponse {
-    identity: Identity;
+    accounts: Array<AccountWithIdentity>;
   }
 
   interface ItemResponse extends BaseResponse {
@@ -457,7 +468,7 @@ declare module 'plaid' {
   }
 
   interface ClientOptions extends CoreOptions {
-    version?: '2018-05-22' | '2017-03-08';
+    version?: '2019-05-29';
   }
 
   class Client {
