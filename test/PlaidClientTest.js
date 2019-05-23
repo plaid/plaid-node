@@ -21,7 +21,7 @@ describe('plaid.Client', () => {
 
   let pCl;
   beforeEach(() => {
-    pCl = new plaid.Client('590e5bb7bdc6a44cd258c204', 'd7d1338898d00d3dd149619d44a5fd', '452caef2107997271910601139961a',
+    pCl = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY,
       plaid.environments.sandbox);
   });
 
@@ -1207,7 +1207,6 @@ describe('plaid.Client', () => {
 
       createItem.then(([mfaResponse, successResponse]) => {
         testAccessToken = successResponse.access_token;
-        console.log(successResponse);``
       }).catch(err => {
         void err;
         throw new Error('Unreachable code block for test');
