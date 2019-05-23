@@ -1,3 +1,22 @@
+## 3.1.1
+
+- Add support for [`/sandbox/item/fire_webhook`][sandbox-item-fire-webhook] endpoint ([#191](https://github.com/plaid/plaid-node/pull/191))
+- Migrate CI to CircleCI 2.0
+
+## 3.1.0
+
+- Fix flag name for retrieving institution display data, it is `include_optional_metadata`
+
+## 3.0.0
+
+- Remove direct integration endpoints since they are no longer supported
+- `deleteItem` has been renamed `removeItem`
+- Add `PlaidError` implementation
+
+## 2.1.5
+
+- Add `include_display_data` flag to institutions endpoints
+
 ## 2.1.1
 
 - Fix handling of non-JSON bodies ([#136](https://github.com/plaid/plaid-node/issues/136))
@@ -31,3 +50,5 @@
 ## 2.0.0
 
 - Refactor the entire library to support [Plaid's updated API](https://blog.plaid.com/improving-our-api)
+
+[sandbox-item-fire-webhook]: https://plaid.com/docs/#firing-webhooks
