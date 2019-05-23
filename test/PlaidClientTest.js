@@ -466,7 +466,7 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 200));
+              expect(transactions.transactions).to.eql(R.range(0, 200));
 
               pCl.getTransactions.restore();
               cb();
@@ -487,7 +487,7 @@ describe('plaid.Client', () => {
             });
 
           pCl.getAllTransactions(accessToken, now, now).then(transactions => {
-            expect(transactions).to.eql(R.range(0, 200));
+            expect(transactions.transactions).to.eql(R.range(0, 200));
 
             pCl.getTransactions.restore();
             cb();
@@ -518,7 +518,7 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 1200));
+              expect(transactions.transactions).to.eql(R.range(0, 1200));
 
               pCl.getTransactions.restore();
               cb();
@@ -548,7 +548,7 @@ describe('plaid.Client', () => {
 
           getAllTransactionsWithRetries(accessToken, now, now).then(
             transactions => {
-            expect(transactions).to.eql(R.range(0, 1200));
+            expect(transactions.transactions).to.eql(R.range(0, 1200));
 
             pCl.getTransactions.restore();
             cb();

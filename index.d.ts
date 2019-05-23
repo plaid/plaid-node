@@ -417,6 +417,14 @@ declare module 'plaid' {
     item: Item;
   }
 
+  // omitting extending the BaseResponse since there isn't a single request_id
+  interface TransactionsAllResponse {
+    accounts: Array<Account>;
+    item: Item;
+    total_transactions: number;
+    transactions: Array<Transaction>;
+  }
+
   interface AssetReportCreateResponse extends BaseResponse {
     asset_report_id: string;
     asset_report_token: string;
@@ -649,17 +657,17 @@ declare module 'plaid' {
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
                        options?: GetAllTransactionsRequestOptions,
-    ): Promise<Array<Transaction>>;
+    ): Promise<TransactionsAllResponse>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       cb: Callback<Array<Transaction>>,
+                       cb: Callback<TransactionsAllResponse>,
     ): void;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
                        options: GetAllTransactionsRequestOptions,
-                       cb: Callback<Array<Transaction>>,
+                       cb: Callback<TransactionsAllResponse>,
     ): void;
 
     getInstitutions(count: number,
