@@ -332,7 +332,7 @@ declare module 'plaid' {
   }
 
   interface BACSNumbers {
-    bacs: string;
+    account_id: string;
     account: string;
     sort_code: string;
   }

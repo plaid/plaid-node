@@ -298,8 +298,10 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
-          expect(successResponse.identity).to.be.ok();
-
+          expect(successResponse.accounts).to.be.ok();
+          for (const acc of successResponse.accounts) {
+            expect(acc.owners).to.be.ok();
+          }
           cb();
         });
       });
