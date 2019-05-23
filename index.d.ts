@@ -72,7 +72,16 @@ declare module 'plaid' {
     category_id: string;
   }
 
-  interface PlaidError {
+  export class PlaidError extends Error {
+    error_type: string;
+    error_code: string;
+    error_message: string;
+    display_message: string | null;
+    causes?: Array<Cause>;
+  }
+
+  // IPlaidError is a dupliate of PlaidError that is not an instance of Error.
+  export interface IPlaidError {
     error_type: string;
     error_code: string;
     error_message: string;
@@ -86,14 +95,14 @@ declare module 'plaid' {
     cause: Cause;
   }
 
-  interface Cause extends PlaidError {
+  interface Cause extends IPlaidError {
     item_id: string;
   }
 
   interface Item {
     available_products: Array<string>;
     billed_products: Array<string>;
-    error: PlaidError | null;
+    error: IPlaidError | null;
     institution_id: string;
     item_id: string;
     webhook: string;
@@ -121,6 +130,12 @@ declare module 'plaid' {
     url_account_locked: string | null;
     url_account_setup: string | null;
     url_forgotten_password: string | null;
+  }
+
+  interface InstitutionWithInstitutionData extends Institution {
+    logo: string;
+    primary_color: string;
+    url: string;
   }
 
   interface InstitutionWithContactData extends Institution {
@@ -186,6 +201,17 @@ declare module 'plaid' {
     data: string;
     primary: boolean;
     type: string;
+  }
+
+  interface Holding {
+    account_id: string;
+    symbol: string | null;
+    name: string | null;
+    close_price: number | null;
+    quantity: number | null;
+    value: number | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
   }
 
   interface PhoneNumber {
@@ -323,6 +349,10 @@ declare module 'plaid' {
 
   interface CreditDetailsResponse extends AccountsResponse {}
 
+  interface HoldingsResponse extends AccountsResponse {
+    holdings: Array<Holding>;
+  }
+
   interface IncomeResponse extends AccountsResponse {
     income: Income;
   }
@@ -341,6 +371,10 @@ declare module 'plaid' {
 
   interface CreateProcessorTokenResponse extends BaseResponse {
     processor_token: string;
+  }
+
+  interface CreateStripeTokenResponse extends BaseResponse {
+    stripe_bank_account_token: string;
   }
 
   interface RotateAccessTokenResponse extends BaseResponse {
@@ -426,6 +460,10 @@ declare module 'plaid' {
     public_token: string;
   }
 
+  interface SandboxItemFireWebhookResponse extends BaseResponse {
+    webhook_fired: boolean;
+  }
+
   interface ClientOptions extends CoreOptions {
     version?: '2018-05-22' | '2017-03-08';
   }
@@ -458,11 +496,11 @@ declare module 'plaid' {
 
     createStripeToken(accessToken: string,
                       accountId: string,
-                      cb: Callback<CreateProcessorTokenResponse>,
+                      cb: Callback<CreateStripeTokenResponse>,
     ): void;
     createStripeToken(accessToken: string,
                       accountId: string,
-    ): Promise<CreateProcessorTokenResponse>;
+    ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
@@ -525,6 +563,8 @@ declare module 'plaid' {
     getIncome: AccessTokenFn<IncomeResponse>;
     // getCreditDetails(String, Function)
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
+    // getHoldings(String, Function)
+    getHoldings: AccessTokenFn<HoldingsResponse>;
 
     // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
@@ -678,6 +718,19 @@ declare module 'plaid' {
       initialProducts: Array<string>,
       options?: Object,
     ): Promise<SandboxPublicTokenCreateResponse>;
+
+    // sandboxItemFireWebhook(String, String, Function)
+    sandboxItemFireWebhook(
+      access_token: string,
+      webhook_code: string,
+      cb: Callback<SandboxItemFireWebhookResponse>,
+    ): void;
+
+    // sandboxItemFireWebhook(String, String)
+    sandboxItemFireWebhook(
+      access_token: string,
+      webhook_code: string,
+    ): Promise<SandboxItemFireWebhookResponse>;
   }
 
   interface PlaidEnvironments {
@@ -687,6 +740,4 @@ declare module 'plaid' {
     [env: string]: string;
   }
   const environments: PlaidEnvironments;
-
-  export function isPlaidError(err: any): err is PlaidError;
 }
