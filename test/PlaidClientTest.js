@@ -645,6 +645,10 @@ describe('plaid.Client', () => {
 
           // The transactions in an Asset Report with Insights should have a
           // non-null `name` (when available).
+          for (const item in response.report.items) {
+            console.log(`asset ${item}`);
+            console.log(response.report.items[0].accounts[0]);
+          }
           expect(response.report.items[0].accounts[0].transactions[0].name)
             .to.not.be(null);
 
