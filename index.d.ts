@@ -193,6 +193,7 @@ declare module 'plaid' {
     region?: string;
     postal_code?: string;
     street?: string;
+    country?: string;
   }
 
   interface Email {
@@ -226,6 +227,7 @@ declare module 'plaid' {
     region: string | null;
     store_number: string | null;
     postal_code: string | null;
+    country: string | null;
   }
 
   interface TransactionPaymentMeta {
