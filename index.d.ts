@@ -144,13 +144,7 @@ declare module 'plaid' {
   }
 
   interface InstitutionWithContactData extends Institution {
-    addresses: Array<{
-      city?: string;
-      country?: string;
-      region?: string;
-      street?: Array<string>;
-      postal_code?: string;
-    }>;
+    addresses: Array<AddressData>;
   }
 
   interface IncomeStream {
@@ -189,11 +183,11 @@ declare module 'plaid' {
   }
 
   interface AddressData {
-    city?: string;
-    region?: string;
-    postal_code?: string;
-    street?: string;
-    country?: string;
+    city: string | null;
+    region: string | null;
+    postal_code: string | null;
+    street: string | null;
+    country: string | null;
   }
 
   interface Email {
