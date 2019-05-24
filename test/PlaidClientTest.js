@@ -408,7 +408,7 @@ describe('plaid.Client', () => {
           getAllTransactionsWithRetries(accessToken, now, now, 5,
           (err, transactions) => {
             expect(err).to.be(null);
-            expect(transactions).to.be.an(Array);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           });
@@ -418,7 +418,7 @@ describe('plaid.Client', () => {
           P.promisify(getAllTransactionsWithRetries)
           (accessToken, now, now, 5).then(
             transactions => {
-            expect(transactions).to.be.an(Array);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           }).catch(err => cb(err));
