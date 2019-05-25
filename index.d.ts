@@ -144,7 +144,13 @@ declare module 'plaid' {
   }
 
   interface InstitutionWithContactData extends Institution {
-    addresses: Array<AddressData>;
+    addresses: Array<{
+      city: string;
+      country: string;
+      state: string;
+      street: Array<string>;
+      zip: string;
+    }>;
   }
 
   interface IncomeStream {
@@ -173,11 +179,6 @@ declare module 'plaid' {
 
   interface Address {
     accounts: Array<string>;
-    data: AddressData;
-    primary: boolean;
-  }
-
-  interface AccountAddress {
     data: AddressData;
     primary: boolean;
   }
@@ -278,7 +279,33 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<Identity>;
+    owners: Array<AssetIdentity>;
+  }
+
+  // Different from "Identity", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetIdentity {
+    addresses: Array<AssetAddress>;
+    emails: Array<Email>;
+    names: Array<string>;
+    phone_numbers: Array<PhoneNumber>;
+  }
+
+  // Different from "Address", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetAddress {
+    accounts: Array<string>;
+    data: AssetAddressData;
+    primary: boolean;
+  }
+
+  // Different from "AddressData", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetAddressData {
+    city: string;
+    state: string;
+    zip: string;
+    street: string;
   }
 
   interface HistoricalBalance {
@@ -300,11 +327,23 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: TransactionLocation;
+    location?: AssetTransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
+  }
+
+  // Different from "TransactionLocation", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetTransactionLocation {
+    address: string | null;
+    city: string | null;
+    lat: number | null;
+    lon: number | null;
+    state: string | null;
+    store_number: string | null;
+    zip: string | null;
   }
 
   interface ACHNumbers {

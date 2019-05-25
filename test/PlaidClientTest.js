@@ -301,6 +301,15 @@ describe('plaid.Client', () => {
           expect(successResponse.accounts).to.be.ok();
           for (const acc of successResponse.accounts) {
             expect(acc.owners).to.be.ok();
+            for (const owner of acc.owners) {
+              for (const addr of owner.addresses) {
+                expect(addr.data.country).to.not.be(undefined);
+                expect(addr.data.postal_code).to.not.be(undefined);
+                expect(addr.data.region).to.not.be(undefined);
+                expect(addr.data.street).to.not.be(undefined);
+                expect(addr.data.city).to.not.be(undefined);
+              }
+            }
           }
           cb();
         });
@@ -650,10 +659,24 @@ describe('plaid.Client', () => {
           expect(response).to.be.ok();
           expect(response.report).to.be.ok();
 
-          // The transactions in an Asset Report with Insights should have a
-          // non-null `name` (when available).
-          expect(response.report.items[0].accounts[0].transactions[0].name)
-            .to.not.be(null);
+          for (const item of response.report.items) {
+            for (const account of item.accounts) {
+              // The transactions of an Asset Report with Insights should have
+              // a non-null `name` (when available).
+              for (const transaction of account.transactions) {
+                expect(transaction.name).to.be.ok();
+              }
+
+              for (const owner of account.owners) {
+                for (const addr of owner.addresses) {
+                  expect(addr.data.city).to.be.ok();
+                  expect(addr.data.state).to.be.ok();
+                  expect(addr.data.zip).to.be.ok();
+                  expect(addr.data.street).to.be.ok();
+                }
+              }
+            }
+          }
 
           cb(null, asset_report_token, response.report);
         });
