@@ -66,7 +66,7 @@ declare module 'plaid' {
     };
   }
 
-  interface AccountWithIdentity extends Account {
+  interface AccountWithOwners extends Account {
     owners: Array<Identity>;
   }
 
@@ -143,16 +143,6 @@ declare module 'plaid' {
     url: string;
   }
 
-  interface InstitutionWithContactData extends Institution {
-    addresses: Array<{
-      city: string;
-      country: string;
-      state: string;
-      street: Array<string>;
-      zip: string;
-    }>;
-  }
-
   interface IncomeStream {
     monthly_income: number;
     confidence: number;
@@ -178,7 +168,6 @@ declare module 'plaid' {
   }
 
   interface Address {
-    accounts: Array<string>;
     data: AddressData;
     primary: boolean;
   }
@@ -279,13 +268,13 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<AssetIdentity>;
+    owners: Array<AssetsIdentity>;
   }
 
   // Different from "Identity", as it belongs with "Assets"
   // which is only for US.
-  interface AssetIdentity {
-    addresses: Array<AssetAddress>;
+  interface AssetsIdentity {
+    addresses: Array<AssetsAddress>;
     emails: Array<Email>;
     names: Array<string>;
     phone_numbers: Array<PhoneNumber>;
@@ -293,15 +282,14 @@ declare module 'plaid' {
 
   // Different from "Address", as it belongs with "Assets"
   // which is only for US.
-  interface AssetAddress {
-    accounts: Array<string>;
-    data: AssetAddressData;
+  interface AssetsAddress {
+    data: AssetsAddressData;
     primary: boolean;
   }
 
   // Different from "AddressData", as it belongs with "Assets"
   // which is only for US.
-  interface AssetAddressData {
+  interface AssetsAddressData {
     city: string;
     state: string;
     zip: string;
@@ -401,10 +389,11 @@ declare module 'plaid' {
   }
 
   interface IncomeResponse extends AccountsResponse {
+    income: Income;
   }
 
   interface IdentityResponse extends AccountsResponse {
-    accounts: Array<AccountWithIdentity>;
+    accounts: Array<AccountWithOwners>;
   }
 
   interface ItemResponse extends BaseResponse {
