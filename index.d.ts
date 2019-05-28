@@ -66,6 +66,10 @@ declare module 'plaid' {
     };
   }
 
+  interface AccountWithOwners extends Account {
+    owners: Array<Identity>;
+  }
+
   interface Category {
     type: string;
     hierarchy: Array<string>;
@@ -121,6 +125,7 @@ declare module 'plaid' {
     mfa: Array<string>;
     name: string;
     products: Array<string>;
+    country_codes: Array<string>;
   }
 
   interface InstitutionWithDisplayData extends Institution {
@@ -136,16 +141,6 @@ declare module 'plaid' {
     logo: string;
     primary_color: string;
     url: string;
-  }
-
-  interface InstitutionWithContactData extends Institution {
-    addresses: Array<{
-      city: string;
-      country: string;
-      state: string;
-      street: Array<string>;
-      zip: string;
-    }>;
   }
 
   interface IncomeStream {
@@ -172,29 +167,17 @@ declare module 'plaid' {
     phone_numbers: Array<PhoneNumber>;
   }
 
-  interface AccountIdentity {
-    addresses: Array<Address>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
   interface Address {
-    accounts: Array<string>;
-    data: AddressData;
-    primary: boolean;
-  }
-
-  interface AccountAddress {
     data: AddressData;
     primary: boolean;
   }
 
   interface AddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    city: string | null;
+    region: string | null;
+    postal_code: string | null;
+    street: string | null;
+    country: string | null;
   }
 
   interface Email {
@@ -225,9 +208,10 @@ declare module 'plaid' {
     city: string | null;
     lat: number | null;
     lon: number | null;
-    state: string | null;
+    region: string | null;
     store_number: string | null;
-    zip: string | null;
+    postal_code: string | null;
+    country: string | null;
   }
 
   interface TransactionPaymentMeta {
@@ -284,7 +268,32 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<Identity>;
+    owners: Array<AssetsIdentity>;
+  }
+
+  // Different from "Identity", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsIdentity {
+    addresses: Array<AssetsAddress>;
+    emails: Array<Email>;
+    names: Array<string>;
+    phone_numbers: Array<PhoneNumber>;
+  }
+
+  // Different from "Address", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsAddress {
+    data: AssetsAddressData;
+    primary: boolean;
+  }
+
+  // Different from "AddressData", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsAddressData {
+    city: string;
+    state: string;
+    zip: string;
+    street: string;
   }
 
   interface HistoricalBalance {
@@ -306,11 +315,23 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: TransactionLocation;
+    location?: AssetTransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
+  }
+
+  // Different from "TransactionLocation", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetTransactionLocation {
+    address: string | null;
+    city: string | null;
+    lat: number | null;
+    lon: number | null;
+    state: string | null;
+    store_number: string | null;
+    zip: string | null;
   }
 
   interface ACHNumbers {
@@ -325,6 +346,18 @@ declare module 'plaid' {
     account_id: string;
     institution: string;
     branch: string;
+  }
+
+  interface InternationalNumbers {
+    account_id: string;
+    iban: string;
+    bic: string;
+  }
+
+  interface BACSNumbers {
+    account_id: string;
+    account: string;
+    sort_code: string;
   }
 
   // RESPONSES
@@ -344,6 +377,8 @@ declare module 'plaid' {
     numbers: {
       ach: Array<ACHNumbers>;
       eft: Array<EFTNumbers>;
+      international: Array<InternationalNumbers>;
+      bacs: Array<BACSNumbers>;
     }
   }
 
@@ -358,7 +393,7 @@ declare module 'plaid' {
   }
 
   interface IdentityResponse extends AccountsResponse {
-    identity: Identity;
+    accounts: Array<AccountWithOwners>;
   }
 
   interface ItemResponse extends BaseResponse {
@@ -465,7 +500,7 @@ declare module 'plaid' {
   }
 
   interface ClientOptions extends CoreOptions {
-    version?: '2018-05-22' | '2017-03-08';
+    version?: '2019-05-29';
   }
 
   class Client {
