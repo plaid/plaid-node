@@ -333,6 +333,20 @@ describe('plaid.Client', () => {
           expect(successResponse.item).to.be.ok();
           expect(successResponse.accounts).to.be.ok();
           expect(successResponse.holdings).to.be.ok();
+          expect(successResponse.securities).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it.skip('investmentTransactions', cb => {
+        pCl.getInvestmentTransactions(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.investment_transactions).to.be.ok();
+          expect(successResponse.securities).to.be.ok();
 
           cb();
         });
