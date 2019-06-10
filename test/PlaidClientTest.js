@@ -326,7 +326,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it.skip('holdings', cb => {
+      it('holdings', cb => {
         pCl.getHoldings(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -339,13 +339,15 @@ describe('plaid.Client', () => {
         });
       });
 
-      it.skip('investmentTransactions', cb => {
-        pCl.getInvestmentTransactions(testAccessToken, (err, successResponse) => {
+      it('investmentTransactions', cb => {
+        pCl.getInvestmentTransactions(
+          testAccessToken, '2019-01-01', '2019-06-10', {},
+          (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
           expect(successResponse.accounts).to.be.ok();
-          expect(successResponse.investment_transactions).to.be.ok();
+          expect(successResponse.investment_transactions).to.be.an(Array);
           expect(successResponse.securities).to.be.ok();
 
           cb();
