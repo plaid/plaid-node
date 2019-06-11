@@ -212,11 +212,10 @@ declare module 'plaid' {
   interface Holding {
     account_id: string;
     security_id: string;
-
     institution_value: number | null;
     institution_price: number | null;
     quantity: number | null;
-    institution_price_as_of: string  | null;
+    institution_price_as_of: string | null;
     cost_basis: number | null;
     iso_currency_code: string | null;
     unofficial_currency_code: string | null;
@@ -225,6 +224,8 @@ declare module 'plaid' {
   interface InvestmentTransaction {
     investment_transaction_id: string;
     account_id: string;
+    security_id: string;
+    cancel_transaction_id: string;
     date: Iso8601DateString;
     name: string | null;
     quantity: number | null;
@@ -650,9 +651,9 @@ declare module 'plaid' {
     getHoldings: AccessTokenFn<HoldingsResponse>;
     // getInvestmentTransactions(String, Date, Date, Function)
     getInvestmentTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options?: InvestmentTransactionsRequestOptions,
+                              startDate: Iso8601DateString,
+                              endDate: Iso8601DateString,
+                              options?: InvestmentTransactionsRequestOptions,
     ): Promise<InvestmentTransactionsResponse>;
     // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
