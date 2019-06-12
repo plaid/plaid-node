@@ -233,7 +233,6 @@ declare module 'plaid' {
     price: number | null;
     fees: number | null;
     class: string | null;
-    subclass: string | null;
     iso_currency_code: string | null;
     unofficial_currency_code: string | null;
   }
