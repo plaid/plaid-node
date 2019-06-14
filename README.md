@@ -111,6 +111,12 @@ plaidClient.getIncome(access_token, cb);
 // getCreditDetails(String, Function)
 plaidClient.getCreditDetails(access_token, cb);
 
+// getHoldings(String, Function)
+plaidClient.getHoldings(access_token, cb);
+// getInvestmentTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD),
+// Object?, Function)
+plaidClient.getInvestmentTransactions(access_token, start_date, end_date, options, cb);
+
 // getTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 

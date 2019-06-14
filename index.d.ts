@@ -25,6 +25,11 @@ declare module 'plaid' {
     offset?: number;
   }
 
+  interface InvestmentTransactionsRequestOptions extends ItemRequestOptions {
+    count?: number;
+    offset?: number;
+  }
+
   interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
 
   interface AssetReportUser {
@@ -64,6 +69,24 @@ declare module 'plaid' {
       iso_currency_code: string | null;
       official_currency_code: string | null;
     };
+  }
+
+  interface Security {
+    security_id: string;
+    cusip: string | null;
+    sedol: string | null;
+    isin: string | null;
+    institution_security_id: string | null;
+    institution_id: string | null;
+    proxy_security_id: string | null;
+    name: string | null;
+    ticker_symbol: string | null;
+    is_cash_equivalent: boolean | null;
+    type: string | null;
+    close_price: number | null;
+    close_price_as_of: string | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
   }
 
   interface AccountWithOwners extends Account {
@@ -188,11 +211,28 @@ declare module 'plaid' {
 
   interface Holding {
     account_id: string;
-    symbol: string | null;
-    name: string | null;
-    close_price: number | null;
+    security_id: string;
+    institution_value: number | null;
+    institution_price: number | null;
     quantity: number | null;
-    value: number | null;
+    institution_price_as_of: string | null;
+    cost_basis: number | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
+  interface InvestmentTransaction {
+    investment_transaction_id: string;
+    account_id: string;
+    security_id: string;
+    cancel_transaction_id: string;
+    date: Iso8601DateString;
+    name: string | null;
+    quantity: number | null;
+    amount: number | null;
+    price: number | null;
+    fees: number | null;
+    class: string | null;
     iso_currency_code: string | null;
     unofficial_currency_code: string | null;
   }
@@ -371,6 +411,10 @@ declare module 'plaid' {
     item: Item;
   }
 
+  interface InvestmentsResponse extends AccountsResponse {
+    securities: Array<Security>;
+  }
+
   interface AuthResponse extends BaseResponse {
     accounts: Array<Account>;
     item: Item;
@@ -384,8 +428,12 @@ declare module 'plaid' {
 
   interface CreditDetailsResponse extends AccountsResponse {}
 
-  interface HoldingsResponse extends AccountsResponse {
+  interface HoldingsResponse extends InvestmentsResponse{
     holdings: Array<Holding>;
+  }
+  interface InvestmentTransactionsResponse extends InvestmentsResponse {
+    investment_transactions: Array<InvestmentTransaction>;
+    total_investment_transactions: number;
   }
 
   interface IncomeResponse extends AccountsResponse {
@@ -600,7 +648,12 @@ declare module 'plaid' {
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
     // getHoldings(String, Function)
     getHoldings: AccessTokenFn<HoldingsResponse>;
-
+    // getInvestmentTransactions(String, Date, Date, Function)
+    getInvestmentTransactions(accessToken: string,
+                              startDate: Iso8601DateString,
+                              endDate: Iso8601DateString,
+                              options?: InvestmentTransactionsRequestOptions,
+    ): Promise<InvestmentTransactionsResponse>;
     // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
                       days_requested: number,
