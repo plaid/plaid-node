@@ -22,8 +22,13 @@ describe('plaid.Client', () => {
 
   let pCl;
   beforeEach(() => {
-    pCl = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY,
-      plaid.environments.sandbox);
+    pCl = new plaid.Client(
+      CLIENT_ID,
+      SECRET,
+      PUBLIC_KEY,
+      plaid.environments.sandbox,
+      {version: '2019-05-29'}
+    );
   });
 
   describe('constructor', () => {
@@ -293,8 +298,19 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
-          expect(successResponse.identity).to.be.ok();
-
+          expect(successResponse.accounts).to.be.ok();
+          for (const acc of successResponse.accounts) {
+            expect(acc.owners).to.be.ok();
+            for (const owner of acc.owners) {
+              for (const addr of owner.addresses) {
+                expect(addr.data.country).to.not.be(undefined);
+                expect(addr.data.postal_code).to.not.be(undefined);
+                expect(addr.data.region).to.not.be(undefined);
+                expect(addr.data.street).to.not.be(undefined);
+                expect(addr.data.city).to.not.be(undefined);
+              }
+            }
+          }
           cb();
         });
       });
@@ -310,13 +326,29 @@ describe('plaid.Client', () => {
         });
       });
 
-      it.skip('holdings', cb => {
+      it('holdings', cb => {
         pCl.getHoldings(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
           expect(successResponse.accounts).to.be.ok();
           expect(successResponse.holdings).to.be.ok();
+          expect(successResponse.securities).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('investmentTransactions', cb => {
+        pCl.getInvestmentTransactions(
+          testAccessToken, '2019-01-01', '2019-06-10', {},
+          (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.investment_transactions).to.be.an(Array);
+          expect(successResponse.securities).to.be.ok();
 
           cb();
         });
@@ -408,7 +440,10 @@ describe('plaid.Client', () => {
           getAllTransactionsWithRetries(accessToken, now, now, 5,
           (err, transactions) => {
             expect(err).to.be(null);
-            expect(transactions).to.be.an(Array);
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           });
@@ -418,7 +453,10 @@ describe('plaid.Client', () => {
           P.promisify(getAllTransactionsWithRetries)
           (accessToken, now, now, 5).then(
             transactions => {
-            expect(transactions).to.be.an(Array);
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           }).catch(err => cb(err));
@@ -466,7 +504,10 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 200));
+              expect(transactions.accounts).to.not.be(null);
+              expect(transactions.item).to.not.be(null);
+              expect(transactions.total_transactions).to.not.be(null);
+              expect(transactions.transactions).to.eql(R.range(0, 200));
 
               pCl.getTransactions.restore();
               cb();
@@ -487,7 +528,10 @@ describe('plaid.Client', () => {
             });
 
           pCl.getAllTransactions(accessToken, now, now).then(transactions => {
-            expect(transactions).to.eql(R.range(0, 200));
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.eql(R.range(0, 200));
 
             pCl.getTransactions.restore();
             cb();
@@ -518,7 +562,10 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 1200));
+              expect(transactions.accounts).to.not.be(null);
+              expect(transactions.item).to.not.be(null);
+              expect(transactions.total_transactions).to.not.be(null);
+              expect(transactions.transactions).to.eql(R.range(0, 1200));
 
               pCl.getTransactions.restore();
               cb();
@@ -548,7 +595,10 @@ describe('plaid.Client', () => {
 
           getAllTransactionsWithRetries(accessToken, now, now).then(
             transactions => {
-            expect(transactions).to.eql(R.range(0, 1200));
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.eql(R.range(0, 1200));
 
             pCl.getTransactions.restore();
             cb();
@@ -643,10 +693,24 @@ describe('plaid.Client', () => {
           expect(response).to.be.ok();
           expect(response.report).to.be.ok();
 
-          // The transactions in an Asset Report with Insights should have a
-          // non-null `name` (when available).
-          expect(response.report.items[0].accounts[0].transactions[0].name)
-            .to.not.be(null);
+          for (const item of response.report.items) {
+            for (const account of item.accounts) {
+              // The transactions of an Asset Report with Insights should have
+              // a non-null `name` (when available).
+              for (const transaction of account.transactions) {
+                expect(transaction.name).to.be.ok();
+              }
+
+              for (const owner of account.owners) {
+                for (const addr of owner.addresses) {
+                  expect(addr.data.city).to.be.ok();
+                  expect(addr.data.state).to.be.ok();
+                  expect(addr.data.zip).to.be.ok();
+                  expect(addr.data.street).to.be.ok();
+                }
+              }
+            }
+          }
 
           cb(null, asset_report_token, response.report);
         });

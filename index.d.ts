@@ -25,6 +25,11 @@ declare module 'plaid' {
     offset?: number;
   }
 
+  interface InvestmentTransactionsRequestOptions extends ItemRequestOptions {
+    count?: number;
+    offset?: number;
+  }
+
   interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
 
   interface AssetReportUser {
@@ -69,6 +74,28 @@ declare module 'plaid' {
       iso_currency_code: string | null;
       official_currency_code: string | null;
     };
+  }
+
+  interface Security {
+    security_id: string;
+    cusip: string | null;
+    sedol: string | null;
+    isin: string | null;
+    institution_security_id: string | null;
+    institution_id: string | null;
+    proxy_security_id: string | null;
+    name: string | null;
+    ticker_symbol: string | null;
+    is_cash_equivalent: boolean | null;
+    type: string | null;
+    close_price: number | null;
+    close_price_as_of: string | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
+  interface AccountWithOwners extends Account {
+    owners: Array<Identity>;
   }
 
   interface Category {
@@ -126,6 +153,7 @@ declare module 'plaid' {
     mfa: Array<string>;
     name: string;
     products: Array<string>;
+    country_codes: Array<string>;
   }
 
   interface InstitutionWithDisplayData extends Institution {
@@ -141,16 +169,6 @@ declare module 'plaid' {
     logo: string;
     primary_color: string;
     url: string;
-  }
-
-  interface InstitutionWithContactData extends Institution {
-    addresses: Array<{
-      city: string;
-      country: string;
-      state: string;
-      street: Array<string>;
-      zip: string;
-    }>;
   }
 
   interface IncomeStream {
@@ -177,29 +195,17 @@ declare module 'plaid' {
     phone_numbers: Array<PhoneNumber>;
   }
 
-  interface AccountIdentity {
-    addresses: Array<Address>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
   interface Address {
-    accounts: Array<string>;
-    data: AddressData;
-    primary: boolean;
-  }
-
-  interface AccountAddress {
     data: AddressData;
     primary: boolean;
   }
 
   interface AddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    city: string | null;
+    region: string | null;
+    postal_code: string | null;
+    street: string | null;
+    country: string | null;
   }
 
   interface Email {
@@ -210,11 +216,28 @@ declare module 'plaid' {
 
   interface Holding {
     account_id: string;
-    symbol: string | null;
-    name: string | null;
-    close_price: number | null;
+    security_id: string;
+    institution_value: number | null;
+    institution_price: number | null;
     quantity: number | null;
-    value: number | null;
+    institution_price_as_of: string | null;
+    cost_basis: number | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
+  interface InvestmentTransaction {
+    investment_transaction_id: string;
+    account_id: string;
+    security_id: string;
+    cancel_transaction_id: string;
+    date: Iso8601DateString;
+    name: string | null;
+    quantity: number | null;
+    amount: number | null;
+    price: number | null;
+    fees: number | null;
+    type: string | null;
     iso_currency_code: string | null;
     unofficial_currency_code: string | null;
   }
@@ -230,9 +253,10 @@ declare module 'plaid' {
     city: string | null;
     lat: number | null;
     lon: number | null;
-    state: string | null;
+    region: string | null;
     store_number: string | null;
-    zip: string | null;
+    postal_code: string | null;
+    country: string | null;
   }
 
   interface TransactionPaymentMeta {
@@ -289,7 +313,32 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<Identity>;
+    owners: Array<AssetsIdentity>;
+  }
+
+  // Different from "Identity", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsIdentity {
+    addresses: Array<AssetsAddress>;
+    emails: Array<Email>;
+    names: Array<string>;
+    phone_numbers: Array<PhoneNumber>;
+  }
+
+  // Different from "Address", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsAddress {
+    data: AssetsAddressData;
+    primary: boolean;
+  }
+
+  // Different from "AddressData", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetsAddressData {
+    city: string;
+    state: string;
+    zip: string;
+    street: string;
   }
 
   interface HistoricalBalance {
@@ -311,11 +360,23 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: TransactionLocation;
+    location?: AssetTransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
+  }
+
+  // Different from "TransactionLocation", as it belongs with "Assets"
+  // which is only for US.
+  interface AssetTransactionLocation {
+    address: string | null;
+    city: string | null;
+    lat: number | null;
+    lon: number | null;
+    state: string | null;
+    store_number: string | null;
+    zip: string | null;
   }
 
   interface ACHNumbers {
@@ -332,6 +393,18 @@ declare module 'plaid' {
     branch: string;
   }
 
+  interface InternationalNumbers {
+    account_id: string;
+    iban: string;
+    bic: string;
+  }
+
+  interface BACSNumbers {
+    account_id: string;
+    account: string;
+    sort_code: string;
+  }
+
   // RESPONSES
 
   interface BaseResponse {
@@ -343,19 +416,29 @@ declare module 'plaid' {
     item: Item;
   }
 
+  interface InvestmentsResponse extends AccountsResponse {
+    securities: Array<Security>;
+  }
+
   interface AuthResponse extends BaseResponse {
     accounts: Array<Account>;
     item: Item;
     numbers: {
       ach: Array<ACHNumbers>;
       eft: Array<EFTNumbers>;
+      international: Array<InternationalNumbers>;
+      bacs: Array<BACSNumbers>;
     }
   }
 
   interface CreditDetailsResponse extends AccountsResponse {}
 
-  interface HoldingsResponse extends AccountsResponse {
+  interface HoldingsResponse extends InvestmentsResponse{
     holdings: Array<Holding>;
+  }
+  interface InvestmentTransactionsResponse extends InvestmentsResponse {
+    investment_transactions: Array<InvestmentTransaction>;
+    total_investment_transactions: number;
   }
 
   interface IncomeResponse extends AccountsResponse {
@@ -363,7 +446,7 @@ declare module 'plaid' {
   }
 
   interface IdentityResponse extends AccountsResponse {
-    identity: Identity;
+    accounts: Array<AccountWithOwners>;
   }
 
   interface ItemResponse extends BaseResponse {
@@ -422,6 +505,14 @@ declare module 'plaid' {
     item: Item;
   }
 
+  // omitting extending the BaseResponse since there isn't a single request_id
+  interface TransactionsAllResponse {
+    accounts: Array<Account>;
+    item: Item;
+    total_transactions: number;
+    transactions: Array<Transaction>;
+  }
+
   interface AssetReportCreateResponse extends BaseResponse {
     asset_report_id: string;
     asset_report_token: string;
@@ -462,7 +553,7 @@ declare module 'plaid' {
   }
 
   interface ClientOptions extends CoreOptions {
-    version?: '2018-05-22' | '2017-03-08';
+    version?: '2019-05-29';
   }
 
   class Client {
@@ -562,7 +653,12 @@ declare module 'plaid' {
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
     // getHoldings(String, Function)
     getHoldings: AccessTokenFn<HoldingsResponse>;
-
+    // getInvestmentTransactions(String, Date, Date, Function)
+    getInvestmentTransactions(accessToken: string,
+                              startDate: Iso8601DateString,
+                              endDate: Iso8601DateString,
+                              options?: InvestmentTransactionsRequestOptions,
+    ): Promise<InvestmentTransactionsResponse>;
     // createAssetReport([String], Number, Object, Function)
     createAssetReport(access_tokens: Array<string>,
                       days_requested: number,
@@ -654,17 +750,17 @@ declare module 'plaid' {
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
                        options?: GetAllTransactionsRequestOptions,
-    ): Promise<Array<Transaction>>;
+    ): Promise<TransactionsAllResponse>;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
-                       cb: Callback<Array<Transaction>>,
+                       cb: Callback<TransactionsAllResponse>,
     ): void;
     getAllTransactions(accessToken: string,
                        startDate: Iso8601DateString,
                        endDate: Iso8601DateString,
                        options: GetAllTransactionsRequestOptions,
-                       cb: Callback<Array<Transaction>>,
+                       cb: Callback<TransactionsAllResponse>,
     ): void;
 
     getInstitutions(count: number,
