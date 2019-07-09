@@ -197,10 +197,10 @@ declare module 'plaid' {
 
   interface AddressData {
     city: string | null;
-    region: string | null;
-    postal_code: string | null;
-    street: string | null;
     country: string | null;
+    postal_code: string | null;
+    region: string | null;
+    street: string | null;
   }
 
   interface Email {
@@ -444,6 +444,54 @@ declare module 'plaid' {
     accounts: Array<AccountWithOwners>;
   }
 
+  interface LiabilitiesResponse extends AccountsResponse {
+    liabilities: {
+      student: Array<{
+        account_id: string | null;
+        account_number: string | null;
+        disbursement_dates: Array<string> | null;
+        expected_payoff_date: string | null;
+        guarantor: string | null;
+        interest_rate_percentage: number | null;
+        is_overdue: boolean | null;
+        last_payment_amount: number | null;
+        last_payment_date: string | null;
+        last_statement_balance: number | null;
+        last_statement_issue_date: string | null;
+        loan_name: string | null;
+        loan_status: {
+          type: string | null;
+          end_date: string | null;
+        } | null;
+        minimum_payment_amount: number | null;
+        next_payment_due_date: string | null;
+        origination_date: string | null;
+        origination_principal_amount: number | null;
+        outstanding_interest_amount: number | null;
+        payment_reference_number: string | null;
+        pslf_status: {
+          estimated_eligibility_date: string | null;
+          payments_made: number | null;
+          payments_remaining: number | null;
+        } | null;
+        repayment_plan: {
+          type: string;
+          description: string;
+        } | null;
+        sequence_number: string | null;
+        servicer_address: {
+          city: string | null;
+          country: string | null;
+          postal_code: string | null;
+          region: string | null;
+          street: string | null;
+        } | null;
+        ytd_interest_paid: number | null;
+        ytd_principal_paid: number | null;
+      }>
+    }
+  }
+
   interface ItemResponse extends BaseResponse {
     item: Item;
   }
@@ -638,6 +686,17 @@ declare module 'plaid' {
     getAuth(accessToken: string,
             options: ItemRequestOptions,
             cb: Callback<AuthResponse>,
+    ): void;
+
+    getLiabilities(accessToken: string,
+                   options?: ItemRequestOptions,
+    ): Promise<LiabilitiesResponse>;
+    getLiabilities(accessToken: string,
+                   cb: Callback<LiabilitiesResponse>,
+    ): void;
+    getLiabilities(accessToken: string,
+                   options: ItemRequestOptions,
+                   cb: Callback<LiabilitiesResponse>,
     ): void;
 
     // getIdentity(String, Function)

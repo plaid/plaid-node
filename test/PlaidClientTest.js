@@ -326,6 +326,18 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('liabilities', cb => {
+        pCl.getLiabilities(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.liabilities).to.be.ok();
+
+          cb();
+        });
+      });
+
       it('holdings', cb => {
         pCl.getHoldings(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
