@@ -197,10 +197,10 @@ declare module 'plaid' {
 
   interface AddressData {
     city: string | null;
-    country: string | null;
-    postal_code: string | null;
     region: string | null;
+    postal_code: string | null;
     street: string | null;
+    country: string | null;
   }
 
   interface Email {
