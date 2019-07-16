@@ -402,7 +402,7 @@ declare module 'plaid' {
 
   interface StudentLoanStatus {
     type: string | null;
-    end_date: string | null;
+    end_date: Iso8601DateString | null;
   }
 
   interface StudentLoanRepaymentPlan {
@@ -411,7 +411,7 @@ declare module 'plaid' {
   }
 
   interface PslfStatus {
-    estimated_eligibility_date: string | null;
+    estimated_eligibility_date: Iso8601DateString | null;
     payments_made: number | null;
     payments_remaining: number | null;
   }
@@ -427,20 +427,20 @@ declare module 'plaid' {
   interface StudentLoanLiability {
     account_id: string | null;
     account_number: string | null;
-    disbursement_dates: Array<string> | null;
-    expected_payoff_date: string | null;
+    disbursement_dates: Array<Iso8601DateString> | null;
+    expected_payoff_date: Iso8601DateString | null;
     guarantor: string | null;
     interest_rate_percentage: number | null;
     is_overdue: boolean | null;
     last_payment_amount: number | null;
-    last_payment_date: string | null;
+    last_payment_date: Iso8601DateString | null;
     last_statement_balance: number | null;
-    last_statement_issue_date: string | null;
+    last_statement_issue_date: Iso8601DateString | null;
     loan_name: string | null;
     loan_status: StudentLoanStatus | null;
     minimum_payment_amount: number | null;
-    next_payment_due_date: string | null;
-    origination_date: string | null;
+    next_payment_due_date: Iso8601DateString | null;
+    origination_date: Iso8601DateString | null;
     origination_principal_amount: number | null;
     outstanding_interest_amount: number | null;
     payment_reference_number: string | null;
