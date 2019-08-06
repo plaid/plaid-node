@@ -94,7 +94,7 @@ declare module 'plaid' {
   }
 
   interface Category {
-    type: string;
+    group: string;
     hierarchy: Array<string>;
     category_id: string;
   }
