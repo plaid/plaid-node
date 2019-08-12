@@ -330,23 +330,11 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: AssetTransactionLocation;
+    location?: TransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
-  }
-
-  // Different from "TransactionLocation", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetTransactionLocation {
-    address: string | null;
-    city: string | null;
-    lat: number | null;
-    lon: number | null;
-    state: string | null;
-    store_number: string | null;
-    zip: string | null;
   }
 
   interface ACHNumbers {
