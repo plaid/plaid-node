@@ -716,9 +716,10 @@ describe('plaid.Client', () => {
               for (const owner of account.owners) {
                 for (const addr of owner.addresses) {
                   expect(addr.data.city).to.be.ok();
-                  expect(addr.data.state).to.be.ok();
-                  expect(addr.data.zip).to.be.ok();
+                  expect(addr.data.region).to.be.ok();
+                  expect(addr.data.postal_code).to.be.ok();
                   expect(addr.data.street).to.be.ok();
+                  expect(addr.data.country).to.be.ok();
                 }
               }
             }
