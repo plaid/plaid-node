@@ -326,6 +326,18 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('liabilities', cb => {
+        pCl.getLiabilities(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.liabilities).to.be.ok();
+
+          cb();
+        });
+      });
+
       it('holdings', cb => {
         pCl.getHoldings(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
@@ -704,9 +716,10 @@ describe('plaid.Client', () => {
               for (const owner of account.owners) {
                 for (const addr of owner.addresses) {
                   expect(addr.data.city).to.be.ok();
-                  expect(addr.data.state).to.be.ok();
-                  expect(addr.data.zip).to.be.ok();
+                  expect(addr.data.region).to.be.ok();
+                  expect(addr.data.postal_code).to.be.ok();
                   expect(addr.data.street).to.be.ok();
+                  expect(addr.data.country).to.be.ok();
                 }
               }
             }

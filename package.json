@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -22,11 +22,11 @@
   ],
   "types": "./index.d.ts",
   "dependencies": {
+    "@types/node": "9.x",
+    "@types/request": "^2.48.2",
     "bluebird": "^3.5.1",
     "ramda": "0.23.x",
-    "request": "^2.74.0",
-    "@types/node": "9.x",
-    "@types/request": "0.0.36"
+    "request": "^2.74.0"
   },
   "devDependencies": {
     "async": "2.1.x",
