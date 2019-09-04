@@ -1,3 +1,17 @@
+## 4.1.0
+
+- Add support for new Investments product ([#205](https://github.com/plaid/plaid-node/issues/205))
+  - `/investments/transactions/get`
+  - `/investments/holdings/get`
+
+## 4.0.0
+
+- Add support for [version `2019-05-29`](https://plaid.com/docs/api-upgrades/) of the Plaid API
+
+## 3.1.2
+
+- Allow client_app flag to be passed into the client config ([#196](https://github.com/plaid/plaid-node/issues/196))
+
 ## 3.1.1
 
 - Add support for [`/sandbox/item/fire_webhook`][sandbox-item-fire-webhook] endpoint ([#191](https://github.com/plaid/plaid-node/pull/191))

@@ -72,7 +72,7 @@ declare module 'plaid' {
       current: number | null;
       limit: number | null;
       iso_currency_code: string | null;
-      official_currency_code: string | null;
+      unofficial_currency_code: string | null;
     };
   }
 
@@ -99,7 +99,7 @@ declare module 'plaid' {
   }
 
   interface Category {
-    type: string;
+    group: string;
     hierarchy: Array<string>;
     category_id: string;
   }
@@ -275,7 +275,7 @@ declare module 'plaid' {
     account_owner: string | null;
     amount: number | null;
     iso_currency_code: string | null;
-    official_currency_code: string | null;
+    unofficial_currency_code: string | null;
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
@@ -313,32 +313,7 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<AssetsIdentity>;
-  }
-
-  // Different from "Identity", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsIdentity {
-    addresses: Array<AssetsAddress>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
-  // Different from "Address", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsAddress {
-    data: AssetsAddressData;
-    primary: boolean;
-  }
-
-  // Different from "AddressData", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsAddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    owners: Array<Identity>;
   }
 
   interface HistoricalBalance {
@@ -360,23 +335,11 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: AssetTransactionLocation;
+    location?: TransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
-  }
-
-  // Different from "TransactionLocation", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetTransactionLocation {
-    address: string | null;
-    city: string | null;
-    lat: number | null;
-    lon: number | null;
-    state: string | null;
-    store_number: string | null;
-    zip: string | null;
   }
 
   interface ACHNumbers {
@@ -403,6 +366,58 @@ declare module 'plaid' {
     account_id: string;
     account: string;
     sort_code: string;
+  }
+
+  interface StudentLoanStatus {
+    type: string | null;
+    end_date: Iso8601DateString | null;
+  }
+
+  interface StudentLoanRepaymentPlan {
+    type: string;
+    description: string;
+  }
+
+  interface PslfStatus {
+    estimated_eligibility_date: Iso8601DateString | null;
+    payments_made: number | null;
+    payments_remaining: number | null;
+  }
+
+  interface StudentLoanServicerAddress {
+    city: string | null;
+    country: string | null;
+    postal_code: string | null;
+    region: string | null;
+    street: string | null;
+  }
+
+  interface StudentLoanLiability {
+    account_id: string | null;
+    account_number: string | null;
+    disbursement_dates: Array<Iso8601DateString> | null;
+    expected_payoff_date: Iso8601DateString | null;
+    guarantor: string | null;
+    interest_rate_percentage: number | null;
+    is_overdue: boolean | null;
+    last_payment_amount: number | null;
+    last_payment_date: Iso8601DateString | null;
+    last_statement_balance: number | null;
+    last_statement_issue_date: Iso8601DateString | null;
+    loan_name: string | null;
+    loan_status: StudentLoanStatus | null;
+    minimum_payment_amount: number | null;
+    next_payment_due_date: Iso8601DateString | null;
+    origination_date: Iso8601DateString | null;
+    origination_principal_amount: number | null;
+    outstanding_interest_amount: number | null;
+    payment_reference_number: string | null;
+    pslf_status: PslfStatus | null;
+    repayment_plan: StudentLoanRepaymentPlan | null;
+    sequence_number: string | null;
+    servicer_address: StudentLoanServicerAddress | null;
+    ytd_interest_paid: number | null;
+    ytd_principal_paid: number | null;
   }
 
   // RESPONSES
@@ -447,6 +462,12 @@ declare module 'plaid' {
 
   interface IdentityResponse extends AccountsResponse {
     accounts: Array<AccountWithOwners>;
+  }
+
+  interface LiabilitiesResponse extends AccountsResponse {
+    liabilities: {
+      student: Array<StudentLoanLiability>;
+    }
   }
 
   interface ItemResponse extends BaseResponse {
@@ -643,6 +664,17 @@ declare module 'plaid' {
     getAuth(accessToken: string,
             options: ItemRequestOptions,
             cb: Callback<AuthResponse>,
+    ): void;
+
+    getLiabilities(accessToken: string,
+                   options?: ItemRequestOptions,
+    ): Promise<LiabilitiesResponse>;
+    getLiabilities(accessToken: string,
+                   cb: Callback<LiabilitiesResponse>,
+    ): void;
+    getLiabilities(accessToken: string,
+                   options: ItemRequestOptions,
+                   cb: Callback<LiabilitiesResponse>,
     ): void;
 
     // getIdentity(String, Function)
