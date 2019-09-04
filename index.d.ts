@@ -59,6 +59,11 @@ declare module 'plaid' {
     official_name: string | null;
     subtype: string | null;
     type: string  | null;
+    verification_status:
+      'pending_automatic_verification' |
+      'pending_manual_verification' |
+      'manually_verified' |
+      null;
   }
 
   interface Account extends AccountCommon {
@@ -308,32 +313,7 @@ declare module 'plaid' {
     days_available: number;
     historical_balances: Array<HistoricalBalance>;
     transactions: Array<AssetReportTransaction>;
-    owners: Array<AssetsIdentity>;
-  }
-
-  // Different from "Identity", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsIdentity {
-    addresses: Array<AssetsAddress>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
-  // Different from "Address", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsAddress {
-    data: AssetsAddressData;
-    primary: boolean;
-  }
-
-  // Different from "AddressData", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetsAddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    owners: Array<Identity>;
   }
 
   interface HistoricalBalance {
@@ -355,23 +335,11 @@ declare module 'plaid' {
     category?: Array<string>;
     category_id?: string;
     date_transacted?: string;
-    location?: AssetTransactionLocation;
+    location?: TransactionLocation;
     name?: string;
     payment_meta?: TransactionPaymentMeta;
     pending_transaction_id?: string;
     transaction_type?: string;
-  }
-
-  // Different from "TransactionLocation", as it belongs with "Assets"
-  // which is only for US.
-  interface AssetTransactionLocation {
-    address: string | null;
-    city: string | null;
-    lat: number | null;
-    lon: number | null;
-    state: string | null;
-    store_number: string | null;
-    zip: string | null;
   }
 
   interface ACHNumbers {
