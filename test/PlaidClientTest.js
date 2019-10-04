@@ -220,6 +220,9 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
+          expect(successResponse.status).to.be.ok();
+          expect(successResponse.status.transactions).to.be.ok();
+          expect(successResponse.status.last_webhook).to.be(null);
 
           cb();
         });
