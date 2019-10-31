@@ -818,6 +818,127 @@ describe('plaid.Client', () => {
       });
     });
 
+    describe('payment', () => {
+      const address = {
+        street: ['street name 999'],
+        city: 'city',
+        postal_code: '99999',
+        country: 'GB',
+      };
+
+      const createPaymentRecipient = (cb) => {
+        pCl.createPaymentRecipient(
+          'John Doe',
+          'GB33BUKB20201555555555',
+          address,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+
+            cb(null, response.recipient_id);
+          });
+      };
+
+      const getPaymentRecipient = (recipient_id, cb) => {
+        pCl.getPaymentRecipient(recipient_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+          expect(response.name).to.be.ok();
+          expect(response.iban).to.be.ok();
+          expect(response.address).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const listPaymentRecipients = (recipient_id, cb) => {
+        pCl.listPaymentRecipients((err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipients).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const createPayment = (recipient_id, cb) => {
+        const amount = {
+          currency: 'GBP',
+          value: 100.00,
+        };
+
+        pCl.createPayment(recipient_id, 'TestPayment', amount,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.status).to.be.ok();
+
+          cb(null, response.payment_id);
+        });
+      };
+
+      const createPaymentToken = (payment_id, cb) => {
+        pCl.createPaymentToken(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+
+          cb(null, payment_id);
+        });
+      };
+
+      const getPayment = (payment_id, cb) => {
+        pCl.getPayment(payment_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.reference).to.be.ok();
+          expect(response.amount).to.be.ok();
+          expect(response.status).to.be.ok();
+          expect(response.last_status_update).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+
+          cb(null);
+        });
+      };
+
+      const listPayments = (cb) => {
+        pCl.listPayments({count: 10}, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payments).to.be.ok();
+          expect(response.next_cursor).to.be.ok();
+
+          cb();
+        });
+      };
+
+      it('successfully goes through the entire flow', cb => {
+        async.waterfall([
+          createPaymentRecipient,
+          getPaymentRecipient,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+    });
+
     describe('institutions', () => {
 
       it('get', cb => {

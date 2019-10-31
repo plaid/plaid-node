@@ -4,6 +4,8 @@ declare module 'plaid' {
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
   type Iso8601DateTimeString = string; // YYYY-MM-DDTHH:MM:SSZ
+  type Iso3166Alpha2CountryString = string; // CC
+  type Iso4217CurrencyString = string; // CCC
 
   interface AccessTokenFn<T> {
     (accessToken: string): Promise<T>;
@@ -420,6 +422,25 @@ declare module 'plaid' {
     ytd_principal_paid: number | null;
   }
 
+  interface PaymentRecipientAddress {
+    street: Array<string>;
+    city: string;
+    postal_code: string;
+    country: Iso3166Alpha2CountryString;
+  }
+
+  interface PaymentRecipient {
+    recipient_id: string;
+    name: string;
+    iban: string;
+    address: PaymentRecipientAddress;
+  }
+
+  interface PaymentAmount {
+    currency: Iso4217CurrencyString;
+    value: number;
+  }
+
   // RESPONSES
 
   interface BaseResponse {
@@ -563,6 +584,42 @@ declare module 'plaid' {
 
   interface AssetReportRemoveResponse extends BaseResponse {
     removed: boolean;
+  }
+
+  interface PaymentRecipientCreateResponse extends BaseResponse {
+    recipient_id: string;
+  }
+
+  interface PaymentRecipientGetResponse extends BaseResponse {
+    recipient_id: string;
+    name: string;
+    iban: string;
+    address: PaymentRecipientAddress;
+  }
+
+  interface PaymentRecipientListResponse extends BaseResponse {
+    recipients: Array<PaymentRecipient>;
+  }
+
+  interface PaymentCreateResponse extends BaseResponse {
+    payment_id: string;
+    status: string;
+  }
+
+  interface PaymentTokenCreateResponse extends BaseResponse {
+    payment_token: string;
+    payment_token_expiration_time: Iso8601DateTimeString;
+  }
+
+  interface PaymentGetResponse extends BaseResponse {
+    payment_id: string;
+    payment_token: string;
+    reference: string;
+    amount: PaymentAmount;
+    status: string;
+    last_status_update: string;
+    payment_token_expiration_time: Iso8601DateTimeString;
+    recipient_id: string;
   }
 
   interface SandboxPublicTokenCreateResponse extends BaseResponse {
@@ -758,6 +815,43 @@ declare module 'plaid' {
                       cb: Callback<AssetReportRemoveResponse>): void;
 
     removeAssetReport(asset_report_token: string): Promise<AssetReportRemoveResponse>;
+
+    createPaymentRecipient(name: string,
+                           iban: string,
+                           address: PaymentRecipientAddress,
+                           cb: Callback<PaymentRecipientCreateResponse>): void;
+
+    createPaymentRecipient(name: string,
+                          iban: string,
+                          address: PaymentRecipientAddress): Promise<PaymentRecipientCreateResponse>;
+
+    getPaymentRecipient(recipient_id: string,
+                        cb: Callback<PaymentRecipientGetResponse>): void;
+
+    getPaymentRecipient(recipient_id: string): Promise<PaymentRecipientGetResponse>;
+
+    listPaymentRecipients(cb: Callback<PaymentRecipientListResponse>): void;
+
+    listPaymentRecipients(): Promise<PaymentRecipientListResponse>;
+
+    createPayment(recipient_id: string,
+                  reference: string,
+                  amount: PaymentAmount,
+                  cb: Callback<PaymentCreateResponse>): void;
+
+    createPayment(recipient_id: string,
+                  reference: string,
+                  amount: PaymentAmount): Promise<PaymentCreateResponse>;
+
+    createPaymentToken(payment_id: string,
+                       cb: Callback<PaymentTokenCreateResponse>): void;
+
+    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
+
+    getPayment(payment_id: string,
+               cb: Callback<PaymentGetResponse>): void;
+
+    getPayment(payment_id: string): Promise<PaymentGetResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
     getTransactions(accessToken: string,
