@@ -128,8 +128,8 @@ plaidClient.getAllTransactions(access_token, start_date, end_date, options, cb);
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
 
-// getInstitutions(Number, Number, Function);
-plaidClient.getInstitutions(count, offset, cb);
+// getInstitutions(Number, Number, Object?, Function);
+plaidClient.getInstitutions(count, offset, options, cb);
 // getInstitutionsById(String, Object?, Function)
 plaidClient.getInstitutionById(institution_id, options, cb);
 // searchInstitutionsByName(String, [String], Object?, Function)
