@@ -818,7 +818,7 @@ describe('plaid.Client', () => {
       });
     });
 
-    describe('payment', () => {
+    describe('payment_initiation', () => {
       const address = {
         street: ['street name 999'],
         city: 'city',
