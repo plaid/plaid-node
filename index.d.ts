@@ -618,7 +618,7 @@ declare module 'plaid' {
     amount: PaymentAmount;
     status: string;
     last_status_update: Iso8601DateTimeString;
-    payment_token_expiration_time: Iso8601DateTimeString;
+    payment_token_expiration_time: Iso8601DateTimeString | null;
     recipient_id: string;
   }
 
