@@ -920,7 +920,6 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.payments).to.be.ok();
-          expect(response.next_cursor).to.be.ok();
 
           cb();
         });
