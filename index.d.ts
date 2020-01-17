@@ -140,6 +140,7 @@ declare module 'plaid' {
     institution_id: string;
     item_id: string;
     webhook: string;
+    consent_expiration_time: Iso8601DateTimeString | null;
   }
 
   interface Credential {
