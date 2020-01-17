@@ -9,6 +9,10 @@ SRC = $(shell find . -name '*.js' -not -path './node_modules/*' -not -path './co
 TSC = $(BIN)/tsc
 TSC_CONFIG = tsconfig.json
 
+ifneq ($(GREP),)
+	MOCHA_GREP = --grep="$(GREP)"
+endif
+
 .PHONY: lint
 lint:
 	@$(JSHINT) -- $(SRC)
@@ -27,7 +31,7 @@ setup:
 
 .PHONY: test
 test: build-ts
-	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 60000
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 60000 $(MOCHA_GREP)
 
 
 # verify that tsc can build our definition file
