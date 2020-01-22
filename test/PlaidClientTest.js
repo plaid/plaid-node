@@ -215,7 +215,7 @@ describe('plaid.Client', () => {
 
     describe('product access', () => {
 
-      it('item', cb => {
+      it('gets item', cb => {
         pCl.getItem(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -224,6 +224,23 @@ describe('plaid.Client', () => {
           cb();
         });
       });
+
+      it('imports item', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {},
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse['access_token']).to.be.ok();
+            cb();
+          }
+        )
+      })
 
       it('accounts', cb => {
         pCl.getAccounts(testAccessToken, {}, (err, successResponse) => {

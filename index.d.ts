@@ -52,6 +52,10 @@ declare module 'plaid' {
 
   type AssetReportRefreshOptions = AssetReportCreateOptions;
 
+  interface WebhookOptions {
+    webhook?: string;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -60,12 +64,12 @@ declare module 'plaid' {
     name: string | null;
     official_name: string | null;
     subtype: string | null;
-    type: string  | null;
+    type: string | null;
     verification_status:
-      'pending_automatic_verification' |
-      'pending_manual_verification' |
-      'manually_verified' |
-      null;
+      | 'pending_automatic_verification'
+      | 'pending_manual_verification'
+      | 'manually_verified'
+      | null;
   }
 
   interface Account extends AccountCommon {
@@ -270,7 +274,7 @@ declare module 'plaid' {
     payment_processor: string | null;
     ppd_id: string | null;
     reason: string | null;
-    reference_number: string | null
+    reference_number: string | null;
   }
 
   interface Transaction {
@@ -465,12 +469,12 @@ declare module 'plaid' {
       eft: Array<EFTNumbers>;
       international: Array<InternationalNumbers>;
       bacs: Array<BACSNumbers>;
-    }
+    };
   }
 
   interface CreditDetailsResponse extends AccountsResponse {}
 
-  interface HoldingsResponse extends InvestmentsResponse{
+  interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
   }
   interface InvestmentTransactionsResponse extends InvestmentsResponse {
@@ -489,7 +493,7 @@ declare module 'plaid' {
   interface LiabilitiesResponse extends AccountsResponse {
     liabilities: {
       student: Array<StudentLoanLiability>;
-    }
+    };
   }
 
   interface ItemResponse extends BaseResponse {
@@ -524,11 +528,13 @@ declare module 'plaid' {
     reset_login: true;
   }
 
-  interface GetInstitutionsResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionsResponse<T extends Institution>
+    extends BaseResponse {
     institutions: Array<T>;
   }
 
-  interface GetInstitutionByIdResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionByIdResponse<T extends Institution>
+    extends BaseResponse {
     institution: T;
   }
 
@@ -636,45 +642,52 @@ declare module 'plaid' {
   }
 
   class Client {
-    constructor (
+    constructor(
       clientId: string,
       secret: string,
       publicKey: string,
       env: string,
       options?: ClientOptions,
-    )
+    );
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
-    exchangePublicToken(publicToken: string,
-                        cb: Callback<TokenResponse>,
+    exchangePublicToken(
+      publicToken: string,
+      cb: Callback<TokenResponse>,
     ): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
-                         cb: Callback<CreateProcessorTokenResponse>,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string,
+      cb: Callback<CreateProcessorTokenResponse>,
     ): void;
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string,
     ): Promise<CreateProcessorTokenResponse>;
 
-    createStripeToken(accessToken: string,
-                      accountId: string,
-                      cb: Callback<CreateStripeTokenResponse>,
+    createStripeToken(
+      accessToken: string,
+      accountId: string,
+      cb: Callback<CreateStripeTokenResponse>,
     ): void;
-    createStripeToken(accessToken: string,
-                      accountId: string,
+    createStripeToken(
+      accessToken: string,
+      accountId: string,
     ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
-    updateAccessTokenVersion(legacyAccessToken: string,
+    updateAccessTokenVersion(
+      legacyAccessToken: string,
     ): Promise<TokenResponse>;
-    updateAccessTokenVersion(legacyAccessToken: string,
-                             cb: Callback<TokenResponse>,
+    updateAccessTokenVersion(
+      legacyAccessToken: string,
+      cb: Callback<TokenResponse>,
     ): void;
 
     deleteItem: AccessTokenFn<ItemDeleteResponse>;
@@ -683,56 +696,78 @@ declare module 'plaid' {
 
     getItem: AccessTokenFn<ItemResponse>;
 
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string,string>,
+      options?: WebhookOptions,
+    ): void;
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string,string>,
+      cb: Callback<TokenResponse>,
+    ): void;
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string, string>,
+      options: WebhookOptions,
+      cb: Callback<TokenResponse>,
+    ): void;
+
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string,
     ): Promise<ItemResponse>;
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
-                      cb: Callback<ItemResponse>,
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string,
+      cb: Callback<ItemResponse>,
     ): void;
 
-    getAccounts(accessToken: string,
-                options?: ItemRequestOptions,
+    getAccounts(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AccountsResponse>;
-    getAccounts(accessToken: string,
-                cb: Callback<AccountsResponse>,
-    ): void;
-    getAccounts(accessToken: string,
-                options: ItemRequestOptions,
-                cb: Callback<AccountsResponse>,
+    getAccounts(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getAccounts(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>,
     ): void;
 
-    getBalance(accessToken: string,
-               options?: ItemRequestOptions,
+    getBalance(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AccountsResponse>;
-    getBalance(accessToken: string,
-               cb: Callback<AccountsResponse>,
-    ): void;
-    getBalance(accessToken: string,
-               options: ItemRequestOptions,
-               cb: Callback<AccountsResponse>,
+    getBalance(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getBalance(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>,
     ): void;
 
-    getAuth(accessToken: string,
-            options?: ItemRequestOptions,
+    getAuth(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AuthResponse>;
-    getAuth(accessToken: string,
-            cb: Callback<AuthResponse>,
-    ): void;
-    getAuth(accessToken: string,
-            options: ItemRequestOptions,
-            cb: Callback<AuthResponse>,
+    getAuth(accessToken: string, cb: Callback<AuthResponse>): void;
+    getAuth(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AuthResponse>,
     ): void;
 
-    getLiabilities(accessToken: string,
-                   options?: ItemRequestOptions,
+    getLiabilities(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<LiabilitiesResponse>;
-    getLiabilities(accessToken: string,
-                   cb: Callback<LiabilitiesResponse>,
+    getLiabilities(
+      accessToken: string,
+      cb: Callback<LiabilitiesResponse>,
     ): void;
-    getLiabilities(accessToken: string,
-                   options: ItemRequestOptions,
-                   cb: Callback<LiabilitiesResponse>,
+    getLiabilities(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<LiabilitiesResponse>,
     ): void;
 
     // getIdentity(String, Function)
@@ -744,179 +779,242 @@ declare module 'plaid' {
     // getHoldings(String, Function)
     getHoldings: AccessTokenFn<HoldingsResponse>;
     // getInvestmentTransactions(String, Date, Date, Function)
-    getInvestmentTransactions(accessToken: string,
-                              startDate: Iso8601DateString,
-                              endDate: Iso8601DateString,
-                              options?: InvestmentTransactionsRequestOptions,
+    getInvestmentTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: InvestmentTransactionsRequestOptions,
     ): Promise<InvestmentTransactionsResponse>;
     // createAssetReport([String], Number, Object, Function)
-    createAssetReport(access_tokens: Array<string>,
-                      days_requested: number,
-                      options: AssetReportCreateOptions,
-                      cb: Callback<AssetReportCreateResponse>): void;
+    createAssetReport(
+      access_tokens: Array<string>,
+      days_requested: number,
+      options: AssetReportCreateOptions,
+      cb: Callback<AssetReportCreateResponse>,
+    ): void;
 
-    createAssetReport(access_tokens: Array<string>,
-                      days_requested: number,
-                      options: AssetReportCreateOptions): Promise<AssetReportCreateResponse>;
+    createAssetReport(
+      access_tokens: Array<string>,
+      days_requested: number,
+      options: AssetReportCreateOptions,
+    ): Promise<AssetReportCreateResponse>;
 
     // filterAssetReport(String, [String], Function)
-    filterAssetReport(asset_report_token: string,
-                      account_ids_to_exclude: Array<string>,
-                      cb: Callback<AssetReportFilterResponse>): void;
+    filterAssetReport(
+      asset_report_token: string,
+      account_ids_to_exclude: Array<string>,
+      cb: Callback<AssetReportFilterResponse>,
+    ): void;
 
-    filterAssetReport(asset_report_token: string,
-                      account_ids_to_exclude: Array<string>): Promise<AssetReportFilterResponse>;
+    filterAssetReport(
+      asset_report_token: string,
+      account_ids_to_exclude: Array<string>,
+    ): Promise<AssetReportFilterResponse>;
 
     // refreshAssetReport(String, Number, Object, Function)
-    refreshAssetReport(asset_report_token: string,
-                       days_requested: number,
-                       options: AssetReportRefreshOptions,
-                       cb: Callback<AssetReportRefreshResponse>): void;
+    refreshAssetReport(
+      asset_report_token: string,
+      days_requested: number,
+      options: AssetReportRefreshOptions,
+      cb: Callback<AssetReportRefreshResponse>,
+    ): void;
 
-    refreshAssetReport(asset_report_token: string,
-                       days_requested: number,
-                       options?: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
+    refreshAssetReport(
+      asset_report_token: string,
+      days_requested: number,
+      options?: AssetReportRefreshOptions,
+    ): Promise<AssetReportRefreshResponse>;
 
     // getAssetReport(String, Boolean, Function)
-    getAssetReport(asset_report_token: string,
-                   include_insights: boolean,
-                   cb: Callback<AssetReportGetResponse>): void;
+    getAssetReport(
+      asset_report_token: string,
+      include_insights: boolean,
+      cb: Callback<AssetReportGetResponse>,
+    ): void;
 
-    getAssetReport(asset_report_token: string,
-                   include_insights: boolean): Promise<AssetReportGetResponse>;
+    getAssetReport(
+      asset_report_token: string,
+      include_insights: boolean,
+    ): Promise<AssetReportGetResponse>;
 
     // getAssetReportPdf(String, Function)
-    getAssetReportPdf(asset_report_token: string,
-                      cb: Callback<AssetReportGetPdfResponse>): void;
+    getAssetReportPdf(
+      asset_report_token: string,
+      cb: Callback<AssetReportGetPdfResponse>,
+    ): void;
 
-    getAssetReportPdf(asset_report_token: string): Promise<AssetReportGetPdfResponse>;
+    getAssetReportPdf(
+      asset_report_token: string,
+    ): Promise<AssetReportGetPdfResponse>;
 
     // createAuditCopy(String, String, Function)
-    createAuditCopy(asset_report_token: string,
-                    auditor_id: string,
-                    cb: Callback<AuditCopyCreateResponse>): void;
+    createAuditCopy(
+      asset_report_token: string,
+      auditor_id: string,
+      cb: Callback<AuditCopyCreateResponse>,
+    ): void;
 
-    createAuditCopy(asset_report_token: string,
-                    auditor_id: string): Promise<AuditCopyCreateResponse>;
+    createAuditCopy(
+      asset_report_token: string,
+      auditor_id: string,
+    ): Promise<AuditCopyCreateResponse>;
 
     // getAuditCopy(String, Function)
-    getAuditCopy(audit_copy_token: string,
-                 cb: Callback<AuditCopyGetResponse>): void;
+    getAuditCopy(
+      audit_copy_token: string,
+      cb: Callback<AuditCopyGetResponse>,
+    ): void;
 
     getAuditCopy(audit_copy_token: string): Promise<AuditCopyGetResponse>;
 
     // removeAuditCopy(String, Function)
-    removeAuditCopy(audit_copy_token: string,
-                    cb: Callback<AuditCopyRemoveResponse>): void;
+    removeAuditCopy(
+      audit_copy_token: string,
+      cb: Callback<AuditCopyRemoveResponse>,
+    ): void;
 
-    removeAuditCopy(audit_copy_token: string): Promise<AuditCopyRemoveResponse>;
+    removeAuditCopy(
+      audit_copy_token: string,
+    ): Promise<AuditCopyRemoveResponse>;
 
     // removeAssetReport(String, Function)
-    removeAssetReport(asset_report_token: string,
-                      cb: Callback<AssetReportRemoveResponse>): void;
+    removeAssetReport(
+      asset_report_token: string,
+      cb: Callback<AssetReportRemoveResponse>,
+    ): void;
 
-    removeAssetReport(asset_report_token: string): Promise<AssetReportRemoveResponse>;
+    removeAssetReport(
+      asset_report_token: string,
+    ): Promise<AssetReportRemoveResponse>;
 
-    createPaymentRecipient(name: string,
-                           iban: string,
-                           address: PaymentRecipientAddress,
-                           cb: Callback<PaymentRecipientCreateResponse>): void;
+    createPaymentRecipient(
+      name: string,
+      iban: string,
+      address: PaymentRecipientAddress,
+      cb: Callback<PaymentRecipientCreateResponse>,
+    ): void;
 
-    createPaymentRecipient(name: string,
-                          iban: string,
-                          address: PaymentRecipientAddress): Promise<PaymentRecipientCreateResponse>;
+    createPaymentRecipient(
+      name: string,
+      iban: string,
+      address: PaymentRecipientAddress,
+    ): Promise<PaymentRecipientCreateResponse>;
 
-    getPaymentRecipient(recipient_id: string,
-                        cb: Callback<PaymentRecipientGetResponse>): void;
+    getPaymentRecipient(
+      recipient_id: string,
+      cb: Callback<PaymentRecipientGetResponse>,
+    ): void;
 
-    getPaymentRecipient(recipient_id: string): Promise<PaymentRecipientGetResponse>;
+    getPaymentRecipient(
+      recipient_id: string,
+    ): Promise<PaymentRecipientGetResponse>;
 
     listPaymentRecipients(cb: Callback<PaymentRecipientListResponse>): void;
 
     listPaymentRecipients(): Promise<PaymentRecipientListResponse>;
 
-    createPayment(recipient_id: string,
-                  reference: string,
-                  amount: PaymentAmount,
-                  cb: Callback<PaymentCreateResponse>): void;
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+      cb: Callback<PaymentCreateResponse>,
+    ): void;
 
-    createPayment(recipient_id: string,
-                  reference: string,
-                  amount: PaymentAmount): Promise<PaymentCreateResponse>;
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+    ): Promise<PaymentCreateResponse>;
 
-    createPaymentToken(payment_id: string,
-                       cb: Callback<PaymentTokenCreateResponse>): void;
+    createPaymentToken(
+      payment_id: string,
+      cb: Callback<PaymentTokenCreateResponse>,
+    ): void;
 
-    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
+    createPaymentToken(
+      payment_id: string,
+    ): Promise<PaymentTokenCreateResponse>;
 
-    getPayment(payment_id: string,
-               cb: Callback<PaymentGetResponse>): void;
+    getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 
     getPayment(payment_id: string): Promise<PaymentGetResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options?: TransactionsRequestOptions,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: TransactionsRequestOptions,
     ): Promise<TransactionsResponse>;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      cb: Callback<TransactionsResponse>,
     ): void;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options: TransactionsRequestOptions,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options: TransactionsRequestOptions,
+      cb: Callback<TransactionsResponse>,
     ): void;
 
     // getAllTransactions(String, Date, Date, Object?, Function)
-    getAllTransactions(accessToken: string,
-                       startDate: Iso8601DateString,
-                       endDate: Iso8601DateString,
-                       options?: GetAllTransactionsRequestOptions,
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: GetAllTransactionsRequestOptions,
     ): Promise<TransactionsAllResponse>;
-    getAllTransactions(accessToken: string,
-                       startDate: Iso8601DateString,
-                       endDate: Iso8601DateString,
-                       cb: Callback<TransactionsAllResponse>,
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      cb: Callback<TransactionsAllResponse>,
     ): void;
-    getAllTransactions(accessToken: string,
-                       startDate: Iso8601DateString,
-                       endDate: Iso8601DateString,
-                       options: GetAllTransactionsRequestOptions,
-                       cb: Callback<TransactionsAllResponse>,
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options: GetAllTransactionsRequestOptions,
+      cb: Callback<TransactionsAllResponse>,
     ): void;
 
-    getInstitutions(count: number,
-                    offset: number,
+    getInstitutions(
+      count: number,
+      offset: number,
     ): Promise<GetInstitutionsResponse<Institution>>;
-    getInstitutions(count: number,
-                    offset: number,
-                    cb: Callback<GetInstitutionsResponse<Institution>>,
+    getInstitutions(
+      count: number,
+      offset: number,
+      cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
-    getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: Object,
+    getInstitutionById<T extends Institution>(
+      institutionId: string,
+      options?: Object,
     ): Promise<GetInstitutionByIdResponse<T>>;
-    getInstitutionById(institutionId: string,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    getInstitutionById(
+      institutionId: string,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
-    getInstitutionById(institutionId: string,
-                        options: Object,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    getInstitutionById(
+      institutionId: string,
+      options: Object,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
-                             cb: Callback<GetInstitutionsResponse<Institution>>,
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object,
+      cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
     getCategories(): Promise<CategoriesResponse>;
