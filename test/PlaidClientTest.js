@@ -225,7 +225,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('imports item', cb => {
+      it('imports item without option', cb => {
         pCl.importItem(
           ['identity', 'auth'],
           {
@@ -233,6 +233,25 @@ describe('plaid.Client', () => {
             auth_token: 'pass_good',
           },
           {},
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse['access_token']).to.be.ok();
+            cb();
+          }
+        )
+      })
+
+      it('imports item with option', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {
+            webhook: 'https://plaid.com/webhook-test',
+          },
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
