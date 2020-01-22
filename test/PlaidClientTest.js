@@ -1051,6 +1051,14 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.key).to.be.ok();
+          expect(successResponse.key.alg).to.be.ok();
+          expect(successResponse.key.created_at).to.be.ok();
+          expect(successResponse.key.crv).to.be.ok();
+          expect(successResponse.key.kid).to.be.ok();
+          expect(successResponse.key.kty).to.be.ok();
+          expect(successResponse.key.use).to.be.ok();
+          expect(successResponse.key.x).to.be.ok();
+          expect(successResponse.key.y).to.be.ok();
 
           cb();
         });
