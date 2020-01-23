@@ -1,4 +1,4 @@
-## 4.2.0
+## 4.4.0
 
 - Add support for new UK Payment Initiation product ([#232](https://github.com/plaid/plaid-node/pull/232))
   - `/payment_initiation/recipient/create`
