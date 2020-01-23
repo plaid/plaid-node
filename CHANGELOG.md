@@ -1,3 +1,15 @@
+## 4.2.0
+
+- Add support for new UK Payment Initiation product ([#232](https://github.com/plaid/plaid-node/pull/232))
+  - `/payment_initiation/recipient/create`
+  - `/payment_initiation/recipient/get`
+  - `/payment_initiation/recipient/list`
+  - `/payment_initiation/payment/create`
+  - `/payment_initiation/payment/token/create`
+  - `/payment_initiation/payment/get`
+  - `/payment_initiation/payment/list`
+- Add `consent_expiration_time` to the Item interface ([#233](https://github.com/plaid/plaid-node/pull/233))
+
 ## 4.1.0
 
 - Add support for new Investments product ([#205](https://github.com/plaid/plaid-node/issues/205))
