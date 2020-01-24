@@ -973,6 +973,84 @@ describe('plaid.Client', () => {
         ], cb);
       });
     });
+    describe('deposit switch', () => {
+      const getAccessToken = (cb) => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {'user_id': 'user_good', 'auth_token': 'pass_good'},
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.access_token).to.be.ok();
+            cb(null, response.access_token);
+          });
+      };
+
+      const getAccountId = (access_token, cb) => {
+        pCl.getAccounts(access_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response['accounts']).to.be.ok();
+          cb(null,
+            {
+               account_id: response['accounts'][0]['account_id'],
+               access_token: access_token,
+            },
+          );
+        });
+      }
+
+      const createDepositSwitch = (switch_params, cb) => {
+        pCl.createDepositSwitch(
+          switch_params['account_id'],
+          switch_params['access_token'],
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response['deposit_switch_id']).to.be.ok();
+            cb(null, response['deposit_switch_id']);
+        });
+      }
+
+      const getDepositSwitch = (deposit_switch_id, cb) => {
+        pCl.getDepositSwitch(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response['deposit_switch_id']).to.be.ok();
+            expect(response['target_item_id']).to.be.ok();
+            expect(response['target_account_id']).to.be.ok();
+            expect(response['date_created']).to.be.ok();
+            expect(response['state']).to.be.ok();
+            cb(null, deposit_switch_id);
+          }
+        );
+      }
+
+      const createDepositSwitchToken = (deposit_switch_id, cb) => {
+        pCl.createDepositSwitchToken(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response['deposit_switch_token']).to.be.ok();
+            expect(response['deposit_switch_token_expiration_time']).to.be.ok();
+            cb(null, response['deposit_switch_token']);
+          }
+        );
+      }
+
+      it('successfully goes through the entire deposit switch flow', cb => {
+        async.waterfall([
+          getAccessToken,
+          getAccountId,
+          createDepositSwitch,
+          getDepositSwitch,
+          createDepositSwitchToken,
+        ], cb);
+      });
+    });
 
     describe('institutions', () => {
 
