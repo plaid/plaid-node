@@ -239,8 +239,8 @@ describe('plaid.Client', () => {
             expect(successResponse['access_token']).to.be.ok();
             cb();
           }
-        )
-      })
+        );
+      });
 
       it('imports item with option', cb => {
         pCl.importItem(
@@ -258,8 +258,8 @@ describe('plaid.Client', () => {
             expect(successResponse['access_token']).to.be.ok();
             cb();
           }
-        )
-      })
+        );
+      });
 
       it('accounts', cb => {
         pCl.getAccounts(testAccessToken, {}, (err, successResponse) => {
@@ -990,27 +990,27 @@ describe('plaid.Client', () => {
         pCl.getAccounts(access_token, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
-          expect(response['accounts']).to.be.ok();
+          expect(response.accounts.to.be.ok());
           cb(null,
             {
-               account_id: response['accounts'][0]['account_id'],
+               account_id: response.accounts[0].account_id,
                access_token: access_token,
-            },
+            }
           );
         });
-      }
+      };
 
       const createDepositSwitch = (switch_params, cb) => {
         pCl.createDepositSwitch(
-          switch_params['account_id'],
-          switch_params['access_token'],
+          switch_params.account_id,
+          switch_params.access_token,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
-            expect(response['deposit_switch_id']).to.be.ok();
-            cb(null, response['deposit_switch_id']);
+            expect(response.deposit_switch_id).to.be.ok();
+            cb(null, response.deposit_switch_id);
         });
-      }
+      };
 
       const getDepositSwitch = (deposit_switch_id, cb) => {
         pCl.getDepositSwitch(
@@ -1018,15 +1018,15 @@ describe('plaid.Client', () => {
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
-            expect(response['deposit_switch_id']).to.be.ok();
-            expect(response['target_item_id']).to.be.ok();
-            expect(response['target_account_id']).to.be.ok();
-            expect(response['date_created']).to.be.ok();
-            expect(response['state']).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            expect(response.target_item_id).to.be.ok();
+            expect(response.target_account_id).to.be.ok();
+            expect(response.date_created).to.be.ok();
+            expect(response.state).to.be.ok();
             cb(null, deposit_switch_id);
           }
         );
-      }
+      };
 
       const createDepositSwitchToken = (deposit_switch_id, cb) => {
         pCl.createDepositSwitchToken(
@@ -1034,12 +1034,12 @@ describe('plaid.Client', () => {
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
-            expect(response['deposit_switch_token']).to.be.ok();
-            expect(response['deposit_switch_token_expiration_time']).to.be.ok();
-            cb(null, response['deposit_switch_token']);
+            expect(response.deposit_switch_token).to.be.ok();
+            expect(response.deposit_switch_token_expiration_time).to.be.ok();
+            cb(null, response.deposit_switch_token);
           }
         );
-      }
+      };
 
       it('successfully goes through the entire deposit switch flow', cb => {
         async.waterfall([
