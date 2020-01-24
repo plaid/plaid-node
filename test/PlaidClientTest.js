@@ -236,7 +236,7 @@ describe('plaid.Client', () => {
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
-            expect(successResponse['access_token']).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
             cb();
           }
         );
@@ -255,7 +255,7 @@ describe('plaid.Client', () => {
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
-            expect(successResponse['access_token']).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
             cb();
           }
         );
