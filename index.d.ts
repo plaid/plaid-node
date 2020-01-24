@@ -629,6 +629,28 @@ declare module 'plaid' {
     recipient_id: string;
   }
 
+  interface DepositSwitchGetResponse extends BaseResponse {
+    deposit_switch_id: string;
+    target_item_id: string;
+    target_account_id: string;
+    state: string;
+    date_created: string;
+    is_allocated_remainder: boolean;
+    account_has_multiple_allocations: boolean;
+    percent_allocated: number;
+    amount_allocated: number;
+    date_completed: string;
+  }
+
+  interface DepositSwitchCreateResponse extends BaseResponse {
+    deposit_switch_id: string;
+  }
+
+  interface DepositSwitchTokenCreateResponse extends BaseResponse {
+    deposit_switch_token: string;
+    deposit_switch_token_expiration_time: string;
+  }
+
   interface SandboxPublicTokenCreateResponse extends BaseResponse {
     public_token: string;
   }
@@ -979,6 +1001,54 @@ declare module 'plaid' {
       endDate: Iso8601DateString,
       options: GetAllTransactionsRequestOptions,
       cb: Callback<TransactionsAllResponse>,
+    ): void;
+
+    // getDepositSwitch(String, Object?, Function)
+    getDepositSwitch(
+      depositSwitchId: string,
+      options?: Object,
+    ): void;
+    getDepositSwitch(
+      depositSwitchId: string,
+      cb: Callback<DepositSwitchGetResponse>,
+    ): void;
+    getDepositSwitch(
+      depositSwitchId: string,
+      options: Object,
+      cb: Callback<DepositSwitchGetResponse>,
+    ): void;
+
+    // createDepositSwitch(String, String, Object?, Function)
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      options?: Object,
+    ): void;
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      cb: Callback<DepositSwitchCreateResponse>,
+    ): void;
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      options: Object,
+      cb: Callback<DepositSwitchCreateResponse>,
+    ): void;
+
+    // createDepositSwitchToken(String, Object?, Function)
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      options?: Object,
+    ): void;
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      cb: Callback<DepositSwitchTokenCreateResponse>,
+    ): void;
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      options: Object,
+      cb: Callback<DepositSwitchTokenCreateResponse>,
     ): void;
 
     getInstitutions(
