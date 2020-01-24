@@ -990,7 +990,7 @@ describe('plaid.Client', () => {
         pCl.getAccounts(access_token, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
-          expect(response.accounts.to.be.ok());
+          expect(response.accounts).to.be.ok();
           cb(null,
             {
                account_id: response.accounts[0].account_id,
