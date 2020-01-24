@@ -115,10 +115,10 @@ plaidClient.getCreditDetails(access_token, cb);
 // getLiabilities(String, Function)
 plaidClient.getLiabilities(access_token, cb);
 
-// createDepositSwitch(String, String, Object?, Function)
-plaidClient.createDepositSwitch(target_account_id, target_access_token, options, cb);
 // getDepositSwitch(String, Object?, Function)
 plaidClient.getDepositSwitch(deposit_switch_id, options, cb)
+// createDepositSwitch(String, String, Object?, Function)
+plaidClient.createDepositSwitch(target_account_id, target_access_token, options, cb);
 // createDepositSwitchToken(String, Function)
 plaidClient.createDepositSwitchToken(deposit_switch_id, options, cb)
 
