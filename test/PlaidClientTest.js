@@ -991,12 +991,11 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.accounts).to.be.ok();
-          cb(null,
-            {
-              account_id: response.accounts.filter(a => a.type === 'depository')[0].account_id,
-               access_token: access_token,
-            }
-          );
+          cb(null, {
+            account_id: response.accounts.filter(a => a.type === 'depository')[0]
+              .account_id,
+            access_token: access_token,
+          });
         });
       };
 
