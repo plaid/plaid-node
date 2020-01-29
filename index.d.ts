@@ -22,6 +22,10 @@ declare module 'plaid' {
     account_ids?: Array<string>;
   }
 
+  interface ItemImportResponse extends BaseResponse {
+    access_token: string;
+  }
+
   interface TransactionsRequestOptions extends ItemRequestOptions {
     count?: number;
     offset?: number;
@@ -722,18 +726,18 @@ declare module 'plaid' {
       products: Array<string>,
       userAuth: Map<string,string>,
       options?: WebhookOptions,
-    ): void;
+    ): Promise<ItemImportResponse>;
     importItem(
       products: Array<string>,
       userAuth: Map<string,string>,
-      cb: Callback<TokenResponse>,
-    ): void;
+      cb: Callback<ItemImportResponse>,
+    ): Promise<ItemImportResponse>;
     importItem(
       products: Array<string>,
       userAuth: Map<string, string>,
       options: WebhookOptions,
-      cb: Callback<TokenResponse>,
-    ): void;
+      cb: Callback<ItemImportResponse>,
+    ): Promise<ItemImportResponse>;
 
     updateItemWebhook(
       accessToken: string,
@@ -1007,49 +1011,49 @@ declare module 'plaid' {
     getDepositSwitch(
       depositSwitchId: string,
       options?: Object,
-    ): void;
+    ): Promise<DepositSwitchGetResponse>;
     getDepositSwitch(
       depositSwitchId: string,
       cb: Callback<DepositSwitchGetResponse>,
-    ): void;
+    ): Promise<DepositSwitchGetResponse>;
     getDepositSwitch(
       depositSwitchId: string,
       options: Object,
       cb: Callback<DepositSwitchGetResponse>,
-    ): void;
+    ): Promise<DepositSwitchGetResponse>;
 
     // createDepositSwitch(String, String, Object?, Function)
     createDepositSwitch(
       targetAccountId: string,
       targetAccessToken: string,
       options?: Object,
-    ): void;
+    ): Promise<DepositSwitchCreateResponse>;
     createDepositSwitch(
       targetAccountId: string,
       targetAccessToken: string,
       cb: Callback<DepositSwitchCreateResponse>,
-    ): void;
+    ): Promise<DepositSwitchCreateResponse>;
     createDepositSwitch(
       targetAccountId: string,
       targetAccessToken: string,
       options: Object,
       cb: Callback<DepositSwitchCreateResponse>,
-    ): void;
+    ): Promise<DepositSwitchCreateResponse>;
 
     // createDepositSwitchToken(String, Object?, Function)
     createDepositSwitchToken(
       depositSwitchId: string,
       options?: Object,
-    ): void;
+    ): Promise<DepositSwitchTokenCreateResponse>;
     createDepositSwitchToken(
       depositSwitchId: string,
       cb: Callback<DepositSwitchTokenCreateResponse>,
-    ): void;
+    ): Promise<DepositSwitchTokenCreateResponse>;
     createDepositSwitchToken(
       depositSwitchId: string,
       options: Object,
       cb: Callback<DepositSwitchTokenCreateResponse>,
-    ): void;
+    ): Promise<DepositSwitchTokenCreateResponse>
 
     getInstitutions(
       count: number,
