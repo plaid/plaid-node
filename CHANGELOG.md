@@ -1,3 +1,10 @@
+## 4.5.0
+- Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
+  - `/item/import`
+  - `/deposit_switch/create`
+  - `/deposit_switch/get`
+  - `/deposit_switch/token/create`
+
 ## 4.4.0
 
 - Add support for new UK Payment Initiation product ([#232](https://github.com/plaid/plaid-node/pull/232))
