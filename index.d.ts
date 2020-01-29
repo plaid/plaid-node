@@ -731,13 +731,13 @@ declare module 'plaid' {
       products: Array<string>,
       userAuth: Map<string,string>,
       cb: Callback<ItemImportResponse>,
-    ): Promise<ItemImportResponse>;
+    ): void;
     importItem(
       products: Array<string>,
       userAuth: Map<string, string>,
       options: WebhookOptions,
       cb: Callback<ItemImportResponse>,
-    ): Promise<ItemImportResponse>;
+    ): void;
 
     updateItemWebhook(
       accessToken: string,
@@ -1015,12 +1015,12 @@ declare module 'plaid' {
     getDepositSwitch(
       depositSwitchId: string,
       cb: Callback<DepositSwitchGetResponse>,
-    ): Promise<DepositSwitchGetResponse>;
+    ): void;
     getDepositSwitch(
       depositSwitchId: string,
       options: Object,
       cb: Callback<DepositSwitchGetResponse>,
-    ): Promise<DepositSwitchGetResponse>;
+    ): void;
 
     // createDepositSwitch(String, String, Object?, Function)
     createDepositSwitch(
@@ -1032,13 +1032,13 @@ declare module 'plaid' {
       targetAccountId: string,
       targetAccessToken: string,
       cb: Callback<DepositSwitchCreateResponse>,
-    ): Promise<DepositSwitchCreateResponse>;
+    ): void;
     createDepositSwitch(
       targetAccountId: string,
       targetAccessToken: string,
       options: Object,
       cb: Callback<DepositSwitchCreateResponse>,
-    ): Promise<DepositSwitchCreateResponse>;
+    ): void;
 
     // createDepositSwitchToken(String, Object?, Function)
     createDepositSwitchToken(
@@ -1048,12 +1048,12 @@ declare module 'plaid' {
     createDepositSwitchToken(
       depositSwitchId: string,
       cb: Callback<DepositSwitchTokenCreateResponse>,
-    ): Promise<DepositSwitchTokenCreateResponse>;
+    ): void;
     createDepositSwitchToken(
       depositSwitchId: string,
       options: Object,
       cb: Callback<DepositSwitchTokenCreateResponse>,
-    ): Promise<DepositSwitchTokenCreateResponse>
+    ): void;
 
     getInstitutions(
       count: number,
