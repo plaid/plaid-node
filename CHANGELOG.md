@@ -1,5 +1,5 @@
 ## 4.5.0
-- Add support for new Deposit Switch product (#237)
+- Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
   - `/item/import`
   - `/deposit_switch/create`
   - `/deposit_switch/get`
