@@ -680,7 +680,7 @@ declare module 'plaid' {
   }
 
   interface ClientOptions extends CoreOptions {
-    version?: '2019-05-29';
+    version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
 
   class Client {
