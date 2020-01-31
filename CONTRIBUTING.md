@@ -23,6 +23,8 @@ Instructions for contributing to [plaid-node][1]. A node.js client library for t
 
 ```console
 $ make test
+# Running specific tests
+$ GREP='constructor|item|assets' make test
 ```
 
 Code coverage information is written to `/coverage`.
