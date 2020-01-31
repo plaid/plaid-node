@@ -151,6 +151,21 @@ declare module 'plaid' {
     consent_expiration_time: Iso8601DateTimeString | null;
   }
 
+  interface ItemStatus {
+    transactions: TransactionsStatus;
+    last_webhook: WebhookStatus | null;
+  }
+
+  interface TransactionsStatus {
+    last_successful_update: string | null;
+    last_failed_update: string | null;
+  }
+
+  interface WebhookStatus {
+    sent_at: string;
+    code_sent: string;
+  }
+
   interface Credential {
     name: string;
     label: string;
@@ -502,6 +517,7 @@ declare module 'plaid' {
 
   interface ItemResponse extends BaseResponse {
     item: Item;
+    status: ItemStatus;
   }
 
   interface CreatePublicTokenResponse extends BaseResponse {
