@@ -22,8 +22,13 @@ describe('plaid.Client', () => {
 
   let pCl;
   beforeEach(() => {
-    pCl = new plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY,
-      plaid.environments.sandbox);
+    pCl = new plaid.Client(
+      CLIENT_ID,
+      SECRET,
+      PUBLIC_KEY,
+      plaid.environments.sandbox,
+      {version: '2019-05-29'}
+    );
   });
 
   describe('constructor', () => {
@@ -210,14 +215,53 @@ describe('plaid.Client', () => {
 
     describe('product access', () => {
 
-      it('item', cb => {
+      it('gets item', cb => {
         pCl.getItem(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
+          expect(successResponse.status).to.be.ok();
+          expect(successResponse.status.transactions).to.be.ok();
+          expect(successResponse.status.last_webhook).to.be(null);
 
           cb();
         });
+      });
+
+      it('imports item without option', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {},
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
+            cb();
+          }
+        );
+      });
+
+      it('imports item with option', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {
+            webhook: 'https://plaid.com/webhook-test',
+          },
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
+            cb();
+          }
+        );
       });
 
       it('accounts', cb => {
@@ -293,8 +337,19 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
-          expect(successResponse.identity).to.be.ok();
-
+          expect(successResponse.accounts).to.be.ok();
+          for (const acc of successResponse.accounts) {
+            expect(acc.owners).to.be.ok();
+            for (const owner of acc.owners) {
+              for (const addr of owner.addresses) {
+                expect(addr.data.country).to.not.be(undefined);
+                expect(addr.data.postal_code).to.not.be(undefined);
+                expect(addr.data.region).to.not.be(undefined);
+                expect(addr.data.street).to.not.be(undefined);
+                expect(addr.data.city).to.not.be(undefined);
+              }
+            }
+          }
           cb();
         });
       });
@@ -310,13 +365,41 @@ describe('plaid.Client', () => {
         });
       });
 
-      it.skip('holdings', cb => {
+      it('liabilities', cb => {
+        pCl.getLiabilities(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.liabilities).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('holdings', cb => {
         pCl.getHoldings(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
           expect(successResponse.accounts).to.be.ok();
           expect(successResponse.holdings).to.be.ok();
+          expect(successResponse.securities).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('investmentTransactions', cb => {
+        pCl.getInvestmentTransactions(
+          testAccessToken, '2019-01-01', '2019-06-10', {},
+          (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.item).to.be.ok();
+          expect(successResponse.accounts).to.be.ok();
+          expect(successResponse.investment_transactions).to.be.an(Array);
+          expect(successResponse.securities).to.be.ok();
 
           cb();
         });
@@ -408,7 +491,10 @@ describe('plaid.Client', () => {
           getAllTransactionsWithRetries(accessToken, now, now, 5,
           (err, transactions) => {
             expect(err).to.be(null);
-            expect(transactions).to.be.an(Array);
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           });
@@ -418,7 +504,10 @@ describe('plaid.Client', () => {
           P.promisify(getAllTransactionsWithRetries)
           (accessToken, now, now, 5).then(
             transactions => {
-            expect(transactions).to.be.an(Array);
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.be.an(Array);
 
             cb();
           }).catch(err => cb(err));
@@ -466,7 +555,10 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 200));
+              expect(transactions.accounts).to.not.be(null);
+              expect(transactions.item).to.not.be(null);
+              expect(transactions.total_transactions).to.not.be(null);
+              expect(transactions.transactions).to.eql(R.range(0, 200));
 
               pCl.getTransactions.restore();
               cb();
@@ -487,7 +579,10 @@ describe('plaid.Client', () => {
             });
 
           pCl.getAllTransactions(accessToken, now, now).then(transactions => {
-            expect(transactions).to.eql(R.range(0, 200));
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.eql(R.range(0, 200));
 
             pCl.getTransactions.restore();
             cb();
@@ -518,7 +613,10 @@ describe('plaid.Client', () => {
           pCl.getAllTransactions(accessToken, now, now,
             (err, transactions) => {
               expect(err).to.be(null);
-              expect(transactions).to.eql(R.range(0, 1200));
+              expect(transactions.accounts).to.not.be(null);
+              expect(transactions.item).to.not.be(null);
+              expect(transactions.total_transactions).to.not.be(null);
+              expect(transactions.transactions).to.eql(R.range(0, 1200));
 
               pCl.getTransactions.restore();
               cb();
@@ -548,7 +646,10 @@ describe('plaid.Client', () => {
 
           getAllTransactionsWithRetries(accessToken, now, now).then(
             transactions => {
-            expect(transactions).to.eql(R.range(0, 1200));
+            expect(transactions.accounts).to.not.be(null);
+            expect(transactions.item).to.not.be(null);
+            expect(transactions.total_transactions).to.not.be(null);
+            expect(transactions.transactions).to.eql(R.range(0, 1200));
 
             pCl.getTransactions.restore();
             cb();
@@ -643,10 +744,25 @@ describe('plaid.Client', () => {
           expect(response).to.be.ok();
           expect(response.report).to.be.ok();
 
-          // The transactions in an Asset Report with Insights should have a
-          // non-null `name` (when available).
-          expect(response.report.items[0].accounts[0].transactions[0].name)
-            .to.not.be(null);
+          for (const item of response.report.items) {
+            for (const account of item.accounts) {
+              // The transactions of an Asset Report with Insights should have
+              // a non-null `name` (when available).
+              for (const transaction of account.transactions) {
+                expect(transaction.name).to.be.ok();
+              }
+
+              for (const owner of account.owners) {
+                for (const addr of owner.addresses) {
+                  expect(addr.data.city).to.be.ok();
+                  expect(addr.data.region).to.be.ok();
+                  expect(addr.data.postal_code).to.be.ok();
+                  expect(addr.data.street).to.be.ok();
+                  expect(addr.data.country).to.be.ok();
+                }
+              }
+            }
+          }
 
           cb(null, asset_report_token, response.report);
         });
@@ -737,6 +853,204 @@ describe('plaid.Client', () => {
           getAuditCopy,
           removeAuditCopy,
           removeAssetReport,
+        ], cb);
+      });
+    });
+
+    describe('payment_initiation', () => {
+      const address = {
+        street: ['street name 999'],
+        city: 'city',
+        postal_code: '99999',
+        country: 'GB',
+      };
+
+      const createPaymentRecipient = (cb) => {
+        pCl.createPaymentRecipient(
+          'John Doe',
+          'GB33BUKB20201555555555',
+          address,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+
+            cb(null, response.recipient_id);
+          });
+      };
+
+      const getPaymentRecipient = (recipient_id, cb) => {
+        pCl.getPaymentRecipient(recipient_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+          expect(response.name).to.be.ok();
+          expect(response.iban).to.be.ok();
+          expect(response.address).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const listPaymentRecipients = (recipient_id, cb) => {
+        pCl.listPaymentRecipients((err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipients).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const createPayment = (recipient_id, cb) => {
+        const amount = {
+          currency: 'GBP',
+          value: 100.00,
+        };
+
+        pCl.createPayment(recipient_id, 'TestPayment', amount,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.status).to.be.ok();
+
+          cb(null, response.payment_id);
+        });
+      };
+
+      const createPaymentToken = (payment_id, cb) => {
+        pCl.createPaymentToken(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+
+          cb(null, payment_id);
+        });
+      };
+
+      const getPayment = (payment_id, cb) => {
+        pCl.getPayment(payment_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.reference).to.be.ok();
+          expect(response.amount).to.be.ok();
+          expect(response.status).to.be.ok();
+          expect(response.last_status_update).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+
+          cb(null);
+        });
+      };
+
+      const listPayments = (cb) => {
+        pCl.listPayments({count: 10}, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payments).to.be.ok();
+
+          cb();
+        });
+      };
+
+      it('successfully goes through the entire flow', cb => {
+        async.waterfall([
+          createPaymentRecipient,
+          getPaymentRecipient,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+    });
+    describe('deposit switch', () => {
+      const getAccessToken = (cb) => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {'user_id': 'user_good', 'auth_token': 'pass_good'},
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.access_token).to.be.ok();
+            cb(null, response.access_token);
+          });
+      };
+
+      const getAccountId = (access_token, cb) => {
+        pCl.getAccounts(access_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.accounts).to.be.ok();
+          cb(null, {
+            account_id: response.accounts.filter(
+              a => a.type === 'depository'
+            )[0].account_id,
+            access_token: access_token,
+          });
+        });
+      };
+
+      const createDepositSwitch = (switch_params, cb) => {
+        pCl.createDepositSwitch(
+          switch_params.account_id,
+          switch_params.access_token,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            cb(null, response.deposit_switch_id);
+        });
+      };
+
+      const getDepositSwitch = (deposit_switch_id, cb) => {
+        pCl.getDepositSwitch(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            expect(response.target_item_id).to.be.ok();
+            expect(response.target_account_id).to.be.ok();
+            expect(response.date_created).to.be.ok();
+            expect(response.state).to.be.ok();
+            cb(null, deposit_switch_id);
+          }
+        );
+      };
+
+      const createDepositSwitchToken = (deposit_switch_id, cb) => {
+        pCl.createDepositSwitchToken(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_token).to.be.ok();
+            expect(response.deposit_switch_token_expiration_time).to.be.ok();
+            cb(null, response.deposit_switch_token);
+          }
+        );
+      };
+
+      it('successfully goes through the entire deposit switch flow', cb => {
+        async.waterfall([
+          getAccessToken,
+          getAccountId,
+          createDepositSwitch,
+          getDepositSwitch,
+          createDepositSwitchToken,
         ], cb);
       });
     });

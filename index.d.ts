@@ -4,6 +4,8 @@ declare module 'plaid' {
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
   type Iso8601DateTimeString = string; // YYYY-MM-DDTHH:MM:SSZ
+  type Iso3166Alpha2CountryString = string; // CC
+  type Iso4217CurrencyString = string; // CCC
 
   interface AccessTokenFn<T> {
     (accessToken: string): Promise<T>;
@@ -20,7 +22,16 @@ declare module 'plaid' {
     account_ids?: Array<string>;
   }
 
+  interface ItemImportResponse extends BaseResponse {
+    access_token: string;
+  }
+
   interface TransactionsRequestOptions extends ItemRequestOptions {
+    count?: number;
+    offset?: number;
+  }
+
+  interface InvestmentTransactionsRequestOptions extends ItemRequestOptions {
     count?: number;
     offset?: number;
   }
@@ -53,6 +64,9 @@ declare module 'plaid' {
     products?: Array<string>;
     country_codes?: Array<string>;
   }
+  interface WebhookOptions {
+    webhook?: string;
+  }
 
   // DATA TYPES //////////////////////////////////////////////////////////////
 
@@ -62,7 +76,12 @@ declare module 'plaid' {
     name: string | null;
     official_name: string | null;
     subtype: string | null;
-    type: string  | null;
+    type: string | null;
+    verification_status:
+      | 'pending_automatic_verification'
+      | 'pending_manual_verification'
+      | 'manually_verified'
+      | null;
   }
 
   interface Account extends AccountCommon {
@@ -71,12 +90,34 @@ declare module 'plaid' {
       current: number | null;
       limit: number | null;
       iso_currency_code: string | null;
-      official_currency_code: string | null;
+      unofficial_currency_code: string | null;
     };
   }
 
+  interface Security {
+    security_id: string;
+    cusip: string | null;
+    sedol: string | null;
+    isin: string | null;
+    institution_security_id: string | null;
+    institution_id: string | null;
+    proxy_security_id: string | null;
+    name: string | null;
+    ticker_symbol: string | null;
+    is_cash_equivalent: boolean | null;
+    type: string | null;
+    close_price: number | null;
+    close_price_as_of: string | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
+  interface AccountWithOwners extends Account {
+    owners: Array<Identity>;
+  }
+
   interface Category {
-    type: string;
+    group: string;
     hierarchy: Array<string>;
     category_id: string;
   }
@@ -115,6 +156,22 @@ declare module 'plaid' {
     institution_id: string;
     item_id: string;
     webhook: string;
+    consent_expiration_time: Iso8601DateTimeString | null;
+  }
+
+  interface ItemStatus {
+    transactions: TransactionsStatus;
+    last_webhook: WebhookStatus | null;
+  }
+
+  interface TransactionsStatus {
+    last_successful_update: string | null;
+    last_failed_update: string | null;
+  }
+
+  interface WebhookStatus {
+    sent_at: string;
+    code_sent: string;
   }
 
   interface Credential {
@@ -130,6 +187,7 @@ declare module 'plaid' {
     mfa: Array<string>;
     name: string;
     products: Array<string>;
+    country_codes: Array<string>;
   }
 
   interface InstitutionWithDisplayData extends Institution {
@@ -145,16 +203,6 @@ declare module 'plaid' {
     logo: string;
     primary_color: string;
     url: string;
-  }
-
-  interface InstitutionWithContactData extends Institution {
-    addresses: Array<{
-      city: string;
-      country: string;
-      state: string;
-      street: Array<string>;
-      zip: string;
-    }>;
   }
 
   interface IncomeStream {
@@ -181,29 +229,17 @@ declare module 'plaid' {
     phone_numbers: Array<PhoneNumber>;
   }
 
-  interface AccountIdentity {
-    addresses: Array<Address>;
-    emails: Array<Email>;
-    names: Array<string>;
-    phone_numbers: Array<PhoneNumber>;
-  }
-
   interface Address {
-    accounts: Array<string>;
-    data: AddressData;
-    primary: boolean;
-  }
-
-  interface AccountAddress {
     data: AddressData;
     primary: boolean;
   }
 
   interface AddressData {
-    city: string;
-    state: string;
-    zip: string;
-    street: string;
+    city: string | null;
+    region: string | null;
+    postal_code: string | null;
+    street: string | null;
+    country: string | null;
   }
 
   interface Email {
@@ -214,11 +250,28 @@ declare module 'plaid' {
 
   interface Holding {
     account_id: string;
-    symbol: string | null;
-    name: string | null;
-    close_price: number | null;
+    security_id: string;
+    institution_value: number | null;
+    institution_price: number | null;
     quantity: number | null;
-    value: number | null;
+    institution_price_as_of: string | null;
+    cost_basis: number | null;
+    iso_currency_code: string | null;
+    unofficial_currency_code: string | null;
+  }
+
+  interface InvestmentTransaction {
+    investment_transaction_id: string;
+    account_id: string;
+    security_id: string;
+    cancel_transaction_id: string;
+    date: Iso8601DateString;
+    name: string | null;
+    quantity: number | null;
+    amount: number | null;
+    price: number | null;
+    fees: number | null;
+    type: string | null;
     iso_currency_code: string | null;
     unofficial_currency_code: string | null;
   }
@@ -234,9 +287,10 @@ declare module 'plaid' {
     city: string | null;
     lat: number | null;
     lon: number | null;
-    state: string | null;
+    region: string | null;
     store_number: string | null;
-    zip: string | null;
+    postal_code: string | null;
+    country: string | null;
   }
 
   interface TransactionPaymentMeta {
@@ -247,7 +301,7 @@ declare module 'plaid' {
     payment_processor: string | null;
     ppd_id: string | null;
     reason: string | null;
-    reference_number: string | null
+    reference_number: string | null;
   }
 
   interface Transaction {
@@ -255,7 +309,7 @@ declare module 'plaid' {
     account_owner: string | null;
     amount: number | null;
     iso_currency_code: string | null;
-    official_currency_code: string | null;
+    unofficial_currency_code: string | null;
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
@@ -336,6 +390,89 @@ declare module 'plaid' {
     branch: string;
   }
 
+  interface InternationalNumbers {
+    account_id: string;
+    iban: string;
+    bic: string;
+  }
+
+  interface BACSNumbers {
+    account_id: string;
+    account: string;
+    sort_code: string;
+  }
+
+  interface StudentLoanStatus {
+    type: string | null;
+    end_date: Iso8601DateString | null;
+  }
+
+  interface StudentLoanRepaymentPlan {
+    type: string;
+    description: string;
+  }
+
+  interface PslfStatus {
+    estimated_eligibility_date: Iso8601DateString | null;
+    payments_made: number | null;
+    payments_remaining: number | null;
+  }
+
+  interface StudentLoanServicerAddress {
+    city: string | null;
+    country: string | null;
+    postal_code: string | null;
+    region: string | null;
+    street: string | null;
+  }
+
+  interface StudentLoanLiability {
+    account_id: string | null;
+    account_number: string | null;
+    disbursement_dates: Array<Iso8601DateString> | null;
+    expected_payoff_date: Iso8601DateString | null;
+    guarantor: string | null;
+    interest_rate_percentage: number | null;
+    is_overdue: boolean | null;
+    last_payment_amount: number | null;
+    last_payment_date: Iso8601DateString | null;
+    last_statement_balance: number | null;
+    last_statement_issue_date: Iso8601DateString | null;
+    loan_name: string | null;
+    loan_status: StudentLoanStatus | null;
+    minimum_payment_amount: number | null;
+    next_payment_due_date: Iso8601DateString | null;
+    origination_date: Iso8601DateString | null;
+    origination_principal_amount: number | null;
+    outstanding_interest_amount: number | null;
+    payment_reference_number: string | null;
+    pslf_status: PslfStatus | null;
+    repayment_plan: StudentLoanRepaymentPlan | null;
+    sequence_number: string | null;
+    servicer_address: StudentLoanServicerAddress | null;
+    ytd_interest_paid: number | null;
+    ytd_principal_paid: number | null;
+  }
+
+  interface PaymentRecipientAddress {
+    street: Array<string>;
+    city: string;
+    postal_code: string;
+    country: Iso3166Alpha2CountryString;
+  }
+
+  interface PaymentRecipient {
+    recipient_id: string;
+    name: string;
+    iban: string;
+    address: PaymentRecipientAddress;
+  }
+
+  interface PaymentAmount {
+    currency: Iso4217CurrencyString;
+    value: number;
+  }
+
   // RESPONSES
 
   interface BaseResponse {
@@ -347,19 +484,29 @@ declare module 'plaid' {
     item: Item;
   }
 
+  interface InvestmentsResponse extends AccountsResponse {
+    securities: Array<Security>;
+  }
+
   interface AuthResponse extends BaseResponse {
     accounts: Array<Account>;
     item: Item;
     numbers: {
       ach: Array<ACHNumbers>;
       eft: Array<EFTNumbers>;
-    }
+      international: Array<InternationalNumbers>;
+      bacs: Array<BACSNumbers>;
+    };
   }
 
   interface CreditDetailsResponse extends AccountsResponse {}
 
-  interface HoldingsResponse extends AccountsResponse {
+  interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
+  }
+  interface InvestmentTransactionsResponse extends InvestmentsResponse {
+    investment_transactions: Array<InvestmentTransaction>;
+    total_investment_transactions: number;
   }
 
   interface IncomeResponse extends AccountsResponse {
@@ -367,11 +514,18 @@ declare module 'plaid' {
   }
 
   interface IdentityResponse extends AccountsResponse {
-    identity: Identity;
+    accounts: Array<AccountWithOwners>;
+  }
+
+  interface LiabilitiesResponse extends AccountsResponse {
+    liabilities: {
+      student: Array<StudentLoanLiability>;
+    };
   }
 
   interface ItemResponse extends BaseResponse {
     item: Item;
+    status: ItemStatus;
   }
 
   interface CreatePublicTokenResponse extends BaseResponse {
@@ -402,12 +556,14 @@ declare module 'plaid' {
     reset_login: true;
   }
 
-  interface GetInstitutionsResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionsResponse<T extends Institution>
+    extends BaseResponse {
     institutions: Array<T>;
     total: number;
   }
 
-  interface GetInstitutionByIdResponse<T extends Institution> extends BaseResponse {
+  interface GetInstitutionByIdResponse<T extends Institution>
+    extends BaseResponse {
     institution: T;
   }
 
@@ -425,6 +581,14 @@ declare module 'plaid' {
     total_transactions: number;
     transactions: Array<Transaction>;
     item: Item;
+  }
+
+  // omitting extending the BaseResponse since there isn't a single request_id
+  interface TransactionsAllResponse {
+    accounts: Array<Account>;
+    item: Item;
+    total_transactions: number;
+    transactions: Array<Transaction>;
   }
 
   interface AssetReportCreateResponse extends BaseResponse {
@@ -458,6 +622,64 @@ declare module 'plaid' {
     removed: boolean;
   }
 
+  interface PaymentRecipientCreateResponse extends BaseResponse {
+    recipient_id: string;
+  }
+
+  interface PaymentRecipientGetResponse extends BaseResponse {
+    recipient_id: string;
+    name: string;
+    iban: string;
+    address: PaymentRecipientAddress;
+  }
+
+  interface PaymentRecipientListResponse extends BaseResponse {
+    recipients: Array<PaymentRecipient>;
+  }
+
+  interface PaymentCreateResponse extends BaseResponse {
+    payment_id: string;
+    status: string;
+  }
+
+  interface PaymentTokenCreateResponse extends BaseResponse {
+    payment_token: string;
+    payment_token_expiration_time: Iso8601DateTimeString;
+  }
+
+  interface PaymentGetResponse extends BaseResponse {
+    payment_id: string;
+    payment_token: string;
+    reference: string;
+    amount: PaymentAmount;
+    status: string;
+    last_status_update: Iso8601DateTimeString;
+    payment_token_expiration_time: Iso8601DateTimeString | null;
+    recipient_id: string;
+  }
+
+  interface DepositSwitchGetResponse extends BaseResponse {
+    deposit_switch_id: string;
+    target_item_id: string;
+    target_account_id: string;
+    state: string;
+    date_created: string;
+    is_allocated_remainder: boolean;
+    account_has_multiple_allocations: boolean;
+    percent_allocated: number;
+    amount_allocated: number;
+    date_completed: string;
+  }
+
+  interface DepositSwitchCreateResponse extends BaseResponse {
+    deposit_switch_id: string;
+  }
+
+  interface DepositSwitchTokenCreateResponse extends BaseResponse {
+    deposit_switch_token: string;
+    deposit_switch_token_expiration_time: string;
+  }
+
   interface SandboxPublicTokenCreateResponse extends BaseResponse {
     public_token: string;
   }
@@ -467,49 +689,56 @@ declare module 'plaid' {
   }
 
   interface ClientOptions extends CoreOptions {
-    version?: '2018-05-22' | '2017-03-08';
+    version?: '2019-05-29';
   }
 
   class Client {
-    constructor (
+    constructor(
       clientId: string,
       secret: string,
       publicKey: string,
       env: string,
       options?: ClientOptions,
-    )
+    );
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
-    exchangePublicToken(publicToken: string,
-                        cb: Callback<TokenResponse>,
+    exchangePublicToken(
+      publicToken: string,
+      cb: Callback<TokenResponse>,
     ): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
-                         cb: Callback<CreateProcessorTokenResponse>,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string,
+      cb: Callback<CreateProcessorTokenResponse>,
     ): void;
-    createProcessorToken(accessToken: string,
-                         accountId: string,
-                         processor: string,
+    createProcessorToken(
+      accessToken: string,
+      accountId: string,
+      processor: string,
     ): Promise<CreateProcessorTokenResponse>;
 
-    createStripeToken(accessToken: string,
-                      accountId: string,
-                      cb: Callback<CreateStripeTokenResponse>,
+    createStripeToken(
+      accessToken: string,
+      accountId: string,
+      cb: Callback<CreateStripeTokenResponse>,
     ): void;
-    createStripeToken(accessToken: string,
-                      accountId: string,
+    createStripeToken(
+      accessToken: string,
+      accountId: string,
     ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
-    updateAccessTokenVersion(legacyAccessToken: string,
+    updateAccessTokenVersion(
+      legacyAccessToken: string,
     ): Promise<TokenResponse>;
-    updateAccessTokenVersion(legacyAccessToken: string,
-                             cb: Callback<TokenResponse>,
+    updateAccessTokenVersion(
+      legacyAccessToken: string,
+      cb: Callback<TokenResponse>,
     ): void;
 
     deleteItem: AccessTokenFn<ItemDeleteResponse>;
@@ -518,45 +747,78 @@ declare module 'plaid' {
 
     getItem: AccessTokenFn<ItemResponse>;
 
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string,string>,
+      options?: WebhookOptions,
+    ): Promise<ItemImportResponse>;
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string,string>,
+      cb: Callback<ItemImportResponse>,
+    ): void;
+    importItem(
+      products: Array<string>,
+      userAuth: Map<string, string>,
+      options: WebhookOptions,
+      cb: Callback<ItemImportResponse>,
+    ): void;
+
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string,
     ): Promise<ItemResponse>;
-    updateItemWebhook(accessToken: string,
-                      webhook: string,
-                      cb: Callback<ItemResponse>,
+    updateItemWebhook(
+      accessToken: string,
+      webhook: string,
+      cb: Callback<ItemResponse>,
     ): void;
 
-    getAccounts(accessToken: string,
-                options?: ItemRequestOptions,
+    getAccounts(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AccountsResponse>;
-    getAccounts(accessToken: string,
-                cb: Callback<AccountsResponse>,
-    ): void;
-    getAccounts(accessToken: string,
-                options: ItemRequestOptions,
-                cb: Callback<AccountsResponse>,
+    getAccounts(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getAccounts(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>,
     ): void;
 
-    getBalance(accessToken: string,
-               options?: ItemRequestOptions,
+    getBalance(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AccountsResponse>;
-    getBalance(accessToken: string,
-               cb: Callback<AccountsResponse>,
-    ): void;
-    getBalance(accessToken: string,
-               options: ItemRequestOptions,
-               cb: Callback<AccountsResponse>,
+    getBalance(accessToken: string, cb: Callback<AccountsResponse>): void;
+    getBalance(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AccountsResponse>,
     ): void;
 
-    getAuth(accessToken: string,
-            options?: ItemRequestOptions,
+    getAuth(
+      accessToken: string,
+      options?: ItemRequestOptions,
     ): Promise<AuthResponse>;
-    getAuth(accessToken: string,
-            cb: Callback<AuthResponse>,
+    getAuth(accessToken: string, cb: Callback<AuthResponse>): void;
+    getAuth(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<AuthResponse>,
     ): void;
-    getAuth(accessToken: string,
-            options: ItemRequestOptions,
-            cb: Callback<AuthResponse>,
+
+    getLiabilities(
+      accessToken: string,
+      options?: ItemRequestOptions,
+    ): Promise<LiabilitiesResponse>;
+    getLiabilities(
+      accessToken: string,
+      cb: Callback<LiabilitiesResponse>,
+    ): void;
+    getLiabilities(
+      accessToken: string,
+      options: ItemRequestOptions,
+      cb: Callback<LiabilitiesResponse>,
     ): void;
 
     // getIdentity(String, Function)
@@ -567,91 +829,186 @@ declare module 'plaid' {
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
     // getHoldings(String, Function)
     getHoldings: AccessTokenFn<HoldingsResponse>;
-
+    // getInvestmentTransactions(String, Date, Date, Function)
+    getInvestmentTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: InvestmentTransactionsRequestOptions,
+    ): Promise<InvestmentTransactionsResponse>;
     // createAssetReport([String], Number, Object, Function)
-    createAssetReport(access_tokens: Array<string>,
-                      days_requested: number,
-                      options: AssetReportCreateOptions,
-                      cb: Callback<AssetReportCreateResponse>): void;
+    createAssetReport(
+      access_tokens: Array<string>,
+      days_requested: number,
+      options: AssetReportCreateOptions,
+      cb: Callback<AssetReportCreateResponse>,
+    ): void;
 
-    createAssetReport(access_tokens: Array<string>,
-                      days_requested: number,
-                      options: AssetReportCreateOptions): Promise<AssetReportCreateResponse>;
+    createAssetReport(
+      access_tokens: Array<string>,
+      days_requested: number,
+      options: AssetReportCreateOptions,
+    ): Promise<AssetReportCreateResponse>;
 
     // filterAssetReport(String, [String], Function)
-    filterAssetReport(asset_report_token: string,
-                      account_ids_to_exclude: Array<string>,
-                      cb: Callback<AssetReportFilterResponse>): void;
+    filterAssetReport(
+      asset_report_token: string,
+      account_ids_to_exclude: Array<string>,
+      cb: Callback<AssetReportFilterResponse>,
+    ): void;
 
-    filterAssetReport(asset_report_token: string,
-                      account_ids_to_exclude: Array<string>): Promise<AssetReportFilterResponse>;
+    filterAssetReport(
+      asset_report_token: string,
+      account_ids_to_exclude: Array<string>,
+    ): Promise<AssetReportFilterResponse>;
 
     // refreshAssetReport(String, Number, Object, Function)
-    refreshAssetReport(asset_report_token: string,
-                       days_requested: number,
-                       options: AssetReportRefreshOptions,
-                       cb: Callback<AssetReportRefreshResponse>): void;
+    refreshAssetReport(
+      asset_report_token: string,
+      days_requested: number,
+      options: AssetReportRefreshOptions,
+      cb: Callback<AssetReportRefreshResponse>,
+    ): void;
 
-    refreshAssetReport(asset_report_token: string,
-                       days_requested: number,
-                       options?: AssetReportRefreshOptions): Promise<AssetReportRefreshResponse>;
+    refreshAssetReport(
+      asset_report_token: string,
+      days_requested: number,
+      options?: AssetReportRefreshOptions,
+    ): Promise<AssetReportRefreshResponse>;
 
     // getAssetReport(String, Boolean, Function)
-    getAssetReport(asset_report_token: string,
-                   include_insights: boolean,
-                   cb: Callback<AssetReportGetResponse>): void;
+    getAssetReport(
+      asset_report_token: string,
+      include_insights: boolean,
+      cb: Callback<AssetReportGetResponse>,
+    ): void;
 
-    getAssetReport(asset_report_token: string,
-                   include_insights: boolean): Promise<AssetReportGetResponse>;
+    getAssetReport(
+      asset_report_token: string,
+      include_insights: boolean,
+    ): Promise<AssetReportGetResponse>;
 
     // getAssetReportPdf(String, Function)
-    getAssetReportPdf(asset_report_token: string,
-                      cb: Callback<AssetReportGetPdfResponse>): void;
+    getAssetReportPdf(
+      asset_report_token: string,
+      cb: Callback<AssetReportGetPdfResponse>,
+    ): void;
 
-    getAssetReportPdf(asset_report_token: string): Promise<AssetReportGetPdfResponse>;
+    getAssetReportPdf(
+      asset_report_token: string,
+    ): Promise<AssetReportGetPdfResponse>;
 
     // createAuditCopy(String, String, Function)
-    createAuditCopy(asset_report_token: string,
-                    auditor_id: string,
-                    cb: Callback<AuditCopyCreateResponse>): void;
+    createAuditCopy(
+      asset_report_token: string,
+      auditor_id: string,
+      cb: Callback<AuditCopyCreateResponse>,
+    ): void;
 
-    createAuditCopy(asset_report_token: string,
-                    auditor_id: string): Promise<AuditCopyCreateResponse>;
+    createAuditCopy(
+      asset_report_token: string,
+      auditor_id: string,
+    ): Promise<AuditCopyCreateResponse>;
 
     // getAuditCopy(String, Function)
-    getAuditCopy(audit_copy_token: string,
-                 cb: Callback<AuditCopyGetResponse>): void;
+    getAuditCopy(
+      audit_copy_token: string,
+      cb: Callback<AuditCopyGetResponse>,
+    ): void;
 
     getAuditCopy(audit_copy_token: string): Promise<AuditCopyGetResponse>;
 
     // removeAuditCopy(String, Function)
-    removeAuditCopy(audit_copy_token: string,
-                    cb: Callback<AuditCopyRemoveResponse>): void;
+    removeAuditCopy(
+      audit_copy_token: string,
+      cb: Callback<AuditCopyRemoveResponse>,
+    ): void;
 
-    removeAuditCopy(audit_copy_token: string): Promise<AuditCopyRemoveResponse>;
+    removeAuditCopy(
+      audit_copy_token: string,
+    ): Promise<AuditCopyRemoveResponse>;
 
     // removeAssetReport(String, Function)
-    removeAssetReport(asset_report_token: string,
-                      cb: Callback<AssetReportRemoveResponse>): void;
+    removeAssetReport(
+      asset_report_token: string,
+      cb: Callback<AssetReportRemoveResponse>,
+    ): void;
 
-    removeAssetReport(asset_report_token: string): Promise<AssetReportRemoveResponse>;
+    removeAssetReport(
+      asset_report_token: string,
+    ): Promise<AssetReportRemoveResponse>;
+
+    createPaymentRecipient(
+      name: string,
+      iban: string,
+      address: PaymentRecipientAddress,
+      cb: Callback<PaymentRecipientCreateResponse>,
+    ): void;
+
+    createPaymentRecipient(
+      name: string,
+      iban: string,
+      address: PaymentRecipientAddress,
+    ): Promise<PaymentRecipientCreateResponse>;
+
+    getPaymentRecipient(
+      recipient_id: string,
+      cb: Callback<PaymentRecipientGetResponse>,
+    ): void;
+
+    getPaymentRecipient(
+      recipient_id: string,
+    ): Promise<PaymentRecipientGetResponse>;
+
+    listPaymentRecipients(cb: Callback<PaymentRecipientListResponse>): void;
+
+    listPaymentRecipients(): Promise<PaymentRecipientListResponse>;
+
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+      cb: Callback<PaymentCreateResponse>,
+    ): void;
+
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+    ): Promise<PaymentCreateResponse>;
+
+    createPaymentToken(
+      payment_id: string,
+      cb: Callback<PaymentTokenCreateResponse>,
+    ): void;
+
+    createPaymentToken(
+      payment_id: string,
+    ): Promise<PaymentTokenCreateResponse>;
+
+    getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
+
+    getPayment(payment_id: string): Promise<PaymentGetResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options?: TransactionsRequestOptions,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: TransactionsRequestOptions,
     ): Promise<TransactionsResponse>;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      cb: Callback<TransactionsResponse>,
     ): void;
-    getTransactions(accessToken: string,
-                    startDate: Iso8601DateString,
-                    endDate: Iso8601DateString,
-                    options: TransactionsRequestOptions,
-                    cb: Callback<TransactionsResponse>,
+    getTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options: TransactionsRequestOptions,
+      cb: Callback<TransactionsResponse>,
     ): void;
 
     // getAllTransactions(String, Date, Date, Object?, Function)
@@ -687,17 +1044,110 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(institutionId: string,
                         options: GetInstitutionRequestOptions,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+                        cb: Callback<GetInstitutionByIdResponse<Institution>>;
+
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options?: GetAllTransactionsRequestOptions,
+    ): Promise<TransactionsAllResponse>;
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      cb: Callback<TransactionsAllResponse>,
+    ): void;
+    getAllTransactions(
+      accessToken: string,
+      startDate: Iso8601DateString,
+      endDate: Iso8601DateString,
+      options: GetAllTransactionsRequestOptions,
+      cb: Callback<TransactionsAllResponse>,
     ): void;
 
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
+    // getDepositSwitch(String, Object?, Function)
+    getDepositSwitch(
+      depositSwitchId: string,
+      options?: Object,
+    ): Promise<DepositSwitchGetResponse>;
+    getDepositSwitch(
+      depositSwitchId: string,
+      cb: Callback<DepositSwitchGetResponse>,
+    ): void;
+    getDepositSwitch(
+      depositSwitchId: string,
+      options: Object,
+      cb: Callback<DepositSwitchGetResponse>,
+    ): void;
+
+    // createDepositSwitch(String, String, Object?, Function)
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      options?: Object,
+    ): Promise<DepositSwitchCreateResponse>;
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      cb: Callback<DepositSwitchCreateResponse>,
+    ): void;
+    createDepositSwitch(
+      targetAccountId: string,
+      targetAccessToken: string,
+      options: Object,
+      cb: Callback<DepositSwitchCreateResponse>,
+    ): void;
+
+    // createDepositSwitchToken(String, Object?, Function)
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      options?: Object,
+    ): Promise<DepositSwitchTokenCreateResponse>;
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      cb: Callback<DepositSwitchTokenCreateResponse>,
+    ): void;
+    createDepositSwitchToken(
+      depositSwitchId: string,
+      options: Object,
+      cb: Callback<DepositSwitchTokenCreateResponse>,
+    ): void;
+
+    getInstitutions(
+      count: number,
+      offset: number,
     ): Promise<GetInstitutionsResponse<Institution>>;
-    searchInstitutionsByName(query: string,
-                             products: Array<string>,
-                             options: Object,
-                             cb: Callback<GetInstitutionsResponse<Institution>>,
+    getInstitutions(
+      count: number,
+      offset: number,
+      cb: Callback<GetInstitutionsResponse<Institution>>,
+    ): void;
+
+    getInstitutionById<T extends Institution>(
+      institutionId: string,
+      options?: Object,
+    ): Promise<GetInstitutionByIdResponse<T>>;
+    getInstitutionById(
+      institutionId: string,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    ): void;
+    getInstitutionById(
+      institutionId: string,
+      options: Object,
+      cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    ): void;
+
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object,
+    ): Promise<GetInstitutionsResponse<Institution>>;
+    searchInstitutionsByName(
+      query: string,
+      products: Array<string>,
+      options: Object,
+      cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
     getCategories(): Promise<CategoriesResponse>;

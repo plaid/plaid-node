@@ -95,6 +95,8 @@ plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
 plaidClient.removeItem(access_token, cb);
 // getItem(String, Function)
 plaidClient.getItem(access_token, cb);
+// importItem([String], Object, Object?, Function))
+plaidClient.importItem(products, user_auth, options, cb)
 // updateItemWebhook(String, String, Function)
 plaidClient.updateItemWebhook(access_token, webhook, cb);
 
@@ -110,6 +112,21 @@ plaidClient.getIdentity(access_token, cb);
 plaidClient.getIncome(access_token, cb);
 // getCreditDetails(String, Function)
 plaidClient.getCreditDetails(access_token, cb);
+// getLiabilities(String, Function)
+plaidClient.getLiabilities(access_token, cb);
+
+// getDepositSwitch(String, Object?, Function)
+plaidClient.getDepositSwitch(deposit_switch_id, options, cb)
+// createDepositSwitch(String, String, Object?, Function)
+plaidClient.createDepositSwitch(target_account_id, target_access_token, options, cb);
+// createDepositSwitchToken(String, Function)
+plaidClient.createDepositSwitchToken(deposit_switch_id, options, cb)
+
+// getHoldings(String, Function)
+plaidClient.getHoldings(access_token, cb);
+// getInvestmentTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD),
+// Object?, Function)
+plaidClient.getInvestmentTransactions(access_token, start_date, end_date, options, cb);
 
 // getTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getTransactions(access_token, start_date, end_date, options, cb);

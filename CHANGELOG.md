@@ -1,3 +1,36 @@
+## 4.5.0
+- Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
+  - `/item/import`
+  - `/deposit_switch/create`
+  - `/deposit_switch/get`
+  - `/deposit_switch/token/create`
+
+## 4.4.0
+
+- Add support for new UK Payment Initiation product ([#232](https://github.com/plaid/plaid-node/pull/232))
+  - `/payment_initiation/recipient/create`
+  - `/payment_initiation/recipient/get`
+  - `/payment_initiation/recipient/list`
+  - `/payment_initiation/payment/create`
+  - `/payment_initiation/payment/token/create`
+  - `/payment_initiation/payment/get`
+  - `/payment_initiation/payment/list`
+- Add `consent_expiration_time` to the Item interface ([#233](https://github.com/plaid/plaid-node/pull/233))
+
+## 4.1.0
+
+- Add support for new Investments product ([#205](https://github.com/plaid/plaid-node/issues/205))
+  - `/investments/transactions/get`
+  - `/investments/holdings/get`
+
+## 4.0.0
+
+- Add support for [version `2019-05-29`](https://plaid.com/docs/api-upgrades/) of the Plaid API
+
+## 3.1.2
+
+- Allow client_app flag to be passed into the client config ([#196](https://github.com/plaid/plaid-node/issues/196))
+
 ## 3.1.1
 
 - Add support for [`/sandbox/item/fire_webhook`][sandbox-item-fire-webhook] endpoint ([#191](https://github.com/plaid/plaid-node/pull/191))
