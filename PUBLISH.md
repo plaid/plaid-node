@@ -11,7 +11,19 @@ new version of `plaid-node`:
 make setup
 ```
 
-2. **Publish and release to NPM**
+
+2. **Update the CHANGELOG.md**
+
+Before publishing a new version to NPM, create and merge a Pull Request to
+update the [`CHANGELOG.md`][2], with the following format:
+
+```
+## X.Y.Z
+- Add support for ABC product ([#123](https://github.com/plaid/plaid-node/pull/123))
+  - `/api_route`
+```
+
+3. **Publish and release to NPM**
 
 Creating a new release and publishing to npm is simple and bundled into a
 single make command.
@@ -26,17 +38,15 @@ follow version bumps:
 make release-(patch|minor|major)
 ```
 
-Run the following git command to ensure the new version tag is pushed to the
-`plaid-node` GitHub repository:
-
-```bash
-git push --follow-tags
-```
-
 The `make release-%` command will do the following executions automatically:
 - Run local tests
 - Bump the `package.json` version
 - Commit and tag the new version
 - Push the commit to `plaid-node` GitHub repository
 
+
+
+
+
 [1]: https://www.npmjs.com/package/plaid
+[2]: https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md
