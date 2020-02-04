@@ -147,6 +147,9 @@ plaidClient.searchInstitutionsByName(query, products, options, cb);
 // getCategories(Function)
 plaidClient.getCategories(cb);
 
+// getWebhookVerificationKey(String, Function)
+plaidClient.getWebhookVerificationKey(key_id, cb);
+
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
 plaidClient.resetLogin(access_token, cb);

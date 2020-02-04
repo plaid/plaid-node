@@ -679,6 +679,20 @@ declare module 'plaid' {
     webhook_fired: boolean;
   }
 
+  interface WebhookVerificationKeyResponse extends BaseResponse {
+    key: {
+      alg: string;
+      created_at: number;
+      crv: string;
+      expired_at: null | number;
+      kid: string;
+      kty: string;
+      use: string;
+      x: string;
+      y: string;
+    }
+  }
+
   interface ClientOptions extends CoreOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
@@ -1139,6 +1153,13 @@ declare module 'plaid' {
       access_token: string,
       webhook_code: string,
     ): Promise<SandboxItemFireWebhookResponse>;
+
+    // getWebhookVerificationKey(String, String)
+    getWebhookVerificationKey(
+      key_id: string,
+      cb: Callback<WebhookVerificationKeyResponse>,
+    ): Promise<WebhookVerificationKeyResponse>;
+
   }
 
   interface PlaidEnvironments {
