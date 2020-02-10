@@ -1,3 +1,9 @@
+## 4.6.0
+- Add support for new generic Processor Token endpoint ([#228](https://github.com/plaid/plaid-node/pull/228))
+  - `/processor/token/create`
+- Add support for webook verification ([#234](https://github.com/plaid/plaid-node/pull/234))
+  - `/webhook_verification_key/get`
+
 ## 4.5.0
 - Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
   - `/item/import`
