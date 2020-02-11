@@ -220,6 +220,9 @@ describe('plaid.Client', () => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
+          expect(successResponse.status).to.be.ok();
+          expect(successResponse.status.transactions).to.be.ok();
+          expect(successResponse.status.last_webhook).to.be(null);
 
           cb();
         });
@@ -1166,6 +1169,42 @@ describe('plaid.Client', () => {
       });
     });
 
+    describe('webhook-verification', () => {
+      it('getWebhookVerificationKey', cb => {
+        pCl.getWebhookVerificationKey(
+          testConstants.WEBHOOK_VERIFICATION_KEY_ID,
+          (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.key).to.be.ok();
+          expect(successResponse.key.alg).to.be.ok();
+          expect(successResponse.key.created_at).to.be.ok();
+          expect(successResponse.key.crv).to.be.ok();
+          expect(successResponse.key.kid).to.be.ok();
+          expect(successResponse.key.kty).to.be.ok();
+          expect(successResponse.key.use).to.be.ok();
+          expect(successResponse.key.x).to.be.ok();
+          expect(successResponse.key.y).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('getWebhookVerificationKey error', cb => {
+        pCl.getWebhookVerificationKey(
+          'invalid key_id',
+          (err, successResponse) => {
+          expect(err).to.be.ok();
+          expect(successResponse).not.to.be.ok();
+          expect(err.status_code).to.be(400);
+          expect(err.request_id).to.be.ok();
+          expect(err.error_code).to.be('INVALID_WEBHOOK_VERIFICATION_KEY_ID');
+
+          cb();
+        });
+      });
+    });
+
     describe('sandbox-only', () => {
       it('sandboxPublicTokenCreate', cb => {
         pCl.sandboxPublicTokenCreate(
@@ -1185,6 +1224,7 @@ describe('plaid.Client', () => {
           });
         });
       });
+
       it('sandboxItemFireWebhook', cb => {
         async.waterfall([
           cb => {

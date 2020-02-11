@@ -23,5 +23,6 @@ module.exports = {
       ['answer_1_0', 'answer_1_1']
     ],
     SELECTIONS: ['tomato', 'ketchup'],
-  }
+  },
+  WEBHOOK_VERIFICATION_KEY_ID: '6c5516e1-92dc-479e-a8ff-5a51992e0001'
 };
