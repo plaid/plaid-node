@@ -362,6 +362,15 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('transactions refresh', cb => {
+        pCl.refreshTransactions(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+
+          cb();
+        });
+      });
+
       it('liabilities', cb => {
         pCl.getLiabilities(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
