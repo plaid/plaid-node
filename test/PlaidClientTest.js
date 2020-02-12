@@ -14,8 +14,8 @@ const sinon = require('sinon');
 const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
-const result = dotenv.config();
-if (result.error != null) {
+const dotenvResult = dotenv.config();
+if (dotenvResult.error != null) {
   console.error('could not configure environment variables from .env file');
   console.error(result.error.message);
   process.exit(1);
