@@ -280,13 +280,11 @@ app.use(bodyParser.json());
 app.post('/plaid_exchange', (req, res) => {
   var public_token = req.body.public_token;
 
-  plaidClient.exchangePublicToken(public_token).then(res => {
-    const access_token = res.access_token;
-
-    plaidClient.getAccounts(access_token).then(res => {
-      console.log(res.accounts);
-    });
-  }).catch(err => {
+  return plaidClient.exchangePublicToken(public_token)
+  .then(res => res.access_token)
+  .then(accessToken => plaidClient.getAccounts(accessToken))
+  .then(res => console.log(res.accounts))
+  .catch(err => {
     // Indicates a network or runtime error.
     if (!(err instanceof plaid.PlaidError)) {
       res.sendStatus(500);
