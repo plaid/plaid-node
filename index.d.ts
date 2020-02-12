@@ -1010,16 +1010,6 @@ declare module 'plaid' {
       cb: Callback<TransactionsResponse>,
     ): void;
 
-    getInstitutions(count: number,
-                    offset: number,
-                    options?: GetInstitutionsRequestOptions,
-    ): Promise<GetInstitutionsResponse<Institution>>;
-    getInstitutions(count: number,
-                    offset: number,
-                    options: GetInstitutionsRequestOptions,
-                    cb: Callback<GetInstitutionsResponse<Institution>>,
-    ): void;
-
     getInstitutionById<T extends Institution>(institutionId: string,
                         options?: GetInstitutionsRequestOptions,
     ): Promise<GetInstitutionByIdResponse<T>>;
@@ -1103,6 +1093,17 @@ declare module 'plaid' {
     getInstitutions(
       count: number,
       offset: number,
+      cb: Callback<GetInstitutionsResponse<Institution>>,
+    ): void;
+    getInstitutions(
+      count: number,
+      offset: number,
+      options?: GetInstitutionsRequestOptions,
+    ): Promise<GetInstitutionsResponse<Institution>>;
+    getInstitutions(
+      count: number,
+      offset: number,
+      options: GetInstitutionsRequestOptions,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
