@@ -14,7 +14,7 @@
     "url": "https://github.com/plaid/plaid-node/issues"
   },
   "engines": {
-    "node": "^6 || ^8.1 || >=10.*"
+    "node": "8.x || 9.x || 10.x || 11.x || 12.x || 13.x"
   },
   "main": "lib/plaid.js",
   "licenses": [
