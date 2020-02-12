@@ -1021,11 +1021,11 @@ declare module 'plaid' {
     ): void;
 
     getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: GetInstitutionRequestOptions,
+                        options?: GetInstitutionsRequestOptions,
     ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(institutionId: string,
-                        options: GetInstitutionRequestOptions,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+                        options: GetInstitutionsRequestOptions,
+                        cb: Callback<GetInstitutionsByIdResponse<Institution>>,
     ): void;
 
     getAllTransactions(
