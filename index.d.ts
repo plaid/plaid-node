@@ -56,14 +56,13 @@ declare module 'plaid' {
 
   type AssetReportRefreshOptions = AssetReportCreateOptions;
 
-  interface GetInstitutionRequestOptions {
+  interface GetInstitutionsRequestOptions {
+    products?: Array<string> | null;
+    country_codes?: Array<string> | null;
     include_optional_metadata?: boolean;
+    routing_numbers?: Array<string> | null;
   }
 
-  interface GetInstitutionsRequestOptions extends GetInstitutionRequestOptions {
-    products?: Array<string>;
-    country_codes?: Array<string>;
-  }
   interface WebhookOptions {
     webhook?: string;
   }
