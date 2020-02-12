@@ -1010,14 +1010,6 @@ declare module 'plaid' {
       cb: Callback<TransactionsResponse>,
     ): void;
 
-    getInstitutionById<T extends Institution>(institutionId: string,
-                        options?: GetInstitutionsRequestOptions,
-    ): Promise<GetInstitutionByIdResponse<T>>;
-    getInstitutionById(institutionId: string,
-                        options: GetInstitutionsRequestOptions,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
-    ): void;
-
     getAllTransactions(
       accessToken: string,
       startDate: Iso8601DateString,
@@ -1107,17 +1099,17 @@ declare module 'plaid' {
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
-    getInstitutionById<T extends Institution>(
-      institutionId: string,
-      options?: Object,
-    ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
+    getInstitutionById<T extends Institution>(
+      institutionId: string,
+      options?: GetInstitutionsRequestOptions,
+    ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(
       institutionId: string,
-      options: Object,
+      options: GetInstitutionsRequestOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
