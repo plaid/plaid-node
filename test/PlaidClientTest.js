@@ -15,14 +15,7 @@ const sinon = require('sinon');
 const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
-const dotenvResult = dotenv.config();
-if (dotenvResult.error != null) {
-  console.error('could not configure environment variables from .env file');
-  console.error(result.error.message);
-  process.exit(1);
-}
-
-
+dotenv.config();
 const {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
 
 describe('plaid.Client', () => {
