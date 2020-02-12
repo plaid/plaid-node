@@ -1026,7 +1026,8 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<T>>;
     getInstitutionById(institutionId: string,
                         options: GetInstitutionRequestOptions,
-                        cb: Callback<GetInstitutionByIdResponse<Institution>>;
+                        cb: Callback<GetInstitutionByIdResponse<Institution>>,
+    ): void;
 
     getAllTransactions(
       accessToken: string,
