@@ -1085,13 +1085,16 @@ declare module 'plaid' {
       cb: Callback<DepositSwitchTokenCreateResponse>,
     ): void;
 
+    // getInstitutions(Number, Number, Object?, Function);
     getInstitutions(
       count: number,
       offset: number,
+      options?: Object
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(
       count: number,
       offset: number,
+      options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
