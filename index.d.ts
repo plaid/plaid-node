@@ -73,6 +73,7 @@ declare module 'plaid' {
       | 'pending_automatic_verification'
       | 'pending_manual_verification'
       | 'manually_verified'
+      | 'automatically_verified'
       | null;
   }
 
