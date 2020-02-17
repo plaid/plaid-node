@@ -44,9 +44,12 @@ The `make release-%` command will do the following executions automatically:
 - Commit and tag the new version
 - Push the commit to `plaid-node` GitHub repository
 
+Note - you'll need write access to the master branch. Ask a Plaid team member for permissions.
 
-
-
+Afterwards, you'll just need to publish to NPM
+```
+npm --registry=https://registry.npmjs.org publish
+```
 
 [1]: https://www.npmjs.com/package/plaid
 [2]: https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md
