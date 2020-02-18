@@ -5,17 +5,19 @@ A node.js client library for the [Plaid API][1].
 
 ## Table of Contents
 
-- [plaid-node](#plaid-node)
-  * [Install](#install)
-  * [Getting started](#getting-started)
-  * [Methods](#methods)
-  * [Callbacks](#callbacks)
-  * [Error Handling](#error-handling)
-  * [Examples](#examples)
-  * [Promise Support](#promise-support)
-  * [Support](#support)
-  * [Contributing](#contributing)
-  * [License](#license)
+- [plaid-node  ![Circle CI](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)](#plaid-node-img-src%22httpscirclecicomghplaidplaid-node%22-alt%22circle-ci%22-img-src%22httpsbadgefuryiojsplaidsvg%22-alt%22npm-version%22)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+    - [Versioning](#versioning)
+  - [Getting started](#getting-started)
+  - [Methods](#methods)
+  - [Callbacks](#callbacks)
+  - [Error Handling](#error-handling)
+  - [Examples](#examples)
+  - [Promise Support](#promise-support)
+  - [Support](#support)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Install
 
@@ -133,6 +135,9 @@ plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 
 // getAllTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getAllTransactions(access_token, start_date, end_date, options, cb);
+
+// refreshTransactions(String)
+plaidClient.refreshTransactions(access_token);
 
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
