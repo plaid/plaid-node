@@ -365,6 +365,15 @@ describe('plaid.Client', () => {
         });
       });
 
+      it('transactions refresh', cb => {
+        pCl.refreshTransactions(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+
+          cb();
+        });
+      });
+
       it('liabilities', cb => {
         pCl.getLiabilities(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
@@ -669,6 +678,29 @@ describe('plaid.Client', () => {
             expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
 
             cb();
+          });
+        });
+
+        it('transactions refresh', cb => {
+          pCl.refreshTransactions(accessToken,
+            (err, successResponse) => {
+              expect(err).to.be(null);
+              expect(successResponse).to.be.ok();
+
+              cb();
+          });
+        });
+
+        it('transactions refresh (with 400)', cb => {
+          pCl.refreshTransactions('invalid token',
+            (err, successResponse) => {
+              expect(err).to.be.ok();
+              expect(successResponse).not.to.be.ok();
+              expect(err.status_code).to.be(400);
+              expect(err.request_id).to.be.ok();
+              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
+
+              cb();
           });
         });
       });
