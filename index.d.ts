@@ -181,6 +181,7 @@ declare module 'plaid' {
     name: string;
     products: Array<string>;
     country_codes: Array<string>;
+    oauth: boolean;
   }
 
   interface InstitutionWithDisplayData extends Institution {
