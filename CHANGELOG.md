@@ -1,3 +1,7 @@
+## 4.7.0
+- Add support for new Transactions Refresh endpoint ([#246](https://github.com/plaid/plaid-node/pull/246))
+  - `/transactions/refresh/`
+
 ## 4.6.0
 - Add support for new generic Processor Token endpoint ([#228](https://github.com/plaid/plaid-node/pull/228))
   - `/processor/token/create`

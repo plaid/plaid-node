@@ -73,6 +73,7 @@ declare module 'plaid' {
       | 'pending_automatic_verification'
       | 'pending_manual_verification'
       | 'manually_verified'
+      | 'automatically_verified'
       | null;
   }
 
@@ -180,6 +181,7 @@ declare module 'plaid' {
     name: string;
     products: Array<string>;
     country_codes: Array<string>;
+    oauth: boolean;
   }
 
   interface InstitutionWithDisplayData extends Institution {
@@ -1088,13 +1090,16 @@ declare module 'plaid' {
       cb: Callback<DepositSwitchTokenCreateResponse>,
     ): void;
 
+    // getInstitutions(Number, Number, Object?, Function);
     getInstitutions(
       count: number,
       offset: number,
+      options?: Object
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(
       count: number,
       offset: number,
+      options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
