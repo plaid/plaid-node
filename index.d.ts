@@ -1037,6 +1037,9 @@ declare module 'plaid' {
       cb: Callback<TransactionsAllResponse>,
     ): void;
 
+    // getIdentity(String, Function)
+    refreshTransactions: AccessTokenFn<BaseResponse>;
+
     // getDepositSwitch(String, Object?, Function)
     getDepositSwitch(
       depositSwitchId: string,
