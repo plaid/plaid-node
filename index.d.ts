@@ -314,6 +314,7 @@ declare module 'plaid' {
     pending_transaction_id: string | null;
     transaction_id: string;
     transaction_type: string | null;
+    transaction_code: string | null;
   }
 
   interface AssetReport {
