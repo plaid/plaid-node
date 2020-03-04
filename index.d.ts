@@ -153,11 +153,12 @@ declare module 'plaid' {
   }
 
   interface ItemStatus {
-    transactions: TransactionsStatus;
+    transactions: ProductStatus;
+    investments: ProductStatus;
     last_webhook: WebhookStatus | null;
   }
 
-  interface TransactionsStatus {
+  interface ProductStatus {
     last_successful_update: string | null;
     last_failed_update: string | null;
   }

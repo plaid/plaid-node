@@ -222,8 +222,8 @@ describe('plaid.Client', () => {
           expect(successResponse.item).to.be.ok();
           expect(successResponse.status).to.be.ok();
           expect(successResponse.status.transactions).to.be.ok();
+          expect(successResponse.status.investments).to.be.ok();
           expect(successResponse.status.last_webhook).to.be(null);
-
           cb();
         });
       });
