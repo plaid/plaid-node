@@ -97,8 +97,15 @@ describe('plaid.Client', () => {
     });
 
     describe('item', () => {
-
       describe('itemManagement', () => {
+
+        it('create an item add token', cb => {
+          pCl.createItemAddToken((err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse.status_code).to.be(200);
+            expect(successResponse.add_token).to.be.ok();
+          });
+        });
 
         it('create and exchange a public token', cb => {
           async.waterfall([
