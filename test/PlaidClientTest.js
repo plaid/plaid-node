@@ -99,7 +99,7 @@ describe('plaid.Client', () => {
     describe('item', () => {
       describe('itemManagement', () => {
 
-        it('create an item add token', cb => {
+        it('create an item add token', () => {
           pCl.createItemAddToken((err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse.status_code).to.be(200);
