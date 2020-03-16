@@ -11,7 +11,6 @@ new version of `plaid-node`:
 make setup
 ```
 
-
 2. **Update the CHANGELOG.md**
 
 Before publishing a new version to NPM, create and merge a Pull Request to
@@ -23,7 +22,7 @@ update the [`CHANGELOG.md`][2], with the following format:
   - `/api_route`
 ```
 
-3. **Publish and release to NPM**
+3. **Create a new version**
 
 Creating a new release and publishing to npm is simple and bundled into a
 single make command.
@@ -45,7 +44,14 @@ The `make release-%` command will do the following executions automatically:
 - Push the commit to `plaid-node` GitHub repository
 
 
+4. **Publish and release to NPM**
 
+The following command will publish the latest version (bumped in the `package.json`)
+to the NPM plaid registry:
+
+```bash
+npm --registry=https://registry.npmjs.org publish
+```
 
 
 [1]: https://www.npmjs.com/package/plaid
