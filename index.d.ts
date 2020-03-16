@@ -568,7 +568,7 @@ declare module 'plaid' {
 
   interface CreateItemAddTokenResponse extends BaseResponse {
     add_token: string;
-  };
+  }
 
   interface TokenResponse extends BaseResponse {
     access_token: string;
