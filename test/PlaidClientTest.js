@@ -77,6 +77,13 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can create item add tokens', () => {
+    pCl.createItemAddToken((err, successResponse) => {
+      expect(err).to.be.(null);
+      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+    });
+  });
+
   describe('endpoints', () => {
 
     const now = moment().format('YYYY-MM-DD');
