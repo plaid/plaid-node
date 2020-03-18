@@ -568,6 +568,7 @@ declare module 'plaid' {
 
   interface CreateItemAddTokenResponse extends BaseResponse {
     add_token: string;
+    expiration: Iso8601DateTimeString;
   }
 
   interface TokenResponse extends BaseResponse {

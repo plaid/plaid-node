@@ -81,6 +81,7 @@ describe('plaid.Client', () => {
     pCl.createItemAddToken((err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
     });
   });
 
