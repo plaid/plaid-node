@@ -1,3 +1,6 @@
+## 4.9.0
+- Add support for the item add token (BETA) ([#262](https://github.com/plaid/plaid-node/pull/262))
+
 ## 4.8.0
 - Add a new `oauth` field to the `Institution` schema returned by `/institutions/` routes ([#255](https://github.com/plaid/plaid-node/pull/255))
 - Add investment product status to the `Item` schema ([#258](https://github.com/plaid/plaid-node/pull/258))

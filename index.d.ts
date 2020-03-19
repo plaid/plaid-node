@@ -566,6 +566,11 @@ declare module 'plaid' {
     categories: Array<Category>;
   }
 
+  interface CreateItemAddTokenResponse extends BaseResponse {
+    add_token: string;
+    expiration: Iso8601DateTimeString;
+  }
+
   interface TokenResponse extends BaseResponse {
     access_token: string;
     item_id: string;
@@ -715,6 +720,9 @@ declare module 'plaid' {
       publicToken: string,
       cb: Callback<TokenResponse>,
     ): void;
+
+    createItemAddToken(): Promise<CreateItemAddTokenResponse>;
+    createItemAddToken(cb: Callback<CreateItemAddTokenResponse>): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
