@@ -5,17 +5,19 @@ A node.js client library for the [Plaid API][1].
 
 ## Table of Contents
 
-- [plaid-node](#plaid-node)
-  * [Install](#install)
-  * [Getting started](#getting-started)
-  * [Methods](#methods)
-  * [Callbacks](#callbacks)
-  * [Error Handling](#error-handling)
-  * [Examples](#examples)
-  * [Promise Support](#promise-support)
-  * [Support](#support)
-  * [Contributing](#contributing)
-  * [License](#license)
+- [plaid-node  ![Circle CI](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)](#plaid-node-img-src%22httpscirclecicomghplaidplaid-node%22-alt%22circle-ci%22-img-src%22httpsbadgefuryiojsplaidsvg%22-alt%22npm-version%22)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+    - [Versioning](#versioning)
+  - [Getting started](#getting-started)
+  - [Methods](#methods)
+  - [Callbacks](#callbacks)
+  - [Error Handling](#error-handling)
+  - [Examples](#examples)
+  - [Promise Support](#promise-support)
+  - [Support](#support)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Install
 
@@ -95,6 +97,8 @@ plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
 plaidClient.removeItem(access_token, cb);
 // getItem(String, Function)
 plaidClient.getItem(access_token, cb);
+// importItem([String], Object, Object?, Function))
+plaidClient.importItem(products, user_auth, options, cb)
 // updateItemWebhook(String, String, Function)
 plaidClient.updateItemWebhook(access_token, webhook, cb);
 
@@ -113,6 +117,13 @@ plaidClient.getCreditDetails(access_token, cb);
 // getLiabilities(String, Function)
 plaidClient.getLiabilities(access_token, cb);
 
+// getDepositSwitch(String, Object?, Function)
+plaidClient.getDepositSwitch(deposit_switch_id, options, cb)
+// createDepositSwitch(String, String, Object?, Function)
+plaidClient.createDepositSwitch(target_account_id, target_access_token, options, cb);
+// createDepositSwitchToken(String, Function)
+plaidClient.createDepositSwitchToken(deposit_switch_id, options, cb)
+
 // getHoldings(String, Function)
 plaidClient.getHoldings(access_token, cb);
 // getInvestmentTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD),
@@ -125,11 +136,14 @@ plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 // getAllTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getAllTransactions(access_token, start_date, end_date, options, cb);
 
+// refreshTransactions(String)
+plaidClient.refreshTransactions(access_token);
+
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
 
-// getInstitutions(Number, Number, Function);
-plaidClient.getInstitutions(count, offset, cb);
+// getInstitutions(Number, Number, Object?, Function);
+plaidClient.getInstitutions(count, offset, options, cb);
 // getInstitutionsById(String, Object?, Function)
 plaidClient.getInstitutionById(institution_id, options, cb);
 // searchInstitutionsByName(String, [String], Object?, Function)
@@ -137,6 +151,9 @@ plaidClient.searchInstitutionsByName(query, products, options, cb);
 
 // getCategories(Function)
 plaidClient.getCategories(cb);
+
+// getWebhookVerificationKey(String, Function)
+plaidClient.getWebhookVerificationKey(key_id, cb);
 
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
@@ -270,13 +287,11 @@ app.use(bodyParser.json());
 app.post('/plaid_exchange', (req, res) => {
   var public_token = req.body.public_token;
 
-  plaidClient.exchangePublicToken(public_token).then(res => {
-    const access_token = res.access_token;
-
-    plaidClient.getAccounts(access_token).then(res => {
-      console.log(res.accounts);
-    });
-  }).catch(err => {
+  return plaidClient.exchangePublicToken(public_token)
+  .then(res => res.access_token)
+  .then(accessToken => plaidClient.getAccounts(accessToken))
+  .then(res => console.log(res.accounts))
+  .catch(err => {
     // Indicates a network or runtime error.
     if (!(err instanceof plaid.PlaidError)) {
       res.sendStatus(500);

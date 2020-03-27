@@ -77,6 +77,14 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can create item add tokens', () => {
+    pCl.createItemAddToken((err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+    });
+  });
+
   describe('endpoints', () => {
 
     const now = moment().format('YYYY-MM-DD');
@@ -215,14 +223,53 @@ describe('plaid.Client', () => {
 
     describe('product access', () => {
 
-      it('item', cb => {
+      it('gets item', cb => {
         pCl.getItem(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
-
+          expect(successResponse.status).to.be.ok();
+          expect(successResponse.status.transactions).to.be.ok();
+          expect(successResponse.status.investments).to.be.ok();
+          expect(successResponse.status.last_webhook).to.be(null);
           cb();
         });
+      });
+
+      it('imports item without option', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {},
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
+            cb();
+          }
+        );
+      });
+
+      it('imports item with option', cb => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {
+            user_id: 'user_good',
+            auth_token: 'pass_good',
+          },
+          {
+            webhook: 'https://plaid.com/webhook-test',
+          },
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.access_token).to.be.ok();
+            cb();
+          }
+        );
       });
 
       it('accounts', cb => {
@@ -321,6 +368,15 @@ describe('plaid.Client', () => {
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
           expect(successResponse.credit_details).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('transactions refresh', cb => {
+        pCl.refreshTransactions(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
 
           cb();
         });
@@ -632,6 +688,29 @@ describe('plaid.Client', () => {
             cb();
           });
         });
+
+        it('transactions refresh', cb => {
+          pCl.refreshTransactions(accessToken,
+            (err, successResponse) => {
+              expect(err).to.be(null);
+              expect(successResponse).to.be.ok();
+
+              cb();
+          });
+        });
+
+        it('transactions refresh (with 400)', cb => {
+          pCl.refreshTransactions('invalid token',
+            (err, successResponse) => {
+              expect(err).to.be.ok();
+              expect(successResponse).not.to.be.ok();
+              expect(err.status_code).to.be(400);
+              expect(err.request_id).to.be.ok();
+              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
+
+              cb();
+          });
+        });
       });
     });
 
@@ -818,6 +897,204 @@ describe('plaid.Client', () => {
       });
     });
 
+    describe('payment_initiation', () => {
+      const address = {
+        street: ['street name 999'],
+        city: 'city',
+        postal_code: '99999',
+        country: 'GB',
+      };
+
+      const createPaymentRecipient = (cb) => {
+        pCl.createPaymentRecipient(
+          'John Doe',
+          'GB33BUKB20201555555555',
+          address,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+
+            cb(null, response.recipient_id);
+          });
+      };
+
+      const getPaymentRecipient = (recipient_id, cb) => {
+        pCl.getPaymentRecipient(recipient_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+          expect(response.name).to.be.ok();
+          expect(response.iban).to.be.ok();
+          expect(response.address).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const listPaymentRecipients = (recipient_id, cb) => {
+        pCl.listPaymentRecipients((err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipients).to.be.ok();
+
+          cb(null, recipient_id);
+        });
+      };
+
+      const createPayment = (recipient_id, cb) => {
+        const amount = {
+          currency: 'GBP',
+          value: 100.00,
+        };
+
+        pCl.createPayment(recipient_id, 'TestPayment', amount,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.status).to.be.ok();
+
+          cb(null, response.payment_id);
+        });
+      };
+
+      const createPaymentToken = (payment_id, cb) => {
+        pCl.createPaymentToken(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+
+          cb(null, payment_id);
+        });
+      };
+
+      const getPayment = (payment_id, cb) => {
+        pCl.getPayment(payment_id,
+        (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.reference).to.be.ok();
+          expect(response.amount).to.be.ok();
+          expect(response.status).to.be.ok();
+          expect(response.last_status_update).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+
+          cb(null);
+        });
+      };
+
+      const listPayments = (cb) => {
+        pCl.listPayments({count: 10}, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payments).to.be.ok();
+
+          cb();
+        });
+      };
+
+      it('successfully goes through the entire flow', cb => {
+        async.waterfall([
+          createPaymentRecipient,
+          getPaymentRecipient,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+    });
+    describe('deposit switch', () => {
+      const getAccessToken = (cb) => {
+        pCl.importItem(
+          ['identity', 'auth'],
+          {'user_id': 'user_good', 'auth_token': 'pass_good'},
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.access_token).to.be.ok();
+            cb(null, response.access_token);
+          });
+      };
+
+      const getAccountId = (access_token, cb) => {
+        pCl.getAccounts(access_token, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.accounts).to.be.ok();
+          cb(null, {
+            account_id: response.accounts.filter(
+              a => a.type === 'depository'
+            )[0].account_id,
+            access_token: access_token,
+          });
+        });
+      };
+
+      const createDepositSwitch = (switch_params, cb) => {
+        pCl.createDepositSwitch(
+          switch_params.account_id,
+          switch_params.access_token,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            cb(null, response.deposit_switch_id);
+        });
+      };
+
+      const getDepositSwitch = (deposit_switch_id, cb) => {
+        pCl.getDepositSwitch(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            expect(response.target_item_id).to.be.ok();
+            expect(response.target_account_id).to.be.ok();
+            expect(response.date_created).to.be.ok();
+            expect(response.state).to.be.ok();
+            cb(null, deposit_switch_id);
+          }
+        );
+      };
+
+      const createDepositSwitchToken = (deposit_switch_id, cb) => {
+        pCl.createDepositSwitchToken(
+          deposit_switch_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_token).to.be.ok();
+            expect(response.deposit_switch_token_expiration_time).to.be.ok();
+            cb(null, response.deposit_switch_token);
+          }
+        );
+      };
+
+      it('successfully goes through the entire deposit switch flow', cb => {
+        async.waterfall([
+          getAccessToken,
+          getAccountId,
+          createDepositSwitch,
+          getDepositSwitch,
+          createDepositSwitchToken,
+        ], cb);
+      });
+    });
+
     describe('institutions', () => {
 
       it('get', cb => {
@@ -923,6 +1200,42 @@ describe('plaid.Client', () => {
       });
     });
 
+    describe('webhook-verification', () => {
+      it('getWebhookVerificationKey', cb => {
+        pCl.getWebhookVerificationKey(
+          testConstants.WEBHOOK_VERIFICATION_KEY_ID,
+          (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.key).to.be.ok();
+          expect(successResponse.key.alg).to.be.ok();
+          expect(successResponse.key.created_at).to.be.ok();
+          expect(successResponse.key.crv).to.be.ok();
+          expect(successResponse.key.kid).to.be.ok();
+          expect(successResponse.key.kty).to.be.ok();
+          expect(successResponse.key.use).to.be.ok();
+          expect(successResponse.key.x).to.be.ok();
+          expect(successResponse.key.y).to.be.ok();
+
+          cb();
+        });
+      });
+
+      it('getWebhookVerificationKey error', cb => {
+        pCl.getWebhookVerificationKey(
+          'invalid key_id',
+          (err, successResponse) => {
+          expect(err).to.be.ok();
+          expect(successResponse).not.to.be.ok();
+          expect(err.status_code).to.be(400);
+          expect(err.request_id).to.be.ok();
+          expect(err.error_code).to.be('INVALID_WEBHOOK_VERIFICATION_KEY_ID');
+
+          cb();
+        });
+      });
+    });
+
     describe('sandbox-only', () => {
       it('sandboxPublicTokenCreate', cb => {
         pCl.sandboxPublicTokenCreate(
@@ -942,6 +1255,7 @@ describe('plaid.Client', () => {
           });
         });
       });
+
       it('sandboxItemFireWebhook', cb => {
         async.waterfall([
           cb => {

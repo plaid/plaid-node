@@ -10,8 +10,8 @@ Instructions for contributing to [plaid-node][1]. A node.js client library for t
   cp .env.example .env
   ```
 
-2. Go to the [Plaid Dashboard](https://dashboard.plaid.com/) and copy and paste your `client_id`, `public_key`, and `secret`
-   into `.env` using a text editor of your choice. Your account must be enabled for sandbox access.
+2. Go to the [Plaid Dashboard](https://dashboard.plaid.com/) and copy and paste your `client_id`, `public_key`, and sandbox `secret`
+   into `.env` using a text editor of your choice.
 
 3. Install the necessary dependencies.
 
@@ -26,6 +26,14 @@ $ SECRET=$PLAID_SECRET \
 CLIENT_ID=$PLAID_CLIENT_ID \
 PUBLIC_KEY=$PLAID_PUBLIC_KEY \
 make test
+
+# Running specific tests
+$ GREP='constructor|item|assets' \
+SECRET=$PLAID_SECRET \
+CLIENT_ID=$PLAID_CLIENT_ID \
+PUBLIC_KEY=$PLAID_PUBLIC_KEY \
+make test
+
 ```
 
 Code coverage information is written to `/coverage`.

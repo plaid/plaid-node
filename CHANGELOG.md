@@ -1,3 +1,40 @@
+## 4.9.0
+- Add support for the item add token (BETA) ([#262](https://github.com/plaid/plaid-node/pull/262))
+
+## 4.8.0
+- Add a new `oauth` field to the `Institution` schema returned by `/institutions/` routes ([#255](https://github.com/plaid/plaid-node/pull/255))
+- Add investment product status to the `Item` schema ([#258](https://github.com/plaid/plaid-node/pull/258))
+- Add `transaction_code` field to the `Transaction` interface ([#257](https://github.com/plaid/plaid-node/pull/257))
+
+## 4.7.0
+- Add support for new Transactions Refresh endpoint ([#246](https://github.com/plaid/plaid-node/pull/246))
+  - `/transactions/refresh/`
+
+## 4.6.0
+- Add support for new generic Processor Token endpoint ([#228](https://github.com/plaid/plaid-node/pull/228))
+  - `/processor/token/create`
+- Add support for webook verification ([#234](https://github.com/plaid/plaid-node/pull/234))
+  - `/webhook_verification_key/get`
+
+## 4.5.0
+- Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
+  - `/item/import`
+  - `/deposit_switch/create`
+  - `/deposit_switch/get`
+  - `/deposit_switch/token/create`
+
+## 4.4.0
+
+- Add support for new UK Payment Initiation product ([#232](https://github.com/plaid/plaid-node/pull/232))
+  - `/payment_initiation/recipient/create`
+  - `/payment_initiation/recipient/get`
+  - `/payment_initiation/recipient/list`
+  - `/payment_initiation/payment/create`
+  - `/payment_initiation/payment/token/create`
+  - `/payment_initiation/payment/get`
+  - `/payment_initiation/payment/list`
+- Add `consent_expiration_time` to the Item interface ([#233](https://github.com/plaid/plaid-node/pull/233))
+
 ## 4.1.0
 
 - Add support for new Investments product ([#205](https://github.com/plaid/plaid-node/issues/205))
