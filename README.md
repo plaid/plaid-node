@@ -144,7 +144,7 @@ plaidClient.resetLogin(access_token, cb);
 // Sandbox-only endpoint to trigger a webhook for an Item
 plaidClient.sandboxItemFireWebhook(access_token, webhook_code, cb);
 // Sandbox-only endpoint to set the verfication_status for an Item
-plaidClient.sandboxItemSetVerificationStatus(access_token, webhook_code, cb);
+plaidClient.sandboxItemSetVerificationStatus(access_token, account_id, verification_status, cb);
 // Sandbox-only endpoint to create a `public_token`. Useful for writing integration tests without running Link.
 plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
