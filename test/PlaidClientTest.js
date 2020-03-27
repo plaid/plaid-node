@@ -21,7 +21,8 @@ const {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
 describe('plaid.Client', () => {
 
   let pCl;
-  beforeEach(() => {
+  before(() => {
+    console.log('before each');
     pCl = new plaid.Client(
       CLIENT_ID,
       SECRET,
