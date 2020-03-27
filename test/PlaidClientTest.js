@@ -1328,7 +1328,7 @@ describe('plaid.Client', () => {
 
     describe('success path', () => {
       it('normal', cb => {
-         pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {})
+         pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], {})
          .then(successResponse => {
           expect(successResponse).to.be.ok();
           expect(successResponse.institutions).to.be.an(Array);
@@ -1341,7 +1341,7 @@ describe('plaid.Client', () => {
       });
 
       it('normal (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null)
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'])
         .then(successResponse => {
           expect(successResponse).to.be.ok();
           expect(successResponse.institutions).to.be.an(Array);

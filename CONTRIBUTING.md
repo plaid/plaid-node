@@ -22,9 +22,18 @@ Instructions for contributing to [plaid-node][1]. A node.js client library for t
 ## Running Tests
 
 ```console
-$ make test
+$ SECRET=$PLAID_SECRET \
+CLIENT_ID=$PLAID_CLIENT_ID \
+PUBLIC_KEY=$PLAID_PUBLIC_KEY \
+make test
+
 # Running specific tests
-$ GREP='constructor|item|assets' make test
+$ GREP='constructor|item|assets' \
+SECRET=$PLAID_SECRET \
+CLIENT_ID=$PLAID_CLIENT_ID \
+PUBLIC_KEY=$PLAID_PUBLIC_KEY \
+make test
+
 ```
 
 Code coverage information is written to `/coverage`.

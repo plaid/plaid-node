@@ -702,6 +702,8 @@ declare module 'plaid' {
     }
   }
 
+  interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
+
   interface ClientOptions extends CoreOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
@@ -1178,6 +1180,21 @@ declare module 'plaid' {
       cb: Callback<WebhookVerificationKeyResponse>,
     ): Promise<WebhookVerificationKeyResponse>;
 
+
+    // sandboxItemSetVerificationStatus(String, String, String, Function)
+    sandboxItemSetVerificationStatus(
+      access_token: string,
+      account_id: string,
+      verification_status: string,
+      cb: Callback<SandboxItemSetVerificationStatusResponse>,
+    ): void;
+
+    // sandboxItemSetVerificationStatus(String, String, String)
+    sandboxItemSetVerificationStatus(
+      access_token: string,
+      account_id: string,
+      verification_status: string,
+    ): Promise<SandboxItemSetVerificationStatusResponse>;
   }
 
   interface PlaidEnvironments {
