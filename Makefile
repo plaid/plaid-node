@@ -1,7 +1,7 @@
 BIN = node_modules/.bin
 
 ISTANBUL = node --harmony node_modules/.bin/istanbul
-JSCS = $(BIN)/jscs --config .jscsrc
+ESLINT = $(BIN)/eslint --config .eslintrc.json
 JSHINT = $(BIN)/jshint --config .jshintrc
 XYZ = $(BIN)/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:plaid/plaid-node.git
 
@@ -16,7 +16,7 @@ endif
 .PHONY: lint
 lint:
 	@$(JSHINT) -- $(SRC)
-	@$(JSCS) -- $(SRC)
+	@$(ESLINT) -- $(SRC)
 
 
 .PHONY: release-major release-minor release-patch
