@@ -1,6 +1,7 @@
 ## 4.10.0
 
-- Add support for `/sandbox/item/set_verification_status` endpoint ([#223](https://github.com/plaid/plaid-node/pull/223))
+- Add support for Sandbox set verification status endpoint ([#223](https://github.com/plaid/plaid-node/pull/223))
+  - `/sandbox/item/set_verification_status`
 
 ## 4.9.0
 
