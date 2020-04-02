@@ -1,22 +1,31 @@
+## 4.10.0
+
+- Add support for `/sandbox/item/set_verification_status` endpoint ([#223](https://github.com/plaid/plaid-node/pull/223))
+
 ## 4.9.0
+
 - Add support for the item add token (BETA) ([#262](https://github.com/plaid/plaid-node/pull/262))
 
 ## 4.8.0
+
 - Add a new `oauth` field to the `Institution` schema returned by `/institutions/` routes ([#255](https://github.com/plaid/plaid-node/pull/255))
 - Add investment product status to the `Item` schema ([#258](https://github.com/plaid/plaid-node/pull/258))
 - Add `transaction_code` field to the `Transaction` interface ([#257](https://github.com/plaid/plaid-node/pull/257))
 
 ## 4.7.0
+
 - Add support for new Transactions Refresh endpoint ([#246](https://github.com/plaid/plaid-node/pull/246))
   - `/transactions/refresh/`
 
 ## 4.6.0
+
 - Add support for new generic Processor Token endpoint ([#228](https://github.com/plaid/plaid-node/pull/228))
   - `/processor/token/create`
 - Add support for webook verification ([#234](https://github.com/plaid/plaid-node/pull/234))
   - `/webhook_verification_key/get`
 
 ## 4.5.0
+
 - Add support for new Deposit Switch product ([#237](https://github.com/plaid/plaid-node/pull/237))
   - `/item/import`
   - `/deposit_switch/create`
