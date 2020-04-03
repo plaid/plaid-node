@@ -25,7 +25,7 @@ describe('plaid.plaidRequest', () => {
       public_key: 'xxx',
     }, {
       path: '/institutions/get_by_id',
-      body: { institution_id: 'ins_3' },
+      body: {institution_id: 'ins_3'},
     }, {}, (err, res) => {
       eq(res, undefined);
       eq(err.error_code, 'INTERNAL_SERVER_ERROR');
@@ -53,7 +53,7 @@ describe('plaid.plaidRequest', () => {
       public_key: 'yyy',
     }, {
       path: '/institutions/get_by_id',
-      body: { institution_id: 'ins_1' },
+      body: {institution_id: 'ins_1'},
     }, {}, (err, res) => {
 
 
