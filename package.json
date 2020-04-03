@@ -24,9 +24,9 @@
   "dependencies": {
     "@types/node": "9.x",
     "@types/request": "^2.48.2",
+    "axios": "^0.19.2",
     "bluebird": "^3.5.1",
-    "ramda": "0.23.x",
-    "request": "^2.74.0"
+    "ramda": "0.23.x"
   },
   "devDependencies": {
     "async": "2.1.x",
