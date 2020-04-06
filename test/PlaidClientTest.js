@@ -77,11 +77,28 @@ describe('plaid.Client', () => {
     });
   });
 
-  it('can create item add tokens', () => {
-    pCl.createItemAddToken((err, successResponse) => {
+  it('can create item add tokens', cb => {
+    pCl.createItemAddToken({}, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create item add tokens with fields', cb => {
+    pCl.createItemAddToken({
+      user_identity: {
+        email_address: {
+          value: 'name@example.com',
+          verified: true,
+        },
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
     });
   });
 
