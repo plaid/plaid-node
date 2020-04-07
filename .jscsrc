@@ -16,6 +16,7 @@
   "disallowYodaConditions": true,
   "maximumLineLength": 79,
   "requireCapitalizedConstructors": true,
+  "requireSemicolons": true,
   "requireCommaBeforeLineBreak": true,
   "requireCurlyBraces": ["if", "else", "for", "while", "do", "try", "catch", "finally"],
   "requireDotNotation": true,

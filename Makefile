@@ -18,6 +18,10 @@ lint:
 	@$(JSHINT) -- $(SRC)
 	@$(ESLINT) -- $(SRC)
 
+.PHONY: format
+format:
+	jscs -c .jscsrc -x lib/ test/
+
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch:
