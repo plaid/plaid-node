@@ -29,13 +29,13 @@ $ npm install plaid
 
 You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` do not support versioning.
 
-```
+```javascript
 const plaidClient = new plaid.Client(
   process.env.PLAID_CLIENT_ID,
   process.env.PLAID_SECRET,
   process.env.PUBLIC_KEY,
   plaid.environments.sandbox,
-  {version: '2018-05-22'}
+  {version: '2019-05-29'} // '2019-05-29' | '2018-05-22' | '2017-03-08'
 );
 ```
 
@@ -53,7 +53,7 @@ access and are accessible from a valid instance of a Plaid `Client`:
 ```javascript
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
+const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2019-05-29'});
 ```
 
 The `plaid_env` parameter dictates which Plaid API environment you will access. Values are:
