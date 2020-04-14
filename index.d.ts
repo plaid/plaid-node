@@ -308,7 +308,7 @@ declare module 'plaid' {
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
-    authorized_date: Iso8601DateString;
+    authorized_date: Iso8601DateString | null;
     location: TransactionLocation;
     name: string | null;
     payment_channel: string;
