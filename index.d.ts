@@ -710,6 +710,26 @@ declare module 'plaid' {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
 
+  type IdentityFieldBase =  {
+    value: string
+  }
+
+  type IdentityField = IdentityFieldBase |
+    IdentityFieldBase & {
+      verified: boolean
+    } |
+    IdentityFieldBase & {
+      verifiedAt: Date
+    }
+
+  interface CreateItemAddTokenOptions {
+      user_identity?: {
+        email_address?: IdentityField
+        phone_number?: IdentityField
+        legal_name?: IdentityField
+      }
+  }
+
   class Client {
     constructor(
       clientId: string,
@@ -726,7 +746,7 @@ declare module 'plaid' {
     ): void;
 
     createItemAddToken(): Promise<CreateItemAddTokenResponse>;
-    createItemAddToken(cb: Callback<CreateItemAddTokenResponse>): void;
+    createItemAddToken(options: CreateItemAddTokenOptions, cb: Callback<CreateItemAddTokenResponse>): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
