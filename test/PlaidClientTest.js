@@ -77,11 +77,28 @@ describe('plaid.Client', () => {
     });
   });
 
-  it('can create item add tokens', () => {
-    pCl.createItemAddToken((err, successResponse) => {
+  it('can create item add tokens', cb => {
+    pCl.createItemAddToken({}, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create item add tokens with fields', cb => {
+    pCl.createItemAddToken({
+      user_identity: {
+        email_address: {
+          value: 'name@example.com',
+          verified: true,
+        },
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
     });
   });
 
@@ -91,17 +108,22 @@ describe('plaid.Client', () => {
     let testAccessToken;
 
     before(cb => {
-      pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-                                   testConstants.PRODUCTS, {},
-                                   (err, successResponse) => {
-        expect(err).to.be(null);
-        pCl.exchangePublicToken(successResponse.public_token,
-                                (err, successResponse) => {
-          expect(err).to.be(null);
-          testAccessToken = successResponse.access_token;
-        });
-      });
-      cb();
+      async.waterfall([
+        cb => {
+            pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+                testConstants.PRODUCTS, {}, cb);
+        },
+        (successResponse, cb) => {
+          pCl.exchangePublicToken(successResponse.public_token,
+              (err, successResponse) => {
+                if (err != null) {
+                  return cb(err);
+                }
+                testAccessToken = successResponse.access_token;
+                cb();
+          });
+        },
+      ], cb);
     });
 
     describe('item', () => {
