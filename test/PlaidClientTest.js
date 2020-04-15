@@ -88,6 +88,7 @@ describe('plaid.Client', () => {
 
   it('can create item add tokens with fields', cb => {
     pCl.createItemAddToken({
+      client_user_id: (new Date()).getTime().toString(),
       user_identity: {
         email_address: {
           value: 'name@example.com',

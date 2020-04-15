@@ -723,11 +723,12 @@ declare module 'plaid' {
     }
 
   interface CreateItemAddTokenOptions {
-      user_identity?: {
-        email_address?: IdentityField
-        phone_number?: IdentityField
-        legal_name?: IdentityField
-      }
+    client_user_id: string;
+    user_identity?: {
+      email_address?: IdentityField
+      phone_number?: IdentityField
+      legal_name?: IdentityField
+    }
   }
 
   class Client {
