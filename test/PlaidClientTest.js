@@ -78,7 +78,11 @@ describe('plaid.Client', () => {
   });
 
   it('can create item add tokens', cb => {
-    pCl.createItemAddToken({}, (err, successResponse) => {
+    pCl.createItemAddToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+      },
+    }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
@@ -88,8 +92,25 @@ describe('plaid.Client', () => {
 
   it('can create item add tokens with fields', cb => {
     pCl.createItemAddToken({
-      client_user_id: (new Date()).getTime().toString(),
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        email_address: {
+          value: 'name@example.com',
+          verified: true,
+        },
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create item add tokens with fields with old field name', cb => {
+    pCl.createItemAddToken({
       user_identity: {
+        client_user_id: (new Date()).getTime().toString(),
         email_address: {
           value: 'name@example.com',
           verified: true,

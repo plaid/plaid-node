@@ -722,13 +722,18 @@ declare module 'plaid' {
       verifiedAt: Date
     }
 
-  interface CreateItemAddTokenOptions {
+  interface User {
     client_user_id: string;
-    user_identity?: {
-      email_address?: IdentityField
-      phone_number?: IdentityField
-      legal_name?: IdentityField
-    }
+    email_address?: IdentityField
+    phone_number?: IdentityField
+    legal_name?: IdentityField
+  }
+
+  interface CreateItemAddTokenOptions {
+    // user_identity is deprecated: use `user`
+    user_identity: User;
+  } | {
+    user: User;
   }
 
   class Client {
