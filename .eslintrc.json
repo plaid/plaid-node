@@ -17,6 +17,7 @@
         "number": true
       }
     ],
+    "indent": [2, 2],
     "brace-style": [
       2,
       "1tbs",
