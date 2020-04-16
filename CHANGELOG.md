@@ -1,6 +1,6 @@
 ## 4.11.0
-- Add a `client_user_id` field to the item add token endpoint ([#279](https://github.com/plaid/plaid-node/pull/279))
-- Add a `user_identity` field to the item add token endpoint ([#269](https://github.com/plaid/plaid-node/pull/269))
+- Add `client_user_id` field to the item add token endpoint ([#279](https://github.com/plaid/plaid-node/pull/279))
+- Add `user_identity` field to the item add token endpoint ([#269](https://github.com/plaid/plaid-node/pull/269))
 - Add missing `authorized_date` and `payment_channel` fields to the `Transaction` interface ([#266](https://github.com/plaid/plaid-node/pull/266))
 
 ## 4.10.0
