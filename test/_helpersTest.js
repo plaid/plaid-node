@@ -18,6 +18,21 @@ describe('helpers', () => {
       expect(result).to.eql(expected);
     }
 
+    it('handles client_user_id', () => {
+      runWith({
+        client_user_id: '123456',
+        email_address: {
+          value: emailA,
+          verified: true,
+        },
+      }, {
+        user: {
+          client_user_id: '123456',
+          email_address: emailA,
+          email_address_verified_time: noDateSupplied,
+        },
+      });
+    });
     it('handles field only', () => {
       runWith({
         email_address: {
