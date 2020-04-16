@@ -729,7 +729,7 @@ declare module 'plaid' {
     legal_name?: IdentityField
   }
 
-  interface CreateItemAddTokenOptions {
+  type CreateItemAddTokenOptions = {
     // user_identity is deprecated: use `user`
     user_identity: User;
   } | {
