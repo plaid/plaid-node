@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "4.10.0",
+  "version": "4.11.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -14,12 +14,7 @@
     "url": "https://github.com/plaid/plaid-node/issues"
   },
   "main": "lib/plaid.js",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/plaid/plaid-node/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "types": "./index.d.ts",
   "dependencies": {
     "@types/node": "9.x",
@@ -31,13 +26,13 @@
   "devDependencies": {
     "async": "2.1.x",
     "dotenv": "4.0.x",
+    "eslint": "^6.8.0",
     "expect.js": "0.3.x",
-    "istanbul": "0.4.x",
-    "jscs": "3.0.x",
-    "jshint": "2.9.x",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.11.0",
     "mocha": "5.x",
     "moment": "2.19.x",
-    "nock": "9.1.x",
+    "nock": "^12.0.3",
     "nockingbird": "0.2.x",
     "sinon": "^4.5.0",
     "typescript": "2.5.x",

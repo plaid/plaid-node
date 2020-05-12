@@ -308,8 +308,10 @@ declare module 'plaid' {
     category: Array<string> | null;
     category_id: string | null;
     date: Iso8601DateString;
+    authorized_date: Iso8601DateString | null;
     location: TransactionLocation;
     name: string | null;
+    payment_channel: string;
     payment_meta: TransactionPaymentMeta;
     pending: boolean | null;
     pending_transaction_id: string | null;
@@ -708,6 +710,32 @@ declare module 'plaid' {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
 
+  type IdentityFieldBase =  {
+    value: string
+  }
+
+  type IdentityField = IdentityFieldBase |
+    IdentityFieldBase & {
+      verified: boolean
+    } |
+    IdentityFieldBase & {
+      verifiedAt: Date
+    }
+
+  interface User {
+    client_user_id: string;
+    email_address?: IdentityField
+    phone_number?: IdentityField
+    legal_name?: IdentityField
+  }
+
+  type CreateItemAddTokenOptions = {
+    // user_identity is deprecated: use `user`
+    user_identity: User;
+  } | {
+    user: User;
+  }
+
   class Client {
     constructor(
       clientId: string,
@@ -724,7 +752,7 @@ declare module 'plaid' {
     ): void;
 
     createItemAddToken(): Promise<CreateItemAddTokenResponse>;
-    createItemAddToken(cb: Callback<CreateItemAddTokenResponse>): void;
+    createItemAddToken(options: CreateItemAddTokenOptions, cb: Callback<CreateItemAddTokenResponse>): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
