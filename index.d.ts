@@ -1,5 +1,5 @@
 declare module 'plaid' {
-  import { CoreOptions } from 'request';
+  import { AxiosRequestConfig } from 'axios';
 
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
@@ -706,7 +706,7 @@ declare module 'plaid' {
 
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
-  interface ClientOptions extends CoreOptions {
+  interface ClientOptions extends AxiosRequestConfig {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
   }
 
