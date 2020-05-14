@@ -1,12 +1,12 @@
 ## 5.0.0
 - Replaced the deprecated `request` library with `axios`
 - Updated license format in `package.json`
+- Removes support for the deprecated `/item/access_token/update_version` endpoint
 
-BREAKING CHANGE:
+BREAKING CHANGES:
 
-If your integration relies on passing custom `request` config to the
-`plaid.Client` constructor via the `options` argument, these options must be
-migrated to use `axios` equivalents.
+- Removes `plaidClient.updateAccessTokenVersion()`
+- If your integration relies on passing custom `request` config to the `plaid.Client` constructor via the `options` argument, these options must be migrated to use `axios` equivalents.
 
 ## 4.11.0
 - Add `client_user_id` field to the item add token endpoint ([#279](https://github.com/plaid/plaid-node/pull/279))
