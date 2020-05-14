@@ -2,8 +2,6 @@
 
 /* global before, beforeEach, describe, it */
 
-const crypto = require('crypto');
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
