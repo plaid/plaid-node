@@ -12,10 +12,12 @@ const plaid = require('../');
 const plaidRequest = require('../lib/plaidRequest');
 
 const eq = assert.strictEqual;
+const deepEqual = assert.deepEqual;
 
 describe('plaid.plaidRequest', () => {
+  const scope = nock('https://sandbox.plaid.com');
+
   it('gracefully handles invalid JSON from the API', done => {
-    const scope = nock('https://sandbox.plaid.com');
     nockingbird.load(scope, './test/mocks/api-invalid-json.nb');
 
     plaidRequest({
@@ -27,6 +29,36 @@ describe('plaid.plaidRequest', () => {
     }, {}, (err, res) => {
       eq(res, undefined);
       eq(err.error_code, 'INTERNAL_SERVER_ERROR');
+      scope.done();
+      done();
+    });
+  });
+
+  it('resolves with request_id and data on happy path (non-MFA)', done => {
+    nockingbird.load(scope, './test/mocks/api-valid-json.nb');
+
+    const expectedRes = {
+      request_id: '1234abcd',
+      buffer: {
+        // from response body
+        institution_id: 'ins_1',
+        description: 'more money, more problems',
+        // added by plaidRequest
+        status_code: 200
+      }
+    };
+
+    plaidRequest({
+      env: plaid.environments.sandbox,
+      public_key: 'yyy',
+    }, {
+      path: '/institutions/get_by_id',
+      body: {institution_id: 'ins_1'},
+    }, {}, (err, res) => {
+
+
+      deepEqual(res, expectedRes);
+      eq(err, null);
       scope.done();
       done();
     });
