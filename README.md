@@ -91,8 +91,6 @@ plaidClient.createProcessorToken(access_token, account_id, processor, cb);
 
 // invalidateAccessToken(String, Function)
 plaidClient.invalidateAccessToken(access_token, cb);
-// updateAccessTokenVersion(String, Function)
-plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
 // removeItem(String, Function)
 plaidClient.removeItem(access_token, cb);
 // getItem(String, Function)
