@@ -780,14 +780,6 @@ declare module 'plaid' {
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
 
-    updateAccessTokenVersion(
-      legacyAccessToken: string,
-    ): Promise<TokenResponse>;
-    updateAccessTokenVersion(
-      legacyAccessToken: string,
-      cb: Callback<TokenResponse>,
-    ): void;
-
     deleteItem: AccessTokenFn<ItemDeleteResponse>;
 
     removeItem: AccessTokenFn<ItemRemoveResponse>;
