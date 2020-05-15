@@ -46,13 +46,14 @@ The `make release-%` command will do the following executions automatically:
 
 4. **Publish and release to NPM**
 
-Generate an NPM access token at `https://www.npmjs.com/settings/{username}/tokens`
+You may need to `npm login` or otherwise manually set up your `~/.npmrc` file to
+make sure you have access to publish to npm.
 
 The following command will publish the latest version (bumped in the `package.json`)
 to the NPM plaid registry:
 
 ```bash
-NPM_TOKEN=xxxxxx... npm publish
+npm --registry=https://registry.npmjs.org publish
 ```
 
 
