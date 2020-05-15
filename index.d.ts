@@ -987,7 +987,7 @@ declare module 'plaid' {
     createPaymentRecipient(
       name: string,
       iban: string,
-      address: PaymentRecipientAddress,
+      address: PaymentRecipientAddress | null,
     ): Promise<PaymentRecipientCreateResponse>;
 
     getPaymentRecipient(
