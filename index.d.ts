@@ -632,7 +632,7 @@ declare module 'plaid' {
     recipient_id: string;
     name: string;
     iban: string;
-    address: PaymentRecipientAddress;
+    address: PaymentRecipientAddress | null;
   }
 
   interface PaymentRecipientListResponse extends BaseResponse {
@@ -980,14 +980,14 @@ declare module 'plaid' {
     createPaymentRecipient(
       name: string,
       iban: string,
-      address: PaymentRecipientAddress,
+      address: PaymentRecipientAddress | null,
       cb: Callback<PaymentRecipientCreateResponse>,
     ): void;
 
     createPaymentRecipient(
       name: string,
       iban: string,
-      address: PaymentRecipientAddress,
+      address: PaymentRecipientAddress | null,
     ): Promise<PaymentRecipientCreateResponse>;
 
     getPaymentRecipient(
