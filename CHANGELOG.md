@@ -1,3 +1,15 @@
+## 5.0.0
+- Replaced the deprecated `request` library with `axios`
+- Removes support for the deprecated `/item/access_token/update_version` endpoint
+- Updated license format in `package.json`
+- Updates `PaymentRecipientGetResponse` typing
+
+BREAKING CHANGES:
+
+- `PaymentRecipientGetResponse.address` is now nullable
+- Removes `plaidClient.updateAccessTokenVersion()`
+- If your integration relies on passing custom `request` config to the `plaid.Client` constructor via the `options` argument, these options must be migrated to use `axios` equivalents.
+
 ## 4.11.0
 - Add `client_user_id` field to the item add token endpoint ([#279](https://github.com/plaid/plaid-node/pull/279))
 - Add `user_identity` field to the item add token endpoint ([#269](https://github.com/plaid/plaid-node/pull/269))
