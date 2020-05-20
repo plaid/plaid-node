@@ -2,8 +2,6 @@
 
 /* global before, beforeEach, describe, it */
 
-const crypto = require('crypto');
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
@@ -174,22 +172,6 @@ describe('plaid.Client', () => {
               });
             }
           ], cb);
-        });
-
-        it('update access token version', cb => {
-          // Generate a dummy legacy access token, a 160 character hex string
-          // We only test the failure case here since we can't generate a
-          // valid legacy access_token
-          const dummyAccessToken = crypto.randomBytes(80).toString('hex');
-          pCl.updateAccessTokenVersion(dummyAccessToken,
-            (err, successResponse) => {
-              void successResponse;
-              expect(err).to.be.ok();
-              expect(err.status_code).to.be(400);
-              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
-
-              cb();
-            });
         });
 
         it('invalidate an access_token, then remove the item', cb => {
