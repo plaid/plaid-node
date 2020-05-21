@@ -46,6 +46,9 @@ The `make release-%` command will do the following executions automatically:
 
 4. **Publish and release to NPM**
 
+You may need to `npm login` or otherwise manually set up your `~/.npmrc` file to
+make sure you have access to publish to npm.
+
 The following command will publish the latest version (bumped in the `package.json`)
 to the NPM plaid registry:
 
