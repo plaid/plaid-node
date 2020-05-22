@@ -1203,12 +1203,16 @@ declare module 'plaid' {
       webhook_code: string,
     ): Promise<SandboxItemFireWebhookResponse>;
 
-    // getWebhookVerificationKey(String, String)
+    // getWebhookVerificationKey(String, Function)
     getWebhookVerificationKey(
       key_id: string,
       cb: Callback<WebhookVerificationKeyResponse>,
-    ): Promise<WebhookVerificationKeyResponse>;
+    ): void;
 
+    // getWebhookVerificationKey(String)
+    getWebhookVerificationKey(
+      key_id: string
+    ): Promise<WebhookVerificationKeyResponse>;
 
     // sandboxItemSetVerificationStatus(String, String, String, Function)
     sandboxItemSetVerificationStatus(
