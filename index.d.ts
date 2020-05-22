@@ -60,6 +60,11 @@ declare module 'plaid' {
     webhook?: string;
   }
 
+  interface GetInstitutionByIdOptions {
+    include_optional_metadata?: boolean;
+    include_status?: boolean;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -1135,17 +1140,21 @@ declare module 'plaid' {
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
-    getInstitutionById<T extends Institution>(
+    getInstitutionById(
       institutionId: string,
-      options?: Object,
-    ): Promise<GetInstitutionByIdResponse<T>>;
+      options?: GetInstitutionByIdOptions,
+    ): Promise<GetInstitutionByIdResponse<Institution>>;
+    getInstitutionById(
+      institutionId: string,
+      options: {include_optional_metadata: true},
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(
       institutionId: string,
-      options: Object,
+      options: GetInstitutionByIdOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
