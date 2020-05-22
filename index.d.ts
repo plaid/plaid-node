@@ -60,6 +60,11 @@ declare module 'plaid' {
     webhook?: string;
   }
 
+  interface GetInstitutionByIdOptions {
+    include_optional_metadata?: boolean;
+    include_status?: boolean;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -1136,17 +1141,21 @@ declare module 'plaid' {
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
-    getInstitutionById<T extends Institution>(
+    getInstitutionById(
       institutionId: string,
-      options?: Object,
-    ): Promise<GetInstitutionByIdResponse<T>>;
+      options?: GetInstitutionByIdOptions,
+    ): Promise<GetInstitutionByIdResponse<Institution>>;
+    getInstitutionById(
+      institutionId: string,
+      options: {include_optional_metadata: true},
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(
       institutionId: string,
-      options: Object,
+      options: GetInstitutionByIdOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
@@ -1195,12 +1204,16 @@ declare module 'plaid' {
       webhook_code: string,
     ): Promise<SandboxItemFireWebhookResponse>;
 
-    // getWebhookVerificationKey(String, String)
+    // getWebhookVerificationKey(String, Function)
     getWebhookVerificationKey(
       key_id: string,
       cb: Callback<WebhookVerificationKeyResponse>,
-    ): Promise<WebhookVerificationKeyResponse>;
+    ): void;
 
+    // getWebhookVerificationKey(String)
+    getWebhookVerificationKey(
+      key_id: string
+    ): Promise<WebhookVerificationKeyResponse>;
 
     // sandboxItemSetVerificationStatus(String, String, String, Function)
     sandboxItemSetVerificationStatus(
