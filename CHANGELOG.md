@@ -1,3 +1,7 @@
+##
+- Improved typescript typings for `getInstitutionById`, `ClientOptions`, and `getWebhookVerificationKey`
+- Make `getWebhookVerificationKey` compatible with async/await.
+
 ## 5.0.0
 - Replaced the deprecated `request` library with `axios`
 - Removes support for the deprecated `/item/access_token/update_version` endpoint
