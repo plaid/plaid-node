@@ -1,4 +1,4 @@
-##
+## 5.1.0
 - Improved typescript typings for `getInstitutionById`, `ClientOptions`, and `getWebhookVerificationKey`
 - Make `getWebhookVerificationKey` compatible with async/await.
 
