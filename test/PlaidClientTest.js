@@ -14,7 +14,7 @@ const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
 dotenv.config();
-const {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
+const {SECRET, CLIENT_ID} = process.env;
 
 describe('plaid.Client', () => {
 
@@ -23,7 +23,6 @@ describe('plaid.Client', () => {
     pCl = new plaid.Client(
       CLIENT_ID,
       SECRET,
-      PUBLIC_KEY,
       plaid.environments.sandbox,
       {version: '2019-05-29'}
     );
@@ -32,7 +31,7 @@ describe('plaid.Client', () => {
   describe('constructor', () => {
     it('throws for missing client_id', () => {
       expect(() => {
-        plaid.Client(null, SECRET, PUBLIC_KEY, plaid.environments.sandbox);
+        plaid.Client(null, SECRET, plaid.environments.sandbox);
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "client_id"');
@@ -41,25 +40,16 @@ describe('plaid.Client', () => {
 
     it('throws for missing secret', () => {
       expect(() => {
-        plaid.Client(CLIENT_ID, null, PUBLIC_KEY,  plaid.environments.sandbox);
+        plaid.Client(CLIENT_ID, null, plaid.environments.sandbox);
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "secret"');
       });
     });
 
-    it('throws for missing public_key', () => {
-      expect(() => {
-        plaid.Client(CLIENT_ID, SECRET, null, plaid.environments.sandbox);
-      }).to.throwException(e => {
-        expect(e).to.be.ok();
-        expect(e.message).to.equal('Missing Plaid "public_key"');
-      });
-    });
-
     it('throws for invalid environment', () => {
       expect(() => {
-        plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, 'gingham');
+        plaid.Client(CLIENT_ID, SECRET, 'gingham');
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Invalid Plaid environment');
@@ -69,7 +59,7 @@ describe('plaid.Client', () => {
     it('succeeds with all arguments', () => {
       expect(() => {
         R.forEachObjIndexed(env => {
-          plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, env);
+          plaid.Client(CLIENT_ID, SECRET, env);
         }, plaid.environments);
       }).not.to.throwException();
     });
