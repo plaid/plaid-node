@@ -56,6 +56,24 @@ describe('plaid.Client', () => {
       });
     });
 
+    it('throws for invalid environment if we are still using public_key', () => {
+      expect(() => {
+        plaid.Client(CLIENT_ID, SECRET, 'public_key', plaid.environments.sandbox);
+      }).to.throwException(e => {
+        expect(e).to.be.ok();
+        expect(e.message).to.equal('Invalid Plaid environment');
+      });
+    });
+
+    it('throws for too many arguments', () => {
+      expect(() => {
+        plaid.Client(CLIENT_ID, SECRET, plaid.environments.sandbox, {}, 'extra arg');
+      }).to.throwException(e => {
+        expect(e).to.be.ok();
+        expect(e.message).to.equal('Too many arguments to constructor');
+      });
+    });
+
     it('succeeds with all arguments', () => {
       expect(() => {
         R.forEachObjIndexed(env => {
