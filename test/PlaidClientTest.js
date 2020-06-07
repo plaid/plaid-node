@@ -24,7 +24,7 @@ describe('plaid.Client', () => {
     options: {
       version: '2019-05-29',
     },
-  }
+  };
 
   let pCl;
   beforeEach(() => {
@@ -32,12 +32,20 @@ describe('plaid.Client', () => {
   });
 
   describe('constructor', () => {
+    it('throws for invalid parameter', ()  => {
+      expect(() => {
+        plaid.Client('client_id');
+      }).to.throwException(e => {
+        expect(e).to.be.ok();
+        expect(e.message).to.equal('Unexpected parameter type. Refer to https://github.com/plaid/plaid-node for how to create a Plaid client.');
+      });
+    });
+
     it('throws for missing client_id', () => {
       expect(() => {
-        plaid.Client({
-          ...configs,
+        plaid.Client(R.merge(configs, {
           clientID: null,
-        });
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "client_id"');
@@ -46,10 +54,9 @@ describe('plaid.Client', () => {
 
     it('throws for missing secret', () => {
       expect(() => {
-        plaid.Client({
-          ...configs,
+        plaid.Client(R.merge(configs, {
           secret: null,
-        });
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "secret"');
@@ -58,10 +65,9 @@ describe('plaid.Client', () => {
 
     it('throws for invalid environment', () => {
       expect(() => {
-        plaid.Client({
-          ...configs,
+        plaid.Client(R.merge(configs, {
           env: 'gingham',
-        });
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Invalid Plaid environment');
@@ -80,7 +86,9 @@ describe('plaid.Client', () => {
     it('succeeds with all arguments', () => {
       expect(() => {
         R.forEachObjIndexed(env => {
-          plaid.Client(configs);
+          plaid.Client(R.merge(configs, {
+            env: env,
+          }));
         }, plaid.environments);
       }).not.to.throwException();
     });
@@ -88,10 +96,10 @@ describe('plaid.Client', () => {
     it('succeeds without any options', () => {
       expect(() => {
         R.forEachObjIndexed(env => {
-          plaid.Client({
-            ...configs,
+          plaid.Client(R.merge(configs, {
             options: null,
-          });
+            env: env,
+          }));
         }, plaid.environments);
       }).not.to.throwException();
     });
