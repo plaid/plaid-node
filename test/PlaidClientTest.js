@@ -37,7 +37,11 @@ describe('plaid.Client', () => {
         plaid.Client('client_id');
       }).to.throwException(e => {
         expect(e).to.be.ok();
-        expect(e.message).to.equal('Unexpected parameter type. Refer to https://github.com/plaid/plaid-node for how to create a Plaid client.');
+        expect(e.message).to.equal(
+          'Unexpected parameter type. Refer to ' +
+          'https://github.com/plaid/plaid-node ' +
+          'for how to create a Plaid client.'
+        );
       });
     });
 
