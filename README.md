@@ -65,7 +65,7 @@ The `options` parameter is optional and allows for clients to override the defau
 
 ```javascript
 const patientClient = new plaid.Client(client_id, secret, public_key, plaid_env, {
-  timeout: 10 * 60 * 1000, // 10 minutes
+  timeout: 30 * 60 * 1000, // 30 minutes
   agent: 'Patient Agent'
 });
 ```
