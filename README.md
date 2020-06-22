@@ -4,8 +4,6 @@ plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg
 A node.js client library for the [Plaid API][1].
 
 ## Table of Contents
-
-- [plaid-node  ![Circle CI](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)](#plaid-node-img-src%22httpscirclecicomghplaidplaid-node%22-alt%22circle-ci%22-img-src%22httpsbadgefuryiojsplaidsvg%22-alt%22npm-version%22)
   - [Table of Contents](#table-of-contents)
   - [Install](#install)
     - [Versioning](#versioning)
