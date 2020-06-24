@@ -200,9 +200,9 @@ declare module 'plaid' {
   }
 
   interface InstitutionWithInstitutionData extends Institution {
-    logo: string;
-    primary_color: string;
-    url: string;
+    logo?: string;
+    primary_color?: string;
+    url?: string;
   }
 
   interface IncomeStream {
