@@ -18,4 +18,4 @@ jobs:
       if: github.event.action == 'opened'
       with:
         project: 'https://github.com/orgs/plaid/projects/1'
-
+        column_name: 'Needs investigation'
