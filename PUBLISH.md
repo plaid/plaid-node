@@ -50,7 +50,7 @@ If `make release-*` from above errors out with an authentication issue,
 you may need to `npm login` or otherwise manually set up your `~/.npmrc` file to
 make sure you have access to publish to npm.
 
-Once you have done The following command will publish the latest version
+Once you have done that, the following command will publish the latest version
 (already bumped and pushed in step 3) to the NPM registry:
 
 ```bash
