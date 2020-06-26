@@ -42,18 +42,19 @@ The `make release-%` command will do the following executions automatically:
 - Bump the `package.json` version
 - Commit and tag the new version
 - Push the commit to `plaid-node` GitHub repository
+- Publish to npm
 
+4. **Manually publish to NPM**
 
-4. **Publish and release to NPM**
-
-You may need to `npm login` or otherwise manually set up your `~/.npmrc` file to
+If `make release-*` from above errors out with an authentication issue,
+you may need to `npm login` or otherwise manually set up your `~/.npmrc` file to
 make sure you have access to publish to npm.
 
-The following command will publish the latest version (bumped in the `package.json`)
-to the NPM plaid registry:
+Once you have done The following command will publish the latest version
+(already bumped and pushed in step 3) to the NPM registry:
 
 ```bash
-npm --registry=https://registry.npmjs.org publish
+npm --registry=https://registry.npmjs.com publish
 ```
 
 
