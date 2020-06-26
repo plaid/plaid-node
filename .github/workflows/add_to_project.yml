@@ -17,6 +17,9 @@ jobs:
     - name: Assign NEW issues and NEW pull requests to project 1
       uses: srggrs/assign-one-project-github-action@1.2.0
       if: github.event.action == 'opened'
+      env:
+        INPUT_PROJECT_NAME: 'https://github.com/orgs/plaid/projects/1'
+        INPUT_COLUMN_NAME: 'Needs investigation'
       with:
         project: 'https://github.com/orgs/plaid/projects/1'
         column_name: 'Needs investigation'
