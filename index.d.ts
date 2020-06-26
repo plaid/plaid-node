@@ -12,6 +12,12 @@ declare module 'plaid' {
     (accessToken: string, cb: Callback<T>): void;
   }
 
+  interface AccessTokenFnWithOptions<O, T> {
+    (accessToken: string, options?: O): Promise<T>;
+    (accessToken: string, cb: Callback<T>): void;
+    (accessToken: string, options: O, cb: Callback<T>): void;
+  }
+
   // OPTIONS /////////////////////////////////////////////////////////////////
 
   interface ClientRequestOptions {
@@ -872,8 +878,7 @@ declare module 'plaid' {
     getIncome: AccessTokenFn<IncomeResponse>;
     // getCreditDetails(String, Function)
     getCreditDetails: AccessTokenFn<CreditDetailsResponse>;
-    // getHoldings(String, Function)
-    getHoldings: AccessTokenFn<HoldingsResponse>;
+    getHoldings: AccessTokenFnWithOptions<ItemRequestOptions, HoldingsResponse>;
     // getInvestmentTransactions(String, Date, Date, Function)
     getInvestmentTransactions(
       accessToken: string,
