@@ -1,3 +1,7 @@
+## 5.2.0
+- Improved typescript typings for `getHoldings` and `getInstitutionById`
+- Minor corrections to `README.md`
+
 ## 5.1.0
 - Improved typescript typings for `getInstitutionById`, `ClientOptions`, and `getWebhookVerificationKey`
 - Make `getWebhookVerificationKey` compatible with async/await.
