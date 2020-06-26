@@ -6,8 +6,7 @@ on:
   pull_request:
     types: [opened]
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+  MY_GITHUB_TOKEN: ${{ secrets.CLIB_AUTOMATION_TOKEN }}
 
 jobs:
   assign_one_project:
