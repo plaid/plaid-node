@@ -8,8 +8,6 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-  INPUT_PROJECT_NAME: 'https://github.com/orgs/plaid/projects/1'
-  INPUT_COLUMN_NAME: 'Needs investigation'
 
 jobs:
   assign_one_project:
@@ -21,4 +19,4 @@ jobs:
       if: github.event.action == 'opened'
       with:
         project: 'https://github.com/orgs/plaid/projects/1'
-        column_name: 'Needs investigation'
+        column_name: 'Needs Investigation'
