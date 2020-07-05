@@ -71,6 +71,39 @@ declare module 'plaid' {
     include_status?: boolean;
   }
 
+  interface AccountFiltersOptions {
+    [key: string]: {
+      account_subtypes: Array<string>,
+    },
+  }
+
+  interface CrossAppItemAddOptions {
+    target_application_token: string,
+    foreign_id?: string,
+  }
+
+  interface PaymentInitiationOptions {
+    payment_id: string,
+  }
+
+  interface CreateLinkTokenOptions {
+    user: User,
+    client_name: string,
+    products?: Array<string>,
+    country_codes?: Array<string>,
+    language?: string,
+    locale?: string,
+    webhook?: string,
+    access_token?: string,
+    link_customization_name?: string,
+    redirect_uri?: string,
+    android_package_name?: string,
+    institution_id?: string,
+    account_filters?: AccountFiltersOptions,
+    cross_app_item_add?: CrossAppItemAddOptions,
+    payment_initiation?: PaymentInitiationOptions,
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -584,6 +617,11 @@ declare module 'plaid' {
     expiration: Iso8601DateTimeString;
   }
 
+  interface CreateLinkTokenResponse extends BaseResponse {
+    token: string;
+    expiration: Iso8601DateTimeString;
+  }
+
   interface TokenResponse extends BaseResponse {
     access_token: string;
     item_id: string;
@@ -765,6 +803,9 @@ declare module 'plaid' {
 
     createItemAddToken(): Promise<CreateItemAddTokenResponse>;
     createItemAddToken(options: CreateItemAddTokenOptions, cb: Callback<CreateItemAddTokenResponse>): void;
+
+    createLinkToken(options: CreateLinkTokenOptions): Promise<CreateLinkTokenResponse>;
+    createLinkToken(options: CreateLinkTokenOptions, cb: Callback<CreateLinkTokenResponse>): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 

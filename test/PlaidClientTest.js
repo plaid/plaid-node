@@ -122,6 +122,48 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can create link tokens with required', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+      },
+      client_name: "Plaid App",
+      products: ["auth", "transactions"],
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create link tokens with optional', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        email_address: {
+          value: 'name@example.com',
+          verified: true,
+        },
+      },
+      client_name: "Plaid App",
+      products: ["auth", "transactions"],
+      country_codes: ["GB"],
+      language: "en",
+      webhook: "https://sample-web-hook.com",
+      redirect_uri: "https://sample-redirect-uri.com",
+      institution_id: "ins_4",
+      account_filters: {
+        depository: ["checking", "savings"],
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
   describe('endpoints', () => {
 
     const now = moment().format('YYYY-MM-DD');
