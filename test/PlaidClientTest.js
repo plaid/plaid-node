@@ -127,8 +127,8 @@ describe('plaid.Client', () => {
       user: {
         client_user_id: (new Date()).getTime().toString(),
       },
-      client_name: "Plaid App",
-      products: ["auth", "transactions"],
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
     }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.token).to.match(/^link-sandbox-/);
@@ -146,16 +146,16 @@ describe('plaid.Client', () => {
           verified: true,
         },
       },
-      client_name: "Plaid App",
-      products: ["auth", "transactions"],
-      country_codes: ["GB"],
-      language: "en",
-      webhook: "https://sample-web-hook.com",
-      redirect_uri: "https://sample-redirect-uri.com",
-      institution_id: "ins_4",
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      country_codes: ['GB'],
+      language: 'en',
+      webhook: 'https://sample-web-hook.com',
+      redirect_uri: 'https://sample-redirect-uri.com',
+      institution_id: 'ins_4',
       account_filters: {
         depository: {
-          account_subtypes: ["checking", "savings"],
+          account_subtypes: ['checking', 'savings'],
         },
       },
     }, (err, successResponse) => {
