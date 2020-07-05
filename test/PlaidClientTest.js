@@ -154,7 +154,9 @@ describe('plaid.Client', () => {
       redirect_uri: "https://sample-redirect-uri.com",
       institution_id: "ins_4",
       account_filters: {
-        depository: ["checking", "savings"],
+        depository: {
+          account_subtypes: ["checking", "savings"],
+        },
       },
     }, (err, successResponse) => {
       expect(err).to.be(null);
