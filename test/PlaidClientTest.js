@@ -151,7 +151,6 @@ describe('plaid.Client', () => {
       country_codes: ['GB'],
       language: 'en',
       webhook: 'https://sample-web-hook.com',
-      redirect_uri: 'https://sample-redirect-uri.com',
       institution_id: 'ins_4',
       account_filters: {
         depository: {
