@@ -131,7 +131,7 @@ describe('plaid.Client', () => {
       products: ['auth', 'transactions'],
     }, (err, successResponse) => {
       expect(err).to.be(null);
-      expect(successResponse.token).to.match(/^link-sandbox-/);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
       cb();
     });
