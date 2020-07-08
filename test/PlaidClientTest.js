@@ -141,10 +141,11 @@ describe('plaid.Client', () => {
     pCl.createLinkToken({
       user: {
         client_user_id: (new Date()).getTime().toString(),
-        email_address: {
-          value: 'name@example.com',
-          verified: true,
-        },
+        legal_name: 'John Doe',
+        phone_number: '+1 415 555 0123',
+        phone_number_verified_time: '2020-01-01T00:00:00Z',
+        email_address: 'example@plaid.com',
+        email_address_verified_time: '2020-01-01T00:00:00Z'
       },
       client_name: 'Plaid App',
       products: ['auth', 'transactions'],
