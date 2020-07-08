@@ -322,6 +322,7 @@ declare module 'plaid' {
     authorized_date: Iso8601DateString | null;
     location: TransactionLocation;
     name: string | null;
+    merchant_name: string | null;
     payment_channel: string;
     payment_meta: TransactionPaymentMeta;
     pending: boolean | null;
