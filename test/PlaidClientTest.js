@@ -151,7 +151,6 @@ describe('plaid.Client', () => {
       country_codes: ['GB'],
       language: 'en',
       webhook: 'https://sample-web-hook.com',
-      institution_id: 'ins_4',
       account_filters: {
         depository: {
           account_subtypes: ['checking', 'savings'],
@@ -159,7 +158,7 @@ describe('plaid.Client', () => {
       },
     }, (err, successResponse) => {
       expect(err).to.be(null);
-      expect(successResponse.token).to.match(/^link-sandbox-/);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
       cb();
     });
