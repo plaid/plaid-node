@@ -156,6 +156,49 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can create link tokens with required', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create link tokens with optional', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        legal_name: 'John Doe',
+        phone_number: '+1 415 555 0123',
+        phone_number_verified_time: '2020-01-01T00:00:00Z',
+        email_address: 'example@plaid.com',
+        email_address_verified_time: '2020-01-01T00:00:00Z'
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      country_codes: ['GB'],
+      language: 'en',
+      webhook: 'https://sample-web-hook.com',
+      account_filters: {
+        depository: {
+          account_subtypes: ['checking', 'savings'],
+        },
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
   describe('endpoints', () => {
 
     const now = moment().format('YYYY-MM-DD');
