@@ -28,13 +28,14 @@ $ npm install plaid
 You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` do not support versioning.
 
 ```javascript
-const plaidClient = new plaid.Client(
-  process.env.PLAID_CLIENT_ID,
-  process.env.PLAID_SECRET,
-  process.env.PUBLIC_KEY,
-  plaid.environments.sandbox,
-  {version: '2019-05-29'} // '2019-05-29' | '2018-05-22' | '2017-03-08'
-);
+const plaidClient = new plaid.Client({
+  clientID: process.env.PLAID_CLIENT_ID,
+  secret: process.env.PLAID_SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2019-05-29', // '2019-05-29' | '2018-05-22' | '2017-03-08'
+  },
+});
 ```
 
 For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
@@ -45,13 +46,17 @@ For information about what has changed between versions and how to update your i
 The module supports all Plaid API endpoints.  For complete information about the API, head
 to the [docs][2].
 
-All endpoints require a valid `client_id`, `secret`, and `public_key` to
+All endpoints require a valid `client_id` and `secret` to
 access and are accessible from a valid instance of a Plaid `Client`:
 
 ```javascript
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2019-05-29'});
+const plaidClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+});
 ```
 
 The `plaid_env` parameter dictates which Plaid API environment you will access. Values are:
@@ -59,12 +64,17 @@ The `plaid_env` parameter dictates which Plaid API environment you will access. 
 - `plaid.environments.development` - use for integration development and testing, creates `Item`s on https://development.plaid.com
 - `plaid.environments.sandbox` - quickly build out your integration with stateful test data, creates `Item`s on https://sandbox.plaid.com
 
-The `options` parameter is optional and allows for clients to override the default options used to make requests. e.g.
+The `options` field is optional and allows for clients to override the default options used to make requests. e.g.
 
 ```javascript
-const patientClient = new plaid.Client(client_id, secret, public_key, plaid_env, {
-  timeout: 30 * 60 * 1000, // 30 minutes
-  agent: 'Patient Agent'
+const patientClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+  options: {
+    timeout: 30 * 60 * 1000, // 30 minutes
+    version: '2019-05-29',
+  }
 });
 ```
 
@@ -78,7 +88,14 @@ Once an instance of the client has been created you use the following methods:
 const plaid = require('plaid');
 
 // Initialize client
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
+const plaidClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+  options: {
+    version: '2019-05-29',
+  },
+});
 
 // createPublicToken(String, Function)
 plaidClient.createPublicToken(access_token, cb);
@@ -264,13 +281,14 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(
-  process.env.PLAID_CLIENT_ID,
-  process.env.PLAID_SECRET,
-  process.env.PUBLIC_KEY,
-  plaid.environments.sandbox,
-  {version: '2018-05-22'}
-);
+const plaidClient = new plaid.Client({
+  clientID: process.env.PLAID_CLIENT_ID,
+  secret: process.env.PLAID_SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2018-05-22',
+  },
+});
 
 const app = express();
 const port = process.env.PORT || 3000;

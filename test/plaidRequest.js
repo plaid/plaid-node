@@ -22,7 +22,8 @@ describe('plaid.plaidRequest', () => {
 
     plaidRequest({
       env: plaid.environments.sandbox,
-      public_key: 'xxx',
+      client_id: 'xxx',
+      secret: 'yyy',
     }, {
       path: '/institutions/get_by_id',
       body: {institution_id: 'ins_3'},
@@ -50,7 +51,8 @@ describe('plaid.plaidRequest', () => {
 
     plaidRequest({
       env: plaid.environments.sandbox,
-      public_key: 'yyy',
+      client_id: 'www',
+      secret: 'vvv',
     }, {
       path: '/institutions/get_by_id',
       body: {institution_id: 'ins_1'},

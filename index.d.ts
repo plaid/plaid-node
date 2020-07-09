@@ -717,9 +717,17 @@ declare module 'plaid' {
 
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
-  interface ClientOptions extends AxiosRequestConfig {
+  interface ClientOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
     clientApp?: string;
+    timeout?: number;
+  }
+
+  interface ClientConfigs extends AxiosRequestConfig {
+    clientID: string;
+    secret: string;
+    env: string,
+    options: ClientOptions,
   }
 
   type IdentityFieldBase =  {
@@ -749,13 +757,7 @@ declare module 'plaid' {
   }
 
   class Client {
-    constructor(
-      clientId: string,
-      secret: string,
-      publicKey: string,
-      env: string,
-      options?: ClientOptions,
-    );
+    constructor(configs: ClientConfigs);
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
     exchangePublicToken(
