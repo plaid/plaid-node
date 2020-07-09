@@ -92,13 +92,11 @@ declare module 'plaid' {
     products?: Array<string>,
     country_codes?: Array<string>,
     language?: string,
-    locale?: string,
     webhook?: string,
     access_token?: string,
     link_customization_name?: string,
     redirect_uri?: string,
     android_package_name?: string,
-    institution_id?: string,
     account_filters?: AccountFiltersOptions,
     cross_app_item_add?: CrossAppItemAddOptions,
     payment_initiation?: PaymentInitiationOptions,
@@ -618,7 +616,7 @@ declare module 'plaid' {
   }
 
   interface CreateLinkTokenResponse extends BaseResponse {
-    token: string;
+    link_token: string;
     expiration: Iso8601DateTimeString;
   }
 
