@@ -1,6 +1,3 @@
-## 5.3.0
-- Add missing `merchant_name` fields to the `Transaction` interface
-
 ## 5.2.0
 - Improved typescript typings for `getHoldings` and `getInstitutionById`
 
