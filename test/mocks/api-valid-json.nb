@@ -1,5 +1,5 @@
 >> POST /institutions/get_by_id
->> ={"public_key":"yyy","institution_id":"ins_1"}
+>> ={"client_id":"www","secret":"vvv","institution_id":"ins_1"}
 << 200
 << plaid-request-id: 1234abcd
 << content-type: application/json; charset=utf-8
