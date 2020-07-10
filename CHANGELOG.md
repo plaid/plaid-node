@@ -2,7 +2,8 @@
 - Add typings for `merchant_name` to `Transaction` interface
 
 BREAKING CHANGES:
-- `plaid.Client` now accepts an object and no longer takes a public key, because it is no longer needed by the API
+- `plaid.Client` now accepts an object
+- Removes the public key as input to `plaid.Client`. It is no longer needed by the API.
 - Add support for the `/link/token/create` endpoint
 
 ## 5.2.0
