@@ -354,7 +354,6 @@ declare module 'plaid' {
     location: TransactionLocation;
     merchant_name: string | null;
     name: string | null;
-    merchant_name: string | null;
     payment_channel: string;
     payment_meta: TransactionPaymentMeta;
     pending: boolean | null;
