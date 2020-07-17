@@ -1,7 +1,6 @@
 'use strict';
 
 /* global before, beforeEach, describe, it */
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
