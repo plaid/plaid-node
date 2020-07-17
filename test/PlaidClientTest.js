@@ -163,6 +163,8 @@ describe('plaid.Client', () => {
       },
       client_name: 'Plaid App',
       products: ['auth', 'transactions'],
+      language: 'en',
+      country_codes: ['US'],
     }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.link_token).to.match(/^link-sandbox-/);
