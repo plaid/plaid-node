@@ -1,7 +1,6 @@
 'use strict';
 
 /* global before, beforeEach, describe, it */
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
@@ -163,6 +162,8 @@ describe('plaid.Client', () => {
       },
       client_name: 'Plaid App',
       products: ['auth', 'transactions'],
+      language: 'en',
+      country_codes: ['US'],
     }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.link_token).to.match(/^link-sandbox-/);
