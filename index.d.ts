@@ -502,6 +502,11 @@ declare module 'plaid' {
     country: Iso3166Alpha2CountryString;
   }
 
+  interface PaymentRecipientBacs {
+    account: string,
+    sort_code: string;
+  }
+
   interface PaymentRecipient {
     recipient_id: string;
     name: string;
@@ -1039,7 +1044,8 @@ declare module 'plaid' {
 
     createPaymentRecipient(
       name: string,
-      iban: string,
+      iban: string | null,
+      bacs: PaymentRecipientBacs | null,
       address: PaymentRecipientAddress | null,
     ): Promise<PaymentRecipientCreateResponse>;
 
