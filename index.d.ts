@@ -42,7 +42,7 @@ declare module 'plaid' {
     offset?: number;
   }
 
-  interface GetAllTransactionsRequestOptions extends ItemRequestOptions { }
+  interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
 
   interface AssetReportUser {
     client_user_id?: string | null;
@@ -112,11 +112,11 @@ declare module 'plaid' {
     subtype: string | null;
     type: string | null;
     verification_status:
-    | 'pending_automatic_verification'
-    | 'pending_manual_verification'
-    | 'manually_verified'
-    | 'automatically_verified'
-    | null;
+      | 'pending_automatic_verification'
+      | 'pending_manual_verification'
+      | 'manually_verified'
+      | 'automatically_verified'
+      | null;
   }
 
   interface Account extends AccountCommon {
@@ -561,7 +561,7 @@ declare module 'plaid' {
     };
   }
 
-  interface CreditDetailsResponse extends AccountsResponse { }
+  interface CreditDetailsResponse extends AccountsResponse {}
 
   interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
@@ -773,7 +773,7 @@ declare module 'plaid' {
     }
   }
 
-  interface SandboxItemSetVerificationStatusResponse extends BaseResponse { }
+  interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
   interface ClientOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
