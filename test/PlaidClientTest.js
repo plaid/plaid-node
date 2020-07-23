@@ -1,7 +1,6 @@
 'use strict';
 
 /* global before, beforeEach, describe, it */
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
@@ -14,25 +13,42 @@ const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
 dotenv.config();
-const {SECRET, PUBLIC_KEY, CLIENT_ID} = process.env;
+const {SECRET, CLIENT_ID} = process.env;
 
 describe('plaid.Client', () => {
+  const configs = {
+    clientID: CLIENT_ID,
+    secret: SECRET,
+    env: plaid.environments.sandbox,
+    options: {
+      version: '2019-05-29',
+    },
+  };
 
   let pCl;
   beforeEach(() => {
-    pCl = new plaid.Client(
-      CLIENT_ID,
-      SECRET,
-      PUBLIC_KEY,
-      plaid.environments.sandbox,
-      {version: '2019-05-29'}
-    );
+    pCl = new plaid.Client(configs);
   });
 
   describe('constructor', () => {
+    it('throws for invalid parameter', ()  => {
+      expect(() => {
+        plaid.Client('client_id');
+      }).to.throwException(e => {
+        expect(e).to.be.ok();
+        expect(e.message).to.equal(
+          'Unexpected parameter type. Refer to ' +
+          'https://github.com/plaid/plaid-node ' +
+          'for how to create a Plaid client.'
+        );
+      });
+    });
+
     it('throws for missing client_id', () => {
       expect(() => {
-        plaid.Client(null, SECRET, PUBLIC_KEY, plaid.environments.sandbox);
+        plaid.Client(R.merge(configs, {
+          clientID: null,
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "client_id"');
@@ -41,35 +57,52 @@ describe('plaid.Client', () => {
 
     it('throws for missing secret', () => {
       expect(() => {
-        plaid.Client(CLIENT_ID, null, PUBLIC_KEY,  plaid.environments.sandbox);
+        plaid.Client(R.merge(configs, {
+          secret: null,
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "secret"');
       });
     });
 
-    it('throws for missing public_key', () => {
-      expect(() => {
-        plaid.Client(CLIENT_ID, SECRET, null, plaid.environments.sandbox);
-      }).to.throwException(e => {
-        expect(e).to.be.ok();
-        expect(e.message).to.equal('Missing Plaid "public_key"');
-      });
-    });
-
     it('throws for invalid environment', () => {
       expect(() => {
-        plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, 'gingham');
+        plaid.Client(R.merge(configs, {
+          env: 'gingham',
+        }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Invalid Plaid environment');
       });
     });
 
+    it('throws for too many arguments', () => {
+      expect(() => {
+        plaid.Client(configs, 'extra arg');
+      }).to.throwException(e => {
+        expect(e).to.be.ok();
+        expect(e.message).to.equal('Too many arguments to constructor');
+      });
+    });
+
     it('succeeds with all arguments', () => {
       expect(() => {
         R.forEachObjIndexed(env => {
-          plaid.Client(CLIENT_ID, SECRET, PUBLIC_KEY, env);
+          plaid.Client(R.merge(configs, {
+            env: env,
+          }));
+        }, plaid.environments);
+      }).not.to.throwException();
+    });
+
+    it('succeeds without any options', () => {
+      expect(() => {
+        R.forEachObjIndexed(env => {
+          plaid.Client(R.merge(configs, {
+            options: null,
+            env: env,
+          }));
         }, plaid.environments);
       }).not.to.throwException();
     });
@@ -117,6 +150,51 @@ describe('plaid.Client', () => {
     }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create link tokens with required', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      language: 'en',
+      country_codes: ['US'],
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
+  it('can create link tokens with optional', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        legal_name: 'John Doe',
+        phone_number: '+1 415 555 0123',
+        phone_number_verified_time: '2020-01-01T00:00:00Z',
+        email_address: 'example@plaid.com',
+        email_address_verified_time: '2020-01-01T00:00:00Z'
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      country_codes: ['GB'],
+      language: 'en',
+      webhook: 'https://sample-web-hook.com',
+      account_filters: {
+        depository: {
+          account_subtypes: ['checking', 'savings'],
+        },
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
       expect(successResponse.expiration).to.be.ok();
       cb();
     });
@@ -933,11 +1011,12 @@ describe('plaid.Client', () => {
         country: 'GB',
       };
 
-      const createPaymentRecipient = (cb) => {
+      const createPaymentRecipientWithIban = (cb) => {
         pCl.createPaymentRecipient(
           'John Doe',
           'GB33BUKB20201555555555',
           address,
+          null,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -948,7 +1027,26 @@ describe('plaid.Client', () => {
           });
       };
 
-      const getPaymentRecipient = (recipient_id, cb) => {
+      const createPaymentRecipientWithBacs = (cb) => {
+        pCl.createPaymentRecipient(
+          'John Doe',
+          null,
+          address,
+          {
+            account: '12345678',
+            sort_code: '01-02-03',
+          },
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+
+            cb(null, response.recipient_id);
+          });
+      };
+
+      const getPaymentRecipientWithIban = (recipient_id, cb) => {
         pCl.getPaymentRecipient(recipient_id,
           (err, response) => {
             expect(err).to.be(null);
@@ -957,6 +1055,21 @@ describe('plaid.Client', () => {
             expect(response.recipient_id).to.be.ok();
             expect(response.name).to.be.ok();
             expect(response.iban).to.be.ok();
+            expect(response.address).to.be.ok();
+
+            cb(null, recipient_id);
+          });
+      };
+
+      const getPaymentRecipientWithBacs = (recipient_id, cb) => {
+        pCl.getPaymentRecipient(recipient_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+            expect(response.name).to.be.ok();
+            expect(response.bacs).to.be.ok();
             expect(response.address).to.be.ok();
 
             cb(null, recipient_id);
@@ -1032,10 +1145,22 @@ describe('plaid.Client', () => {
         });
       };
 
-      it('successfully goes through the entire flow', cb => {
+      it('successfully goes through the entire flow with iban', cb => {
         async.waterfall([
-          createPaymentRecipient,
-          getPaymentRecipient,
+          createPaymentRecipientWithIban,
+          getPaymentRecipientWithIban,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+
+      it('successfully goes through the entire flow with bacs', cb => {
+        async.waterfall([
+          createPaymentRecipientWithBacs,
+          getPaymentRecipientWithBacs,
           listPaymentRecipients,
           createPayment,
           createPaymentToken,

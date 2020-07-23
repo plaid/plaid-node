@@ -1,5 +1,5 @@
-declare module "plaid" {
-  import { AxiosRequestConfig } from "axios";
+declare module 'plaid' {
+  import { AxiosRequestConfig } from 'axios';
 
   type Callback<T extends Object> = (err: Error, response: T) => void;
   type Iso8601DateString = string; // YYYY-MM-DD
@@ -42,7 +42,7 @@ declare module "plaid" {
     offset?: number;
   }
 
-  interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
+  interface GetAllTransactionsRequestOptions extends ItemRequestOptions { }
 
   interface AssetReportUser {
     client_user_id?: string | null;
@@ -71,6 +71,37 @@ declare module "plaid" {
     include_status?: boolean;
   }
 
+  interface AccountFiltersOptions {
+    [key: string]: {
+      account_subtypes: Array<string>;
+    };
+  }
+
+  interface CrossAppItemAddOptions {
+    target_application_token: string;
+    foreign_id?: string;
+  }
+
+  interface PaymentInitiationOptions {
+    payment_id: string;
+  }
+
+  interface CreateLinkTokenOptions {
+    user: User;
+    client_name: string;
+    products?: Array<string>;
+    country_codes?: Array<string>;
+    language?: string;
+    webhook?: string;
+    access_token?: string;
+    link_customization_name?: string;
+    redirect_uri?: string;
+    android_package_name?: string;
+    account_filters?: AccountFiltersOptions;
+    cross_app_item_add?: CrossAppItemAddOptions;
+    payment_initiation?: PaymentInitiationOptions;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -81,11 +112,11 @@ declare module "plaid" {
     subtype: string | null;
     type: string | null;
     verification_status:
-      | "pending_automatic_verification"
-      | "pending_manual_verification"
-      | "manually_verified"
-      | "automatically_verified"
-      | null;
+    | 'pending_automatic_verification'
+    | 'pending_manual_verification'
+    | 'manually_verified'
+    | 'automatically_verified'
+    | null;
   }
 
   interface Account extends AccountCommon {
@@ -338,6 +369,7 @@ declare module "plaid" {
     authorized_date: Iso8601DateString | null;
     location: TransactionLocation;
     name: string | null;
+    merchant_name: string | null;
     payment_channel: string;
     payment_meta: TransactionPaymentMeta;
     pending: boolean | null;
@@ -486,6 +518,11 @@ declare module "plaid" {
     country: Iso3166Alpha2CountryString;
   }
 
+  interface PaymentRecipientBacs {
+    account: string;
+    sort_code: string;
+  }
+
   interface PaymentRecipient {
     recipient_id: string;
     name: string;
@@ -524,7 +561,7 @@ declare module "plaid" {
     };
   }
 
-  interface CreditDetailsResponse extends AccountsResponse {}
+  interface CreditDetailsResponse extends AccountsResponse { }
 
   interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
@@ -597,6 +634,11 @@ declare module "plaid" {
 
   interface CreateItemAddTokenResponse extends BaseResponse {
     add_token: string;
+    expiration: Iso8601DateTimeString;
+  }
+
+  interface CreateLinkTokenResponse extends BaseResponse {
+    link_token: string;
     expiration: Iso8601DateTimeString;
   }
 
@@ -731,11 +773,19 @@ declare module "plaid" {
     };
   }
 
-  interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
+  interface SandboxItemSetVerificationStatusResponse extends BaseResponse { }
 
-  interface ClientOptions extends AxiosRequestConfig {
+  interface ClientOptions {
     version?: "2019-05-29" | "2018-05-22" | "2017-03-08";
     clientApp?: string;
+    timeout?: number;
+  }
+
+  interface ClientConfigs extends AxiosRequestConfig {
+    clientID: string;
+    secret: string;
+    env: string;
+    options: ClientOptions;
   }
 
   type IdentityFieldBase = {
@@ -745,11 +795,11 @@ declare module "plaid" {
   type IdentityField =
     | IdentityFieldBase
     | (IdentityFieldBase & {
-        verified: boolean;
-      })
+      verified: boolean;
+    })
     | (IdentityFieldBase & {
-        verifiedAt: Date;
-      });
+      verifiedAt: Date;
+    });
 
   interface User {
     client_user_id: string;
@@ -760,21 +810,15 @@ declare module "plaid" {
 
   type CreateItemAddTokenOptions =
     | {
-        // user_identity is deprecated: use `user`
-        user_identity: User;
-      }
+      // user_identity is deprecated: use `user`
+      user_identity: User;
+    }
     | {
-        user: User;
-      };
+      user: User;
+    };
 
   class Client {
-    constructor(
-      clientId: string,
-      secret: string,
-      publicKey: string,
-      env: string,
-      options?: ClientOptions
-    );
+    constructor(configs: ClientConfigs);
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
     exchangePublicToken(publicToken: string, cb: Callback<TokenResponse>): void;
@@ -783,6 +827,14 @@ declare module "plaid" {
     createItemAddToken(
       options: CreateItemAddTokenOptions,
       cb: Callback<CreateItemAddTokenResponse>
+    ): void;
+
+    createLinkToken(
+      options: CreateLinkTokenOptions
+    ): Promise<CreateLinkTokenResponse>;
+    createLinkToken(
+      options: CreateLinkTokenOptions,
+      cb: Callback<CreateLinkTokenResponse>
     ): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
@@ -1014,7 +1066,8 @@ declare module "plaid" {
 
     createPaymentRecipient(
       name: string,
-      iban: string,
+      iban: string | null,
+      bacs: PaymentRecipientBacs | null,
       address: PaymentRecipientAddress | null
     ): Promise<PaymentRecipientCreateResponse>;
 
