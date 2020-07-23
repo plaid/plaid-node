@@ -42,7 +42,7 @@ declare module 'plaid' {
     offset?: number;
   }
 
-  interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
+  interface GetAllTransactionsRequestOptions extends ItemRequestOptions { }
 
   interface AssetReportUser {
     client_user_id?: string | null;
@@ -112,11 +112,11 @@ declare module 'plaid' {
     subtype: string | null;
     type: string | null;
     verification_status:
-      | 'pending_automatic_verification'
-      | 'pending_manual_verification'
-      | 'manually_verified'
-      | 'automatically_verified'
-      | null;
+    | 'pending_automatic_verification'
+    | 'pending_manual_verification'
+    | 'manually_verified'
+    | 'automatically_verified'
+    | null;
   }
 
   interface Account extends AccountCommon {
@@ -240,6 +240,22 @@ declare module 'plaid' {
     logo?: string;
     primary_color: string;
     url?: string;
+  }
+
+  interface InstitutionWithStatus extends Institution {
+    status?: Map<string, InstitutionStatus>;
+  }
+
+  interface InstitutionStatus {
+    status: 'HEALTHY' | 'DEGRADED' | 'DOWN';
+    last_status_change: Iso8601DateString;
+    breakdown: InstitutionStatusBreakdown;
+  }
+
+  interface InstitutionStatusBreakdown {
+    success: number;
+    error_plaid: number;
+    error_institution: number;
   }
 
   interface IncomeStream {
@@ -545,7 +561,7 @@ declare module 'plaid' {
     };
   }
 
-  interface CreditDetailsResponse extends AccountsResponse {}
+  interface CreditDetailsResponse extends AccountsResponse { }
 
   interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
@@ -757,7 +773,7 @@ declare module 'plaid' {
     }
   }
 
-  interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
+  interface SandboxItemSetVerificationStatusResponse extends BaseResponse { }
 
   interface ClientOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
@@ -772,7 +788,7 @@ declare module 'plaid' {
     options: ClientOptions,
   }
 
-  type IdentityFieldBase =  {
+  type IdentityFieldBase = {
     value: string
   }
 
@@ -847,12 +863,12 @@ declare module 'plaid' {
 
     importItem(
       products: Array<string>,
-      userAuth: Map<string,string>,
+      userAuth: Map<string, string>,
       options?: WebhookOptions,
     ): Promise<ItemImportResponse>;
     importItem(
       products: Array<string>,
-      userAuth: Map<string,string>,
+      userAuth: Map<string, string>,
       cb: Callback<ItemImportResponse>,
     ): void;
     importItem(
@@ -1200,8 +1216,16 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<Institution>>;
     getInstitutionById(
       institutionId: string,
-      options: {include_optional_metadata: true},
+      options: { include_optional_metadata: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
+    getInstitutionById(
+      institutionId: string,
+      options: { include_status: true },
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
+    getInstitutionById(
+      institutionId: string,
+      options: { include_optional_metadata: true; include_status: true }
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData & InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
