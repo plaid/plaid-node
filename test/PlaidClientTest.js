@@ -33,7 +33,7 @@ describe('plaid.Client', () => {
   describe('constructor', () => {
     it('throws for invalid parameter', ()  => {
       expect(() => {
-        plaid.Client('client_id');
+        plaid.Client('clientID');
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal(
@@ -44,14 +44,14 @@ describe('plaid.Client', () => {
       });
     });
 
-    it('throws for missing client_id', () => {
+    it('throws for missing clientID', () => {
       expect(() => {
         plaid.Client(R.merge(configs, {
           clientID: null,
         }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
-        expect(e.message).to.equal('Missing Plaid "client_id"');
+        expect(e.message).to.equal('Missing Plaid "clientID"');
       });
     });
 
