@@ -57,6 +57,15 @@ Once you have done that, the following command will publish the latest version
 npm --registry=https://registry.npmjs.com publish
 ```
 
+5. **Updating github**
+Be sure to push the right tag corresponding to the npm release version to github.
+
+```bash
+git push origin 6.0.0 # replace 6.0.0 with the latest version.
+```
+
+Also, under [github releases page](https://github.com/plaid/plaid-node/releases), draft a new release corresponding to the tag of the latest version.
+
 
 [1]: https://www.npmjs.com/package/plaid
 [2]: https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md
