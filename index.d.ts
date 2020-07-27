@@ -242,6 +242,22 @@ declare module 'plaid' {
     url?: string;
   }
 
+  interface InstitutionWithStatus extends Institution {
+    status?: Map<string, InstitutionStatus>;
+  }
+
+  interface InstitutionStatus {
+    status: 'HEALTHY' | 'DEGRADED' | 'DOWN';
+    last_status_change: Iso8601DateString;
+    breakdown: InstitutionStatusBreakdown;
+  }
+
+  interface InstitutionStatusBreakdown {
+    success: number;
+    error_plaid: number;
+    error_institution: number;
+  }
+
   interface IncomeStream {
     monthly_income: number;
     confidence: number;
@@ -772,7 +788,7 @@ declare module 'plaid' {
     options: ClientOptions,
   }
 
-  type IdentityFieldBase =  {
+  type IdentityFieldBase = {
     value: string
   }
 
@@ -847,12 +863,12 @@ declare module 'plaid' {
 
     importItem(
       products: Array<string>,
-      userAuth: Map<string,string>,
+      userAuth: Map<string, string>,
       options?: WebhookOptions,
     ): Promise<ItemImportResponse>;
     importItem(
       products: Array<string>,
-      userAuth: Map<string,string>,
+      userAuth: Map<string, string>,
       cb: Callback<ItemImportResponse>,
     ): void;
     importItem(
@@ -1200,8 +1216,16 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<Institution>>;
     getInstitutionById(
       institutionId: string,
-      options: {include_optional_metadata: true},
+      options: { include_optional_metadata: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
+    getInstitutionById(
+      institutionId: string,
+      options: { include_status: true },
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
+    getInstitutionById(
+      institutionId: string,
+      options: { include_optional_metadata: true; include_status: true }
+    ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData & InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
