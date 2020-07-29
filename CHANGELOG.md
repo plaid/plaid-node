@@ -1,9 +1,17 @@
+## 6.0.0
+- Add typings for `merchant_name` to `Transaction` interface
+
+BREAKING CHANGES:
+- `plaid.Client` now accepts an object
+- Removes the public key as input to `plaid.Client`. The public key is no longer needed by the API.
+- Add support for the `/link/token/create` endpoint
+
 ## 5.2.0
 - Improved typescript typings for `getHoldings` and `getInstitutionById`
 
 ## 5.1.0
 - Improved typescript typings for `getInstitutionById`, `ClientOptions`, and `getWebhookVerificationKey`
-- Make `getWebhookVerificationKey` compatible with async/await.
+- Make `getWebhookVerificationKey` compatible with async/await
 
 ## 5.0.0
 - Replaced the deprecated `request` library with `axios`

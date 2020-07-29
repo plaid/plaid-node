@@ -1,7 +1,6 @@
 'use strict';
 
 /* global before, beforeEach, describe, it */
-
 const async = require('async');
 const P = require('bluebird');
 const dotenv = require('dotenv');
@@ -34,7 +33,7 @@ describe('plaid.Client', () => {
   describe('constructor', () => {
     it('throws for invalid parameter', ()  => {
       expect(() => {
-        plaid.Client('client_id');
+        plaid.Client('clientID');
       }).to.throwException(e => {
         expect(e).to.be.ok();
         expect(e.message).to.equal(
@@ -45,14 +44,14 @@ describe('plaid.Client', () => {
       });
     });
 
-    it('throws for missing client_id', () => {
+    it('throws for missing clientID', () => {
       expect(() => {
         plaid.Client(R.merge(configs, {
           clientID: null,
         }));
       }).to.throwException(e => {
         expect(e).to.be.ok();
-        expect(e.message).to.equal('Missing Plaid "client_id"');
+        expect(e.message).to.equal('Missing Plaid "clientID"');
       });
     });
 
@@ -163,6 +162,8 @@ describe('plaid.Client', () => {
       },
       client_name: 'Plaid App',
       products: ['auth', 'transactions'],
+      language: 'en',
+      country_codes: ['US'],
     }, (err, successResponse) => {
       expect(err).to.be(null);
       expect(successResponse.link_token).to.match(/^link-sandbox-/);
@@ -1010,11 +1011,12 @@ describe('plaid.Client', () => {
         country: 'GB',
       };
 
-      const createPaymentRecipient = (cb) => {
+      const createPaymentRecipientWithIban = (cb) => {
         pCl.createPaymentRecipient(
           'John Doe',
           'GB33BUKB20201555555555',
           address,
+          null,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -1025,7 +1027,26 @@ describe('plaid.Client', () => {
           });
       };
 
-      const getPaymentRecipient = (recipient_id, cb) => {
+      const createPaymentRecipientWithBacs = (cb) => {
+        pCl.createPaymentRecipient(
+          'John Doe',
+          null,
+          address,
+          {
+            account: '12345678',
+            sort_code: '01-02-03',
+          },
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+
+            cb(null, response.recipient_id);
+          });
+      };
+
+      const getPaymentRecipientWithIban = (recipient_id, cb) => {
         pCl.getPaymentRecipient(recipient_id,
           (err, response) => {
             expect(err).to.be(null);
@@ -1034,6 +1055,21 @@ describe('plaid.Client', () => {
             expect(response.recipient_id).to.be.ok();
             expect(response.name).to.be.ok();
             expect(response.iban).to.be.ok();
+            expect(response.address).to.be.ok();
+
+            cb(null, recipient_id);
+          });
+      };
+
+      const getPaymentRecipientWithBacs = (recipient_id, cb) => {
+        pCl.getPaymentRecipient(recipient_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+            expect(response.name).to.be.ok();
+            expect(response.bacs).to.be.ok();
             expect(response.address).to.be.ok();
 
             cb(null, recipient_id);
@@ -1109,10 +1145,22 @@ describe('plaid.Client', () => {
         });
       };
 
-      it('successfully goes through the entire flow', cb => {
+      it('successfully goes through the entire flow with iban', cb => {
         async.waterfall([
-          createPaymentRecipient,
-          getPaymentRecipient,
+          createPaymentRecipientWithIban,
+          getPaymentRecipientWithIban,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+
+      it('successfully goes through the entire flow with bacs', cb => {
+        async.waterfall([
+          createPaymentRecipientWithBacs,
+          getPaymentRecipientWithBacs,
           listPaymentRecipients,
           createPayment,
           createPaymentToken,
