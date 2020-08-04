@@ -1,8 +1,8 @@
 ## 7.0.0
 
-- rename 'client_id' string to 'clientID' in errors ([#336](https://github.com/plaid/plaid-node/pull/336))
+- Rename 'client_id' string to 'clientID' in errors ([#336](https://github.com/plaid/plaid-node/pull/336))
 - Add typings for `getInstitutionById` with status ([#337](https://github.com/plaid/plaid-node/pull/337))
-- Fix AssetReportGetPdfResponse binary response type ([#340](https://github.com/plaid/plaid-node/pull/340))
+- Fix `AssetReportGetPdfResponse` binary response type ([#340](https://github.com/plaid/plaid-node/pull/340))
 
 BREAKING CHANGES:
 
