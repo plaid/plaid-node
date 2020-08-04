@@ -73,33 +73,33 @@ declare module 'plaid' {
 
   interface AccountFiltersOptions {
     [key: string]: {
-      account_subtypes: Array<string>,
-    },
+      account_subtypes: Array<string>;
+    };
   }
 
   interface CrossAppItemAddOptions {
-    target_application_token: string,
-    foreign_id?: string,
+    target_application_token: string;
+    foreign_id?: string;
   }
 
   interface PaymentInitiationOptions {
-    payment_id: string,
+    payment_id: string;
   }
 
   interface CreateLinkTokenOptions {
-    user: User,
-    client_name: string,
-    products?: Array<string>,
-    country_codes?: Array<string>,
-    language?: string,
-    webhook?: string,
-    access_token?: string,
-    link_customization_name?: string,
-    redirect_uri?: string,
-    android_package_name?: string,
-    account_filters?: AccountFiltersOptions,
-    cross_app_item_add?: CrossAppItemAddOptions,
-    payment_initiation?: PaymentInitiationOptions,
+    user: User;
+    client_name: string;
+    products?: Array<string>;
+    country_codes?: Array<string>;
+    language?: string;
+    webhook?: string;
+    access_token?: string;
+    link_customization_name?: string;
+    redirect_uri?: string;
+    android_package_name?: string;
+    account_filters?: AccountFiltersOptions;
+    cross_app_item_add?: CrossAppItemAddOptions;
+    payment_initiation?: PaymentInitiationOptions;
   }
 
   // DATA TYPES //////////////////////////////////////////////////////////////
@@ -107,10 +107,10 @@ declare module 'plaid' {
   interface AccountCommon {
     account_id: string;
     mask: string | null;
-    name: string | null;
+    name: string;
     official_name: string | null;
-    subtype: string | null;
-    type: string | null;
+    subtype: string;
+    type: string;
     verification_status:
       | 'pending_automatic_verification'
       | 'pending_manual_verification'
@@ -122,7 +122,7 @@ declare module 'plaid' {
   interface Account extends AccountCommon {
     balances: {
       available: number | null;
-      current: number | null;
+      current: number;
       limit: number | null;
       iso_currency_code: string | null;
       unofficial_currency_code: string | null;
@@ -519,7 +519,7 @@ declare module 'plaid' {
   }
 
   interface PaymentRecipientBacs {
-    account: string,
+    account: string;
     sort_code: string;
   }
 
@@ -770,7 +770,7 @@ declare module 'plaid' {
       use: string;
       x: string;
       y: string;
-    }
+    };
   }
 
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
@@ -784,50 +784,58 @@ declare module 'plaid' {
   interface ClientConfigs extends AxiosRequestConfig {
     clientID: string;
     secret: string;
-    env: string,
-    options: ClientOptions,
+    env: string;
+    options: ClientOptions;
   }
 
   type IdentityFieldBase = {
-    value: string
-  }
+    value: string;
+  };
 
-  type IdentityField = IdentityFieldBase |
-    IdentityFieldBase & {
-      verified: boolean
-    } |
-    IdentityFieldBase & {
-      verifiedAt: Date
-    }
+  type IdentityField =
+    | IdentityFieldBase
+    | (IdentityFieldBase & {
+        verified: boolean;
+      })
+    | (IdentityFieldBase & {
+        verifiedAt: Date;
+      });
 
   interface User {
     client_user_id: string;
-    email_address?: IdentityField
-    phone_number?: IdentityField
-    legal_name?: IdentityField
+    email_address?: IdentityField;
+    phone_number?: IdentityField;
+    legal_name?: IdentityField;
   }
 
-  type CreateItemAddTokenOptions = {
-    // user_identity is deprecated: use `user`
-    user_identity: User;
-  } | {
-    user: User;
-  }
+  type CreateItemAddTokenOptions =
+    | {
+        // user_identity is deprecated: use `user`
+        user_identity: User;
+      }
+    | {
+        user: User;
+      };
 
   class Client {
     constructor(configs: ClientConfigs);
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
-    exchangePublicToken(
-      publicToken: string,
-      cb: Callback<TokenResponse>,
-    ): void;
+    exchangePublicToken(publicToken: string, cb: Callback<TokenResponse>): void;
 
     createItemAddToken(): Promise<CreateItemAddTokenResponse>;
-    createItemAddToken(options: CreateItemAddTokenOptions, cb: Callback<CreateItemAddTokenResponse>): void;
+    createItemAddToken(
+      options: CreateItemAddTokenOptions,
+      cb: Callback<CreateItemAddTokenResponse>,
+    ): void;
 
-    createLinkToken(options: CreateLinkTokenOptions): Promise<CreateLinkTokenResponse>;
-    createLinkToken(options: CreateLinkTokenOptions, cb: Callback<CreateLinkTokenResponse>): void;
+    createLinkToken(
+      options: CreateLinkTokenOptions,
+    ): Promise<CreateLinkTokenResponse>;
+    createLinkToken(
+      options: CreateLinkTokenOptions,
+      cb: Callback<CreateLinkTokenResponse>,
+    ): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
@@ -1037,9 +1045,7 @@ declare module 'plaid' {
       cb: Callback<AuditCopyRemoveResponse>,
     ): void;
 
-    removeAuditCopy(
-      audit_copy_token: string,
-    ): Promise<AuditCopyRemoveResponse>;
+    removeAuditCopy(audit_copy_token: string): Promise<AuditCopyRemoveResponse>;
 
     // removeAssetReport(String, Function)
     removeAssetReport(
@@ -1096,9 +1102,7 @@ declare module 'plaid' {
       cb: Callback<PaymentTokenCreateResponse>,
     ): void;
 
-    createPaymentToken(
-      payment_id: string,
-    ): Promise<PaymentTokenCreateResponse>;
+    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
 
     getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 
@@ -1201,7 +1205,7 @@ declare module 'plaid' {
     getInstitutions(
       count: number,
       offset: number,
-      options?: Object
+      options?: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(
       count: number,
@@ -1224,8 +1228,12 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
-      options: { include_optional_metadata: true; include_status: true }
-    ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData & InstitutionWithStatus>>;
+      options: { include_optional_metadata: true; include_status: true },
+    ): Promise<
+      GetInstitutionByIdResponse<
+        InstitutionWithInstitutionData & InstitutionWithStatus
+      >
+    >;
     getInstitutionById(
       institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
@@ -1289,7 +1297,7 @@ declare module 'plaid' {
 
     // getWebhookVerificationKey(String)
     getWebhookVerificationKey(
-      key_id: string
+      key_id: string,
     ): Promise<WebhookVerificationKeyResponse>;
 
     // sandboxItemSetVerificationStatus(String, String, String, Function)
