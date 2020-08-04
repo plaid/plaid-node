@@ -1,19 +1,35 @@
+## 7.0.0
+
+- Rename 'client_id' string to 'clientID' in errors ([#336](https://github.com/plaid/plaid-node/pull/336))
+- Add typings for `getInstitutionById` with status ([#337](https://github.com/plaid/plaid-node/pull/337))
+- Fix `AssetReportGetPdfResponse` binary response type ([#340](https://github.com/plaid/plaid-node/pull/340))
+
+BREAKING CHANGES:
+
+- Adds BACS support for payment initiation ([#334](https://github.com/plaid/plaid-node/pull/334))
+- Fixes nullable typings for Account and AccountCommon ([#342](https://github.com/plaid/plaid-node/pull/342))
+
 ## 6.0.0
+
 - Add typings for `merchant_name` to `Transaction` interface
 
 BREAKING CHANGES:
+
 - `plaid.Client` now accepts an object
 - Removes the public key as input to `plaid.Client`. The public key is no longer needed by the API.
 - Add support for the `/link/token/create` endpoint
 
 ## 5.2.0
+
 - Improved typescript typings for `getHoldings` and `getInstitutionById`
 
 ## 5.1.0
+
 - Improved typescript typings for `getInstitutionById`, `ClientOptions`, and `getWebhookVerificationKey`
 - Make `getWebhookVerificationKey` compatible with async/await
 
 ## 5.0.0
+
 - Replaced the deprecated `request` library with `axios`
 - Removes support for the deprecated `/item/access_token/update_version` endpoint
 - Updated license format in `package.json`
@@ -26,6 +42,7 @@ BREAKING CHANGES:
 - If your integration relies on passing custom `request` config to the `plaid.Client` constructor via the `options` argument, these options must be migrated to use `axios` equivalents.
 
 ## 4.11.0
+
 - Add `client_user_id` field to the item add token endpoint ([#279](https://github.com/plaid/plaid-node/pull/279))
 - Add `user_identity` field to the item add token endpoint ([#269](https://github.com/plaid/plaid-node/pull/269))
 - Add missing `authorized_date` and `payment_channel` fields to the `Transaction` interface ([#266](https://github.com/plaid/plaid-node/pull/266))
