@@ -78,7 +78,7 @@ const patientClient = new plaid.Client({
 });
 ```
 
-See [here][12] for a complete list of options. The default timeout for requests is 10 minutes.
+The default timeout for requests is 10 minutes.
 
 ## Methods
 
@@ -374,6 +374,5 @@ Click [here][7]!
 [9]: https://plaid.com/docs/link/stripe
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
-[12]: https://github.com/request/request/blob/master/README.md#requestoptions-callback
 [13]: https://github.com/plaid/plaid-node-legacy
 [api-upgrades]: https://plaid.com/docs/api-upgrades
