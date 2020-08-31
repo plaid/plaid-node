@@ -1,3 +1,7 @@
+## 7.0.1
+
+- Add `subtype` field for the InvestmentTransaction typescript definition
+
 ## 7.0.0
 
 - Rename 'client_id' string to 'clientID' in errors ([#336](https://github.com/plaid/plaid-node/pull/336))
