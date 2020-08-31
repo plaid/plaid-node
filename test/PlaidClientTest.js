@@ -1034,7 +1034,7 @@ describe('plaid.Client', () => {
           address,
           {
             account: '12345678',
-            sort_code: '01-02-03',
+            sort_code: '010203',
           },
           (err, response) => {
             expect(err).to.be(null);
