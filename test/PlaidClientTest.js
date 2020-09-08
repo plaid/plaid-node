@@ -572,9 +572,7 @@ describe('plaid.Client', () => {
           }
           pCl.getTransactions(accessToken, startDate, endDate,
             {count: count, offset: offset}, (err, response) => {
-              if (err != null) {
-                console.log('err', JSON.stringify(err));
-
+              if (err) {
                 if (err.status_code === 400 &&
                   err.error_code === 'PRODUCT_NOT_READY') {
                   setTimeout(() => {
