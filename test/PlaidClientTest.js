@@ -633,7 +633,7 @@ describe('plaid.Client', () => {
         });
 
         it('normal flow', cb => {
-          getTransactionsWithRetries(accessToken, now, now, 100, 0, 5,
+          getTransactionsWithRetries(accessToken, now, now, 100, 0, 10,
             (err, successResponse) => {
               expect(err).to.be(null);
               expect(successResponse).to.be.ok();
@@ -644,7 +644,7 @@ describe('plaid.Client', () => {
         });
 
         it('all transactions', cb => {
-          getAllTransactionsWithRetries(accessToken, now, now, 5,
+          getAllTransactionsWithRetries(accessToken, now, now, 10,
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions.accounts).to.not.be(null);
