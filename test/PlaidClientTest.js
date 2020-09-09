@@ -230,6 +230,18 @@ describe('plaid.Client', () => {
           expect(getTokenResponse.link_token)
             .to.be(createTokenResponse.link_token);
           expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
+          expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
+          expect(getTokenResponse.metadata.products).to
+            .be(['auth', 'transactions']);
+          expect(getTokenResponse.metadata.country_codes).to.be(['GB']);
+          expect(getTokenResponse.metadata.language).to.be('en');
+          expect(getTokenResponse.metadata.webhook).to
+            .be('https://sample-web-hook.com');
+          expect(getTokenResponse.metadata.account_filters).to.be({
+            depository: {
+              account_subtypes: ['checking', 'savings']
+            }
+          });
           cb();
         });
     });
