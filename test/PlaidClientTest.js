@@ -230,8 +230,7 @@ describe('plaid.Client', () => {
           expect(getTokenResponse.link_token)
             .to.be(createTokenResponse.link_token);
           expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
-          expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
-          expect(getTokenResponse.metadata.products).to
+          expect(getTokenResponse.metadata.initial_products).to
             .be(['auth', 'transactions']);
           expect(getTokenResponse.metadata.country_codes).to.be(['GB']);
           expect(getTokenResponse.metadata.language).to.be('en');
