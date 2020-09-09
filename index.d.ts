@@ -643,6 +643,23 @@ declare module 'plaid' {
     expiration: Iso8601DateTimeString;
   }
 
+  interface LinkTokenMetadata {
+    initial_products?: Array<string>;
+    webhook?: string;
+    country_codes: Array<string>;
+    language: string;
+    account_filters?: AccountFiltersOptions;
+    redirect_uri?: string;
+    client_name: string;
+  }
+
+  interface GetLinkTokenResponse extends BaseResponse {
+    link_token: string;
+    created_at: Iso8601DateTimeString;
+    expiration: Iso8601DateTimeString;
+    metadata: LinkTokenMetadata;
+  }
+
   interface TokenResponse extends BaseResponse {
     access_token: string;
     item_id: string;
@@ -836,6 +853,14 @@ declare module 'plaid' {
     createLinkToken(
       options: CreateLinkTokenOptions,
       cb: Callback<CreateLinkTokenResponse>,
+    ): void;
+
+    getLinkToken(
+      link_token: string,
+    ): Promise<GetLinkTokenResponse>;
+    getLinkToken(
+      link_token: string,
+      cb: Callback<GetLinkTokenResponse>,
     ): void;
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;

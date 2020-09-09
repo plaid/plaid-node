@@ -200,6 +200,52 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can get link tokens', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        legal_name: 'John Doe',
+        phone_number: '+1 415 555 0123',
+        phone_number_verified_time: '2020-01-01T00:00:00Z',
+        email_address: 'example@plaid.com',
+        email_address_verified_time: '2020-01-01T00:00:00Z'
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      country_codes: ['GB'],
+      language: 'en',
+      webhook: 'https://sample-web-hook.com',
+      account_filters: {
+        depository: {
+          account_subtypes: ['checking', 'savings'],
+        },
+      },
+    }, (err, createTokenResponse) => {
+      expect(err).to.be(null);
+      expect(createTokenResponse.link_token).to.match(/^link-sandbox-/);
+      expect(createTokenResponse.expiration).to.be.ok();
+      pCl.getLinkToken(createTokenResponse.link_token,
+        (err, getTokenResponse) => {
+          expect(err).to.be(null);
+          expect(getTokenResponse.link_token)
+            .to.be(createTokenResponse.link_token);
+          expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
+          expect(getTokenResponse.metadata.initial_products).to
+            .eql(['auth', 'transactions']);
+          expect(getTokenResponse.metadata.country_codes).to.eql(['GB']);
+          expect(getTokenResponse.metadata.language).to.be('en');
+          expect(getTokenResponse.metadata.webhook).to
+            .be('https://sample-web-hook.com');
+          expect(getTokenResponse.metadata.account_filters).to.eql({
+            depository: {
+              account_subtypes: ['checking', 'savings']
+            }
+          });
+          cb();
+        });
+    });
+  });
+
   describe('endpoints', () => {
 
     const now = moment().format('YYYY-MM-DD');
@@ -598,7 +644,7 @@ describe('plaid.Client', () => {
         });
 
         it('normal flow', cb => {
-          getTransactionsWithRetries(accessToken, now, now, 100, 0, 5,
+          getTransactionsWithRetries(accessToken, now, now, 100, 0, 10,
             (err, successResponse) => {
               expect(err).to.be(null);
               expect(successResponse).to.be.ok();
@@ -609,7 +655,7 @@ describe('plaid.Client', () => {
         });
 
         it('all transactions', cb => {
-          getAllTransactionsWithRetries(accessToken, now, now, 5,
+          getAllTransactionsWithRetries(accessToken, now, now, 10,
             (err, transactions) => {
               expect(err).to.be(null);
               expect(transactions.accounts).to.not.be(null);
