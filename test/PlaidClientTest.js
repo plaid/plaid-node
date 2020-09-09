@@ -231,12 +231,12 @@ describe('plaid.Client', () => {
             .to.be(createTokenResponse.link_token);
           expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
           expect(getTokenResponse.metadata.initial_products).to
-            .be.equal(['auth', 'transactions']);
-          expect(getTokenResponse.metadata.country_codes).to.be(['GB']);
+            .eql(['auth', 'transactions']);
+          expect(getTokenResponse.metadata.country_codes).to.eql(['GB']);
           expect(getTokenResponse.metadata.language).to.be('en');
           expect(getTokenResponse.metadata.webhook).to
             .be('https://sample-web-hook.com');
-          expect(getTokenResponse.metadata.account_filters).to.be({
+          expect(getTokenResponse.metadata.account_filters).to.eql({
             depository: {
               account_subtypes: ['checking', 'savings']
             }
