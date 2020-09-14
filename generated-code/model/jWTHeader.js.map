@@ -1,0 +1,1 @@
+{"version":3,"file":"jWTHeader.js","sourceRoot":"","sources":["../../model/jWTHeader.ts"],"names":[],"mappings":";;AAiBA;IAYI,MAAM,CAAC,mBAAmB;QACtB,OAAO,SAAS,CAAC,gBAAgB,CAAC;IACtC,CAAC;;AAXM,uBAAa,GAAuB,SAAS,CAAC;AAE9C,0BAAgB,GAA0D;IAC7E;QACI,MAAM,EAAE,IAAI;QACZ,UAAU,EAAE,IAAI;QAChB,MAAM,EAAE,QAAQ;KACnB;CAAK,CAAC;AAVf,8BAeC"}

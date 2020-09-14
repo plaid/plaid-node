@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -13,28 +13,18 @@
   "bugs": {
     "url": "https://github.com/plaid/plaid-node/issues"
   },
-  "main": "lib/plaid.js",
+  "main": "api/apis.js",
   "license": "MIT",
-  "types": "./index.d.ts",
+  "types": "api/apis.d.ts",
   "dependencies": {
-    "@types/node": "9.x",
-    "axios": "^0.19.2",
-    "bluebird": "^3.5.1",
-    "ramda": "0.23.x"
+    "bluebird": "^3.5.0",
+    "request": "^2.81.0",
+    "@types/bluebird": "*",
+    "@types/request": "*",
+    "rewire": "^3.0.2"
   },
   "devDependencies": {
-    "async": "2.1.x",
-    "dotenv": "4.0.x",
-    "eslint": "^6.8.0",
-    "expect.js": "0.3.x",
-    "istanbul": "^0.4.5",
-    "jshint": "^2.11.0",
-    "mocha": "5.x",
-    "moment": "2.19.x",
-    "nock": "^12.0.3",
-    "nockingbird": "0.2.x",
-    "sinon": "^4.5.0",
-    "typescript": "2.5.x",
-    "xyz": "2.1.x"
+    "@types/node": "14.10.1",
+    "typescript": "4.0.2"
   }
 }

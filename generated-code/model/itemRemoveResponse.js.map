@@ -1,0 +1,1 @@
+{"version":3,"file":"itemRemoveResponse.js","sourceRoot":"","sources":["../../model/itemRemoveResponse.ts"],"names":[],"mappings":";;AAcA;IAeI,MAAM,CAAC,mBAAmB;QACtB,OAAO,kBAAkB,CAAC,gBAAgB,CAAC;IAC/C,CAAC;;AAXM,gCAAa,GAAuB,SAAS,CAAC;AAE9C,mCAAgB,GAA0D;IAC7E;QACI,MAAM,EAAE,WAAW;QACnB,UAAU,EAAE,YAAY;QACxB,MAAM,EAAE,QAAQ;KACnB;CAAK,CAAC;AAbf,gDAkBC"}

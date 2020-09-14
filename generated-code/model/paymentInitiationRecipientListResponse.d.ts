@@ -1,0 +1,15 @@
+export declare class PaymentInitiationRecipientListResponse {
+    'clientId': string;
+    'secret': string;
+    static discriminator: string | undefined;
+    static attributeTypeMap: Array<{
+        name: string;
+        baseName: string;
+        type: string;
+    }>;
+    static getAttributeTypeMap(): {
+        name: string;
+        baseName: string;
+        type: string;
+    }[];
+}
