@@ -1,0 +1,1 @@
+{"version":3,"file":"transactionsRefreshResponse.js","sourceRoot":"","sources":["../../model/transactionsRefreshResponse.ts"],"names":[],"mappings":";;AAcA;IAeI,MAAM,CAAC,mBAAmB;QACtB,OAAO,2BAA2B,CAAC,gBAAgB,CAAC;IACxD,CAAC;;AAXM,yCAAa,GAAuB,SAAS,CAAC;AAE9C,4CAAgB,GAA0D;IAC7E;QACI,MAAM,EAAE,WAAW;QACnB,UAAU,EAAE,YAAY;QACxB,MAAM,EAAE,QAAQ;KACnB;CAAK,CAAC;AAbf,kEAkBC"}

@@ -1,0 +1,57 @@
+export declare class StandaloneInvestmentTransactionSubtype {
+    'accountFee'?: string;
+    'assignment'?: string;
+    'buy'?: string;
+    'buyToCover'?: string;
+    'contribution'?: string;
+    'deposit'?: string;
+    'distribution'?: string;
+    'dividend'?: string;
+    'dividendReinvestment'?: string;
+    'exercise'?: string;
+    'expire'?: string;
+    'fundFee'?: string;
+    'interest'?: string;
+    'interestReceivable'?: string;
+    'interestReinvestment'?: string;
+    'legalFee'?: string;
+    'loanPayment'?: string;
+    'longTermCapitalGain'?: string;
+    'longTermCapitalGainReinvestment'?: string;
+    'managementFee'?: string;
+    'marginExpense'?: string;
+    'merger'?: string;
+    'miscellaneousFee'?: string;
+    'nonQualifiedDividend'?: string;
+    'nonResidentTax'?: string;
+    'pendingCredit'?: string;
+    'pendingDebit'?: string;
+    'qualifiedDividend'?: string;
+    'rebalance'?: string;
+    'returnOfPrincipal'?: string;
+    'sell'?: string;
+    'sellShort'?: string;
+    'shortTermCapitalGain'?: string;
+    'shortTermCapitalGainReinvestment'?: string;
+    'spinOff'?: string;
+    'split'?: string;
+    'stockDistribution'?: string;
+    'tax'?: string;
+    'taxWithheld'?: string;
+    'transfer'?: string;
+    'transferFee'?: string;
+    'trustFee'?: string;
+    'unqualifiedGain'?: string;
+    'withdrawal'?: string;
+    static discriminator: string | undefined;
+    static attributeTypeMap: Array<{
+        name: string;
+        baseName: string;
+        type: string;
+    }>;
+    static getAttributeTypeMap(): {
+        name: string;
+        baseName: string;
+        type: string;
+    }[];
+}

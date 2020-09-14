@@ -1,0 +1,1 @@
+{"version":3,"file":"categoriesGetResponse.js","sourceRoot":"","sources":["../../model/categoriesGetResponse.ts"],"names":[],"mappings":";;AAeA;IAeI,MAAM,CAAC,mBAAmB;QACtB,OAAO,qBAAqB,CAAC,gBAAgB,CAAC;IAClD,CAAC;;AAXM,mCAAa,GAAuB,SAAS,CAAC;AAE9C,sCAAgB,GAA0D;IAC7E;QACI,MAAM,EAAE,YAAY;QACpB,UAAU,EAAE,YAAY;QACxB,MAAM,EAAE,iBAAiB;KAC5B;CAAK,CAAC;AAbf,sDAkBC"}
