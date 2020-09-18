@@ -1,0 +1,57 @@
+export declare class StandaloneInvestmentTransactionSubtype {
+    'account_fee'?: string;
+    'assignment'?: string;
+    'buy'?: string;
+    'buy_to_cover'?: string;
+    'contribution'?: string;
+    'deposit'?: string;
+    'distribution'?: string;
+    'dividend'?: string;
+    'dividend_reinvestment'?: string;
+    'exercise'?: string;
+    'expire'?: string;
+    'fund_fee'?: string;
+    'interest'?: string;
+    'interest_receivable'?: string;
+    'interest_reinvestment'?: string;
+    'legal_fee'?: string;
+    'loan_payment'?: string;
+    'long_term_capital_gain'?: string;
+    'long_term_capital_gain_reinvestment'?: string;
+    'management_fee'?: string;
+    'margin_expense'?: string;
+    'merger'?: string;
+    'miscellaneous_fee'?: string;
+    'non_qualified_dividend'?: string;
+    'non_resident_tax'?: string;
+    'pending_credit'?: string;
+    'pending_debit'?: string;
+    'qualified_dividend'?: string;
+    'rebalance'?: string;
+    'return_of_principal'?: string;
+    'sell'?: string;
+    'sell_short'?: string;
+    'short_term_capital_gain'?: string;
+    'short_term_capital_gain_reinvestment'?: string;
+    'spin_off'?: string;
+    'split'?: string;
+    'stock_distribution'?: string;
+    'tax'?: string;
+    'tax_withheld'?: string;
+    'transfer'?: string;
+    'transfer_fee'?: string;
+    'trust_fee'?: string;
+    'unqualified_gain'?: string;
+    'withdrawal'?: string;
+    static discriminator: string | undefined;
+    static attributeTypeMap: Array<{
+        name: string;
+        baseName: string;
+        type: string;
+    }>;
+    static getAttributeTypeMap(): {
+        name: string;
+        baseName: string;
+        type: string;
+    }[];
+}

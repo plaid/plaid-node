@@ -1,0 +1,15 @@
+export declare class StandaloneCurrencyCodeList {
+    'iso_currency_code'?: string;
+    'unofficial_currency_code'?: string;
+    static discriminator: string | undefined;
+    static attributeTypeMap: Array<{
+        name: string;
+        baseName: string;
+        type: string;
+    }>;
+    static getAttributeTypeMap(): {
+        name: string;
+        baseName: string;
+        type: string;
+    }[];
+}

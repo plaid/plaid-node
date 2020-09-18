@@ -1,8 +1,3 @@
-## 7.1.0
-
-- Add support for Link Token get endpoint ([#354](https://github.com/plaid/plaid-node/pull/354))
-  - `/link/token/get`
-
 ## 7.0.1
 
 - Add `subtype` field for the InvestmentTransaction typescript definition
