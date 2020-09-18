@@ -1,0 +1,1 @@
+{"version":3,"file":"linkTokenCreateRequestUser.js","sourceRoot":"","sources":["../../model/linkTokenCreateRequestUser.ts"],"names":[],"mappings":";;AAiBA;IAeI,MAAM,CAAC,mBAAmB;QACtB,OAAO,0BAA0B,CAAC,gBAAgB,CAAC;IACvD,CAAC;;AAXM,wCAAa,GAAuB,SAAS,CAAC;AAE9C,2CAAgB,GAA0D;IAC7E;QACI,MAAM,EAAE,gBAAgB;QACxB,UAAU,EAAE,gBAAgB;QAC5B,MAAM,EAAE,QAAQ;KACnB;CAAK,CAAC;AAbf,gEAkBC"}

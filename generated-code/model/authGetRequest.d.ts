@@ -1,0 +1,18 @@
+import { AuthGetRequestOptions } from './authGetRequestOptions';
+export declare class AuthGetRequest {
+    'client_id': string;
+    'secret': string;
+    'access_token': string;
+    'options'?: AuthGetRequestOptions;
+    static discriminator: string | undefined;
+    static attributeTypeMap: Array<{
+        name: string;
+        baseName: string;
+        type: string;
+    }>;
+    static getAttributeTypeMap(): {
+        name: string;
+        baseName: string;
+        type: string;
+    }[];
+}

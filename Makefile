@@ -13,11 +13,6 @@ ifneq ($(GREP),)
 	MOCHA_GREP = --grep="$(GREP)"
 endif
 
-.PHONY: lint
-lint:
-	@$(JSHINT) -- $(SRC)
-	@$(ESLINT) -- $(SRC)
-
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch:
@@ -36,5 +31,5 @@ test: build-ts
 
 # verify that tsc can build our definition file
 .PHONY: build-ts
-build-ts: index.d.ts
+build-ts:
 	@$(TSC) -p $(TSC_CONFIG)
