@@ -1130,12 +1130,10 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.request_id).to.be.ok();
             expect(response.payment_id).to.be.ok();
-            expect(response.payment_token).to.be.ok();
             expect(response.reference).to.be.ok();
             expect(response.amount).to.be.ok();
             expect(response.status).to.be.ok();
             expect(response.last_status_update).to.be.ok();
-            expect(response.payment_token_expiration_time).to.be.ok();
             expect(response.recipient_id).to.be.ok();
 
             cb(null);
