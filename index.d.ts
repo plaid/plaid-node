@@ -591,10 +591,6 @@ declare module 'plaid' {
     status: ItemStatus;
   }
 
-  interface CreatePublicTokenResponse extends BaseResponse {
-    public_token: string;
-  }
-
   interface CreateProcessorTokenResponse extends BaseResponse {
     processor_token: string;
   }
@@ -631,11 +627,6 @@ declare module 'plaid' {
 
   interface CategoriesResponse extends BaseResponse {
     categories: Array<Category>;
-  }
-
-  interface CreateItemAddTokenResponse extends BaseResponse {
-    add_token: string;
-    expiration: Iso8601DateTimeString;
   }
 
   interface CreateLinkTokenResponse extends BaseResponse {
@@ -731,11 +722,6 @@ declare module 'plaid' {
     status: string;
   }
 
-  interface PaymentTokenCreateResponse extends BaseResponse {
-    payment_token: string;
-    payment_token_expiration_time: Iso8601DateTimeString;
-  }
-
   interface PaymentGetResponse extends BaseResponse {
     payment_id: string;
     payment_token: string;
@@ -826,26 +812,11 @@ declare module 'plaid' {
     legal_name?: IdentityField;
   }
 
-  type CreateItemAddTokenOptions =
-    | {
-        // user_identity is deprecated: use `user`
-        user_identity: User;
-      }
-    | {
-        user: User;
-      };
-
   class Client {
     constructor(configs: ClientConfigs);
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
     exchangePublicToken(publicToken: string, cb: Callback<TokenResponse>): void;
-
-    createItemAddToken(): Promise<CreateItemAddTokenResponse>;
-    createItemAddToken(
-      options: CreateItemAddTokenOptions,
-      cb: Callback<CreateItemAddTokenResponse>,
-    ): void;
 
     createLinkToken(
       options: CreateLinkTokenOptions,
@@ -862,8 +833,6 @@ declare module 'plaid' {
       link_token: string,
       cb: Callback<GetLinkTokenResponse>,
     ): void;
-
-    createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
     createProcessorToken(
       accessToken: string,
@@ -1122,13 +1091,6 @@ declare module 'plaid' {
       reference: string,
       amount: PaymentAmount,
     ): Promise<PaymentCreateResponse>;
-
-    createPaymentToken(
-      payment_id: string,
-      cb: Callback<PaymentTokenCreateResponse>,
-    ): void;
-
-    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
 
     getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 

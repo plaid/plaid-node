@@ -108,53 +108,6 @@ describe('plaid.Client', () => {
     });
   });
 
-  it('can create item add tokens', cb => {
-    pCl.createItemAddToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
-  });
-
-  it('can create item add tokens with fields', cb => {
-    pCl.createItemAddToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-        email_address: {
-          value: 'name@example.com',
-          verified: true,
-        },
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
-  });
-
-  it('can create item add tokens with fields with old field name', cb => {
-    pCl.createItemAddToken({
-      user_identity: {
-        client_user_id: (new Date()).getTime().toString(),
-        email_address: {
-          value: 'name@example.com',
-          verified: true,
-        },
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
-  });
-
   it('can create link tokens with required', cb => {
     pCl.createLinkToken({
       user: {
@@ -329,7 +282,6 @@ describe('plaid.Client', () => {
               pCl.removeItem(newAccessToken, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse).to.be.ok();
-                expect(successResponse.removed).to.be(true);
 
                 cb();
               });
@@ -1151,16 +1103,25 @@ describe('plaid.Client', () => {
           });
       };
 
-      const createPaymentToken = (payment_id, cb) => {
-        pCl.createPaymentToken(payment_id, (err, response) => {
+      const createLinkToken = (payment_id, cb) => {
+        pCl.createLinkToken({
+          user: {
+            client_user_id: (new Date()).toString(),
+          },
+          products: ['transactions'],
+          country_codes: ['US'],
+          language: 'en',
+          client_name: 'Plaid Test',
+          payment_id,
+        }, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
-          expect(response.payment_token).to.be.ok();
-          expect(response.payment_token_expiration_time).to.be.ok();
+          expect(response.link_token).to.be.ok();
+          expect(response.expiration).to.be.ok();
 
           cb(null, payment_id);
         });
-      };
+      }
 
       const getPayment = (payment_id, cb) => {
         pCl.getPayment(payment_id,
@@ -1197,7 +1158,7 @@ describe('plaid.Client', () => {
           getPaymentRecipientWithIban,
           listPaymentRecipients,
           createPayment,
-          createPaymentToken,
+          createLinkToken,
           getPayment,
           listPayments,
         ], cb);
@@ -1209,7 +1170,7 @@ describe('plaid.Client', () => {
           getPaymentRecipientWithBacs,
           listPaymentRecipients,
           createPayment,
-          createPaymentToken,
+          createLinkToken,
           getPayment,
           listPayments,
         ], cb);
