@@ -1,3 +1,16 @@
+## 8.0.0
+This version represents a new major API version and a transition in how we maintain our external client libraries. We are now using `OpenAPI` and running our definition file through the `typescript-node` generator. As part of this transition, we have created a wrapper around existing APIs to ease the burden of migrating to the new unwrapped version in the future. If you wish to try the completely unwrapped version now, you can run the generator on your own by using our newly public `OpenAPI` file [available here](https://github.com/plaid/plaid-openapi). Going forward this file will be actively maintained and published whenever changes are made to any of our external HTTP API surfaces. We will create version alignment at `15` for all of Plaid's client libraries when they are being fully generated.
+
+BREAKING CHANGES:
+
+Migration guide:
+- If you are using callbacks, you will not be able to omit the options property. Calling functions without `options` is no longer supported.
+
+Deprecated:
+
+- `getAllTransactions`
+
+
 ## 7.1.0
 
 - Add support for Link Token get endpoint ([#354](https://github.com/plaid/plaid-node/pull/354))
