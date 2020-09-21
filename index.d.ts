@@ -603,12 +603,7 @@ declare module 'plaid' {
     new_access_token: string;
   }
 
-  interface ItemDeleteResponse extends BaseResponse {
-    deleted: true;
-  }
-
   interface ItemRemoveResponse extends BaseResponse {
-    removed: true;
   }
 
   interface ResetLoginResponse extends BaseResponse {
@@ -857,8 +852,6 @@ declare module 'plaid' {
     ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
-
-    deleteItem: AccessTokenFn<ItemDeleteResponse>;
 
     removeItem: AccessTokenFn<ItemRemoveResponse>;
 

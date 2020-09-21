@@ -1121,7 +1121,7 @@ describe('plaid.Client', () => {
 
           cb(null, payment_id);
         });
-      }
+      };
 
       const getPayment = (payment_id, cb) => {
         pCl.getPayment(payment_id,
