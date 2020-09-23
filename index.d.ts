@@ -42,7 +42,7 @@ declare module 'plaid' {
     offset?: number;
   }
 
-  interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
+  interface GetAllTransactionsRequestOptions extends ItemRequestOptions { }
 
   interface AssetReportUser {
     client_user_id?: string | null;
@@ -112,11 +112,11 @@ declare module 'plaid' {
     subtype: string;
     type: string;
     verification_status:
-      | 'pending_automatic_verification'
-      | 'pending_manual_verification'
-      | 'manually_verified'
-      | 'automatically_verified'
-      | null;
+    | 'pending_automatic_verification'
+    | 'pending_manual_verification'
+    | 'manually_verified'
+    | 'automatically_verified'
+    | null;
   }
 
   interface Account extends AccountCommon {
@@ -562,7 +562,7 @@ declare module 'plaid' {
     };
   }
 
-  interface CreditDetailsResponse extends AccountsResponse {}
+  interface CreditDetailsResponse extends AccountsResponse { }
 
   interface HoldingsResponse extends InvestmentsResponse {
     holdings: Array<Holding>;
@@ -791,7 +791,7 @@ declare module 'plaid' {
     };
   }
 
-  interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
+  interface SandboxItemSetVerificationStatusResponse extends BaseResponse { }
 
   interface ClientOptions {
     version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
@@ -813,11 +813,11 @@ declare module 'plaid' {
   type IdentityField =
     | IdentityFieldBase
     | (IdentityFieldBase & {
-        verified: boolean;
-      })
+      verified: boolean;
+    })
     | (IdentityFieldBase & {
-        verifiedAt: Date;
-      });
+      verifiedAt: Date;
+    });
 
   interface User {
     client_user_id: string;
@@ -828,12 +828,12 @@ declare module 'plaid' {
 
   type CreateItemAddTokenOptions =
     | {
-        // user_identity is deprecated: use `user`
-        user_identity: User;
-      }
+      // user_identity is deprecated: use `user`
+      user_identity: User;
+    }
     | {
-        user: User;
-      };
+      user: User;
+    };
 
   class Client {
     constructor(configs: ClientConfigs);
@@ -1242,8 +1242,12 @@ declare module 'plaid' {
 
     getInstitutionById(
       institutionId: string,
-      options?: GetInstitutionByIdOptions,
-    ): Promise<GetInstitutionByIdResponse<Institution>>;
+      options: { include_optional_metadata: true; include_status: true },
+    ): Promise<
+      GetInstitutionByIdResponse<
+        InstitutionWithInstitutionData & InstitutionWithStatus
+      >
+    >;
     getInstitutionById(
       institutionId: string,
       options: { include_optional_metadata: true },
@@ -1254,19 +1258,15 @@ declare module 'plaid' {
     ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
-      options: { include_optional_metadata: true; include_status: true },
-    ): Promise<
-      GetInstitutionByIdResponse<
-        InstitutionWithInstitutionData & InstitutionWithStatus
-      >
-    >;
-    getInstitutionById(
-      institutionId: string,
+      options: GetInstitutionByIdOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(
       institutionId: string,
-      options: GetInstitutionByIdOptions,
+      options?: GetInstitutionByIdOptions,
+    ): Promise<GetInstitutionByIdResponse<Institution>>;
+    getInstitutionById(
+      institutionId: string,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
 
