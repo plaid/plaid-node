@@ -4,18 +4,18 @@ plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg
 A node.js client library for the [Plaid API][1].
 
 ## Table of Contents
-
-- [plaid-node](#plaid-node)
-  * [Install](#install)
-  * [Getting started](#getting-started)
-  * [Methods](#methods)
-  * [Callbacks](#callbacks)
-  * [Error Handling](#error-handling)
-  * [Examples](#examples)
-  * [Promise Support](#promise-support)
-  * [Support](#support)
-  * [Contributing](#contributing)
-  * [License](#license)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+    - [Versioning](#versioning)
+  - [Getting started](#getting-started)
+  - [Methods](#methods)
+  - [Callbacks](#callbacks)
+  - [Error Handling](#error-handling)
+  - [Examples](#examples)
+  - [Promise Support](#promise-support)
+  - [Support](#support)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Install
 
@@ -27,14 +27,15 @@ $ npm install plaid
 
 You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` do not support versioning.
 
-```
-const plaidClient = new plaid.Client(
-  process.env.PLAID_CLIENT_ID,
-  process.env.PLAID_SECRET,
-  process.env.PUBLIC_KEY,
-  plaid.environments.sandbox,
-  {version: '2018-05-22'}
-);
+```javascript
+const plaidClient = new plaid.Client({
+  clientID: process.env.PLAID_CLIENT_ID,
+  secret: process.env.PLAID_SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2019-05-29', // '2019-05-29' | '2018-05-22' | '2017-03-08'
+  },
+});
 ```
 
 For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
@@ -45,13 +46,17 @@ For information about what has changed between versions and how to update your i
 The module supports all Plaid API endpoints.  For complete information about the API, head
 to the [docs][2].
 
-All endpoints require a valid `client_id`, `secret`, and `public_key` to
+All endpoints require a valid `client_id` and `secret` to
 access and are accessible from a valid instance of a Plaid `Client`:
 
 ```javascript
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
+const plaidClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+});
 ```
 
 The `plaid_env` parameter dictates which Plaid API environment you will access. Values are:
@@ -59,16 +64,21 @@ The `plaid_env` parameter dictates which Plaid API environment you will access. 
 - `plaid.environments.development` - use for integration development and testing, creates `Item`s on https://development.plaid.com
 - `plaid.environments.sandbox` - quickly build out your integration with stateful test data, creates `Item`s on https://sandbox.plaid.com
 
-The `options` parameter is optional and allows for clients to override the default options used to make requests. e.g.
+The `options` field is optional and allows for clients to override the default options used to make requests. e.g.
 
 ```javascript
-const patientClient = new plaid.Client(client_id, secret, public_key, plaid_env, {
-  timeout: 10 * 60 * 1000, // 30 minutes
-  agent: 'Patient Agent'
+const patientClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+  options: {
+    timeout: 30 * 60 * 1000, // 30 minutes
+    version: '2019-05-29',
+  }
 });
 ```
 
-See [here][12] for a complete list of options. The default timeout for requests is 10 minutes.
+The default timeout for requests is 10 minutes.
 
 ## Methods
 
@@ -78,7 +88,14 @@ Once an instance of the client has been created you use the following methods:
 const plaid = require('plaid');
 
 // Initialize client
-const plaidClient = new plaid.Client(client_id, secret, public_key, plaid_env, {version: '2018-05-22'});
+const plaidClient = new plaid.Client({
+  clientID: client_id,
+  secret: secret,
+  env: plaid_env,
+  options: {
+    version: '2019-05-29',
+  },
+});
 
 // createPublicToken(String, Function)
 plaidClient.createPublicToken(access_token, cb);
@@ -89,8 +106,6 @@ plaidClient.createProcessorToken(access_token, account_id, processor, cb);
 
 // invalidateAccessToken(String, Function)
 plaidClient.invalidateAccessToken(access_token, cb);
-// updateAccessTokenVersion(String, Function)
-plaidClient.updateAccessTokenVersion(legacy_access_token, cb);
 // removeItem(String, Function)
 plaidClient.removeItem(access_token, cb);
 // getItem(String, Function)
@@ -134,11 +149,14 @@ plaidClient.getTransactions(access_token, start_date, end_date, options, cb);
 // getAllTransactions(String, Date(YYYY-MM-DD), Date(YYYY-MM-DD), Object?, Function)
 plaidClient.getAllTransactions(access_token, start_date, end_date, options, cb);
 
+// refreshTransactions(String)
+plaidClient.refreshTransactions(access_token);
+
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
 
-// getInstitutions(Number, Number, Function);
-plaidClient.getInstitutions(count, offset, cb);
+// getInstitutions(Number, Number, Object?, Function);
+plaidClient.getInstitutions(count, offset, options, cb);
 // getInstitutionsById(String, Object?, Function)
 plaidClient.getInstitutionById(institution_id, options, cb);
 // searchInstitutionsByName(String, [String], Object?, Function)
@@ -147,11 +165,16 @@ plaidClient.searchInstitutionsByName(query, products, options, cb);
 // getCategories(Function)
 plaidClient.getCategories(cb);
 
+// getWebhookVerificationKey(String, Function)
+plaidClient.getWebhookVerificationKey(key_id, cb);
+
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
 plaidClient.resetLogin(access_token, cb);
 // Sandbox-only endpoint to trigger a webhook for an Item
 plaidClient.sandboxItemFireWebhook(access_token, webhook_code, cb);
+// Sandbox-only endpoint to set the verfication_status for an Item
+plaidClient.sandboxItemSetVerificationStatus(access_token, account_id, verification_status, cb);
 // Sandbox-only endpoint to create a `public_token`. Useful for writing integration tests without running Link.
 plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
@@ -258,13 +281,14 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const plaid = require('plaid');
 
-const plaidClient = new plaid.Client(
-  process.env.PLAID_CLIENT_ID,
-  process.env.PLAID_SECRET,
-  process.env.PUBLIC_KEY,
-  plaid.environments.sandbox,
-  {version: '2018-05-22'}
-);
+const plaidClient = new plaid.Client({
+  clientID: process.env.PLAID_CLIENT_ID,
+  secret: process.env.PLAID_SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2018-05-22',
+  },
+});
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -277,13 +301,11 @@ app.use(bodyParser.json());
 app.post('/plaid_exchange', (req, res) => {
   var public_token = req.body.public_token;
 
-  plaidClient.exchangePublicToken(public_token).then(res => {
-    const access_token = res.access_token;
-
-    plaidClient.getAccounts(access_token).then(res => {
-      console.log(res.accounts);
-    });
-  }).catch(err => {
+  return plaidClient.exchangePublicToken(public_token)
+  .then(res => res.access_token)
+  .then(accessToken => plaidClient.getAccounts(accessToken))
+  .then(res => console.log(res.accounts))
+  .catch(err => {
     // Indicates a network or runtime error.
     if (!(err instanceof plaid.PlaidError)) {
       res.sendStatus(500);
@@ -352,6 +374,5 @@ Click [here][7]!
 [9]: https://plaid.com/docs/link/stripe
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
-[12]: https://github.com/request/request/blob/master/README.md#requestoptions-callback
 [13]: https://github.com/plaid/plaid-node-legacy
 [api-upgrades]: https://plaid.com/docs/api-upgrades

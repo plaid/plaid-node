@@ -1,0 +1,6 @@
+>> POST /institutions/get_by_id
+>> ={"client_id":"www","secret":"vvv","institution_id":"ins_1"}
+<< 200
+<< plaid-request-id: 1234abcd
+<< content-type: application/json; charset=utf-8
+<< ={"institution_id": "ins_1", "description": "more money, more problems"}

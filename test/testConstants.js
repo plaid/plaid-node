@@ -12,7 +12,7 @@ module.exports = {
     LOGIN_REQUIRED: 'error_ITEM_LOGIN_REQUIRED',
   },
   INSTITUTION: 'ins_109508',
-  PRODUCTS: ['transactions', 'auth', 'assets'],
+  PRODUCTS: ['transactions', 'auth', 'assets', 'investments'],
   MFA_RESPONSES: {
     DEVICE: ['1234'],
     QUESTIONS_1_1: [
@@ -23,5 +23,6 @@ module.exports = {
       ['answer_1_0', 'answer_1_1']
     ],
     SELECTIONS: ['tomato', 'ketchup'],
-  }
+  },
+  WEBHOOK_VERIFICATION_KEY_ID: '6c5516e1-92dc-479e-a8ff-5a51992e0001'
 };
