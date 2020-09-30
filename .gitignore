@@ -4,3 +4,5 @@
 .env
 .vs/
 .idea/
+index.js
+index.d.ts
