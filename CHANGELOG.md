@@ -1,3 +1,30 @@
+## 8.0.0
+This version represents a new major release of the Plaid API `(2020-09-14)` and a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the `typescript-node` generator.
+
+As part of this transition, we have created a wrapper around existing APIs to ease the burden of migrating to the new API version. The completely unwrapped version will be available by the end of the year as we have a few internal changes left to fully support it.
+
+The `OpenAPI` file will be actively maintained and published (coming soon) whenever changes are made to any of our external HTTP API surfaces. `Typescript 4.0`, `Mocha 8.0` and  `Node 14` are now supported.
+
+BREAKING CHANGES:
+
+Migration Guide:
+- The version is now pinned to the latest Plaid API release. If you are not ready to use `2020-09-14`, `7.1.0` will support all previous versions.
+- If you are using callbacks, you will not be able to omit the options property. Calling functions without `options` is no longer supported if a callback is provided as the last argument.
+- Accurate return types are now supported through `Typescript` and the types are now more specific now across the board.
+
+Other Deprecations:
+
+- `getAllTransactions`
+- `createPaymentToken`
+- `createItemAddToken`
+- `createPublicToken`
+- `helpers.processUserFields`
+- `status_code` removed from all success responses. These were always `200` on success so it was redundant. Will still be available on errors.
+- `options.version`
+- `options.timeout`
+- `dotenv` usage removed
+- `sinon` removed from tests
+
 ## 7.1.0
 
 - Add support for Link Token get endpoint ([#354](https://github.com/plaid/plaid-node/pull/354))
