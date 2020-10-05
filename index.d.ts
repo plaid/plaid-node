@@ -773,7 +773,7 @@ declare module 'plaid' {
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
   interface ClientOptions {
-    version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
+    version?: '2020-09-14' | '2019-05-29' | '2018-05-22' | '2017-03-08';
     clientApp?: string;
     timeout?: number;
   }

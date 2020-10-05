@@ -21,7 +21,7 @@ describe('plaid.Client', () => {
     secret: SECRET,
     env: plaid.environments.sandbox,
     options: {
-      version: '2019-05-29',
+      version: '2020-09-14',
     },
   };
 
