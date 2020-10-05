@@ -152,12 +152,12 @@ plaidClient.refreshTransactions(access_token);
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
 
-// getInstitutions(Number, Number, Object?, Function);
-plaidClient.getInstitutions(count, offset, options, cb);
-// getInstitutionsById(String, Object?, Function)
-plaidClient.getInstitutionById(institution_id, options, cb);
-// searchInstitutionsByName(String, [String], Object?, Function)
-plaidClient.searchInstitutionsByName(query, products, options, cb);
+// getInstitutions(Number, Number, [String], Object?, Function);
+plaidClient.getInstitutions(count, offset, country_codes, options, cb);
+// getInstitutionsById(String, [String], Object?, Function)
+plaidClient.getInstitutionById(institution_id, country_codes, options, cb);
+// searchInstitutionsByName(String, [String], [String], Object?, Function)
+plaidClient.searchInstitutionsByName(query, products, country_codes, options, cb);
 
 // getCategories(Function)
 plaidClient.getCategories(cb);

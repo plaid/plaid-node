@@ -13,7 +13,7 @@ const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
 dotenv.config();
-const {SECRET, CLIENT_ID} = process.env;
+const { SECRET, CLIENT_ID } = process.env;
 
 describe('plaid.Client', () => {
   const configs = {
@@ -31,7 +31,7 @@ describe('plaid.Client', () => {
   });
 
   describe('constructor', () => {
-    it('throws for invalid parameter', ()  => {
+    it('throws for invalid parameter', () => {
       expect(() => {
         plaid.Client('clientID');
       }).to.throwException(e => {
@@ -531,10 +531,10 @@ describe('plaid.Client', () => {
           count, offset, num_retries_remaining, cb) => {
           if (num_retries_remaining <= 0) {
             throw new
-            Error('Ran out of retries while polling for transactions');
+              Error('Ran out of retries while polling for transactions');
           }
           pCl.getTransactions(accessToken, startDate, endDate,
-            {count: count, offset: offset}, (err, response) => {
+            { count: count, offset: offset }, (err, response) => {
               if (err) {
                 if (err.status_code === 400 &&
                   err.error_code === 'PRODUCT_NOT_READY') {
@@ -583,16 +583,16 @@ describe('plaid.Client', () => {
         beforeEach(done => {
           pCl.sandboxPublicTokenCreate(
             testConstants.INSTITUTION, testConstants.PRODUCTS, {
-              transactions: {start_date: now, end_date: now},
-            }, (err, successResponse) => {
-              expect(err).to.be(null);
-              pCl.exchangePublicToken(successResponse.public_token,
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  accessToken = successResponse.access_token;
-                  done();
-                });
-            });
+            transactions: { start_date: now, end_date: now },
+          }, (err, successResponse) => {
+            expect(err).to.be(null);
+            pCl.exchangePublicToken(successResponse.public_token,
+              (err, successResponse) => {
+                expect(err).to.be(null);
+                accessToken = successResponse.access_token;
+                done();
+              });
+          });
         });
 
         it('normal flow', cb => {
@@ -621,15 +621,15 @@ describe('plaid.Client', () => {
 
         it('all transactions (promise)', cb => {
           P.promisify(getAllTransactionsWithRetries)
-          (accessToken, now, now, 5).then(
-            transactions => {
-              expect(transactions.accounts).to.not.be(null);
-              expect(transactions.item).to.not.be(null);
-              expect(transactions.total_transactions).to.not.be(null);
-              expect(transactions.transactions).to.be.an(Array);
+            (accessToken, now, now, 5).then(
+              transactions => {
+                expect(transactions.accounts).to.not.be(null);
+                expect(transactions.item).to.not.be(null);
+                expect(transactions.total_transactions).to.not.be(null);
+                expect(transactions.transactions).to.be.an(Array);
 
-              cb();
-            }).catch(err => cb(err));
+                cb();
+              }).catch(err => cb(err));
         });
 
         it('all transactions (error)', cb => {
@@ -773,9 +773,9 @@ describe('plaid.Client', () => {
                 pCl.getTransactions.restore();
                 cb();
               }).catch(err => {
-              pCl.getTransactions.restore();
-              cb(err);
-            });
+                pCl.getTransactions.restore();
+                cb(err);
+              });
           });
 
         it('transactions (w/o options arg) (with 400)', cb => {
@@ -863,7 +863,7 @@ describe('plaid.Client', () => {
             (err, response) => {
               if (err) {
                 if (err.status_code === 400 &&
-                err.error_code === 'PRODUCT_NOT_READY') {
+                  err.error_code === 'PRODUCT_NOT_READY') {
                   setTimeout(() => {
                     getAssetReportWithRetries(
                       asset_report_token, num_retries_remaining - 1, cb);
@@ -1141,7 +1141,7 @@ describe('plaid.Client', () => {
       };
 
       const listPayments = (cb) => {
-        pCl.listPayments({count: 10}, (err, response) => {
+        pCl.listPayments({ count: 10 }, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.payments).to.be.ok();
@@ -1178,7 +1178,7 @@ describe('plaid.Client', () => {
       const getAccessToken = (cb) => {
         pCl.importItem(
           ['identity', 'auth'],
-          {'user_id': 'user_good', 'auth_token': 'pass_good'},
+          { 'user_id': 'user_good', 'auth_token': 'pass_good' },
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -1256,7 +1256,7 @@ describe('plaid.Client', () => {
     describe('institutions', () => {
 
       it('get', cb => {
-        pCl.getInstitutions(10, 0, (err, successResponse) => {
+        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.institutions).to.be.an(Array);
@@ -1266,7 +1266,7 @@ describe('plaid.Client', () => {
       });
 
       it('get with include_optional_metadata', cb => {
-        pCl.getInstitutions(10, 0, {include_optional_metadata: true},
+        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES, { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1277,7 +1277,7 @@ describe('plaid.Client', () => {
       });
 
       it('getById', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION, {},
+        pCl.getInstitutionById(testConstants.INSTITUTION, testConstants.INSTITUTION_COUNTRY_CODES, {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1288,7 +1288,7 @@ describe('plaid.Client', () => {
       });
 
       it('getById (w/o options arg)', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION,
+        pCl.getInstitutionById(testConstants.INSTITUTION, testConstants.INSTITUTION_COUNTRY_CODES,
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1300,7 +1300,8 @@ describe('plaid.Client', () => {
 
       it('getById with include_optional_metadata', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION,
-          {include_optional_metadata: true},
+          testConstants.INSTITUTION_COUNTRY_CODES,
+          { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1311,7 +1312,7 @@ describe('plaid.Client', () => {
       });
 
       it('search', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {},
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, testConstants.INSTITUTION_COUNTRY_CODES, {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1322,7 +1323,7 @@ describe('plaid.Client', () => {
       });
 
       it('search (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, testConstants.INSTITUTION_COUNTRY_CODES,
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1333,16 +1334,16 @@ describe('plaid.Client', () => {
       });
 
       it('searches with options include_optional_metadata', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, testConstants.INSTITUTION_COUNTRY_CODES, {
           include_optional_metadata: true
         },
-        (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.institutions).to.be.an(Array);
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.institutions).to.be.an(Array);
 
-          cb();
-        });
+            cb();
+          });
       });
     });
 
@@ -1421,11 +1422,11 @@ describe('plaid.Client', () => {
             pCl.sandboxPublicTokenCreate(
               testConstants.INSTITUTION,
               testConstants.PRODUCTS, {
-                webhook: 'https://httpstat.us/200'
-              }, (err, successResponse) => {
-                expect(err).to.be(null);
-                cb(null, successResponse);
-              });
+              webhook: 'https://httpstat.us/200'
+            }, (err, successResponse) => {
+              expect(err).to.be(null);
+              cb(null, successResponse);
+            });
           },
           (publicTokenResponse, cb) => {
             pCl.exchangePublicToken(publicTokenResponse.public_token,
@@ -1487,7 +1488,7 @@ describe('plaid.Client', () => {
 
     describe('success path', () => {
       it('normal', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], {})
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], testConstants.INSTITUTION_COUNTRY_CODES, {})
           .then(successResponse => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
@@ -1500,7 +1501,7 @@ describe('plaid.Client', () => {
       });
 
       it('normal (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'])
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], testConstants.INSTITUTION_COUNTRY_CODES)
           .then(successResponse => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
