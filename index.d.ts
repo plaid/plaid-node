@@ -1184,29 +1184,35 @@ declare module 'plaid' {
     getInstitutions(
       count: number,
       offset: number,
+      country_codes: Array<string>,
       options?: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(
       count: number,
       offset: number,
+      country_codes: Array<string>,
       options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options?: GetInstitutionByIdOptions,
     ): Promise<GetInstitutionByIdResponse<Institution>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_optional_metadata: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_status: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_optional_metadata: true; include_status: true },
     ): Promise<
       GetInstitutionByIdResponse<
@@ -1215,10 +1221,12 @@ declare module 'plaid' {
     >;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: GetInstitutionByIdOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
@@ -1226,11 +1234,13 @@ declare module 'plaid' {
     searchInstitutionsByName(
       query: string,
       products: Array<string>,
+      country_codes: Array<string>,
       options: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     searchInstitutionsByName(
       query: string,
       products: Array<string>,
+      country_codes: Array<string>,
       options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
