@@ -13,7 +13,7 @@ const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
 dotenv.config();
-const {SECRET, CLIENT_ID} = process.env;
+const { SECRET, CLIENT_ID } = process.env;
 
 describe('plaid.Client', () => {
   const configs = {
@@ -21,7 +21,7 @@ describe('plaid.Client', () => {
     secret: SECRET,
     env: plaid.environments.sandbox,
     options: {
-      version: '2019-05-29',
+      version: '2020-09-14',
     },
   };
 
@@ -31,7 +31,7 @@ describe('plaid.Client', () => {
   });
 
   describe('constructor', () => {
-    it('throws for invalid parameter', ()  => {
+    it('throws for invalid parameter', () => {
       expect(() => {
         plaid.Client('clientID');
       }).to.throwException(e => {
@@ -105,53 +105,6 @@ describe('plaid.Client', () => {
           }));
         }, plaid.environments);
       }).not.to.throwException();
-    });
-  });
-
-  it('can create item add tokens', cb => {
-    pCl.createItemAddToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
-  });
-
-  it('can create item add tokens with fields', cb => {
-    pCl.createItemAddToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-        email_address: {
-          value: 'name@example.com',
-          verified: true,
-        },
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
-  });
-
-  it('can create item add tokens with fields with old field name', cb => {
-    pCl.createItemAddToken({
-      user_identity: {
-        client_user_id: (new Date()).getTime().toString(),
-        email_address: {
-          value: 'name@example.com',
-          verified: true,
-        },
-      },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.add_token).to.match(/^item-add-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
     });
   });
 
@@ -329,7 +282,6 @@ describe('plaid.Client', () => {
               pCl.removeItem(newAccessToken, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse).to.be.ok();
-                expect(successResponse.removed).to.be(true);
 
                 cb();
               });
@@ -582,7 +534,7 @@ describe('plaid.Client', () => {
             Error('Ran out of retries while polling for transactions');
           }
           pCl.getTransactions(accessToken, startDate, endDate,
-            {count: count, offset: offset}, (err, response) => {
+            { count: count, offset: offset }, (err, response) => {
               if (err) {
                 if (err.status_code === 400 &&
                   err.error_code === 'PRODUCT_NOT_READY') {
@@ -631,7 +583,7 @@ describe('plaid.Client', () => {
         beforeEach(done => {
           pCl.sandboxPublicTokenCreate(
             testConstants.INSTITUTION, testConstants.PRODUCTS, {
-              transactions: {start_date: now, end_date: now},
+              transactions: { start_date: now, end_date: now },
             }, (err, successResponse) => {
               expect(err).to.be(null);
               pCl.exchangePublicToken(successResponse.public_token,
@@ -911,7 +863,7 @@ describe('plaid.Client', () => {
             (err, response) => {
               if (err) {
                 if (err.status_code === 400 &&
-                err.error_code === 'PRODUCT_NOT_READY') {
+                  err.error_code === 'PRODUCT_NOT_READY') {
                   setTimeout(() => {
                     getAssetReportWithRetries(
                       asset_report_token, num_retries_remaining - 1, cb);
@@ -1151,12 +1103,21 @@ describe('plaid.Client', () => {
           });
       };
 
-      const createPaymentToken = (payment_id, cb) => {
-        pCl.createPaymentToken(payment_id, (err, response) => {
+      const createLinkToken = (payment_id, cb) => {
+        pCl.createLinkToken({
+          user: {
+            client_user_id: (new Date()).toString(),
+          },
+          products: ['transactions'],
+          country_codes: ['US'],
+          language: 'en',
+          client_name: 'Plaid Test',
+          payment_id,
+        }, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
-          expect(response.payment_token).to.be.ok();
-          expect(response.payment_token_expiration_time).to.be.ok();
+          expect(response.link_token).to.be.ok();
+          expect(response.expiration).to.be.ok();
 
           cb(null, payment_id);
         });
@@ -1169,12 +1130,10 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.request_id).to.be.ok();
             expect(response.payment_id).to.be.ok();
-            expect(response.payment_token).to.be.ok();
             expect(response.reference).to.be.ok();
             expect(response.amount).to.be.ok();
             expect(response.status).to.be.ok();
             expect(response.last_status_update).to.be.ok();
-            expect(response.payment_token_expiration_time).to.be.ok();
             expect(response.recipient_id).to.be.ok();
 
             cb(null);
@@ -1182,7 +1141,7 @@ describe('plaid.Client', () => {
       };
 
       const listPayments = (cb) => {
-        pCl.listPayments({count: 10}, (err, response) => {
+        pCl.listPayments({ count: 10 }, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.payments).to.be.ok();
@@ -1197,7 +1156,7 @@ describe('plaid.Client', () => {
           getPaymentRecipientWithIban,
           listPaymentRecipients,
           createPayment,
-          createPaymentToken,
+          createLinkToken,
           getPayment,
           listPayments,
         ], cb);
@@ -1209,7 +1168,7 @@ describe('plaid.Client', () => {
           getPaymentRecipientWithBacs,
           listPaymentRecipients,
           createPayment,
-          createPaymentToken,
+          createLinkToken,
           getPayment,
           listPayments,
         ], cb);
@@ -1219,7 +1178,7 @@ describe('plaid.Client', () => {
       const getAccessToken = (cb) => {
         pCl.importItem(
           ['identity', 'auth'],
-          {'user_id': 'user_good', 'auth_token': 'pass_good'},
+          { 'user_id': 'user_good', 'auth_token': 'pass_good' },
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -1297,17 +1256,19 @@ describe('plaid.Client', () => {
     describe('institutions', () => {
 
       it('get', cb => {
-        pCl.getInstitutions(10, 0, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.institutions).to.be.an(Array);
+        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES,
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.institutions).to.be.an(Array);
 
-          cb();
-        });
+            cb();
+          });
       });
 
       it('get with include_optional_metadata', cb => {
-        pCl.getInstitutions(10, 0, {include_optional_metadata: true},
+        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES,
+          { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1318,7 +1279,8 @@ describe('plaid.Client', () => {
       });
 
       it('getById', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION, {},
+        pCl.getInstitutionById(testConstants.INSTITUTION,
+          testConstants.INSTITUTION_COUNTRY_CODES, {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1330,6 +1292,7 @@ describe('plaid.Client', () => {
 
       it('getById (w/o options arg)', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION,
+          testConstants.INSTITUTION_COUNTRY_CODES,
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1341,7 +1304,8 @@ describe('plaid.Client', () => {
 
       it('getById with include_optional_metadata', cb => {
         pCl.getInstitutionById(testConstants.INSTITUTION,
-          {include_optional_metadata: true},
+          testConstants.INSTITUTION_COUNTRY_CODES,
+          { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1352,7 +1316,8 @@ describe('plaid.Client', () => {
       });
 
       it('search', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {},
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
+          testConstants.INSTITUTION_COUNTRY_CODES, {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1364,6 +1329,7 @@ describe('plaid.Client', () => {
 
       it('search (w/o options arg)', cb => {
         pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
+          testConstants.INSTITUTION_COUNTRY_CODES,
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -1374,16 +1340,17 @@ describe('plaid.Client', () => {
       });
 
       it('searches with options include_optional_metadata', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null, {
-          include_optional_metadata: true
-        },
-        (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.institutions).to.be.an(Array);
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
+          testConstants.INSTITUTION_COUNTRY_CODES, {
+            include_optional_metadata: true
+          },
+          (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+            expect(successResponse.institutions).to.be.an(Array);
 
-          cb();
-        });
+            cb();
+          });
       });
     });
 
@@ -1528,7 +1495,8 @@ describe('plaid.Client', () => {
 
     describe('success path', () => {
       it('normal', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], {})
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'],
+          testConstants.INSTITUTION_COUNTRY_CODES, {})
           .then(successResponse => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
@@ -1541,7 +1509,8 @@ describe('plaid.Client', () => {
       });
 
       it('normal (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'])
+        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'],
+          testConstants.INSTITUTION_COUNTRY_CODES)
           .then(successResponse => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);

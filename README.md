@@ -33,7 +33,7 @@ const plaidClient = new plaid.Client({
   secret: process.env.PLAID_SECRET,
   env: plaid.environments.sandbox,
   options: {
-    version: '2019-05-29', // '2019-05-29' | '2018-05-22' | '2017-03-08'
+    version: '2020-09-14', // '2020-09-14' | '2019-05-29' | '2018-05-22' | '2017-03-08'
   },
 });
 ```
@@ -73,7 +73,7 @@ const patientClient = new plaid.Client({
   env: plaid_env,
   options: {
     timeout: 30 * 60 * 1000, // 30 minutes
-    version: '2019-05-29',
+    version: '2020-09-14',
   }
 });
 ```
@@ -92,9 +92,6 @@ const plaidClient = new plaid.Client({
   clientID: client_id,
   secret: secret,
   env: plaid_env,
-  options: {
-    version: '2019-05-29',
-  },
 });
 
 // createPublicToken(String, Function)
@@ -155,12 +152,12 @@ plaidClient.refreshTransactions(access_token);
 // createStripeToken(String, String, Function)
 plaidClient.createStripeToken(access_token, account_id, cb);
 
-// getInstitutions(Number, Number, Object?, Function);
-plaidClient.getInstitutions(count, offset, options, cb);
-// getInstitutionsById(String, Object?, Function)
-plaidClient.getInstitutionById(institution_id, options, cb);
-// searchInstitutionsByName(String, [String], Object?, Function)
-plaidClient.searchInstitutionsByName(query, products, options, cb);
+// getInstitutions(Number, Number, [String], Object?, Function);
+plaidClient.getInstitutions(count, offset, country_codes, options, cb);
+// getInstitutionsById(String, [String], Object?, Function)
+plaidClient.getInstitutionById(institution_id, country_codes, options, cb);
+// searchInstitutionsByName(String, [String], [String], Object?, Function)
+plaidClient.searchInstitutionsByName(query, products, country_codes, options, cb);
 
 // getCategories(Function)
 plaidClient.getCategories(cb);

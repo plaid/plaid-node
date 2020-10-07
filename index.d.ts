@@ -591,10 +591,6 @@ declare module 'plaid' {
     status: ItemStatus;
   }
 
-  interface CreatePublicTokenResponse extends BaseResponse {
-    public_token: string;
-  }
-
   interface CreateProcessorTokenResponse extends BaseResponse {
     processor_token: string;
   }
@@ -607,12 +603,7 @@ declare module 'plaid' {
     new_access_token: string;
   }
 
-  interface ItemDeleteResponse extends BaseResponse {
-    deleted: true;
-  }
-
   interface ItemRemoveResponse extends BaseResponse {
-    removed: true;
   }
 
   interface ResetLoginResponse extends BaseResponse {
@@ -631,11 +622,6 @@ declare module 'plaid' {
 
   interface CategoriesResponse extends BaseResponse {
     categories: Array<Category>;
-  }
-
-  interface CreateItemAddTokenResponse extends BaseResponse {
-    add_token: string;
-    expiration: Iso8601DateTimeString;
   }
 
   interface CreateLinkTokenResponse extends BaseResponse {
@@ -731,19 +717,12 @@ declare module 'plaid' {
     status: string;
   }
 
-  interface PaymentTokenCreateResponse extends BaseResponse {
-    payment_token: string;
-    payment_token_expiration_time: Iso8601DateTimeString;
-  }
-
   interface PaymentGetResponse extends BaseResponse {
     payment_id: string;
-    payment_token: string;
     reference: string;
     amount: PaymentAmount;
     status: string;
     last_status_update: Iso8601DateTimeString;
-    payment_token_expiration_time: Iso8601DateTimeString | null;
     recipient_id: string;
   }
 
@@ -794,7 +773,7 @@ declare module 'plaid' {
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
   interface ClientOptions {
-    version?: '2019-05-29' | '2018-05-22' | '2017-03-08';
+    version?: '2020-09-14' | '2019-05-29' | '2018-05-22' | '2017-03-08';
     clientApp?: string;
     timeout?: number;
   }
@@ -826,26 +805,11 @@ declare module 'plaid' {
     legal_name?: IdentityField;
   }
 
-  type CreateItemAddTokenOptions =
-    | {
-        // user_identity is deprecated: use `user`
-        user_identity: User;
-      }
-    | {
-        user: User;
-      };
-
   class Client {
     constructor(configs: ClientConfigs);
 
     exchangePublicToken(publicToken: string): Promise<TokenResponse>;
     exchangePublicToken(publicToken: string, cb: Callback<TokenResponse>): void;
-
-    createItemAddToken(): Promise<CreateItemAddTokenResponse>;
-    createItemAddToken(
-      options: CreateItemAddTokenOptions,
-      cb: Callback<CreateItemAddTokenResponse>,
-    ): void;
 
     createLinkToken(
       options: CreateLinkTokenOptions,
@@ -862,8 +826,6 @@ declare module 'plaid' {
       link_token: string,
       cb: Callback<GetLinkTokenResponse>,
     ): void;
-
-    createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
     createProcessorToken(
       accessToken: string,
@@ -888,8 +850,6 @@ declare module 'plaid' {
     ): Promise<CreateStripeTokenResponse>;
 
     invalidateAccessToken: AccessTokenFn<RotateAccessTokenResponse>;
-
-    deleteItem: AccessTokenFn<ItemDeleteResponse>;
 
     removeItem: AccessTokenFn<ItemRemoveResponse>;
 
@@ -1123,13 +1083,6 @@ declare module 'plaid' {
       amount: PaymentAmount,
     ): Promise<PaymentCreateResponse>;
 
-    createPaymentToken(
-      payment_id: string,
-      cb: Callback<PaymentTokenCreateResponse>,
-    ): void;
-
-    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
-
     getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 
     getPayment(payment_id: string): Promise<PaymentGetResponse>;
@@ -1231,29 +1184,35 @@ declare module 'plaid' {
     getInstitutions(
       count: number,
       offset: number,
+      country_codes: Array<string>,
       options?: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     getInstitutions(
       count: number,
       offset: number,
+      country_codes: Array<string>,
       options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
 
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options?: GetInstitutionByIdOptions,
     ): Promise<GetInstitutionByIdResponse<Institution>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_optional_metadata: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithInstitutionData>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_status: true },
     ): Promise<GetInstitutionByIdResponse<InstitutionWithStatus>>;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: { include_optional_metadata: true; include_status: true },
     ): Promise<
       GetInstitutionByIdResponse<
@@ -1262,10 +1221,12 @@ declare module 'plaid' {
     >;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
     getInstitutionById(
       institutionId: string,
+      country_codes: Array<string>,
       options: GetInstitutionByIdOptions,
       cb: Callback<GetInstitutionByIdResponse<Institution>>,
     ): void;
@@ -1273,11 +1234,13 @@ declare module 'plaid' {
     searchInstitutionsByName(
       query: string,
       products: Array<string>,
+      country_codes: Array<string>,
       options: Object,
     ): Promise<GetInstitutionsResponse<Institution>>;
     searchInstitutionsByName(
       query: string,
       products: Array<string>,
+      country_codes: Array<string>,
       options: Object,
       cb: Callback<GetInstitutionsResponse<Institution>>,
     ): void;
