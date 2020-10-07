@@ -1,3 +1,18 @@
+## 8.0.0
+
+BREAKING CHANGES: 
+
+- The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
+- the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/add_token/create endpoint` has been disabled in favor of the /link/token/create
+- The `/payment_initiation/payment/token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/remove` endpoint will no longer return a `removed` boolean.
+- The `/item/delete` typescript type has been removed.
+- The `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search` now require
+    `country_codes` to be passed in.
+
 ## 7.1.0
 
 - Add support for Link Token get endpoint ([#354](https://github.com/plaid/plaid-node/pull/354))
