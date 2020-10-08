@@ -372,4 +372,4 @@ Click [here][7]!
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
 [13]: https://github.com/plaid/plaid-node-legacy
-[api-upgrades]: https://plaid.com/docs/api-upgrades
+[api-upgrades]: https://plaid.com/docs/api/versioning/
