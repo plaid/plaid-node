@@ -4,3 +4,5 @@
 .env
 .vs/
 .idea/
+/index.ts
+/test.js
