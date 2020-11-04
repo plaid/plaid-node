@@ -1,3 +1,6 @@
+## 9.0.0-beta1
+Very minor bump that fixes a regression in sending the client library version -> Plaid API.
+
 ## 9.0.0-beta
 This version represents a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the OpenAPI `typescript-node` generator.
 

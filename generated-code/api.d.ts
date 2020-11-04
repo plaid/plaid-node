@@ -163,8 +163,7 @@ export declare enum AccountAssetsVerificationStatusEnum {
     PendingManualVerification = "pending_manual_verification",
     ManuallyVerified = "manually_verified",
     VerificationExpired = "verification_expired",
-    VerificationFailed = "verification_failed",
-    Null = "null"
+    VerificationFailed = "verification_failed"
 }
 /**
  *
@@ -298,8 +297,7 @@ export declare enum AccountBaseVerificationStatusEnum {
     PendingManualVerification = "pending_manual_verification",
     ManuallyVerified = "manually_verified",
     VerificationExpired = "verification_expired",
-    VerificationFailed = "verification_failed",
-    Null = "null"
+    VerificationFailed = "verification_failed"
 }
 /**
  *
@@ -371,8 +369,7 @@ export declare enum AccountIdentityVerificationStatusEnum {
     PendingManualVerification = "pending_manual_verification",
     ManuallyVerified = "manually_verified",
     VerificationExpired = "verification_expired",
-    VerificationFailed = "verification_failed",
-    Null = "null"
+    VerificationFailed = "verification_failed"
 }
 /**
  *
@@ -8124,8 +8121,7 @@ export declare enum TransactionCode {
     Interest = "interest",
     Purchase = "purchase",
     StandingOrder = "standing order",
-    Transfer = "transfer",
-    Null = "null"
+    Transfer = "transfer"
 }
 /**
  * Data to populate as test transaction data. If not specified, random transactions will be generated instead.
