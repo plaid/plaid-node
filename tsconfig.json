@@ -15,7 +15,8 @@
     "preserveConstEnums": true,
     "lib": ["es6", "dom"],
     "alwaysStrict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "resolveJsonModule": true
   },
   "include": [
     "index.ts"
