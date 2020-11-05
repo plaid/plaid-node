@@ -1,3 +1,6 @@
+## 9.0.0-beta.1
+Fix a regression in sending the `User-Agent` header.
+
 ## 9.0.0-beta
 This version represents a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the OpenAPI `typescript-node` generator.
 
