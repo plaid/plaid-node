@@ -1103,6 +1103,15 @@ describe('plaid.Client', () => {
           });
       };
 
+      const createPaymentToken = (payment_id, cb) => {
+        pCl.createPaymentToken(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+        });
+      };
+
       const createLinkToken = (payment_id, cb) => {
         pCl.createLinkToken({
           user: {
@@ -1169,6 +1178,18 @@ describe('plaid.Client', () => {
           listPaymentRecipients,
           createPayment,
           createLinkToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+
+      it('successfully goes through the entire flow with bacs with legacy payment_token', cb => {
+        async.waterfall([
+          createPaymentRecipientWithBacs,
+          getPaymentRecipientWithBacs,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
           getPayment,
           listPayments,
         ], cb);
