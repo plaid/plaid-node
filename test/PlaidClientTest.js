@@ -229,7 +229,7 @@ describe('plaid.Client', () => {
 
         it('create and exchange a public token', cb => {
           async.waterfall([
-            cb => {
+            cb => 
               pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
                 testConstants.PRODUCTS, {},
                 (err, successResponse) => {
@@ -237,17 +237,24 @@ describe('plaid.Client', () => {
                   expect(successResponse.status_code).to.be(200);
                   expect(successResponse.public_token).to.be.ok();
                   cb(null, successResponse.public_token);
-                });
-            },
-            (publicToken, cb) => {
+                })
+            ,
+            (publicToken, cb) =>
               pCl.exchangePublicToken(publicToken, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.access_token).to.be.ok();
-
-                cb();
-              });
-            }
+                cb(null, successResponse.access_token);
+              })
+            ,
+            (access_token, cb) =>
+              pCl.createPublicToken(access_token, (err, successResponse) => {
+                expect(err).to.be(null);
+                expect(successResponse.status_code).to.be(200);
+                expect(successResponse.public_token).to.be.ok();
+                cb(null, successResponse.public_token);
+              })
+            ,
           ], cb);
         });
 
@@ -1109,6 +1116,7 @@ describe('plaid.Client', () => {
           expect(response).to.be.ok();
           expect(response.payment_token).to.be.ok();
           expect(response.payment_token_expiration_time).to.be.ok();
+          cb(null, payment_id);
         });
       };
 
