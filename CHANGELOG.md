@@ -1,3 +1,10 @@
+## 8.1.0
+- The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
+    have your public_key enabled and are not yet migrated to link_tokens. It is marked deprecated.
+- The legacy `/payment_initiation/payment/token/create` endpoint is added back. This endpoint should
+    only be used if you have your public_key enabled and are not yet migrated to link_tokens. It is
+    marked deprecated.
+
 ## 8.0.0
 
 BREAKING CHANGES: 
