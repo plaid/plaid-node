@@ -590,9 +590,9 @@ declare module 'plaid' {
     item: Item;
     status: ItemStatus;
   }
-  
-  interface CreatePublicTokenResponse extends BaseResponse {	
-    public_token: string;	
+
+  interface CreatePublicTokenResponse extends BaseResponse {
+    public_token: string;
   }
 
   interface CreateProcessorTokenResponse extends BaseResponse {
@@ -632,7 +632,7 @@ declare module 'plaid' {
     link_token: string;
     expiration: Iso8601DateTimeString;
   }
-  
+
   interface LinkTokenMetadata {
     initial_products?: Array<string>;
     webhook?: string;
@@ -729,10 +729,10 @@ declare module 'plaid' {
     last_status_update: Iso8601DateTimeString;
     recipient_id: string;
   }
-  
-  interface PaymentTokenCreateResponse extends BaseResponse {	
-    payment_token: string;	
-    payment_token_expiration_time: Iso8601DateTimeString;	
+
+  interface PaymentTokenCreateResponse extends BaseResponse {
+    payment_token: string;
+    payment_token_expiration_time: Iso8601DateTimeString;
   }
 
   interface DepositSwitchGetResponse extends BaseResponse {
@@ -827,7 +827,7 @@ declare module 'plaid' {
       options: CreateLinkTokenOptions,
       cb: Callback<CreateLinkTokenResponse>,
     ): void;
-    
+
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
     getLinkToken(
@@ -1093,11 +1093,11 @@ declare module 'plaid' {
       reference: string,
       amount: PaymentAmount,
     ): Promise<PaymentCreateResponse>;
-    
-    createPaymentToken(	
-      payment_id: string,	
-      cb: Callback<PaymentTokenCreateResponse>,	
-    ): void;	
+
+    createPaymentToken(
+      payment_id: string,
+      cb: Callback<PaymentTokenCreateResponse>,
+    ): void;
 
     createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
 
