@@ -1,3 +1,17 @@
+## 9.0.0-beta.2
+Function renames:
+`assetReportPDFGet` -> `assetReportPdfGet`
+`institutionsGetByID` -> `institutionsGetById`
+
+Model renames:
+`InstitutionSearchResponse` -> ``InstitutionsSearchResponse`
+`PaymentIntiationPaymentGetResponse` -> `PaymentInitiationPaymentGetResponse`
+`PaymentInitiationPaymentCreateRequestSchedule` -> `ExternalPaymentSchedule`
+`PaymentInitiationRecipientCreateRequestBacs` -> `RecipientBACS`
+
+Model fixes:
+`/processor/auth/get` fix nested type return object.
+
 ## 9.0.0-beta.1
 Fix a regression in sending the `User-Agent` header.
 
@@ -25,6 +39,13 @@ Other Deprecations:
 - `options.timeout`
 - `dotenv` usage removed
 - `sinon` removed from tests
+
+## 8.1.0
+- The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
+    have your public_key enabled and are not yet migrated to link_tokens. It is marked deprecated.
+- The legacy `/payment_initiation/payment/token/create` endpoint is added back. This endpoint should
+    only be used if you have your public_key enabled and are not yet migrated to link_tokens. It is
+    marked deprecated.
 
 ## 8.0.0
 
