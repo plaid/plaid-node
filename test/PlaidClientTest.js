@@ -229,7 +229,7 @@ describe('plaid.Client', () => {
 
         it('create and exchange a public token', cb => {
           async.waterfall([
-            cb => 
+            cb =>
               pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
                 testConstants.PRODUCTS, {},
                 (err, successResponse) => {
@@ -237,24 +237,21 @@ describe('plaid.Client', () => {
                   expect(successResponse.status_code).to.be(200);
                   expect(successResponse.public_token).to.be.ok();
                   cb(null, successResponse.public_token);
-                })
-            ,
+                }),
             (publicToken, cb) =>
               pCl.exchangePublicToken(publicToken, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.access_token).to.be.ok();
                 cb(null, successResponse.access_token);
-              })
-            ,
+              }),
             (access_token, cb) =>
               pCl.createPublicToken(access_token, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.public_token).to.be.ok();
                 cb(null, successResponse.public_token);
-              })
-            ,
+              }),
           ], cb);
         });
 
@@ -1191,7 +1188,8 @@ describe('plaid.Client', () => {
         ], cb);
       });
 
-      it('successfully goes through the entire flow with bacs with legacy payment_token', cb => {
+      it(`successfully goes through the entire
+      flow with bacs with legacy payment_token`, cb => {
         async.waterfall([
           createPaymentRecipientWithBacs,
           getPaymentRecipientWithBacs,
