@@ -170,7 +170,7 @@ plaidClient.sandboxItemSetVerificationStatus(access_token, account_id, verificat
 plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
 
-**All parameters are required if using callbacks. If the options parameter is omitted, the function call will fail. You can pass options as {} or null to omit them.**
+**All parameters are required if using callbacks. If the options parameter is omitted, the function call will fail. You can pass options as `{}` or `null` to omit them.**
 
 ## Callbacks
 
