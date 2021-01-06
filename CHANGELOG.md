@@ -1,42 +1,26 @@
-## 9.0.0-beta.1
-Fix a regression in sending the `User-Agent` header.
+## 8.1.2
+- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)   
 
-## 9.0.0-beta
-This version represents a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the OpenAPI `typescript-node` generator.
-
-As part of this transition, we have created a wrapper around existing APIs to ease the burden of migrating to the new API version and eliminate risk. The completely unwrapped version will be available next year as we have a few internal changes left to fully support it.
-
-The `OpenAPI` file will be actively maintained and published (coming soon - Q1 2021) whenever changes are made to any of our external HTTP API surfaces. `Typescript 4.0`, `Mocha 8.0` and  `Node 14` are now supported.
-
-- Adds support for a new product, Bank Transfers in beta.
-
-BREAKING CHANGES:
-
-- The version is pinned to the latest Plaid API release. If you are not ready to use `2020-09-14`, `7.1.0` will support all previous versions.
-- If you are using callbacks, you will not be able to omit the options property. Calling functions without `options` is no longer supported if a callback is provided as the last argument.
-- Accurate return types are now supported through `Typescript` and the types are now more specific now across the board.
-
-Other Deprecations:
-
-- `getAllTransactions`
-- `helpers.processUserFields`
-- `status_code` removed from all success responses. These were always `200` on success so it was redundant. Will still be available on errors.
-- `options.version`
-- `options.timeout`
-- `dotenv` usage removed
-- `sinon` removed from tests
+## 8.1.0
+- The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
+    have your public_key enabled and are not yet migrated to link_tokens. It is marked deprecated.
+- The legacy `/payment_initiation/payment/token/create` endpoint is added back. This endpoint should
+    only be used if you have your public_key enabled and are not yet migrated to link_tokens. It is
+    marked deprecated.
 
 ## 8.0.0
 
-BREAKING CHANGES:
+BREAKING CHANGES: 
 
 - The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
-- `/item/public_token/create` has been disabled in favor of `/link/token/create`
-- `/item/add_token/create` has been disabled in favor of `/link/token/create`
-- `/payment_initiation/payment/token/create` has been disabled in favor of `/link/token/create`
-- `/item/remove` will no longer return a `removed` boolean.
-- `/item/delete` typescript type has been removed.
-- `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search` now require
+- the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/add_token/create endpoint` has been disabled in favor of the /link/token/create
+- The `/payment_initiation/payment/token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/remove` endpoint will no longer return a `removed` boolean.
+- The `/item/delete` typescript type has been removed.
+- The `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search` now require
     `country_codes` to be passed in.
 
 ## 7.1.0

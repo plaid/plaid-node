@@ -25,13 +25,16 @@ $ npm install plaid
 
 ### Versioning
 
-You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` and beginning with `9.0.0` do not support versioning. Moving forward we will pin the API versions to the tagged version.
+You can specify the Plaid API version you wish to use when initializing `plaid-node`. Releases prior to `2.6.x` do not support versioning.
 
 ```javascript
 const plaidClient = new plaid.Client({
   clientID: process.env.PLAID_CLIENT_ID,
   secret: process.env.PLAID_SECRET,
   env: plaid.environments.sandbox,
+  options: {
+    version: '2020-09-14', // '2020-09-14' | '2019-05-29' | '2018-05-22' | '2017-03-08'
+  },
 });
 ```
 
@@ -61,11 +64,17 @@ The `plaid_env` parameter dictates which Plaid API environment you will access. 
 - `plaid.environments.development` - use for integration development and testing, creates `Item`s on https://development.plaid.com
 - `plaid.environments.sandbox` - quickly build out your integration with stateful test data, creates `Item`s on https://sandbox.plaid.com
 
+The `options` field is optional and allows for clients to override the default options used to make requests. e.g.
+
 ```javascript
 const patientClient = new plaid.Client({
   clientID: client_id,
   secret: secret,
   env: plaid_env,
+  options: {
+    timeout: 30 * 60 * 1000, // 30 minutes
+    version: '2020-09-14',
+  }
 });
 ```
 
@@ -82,9 +91,11 @@ const plaid = require('plaid');
 const plaidClient = new plaid.Client({
   clientID: client_id,
   secret: secret,
-  env: plaid_env
+  env: plaid_env,
 });
 
+// createPublicToken(String, Function)
+plaidClient.createPublicToken(access_token, cb);
 // exchangePublicToken(String, Function)
 plaidClient.exchangePublicToken(public_token, cb);
 // createProcessorToken(String, String, String, Function)
@@ -143,10 +154,8 @@ plaidClient.createStripeToken(access_token, account_id, cb);
 
 // getInstitutions(Number, Number, [String], Object?, Function);
 plaidClient.getInstitutions(count, offset, country_codes, options, cb);
-
 // getInstitutionsById(String, [String], Object?, Function)
 plaidClient.getInstitutionById(institution_id, country_codes, options, cb);
-
 // searchInstitutionsByName(String, [String], [String], Object?, Function)
 plaidClient.searchInstitutionsByName(query, products, country_codes, options, cb);
 
@@ -159,18 +168,16 @@ plaidClient.getWebhookVerificationKey(key_id, cb);
 // resetLogin(String, Function)
 // Sandbox-only endpoint to trigger an `ITEM_LOGIN_REQUIRED` error
 plaidClient.resetLogin(access_token, cb);
-
 // Sandbox-only endpoint to trigger a webhook for an Item
 plaidClient.sandboxItemFireWebhook(access_token, webhook_code, cb);
-
 // Sandbox-only endpoint to set the verfication_status for an Item
 plaidClient.sandboxItemSetVerificationStatus(access_token, account_id, verification_status, cb);
-
 // Sandbox-only endpoint to create a `public_token`. Useful for writing integration tests without running Link.
 plaidClient.sandboxPublicTokenCreate(institution_id, initial_products, options, cb);
 ```
 
-**All parameters are required if using callbacks. If the options parameter is omitted, the function call will fail. You can pass options as {} or null to omit them.**
+**All parameters except `options` are required. If the options parameter is omitted, the last argument to the function
+will be interpreted as the callback.**
 
 ## Callbacks
 
@@ -186,7 +193,7 @@ function callback(err, response) {
 
 The `err` argument passed to either callback style can either be an instance of `Error`
 or a [Plaid API error][3] object.  An `Error` object
-is only passed back in the case of a HTTP connection error. The following code distinguishes
+is only passed back in the case of a HTTP connection error.  The following code distinguishes
 between a Plaid error and a standard Error instance:
 
 ```javascript
@@ -247,16 +254,6 @@ plaidClient.getAccounts(access_token, (err, res) => {
 });
 ```
 
-Download asset report pdf
-
-```javascript
-plaidClient.getAssetReportPdf(ASSET_TOKEN).then((data) => {
-  fs.writeFile(`plaid.pdf`, data, console.log);
-}).catch((err) => {
-  console.log(err);
-})
-```
-
 ## Promise Support
 
 Every method returns a promise, so you don't have to use the callbacks.
@@ -285,6 +282,9 @@ const plaidClient = new plaid.Client({
   clientID: process.env.PLAID_CLIENT_ID,
   secret: process.env.PLAID_SECRET,
   env: plaid.environments.sandbox,
+  options: {
+    version: '2018-05-22',
+  },
 });
 
 const app = express();
@@ -372,4 +372,4 @@ Click [here][7]!
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
 [13]: https://github.com/plaid/plaid-node-legacy
-[api-upgrades]: https://plaid.com/docs/api-upgrades
+[api-upgrades]: https://plaid.com/docs/api/versioning/

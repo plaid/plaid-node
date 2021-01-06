@@ -3,12 +3,15 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:12
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: make setup
+      - run:
+          name: Lint
+          command: make lint
       - run:
           name: Tests
           command: make test
