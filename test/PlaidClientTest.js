@@ -229,7 +229,7 @@ describe('plaid.Client', () => {
 
         it('create and exchange a public token', cb => {
           async.waterfall([
-            cb => {
+            cb =>
               pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
                 testConstants.PRODUCTS, {},
                 (err, successResponse) => {
@@ -237,17 +237,21 @@ describe('plaid.Client', () => {
                   expect(successResponse.status_code).to.be(200);
                   expect(successResponse.public_token).to.be.ok();
                   cb(null, successResponse.public_token);
-                });
-            },
-            (publicToken, cb) => {
+                }),
+            (publicToken, cb) =>
               pCl.exchangePublicToken(publicToken, (err, successResponse) => {
                 expect(err).to.be(null);
                 expect(successResponse.status_code).to.be(200);
                 expect(successResponse.access_token).to.be.ok();
-
-                cb();
-              });
-            }
+                cb(null, successResponse.access_token);
+              }),
+            (access_token, cb) =>
+              pCl.createPublicToken(access_token, (err, successResponse) => {
+                expect(err).to.be(null);
+                expect(successResponse.status_code).to.be(200);
+                expect(successResponse.public_token).to.be.ok();
+                cb(null, successResponse.public_token);
+              }),
           ], cb);
         });
 
@@ -1031,8 +1035,8 @@ describe('plaid.Client', () => {
           null,
           address,
           {
-            account: '12345678',
-            sort_code: '010203',
+            account: '26207729',
+            sort_code: '560029',
           },
           (err, response) => {
             expect(err).to.be(null);
@@ -1103,6 +1107,16 @@ describe('plaid.Client', () => {
           });
       };
 
+      const createPaymentToken = (payment_id, cb) => {
+        pCl.createPaymentToken(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.payment_token).to.be.ok();
+          expect(response.payment_token_expiration_time).to.be.ok();
+          cb(null, payment_id);
+        });
+      };
+
       const createLinkToken = (payment_id, cb) => {
         pCl.createLinkToken({
           user: {
@@ -1169,6 +1183,19 @@ describe('plaid.Client', () => {
           listPaymentRecipients,
           createPayment,
           createLinkToken,
+          getPayment,
+          listPayments,
+        ], cb);
+      });
+
+      it(`successfully goes through the entire
+      flow with bacs with legacy payment_token`, cb => {
+        async.waterfall([
+          createPaymentRecipientWithBacs,
+          getPaymentRecipientWithBacs,
+          listPaymentRecipients,
+          createPayment,
+          createPaymentToken,
           getPayment,
           listPayments,
         ], cb);

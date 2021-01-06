@@ -21,7 +21,7 @@ lint:
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch:
-	@$(XYZ) --increment $(@:release-%=%)
+	@$(XYZ) --increment $(@:release-%=%) --branch release-8.1.0
 
 
 .PHONY: setup

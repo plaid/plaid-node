@@ -591,6 +591,10 @@ declare module 'plaid' {
     status: ItemStatus;
   }
 
+  interface CreatePublicTokenResponse extends BaseResponse {
+    public_token: string;
+  }
+
   interface CreateProcessorTokenResponse extends BaseResponse {
     processor_token: string;
   }
@@ -726,6 +730,11 @@ declare module 'plaid' {
     recipient_id: string;
   }
 
+  interface PaymentTokenCreateResponse extends BaseResponse {
+    payment_token: string;
+    payment_token_expiration_time: Iso8601DateTimeString;
+  }
+
   interface DepositSwitchGetResponse extends BaseResponse {
     deposit_switch_id: string;
     target_item_id: string;
@@ -772,13 +781,12 @@ declare module 'plaid' {
 
   interface SandboxItemSetVerificationStatusResponse extends BaseResponse {}
 
-  interface ClientOptions {
+  interface ClientOptions extends AxiosRequestConfig {
     version?: '2020-09-14' | '2019-05-29' | '2018-05-22' | '2017-03-08';
     clientApp?: string;
-    timeout?: number;
   }
 
-  interface ClientConfigs extends AxiosRequestConfig {
+  interface ClientConfigs {
     clientID: string;
     secret: string;
     env: string;
@@ -818,6 +826,8 @@ declare module 'plaid' {
       options: CreateLinkTokenOptions,
       cb: Callback<CreateLinkTokenResponse>,
     ): void;
+
+    createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
     getLinkToken(
       link_token: string,
@@ -1082,6 +1092,13 @@ declare module 'plaid' {
       reference: string,
       amount: PaymentAmount,
     ): Promise<PaymentCreateResponse>;
+
+    createPaymentToken(
+      payment_id: string,
+      cb: Callback<PaymentTokenCreateResponse>,
+    ): void;
+
+    createPaymentToken(payment_id: string): Promise<PaymentTokenCreateResponse>;
 
     getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 
