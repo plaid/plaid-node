@@ -72,6 +72,7 @@ var AccountAssetsVerificationStatusEnum;
     AccountAssetsVerificationStatusEnum["ManuallyVerified"] = "manually_verified";
     AccountAssetsVerificationStatusEnum["VerificationExpired"] = "verification_expired";
     AccountAssetsVerificationStatusEnum["VerificationFailed"] = "verification_failed";
+    AccountAssetsVerificationStatusEnum["Null"] = "null";
 })(AccountAssetsVerificationStatusEnum = exports.AccountAssetsVerificationStatusEnum || (exports.AccountAssetsVerificationStatusEnum = {}));
 /**
     * @export
@@ -84,6 +85,7 @@ var AccountBaseVerificationStatusEnum;
     AccountBaseVerificationStatusEnum["ManuallyVerified"] = "manually_verified";
     AccountBaseVerificationStatusEnum["VerificationExpired"] = "verification_expired";
     AccountBaseVerificationStatusEnum["VerificationFailed"] = "verification_failed";
+    AccountBaseVerificationStatusEnum["Null"] = "null";
 })(AccountBaseVerificationStatusEnum = exports.AccountBaseVerificationStatusEnum || (exports.AccountBaseVerificationStatusEnum = {}));
 /**
     * @export
@@ -96,6 +98,7 @@ var AccountIdentityVerificationStatusEnum;
     AccountIdentityVerificationStatusEnum["ManuallyVerified"] = "manually_verified";
     AccountIdentityVerificationStatusEnum["VerificationExpired"] = "verification_expired";
     AccountIdentityVerificationStatusEnum["VerificationFailed"] = "verification_failed";
+    AccountIdentityVerificationStatusEnum["Null"] = "null";
 })(AccountIdentityVerificationStatusEnum = exports.AccountIdentityVerificationStatusEnum || (exports.AccountIdentityVerificationStatusEnum = {}));
 /**
  * See the [Account type schema](/docs/api/accounts/#account-type-schema) for a full listing of account types and corresponding subtypes.
@@ -542,6 +545,7 @@ var TransactionCode;
     TransactionCode["Purchase"] = "purchase";
     TransactionCode["StandingOrder"] = "standing order";
     TransactionCode["Transfer"] = "transfer";
+    TransactionCode["Null"] = "null";
 })(TransactionCode = exports.TransactionCode || (exports.TransactionCode = {}));
 /**
  * PlaidApi - axios parameter creator
