@@ -1,7 +1,4 @@
-## 9.0.0-beta.1
-Fix a regression in sending the `User-Agent` header.
-
-## 9.0.0-beta
+## 9.0.0-beta.3
 This version represents a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the OpenAPI `typescript-node` generator.
 
 As part of this transition, we have created a wrapper around existing APIs to ease the burden of migrating to the new API version and eliminate risk. The completely unwrapped version will be available next year as we have a few internal changes left to fully support it.
@@ -26,17 +23,29 @@ Other Deprecations:
 - `dotenv` usage removed
 - `sinon` removed from tests
 
+## 8.1.2
+- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)
+
+## 8.1.0
+- The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
+    have your public_key enabled and are not yet migrated to link_tokens. It is marked deprecated.
+- The legacy `/payment_initiation/payment/token/create` endpoint is added back. This endpoint should
+    only be used if you have your public_key enabled and are not yet migrated to link_tokens. It is
+    marked deprecated.
+
 ## 8.0.0
 
 BREAKING CHANGES:
 
 - The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
-- `/item/public_token/create` has been disabled in favor of `/link/token/create`
-- `/item/add_token/create` has been disabled in favor of `/link/token/create`
-- `/payment_initiation/payment/token/create` has been disabled in favor of `/link/token/create`
-- `/item/remove` will no longer return a `removed` boolean.
-- `/item/delete` typescript type has been removed.
-- `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search` now require
+- the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/add_token/create endpoint` has been disabled in favor of the /link/token/create
+- The `/payment_initiation/payment/token/create` endpoint has been disabled in favor of the /link/token/create
+    endpoint
+- The `/item/remove` endpoint will no longer return a `removed` boolean.
+- The `/item/delete` typescript type has been removed.
+- The `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search` now require
     `country_codes` to be passed in.
 
 ## 7.1.0
