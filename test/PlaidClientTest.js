@@ -2,17 +2,13 @@
 
 /* global before, beforeEach, describe, it */
 const async = require('async');
-const P = require('bluebird');
-const dotenv = require('dotenv');
 const expect = require('expect.js');
 const moment = require('moment');
 const R = require('ramda');
-const sinon = require('sinon');
 
 const plaid = require('../');
 const testConstants = require('./testConstants.js');
 
-dotenv.config();
 const { SECRET, CLIENT_ID } = process.env;
 
 describe('plaid.Client', () => {
@@ -20,9 +16,6 @@ describe('plaid.Client', () => {
     clientID: CLIENT_ID,
     secret: SECRET,
     env: plaid.environments.sandbox,
-    options: {
-      version: '2020-09-14',
-    },
   };
 
   let pCl;
@@ -34,22 +27,24 @@ describe('plaid.Client', () => {
     it('throws for invalid parameter', () => {
       expect(() => {
         plaid.Client('clientID');
-      }).to.throwException(e => {
+      }).to.throwException((e) => {
         expect(e).to.be.ok();
         expect(e.message).to.equal(
           'Unexpected parameter type. Refer to ' +
           'https://github.com/plaid/plaid-node ' +
-          'for how to create a Plaid client.'
+          'for how to create a Plaid client.',
         );
       });
     });
 
     it('throws for missing clientID', () => {
       expect(() => {
-        plaid.Client(R.merge(configs, {
-          clientID: null,
-        }));
-      }).to.throwException(e => {
+        plaid.Client(
+          R.merge(configs, {
+            clientID: null,
+          }),
+        );
+      }).to.throwException((e) => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "clientID"');
       });
@@ -57,10 +52,12 @@ describe('plaid.Client', () => {
 
     it('throws for missing secret', () => {
       expect(() => {
-        plaid.Client(R.merge(configs, {
-          secret: null,
-        }));
-      }).to.throwException(e => {
+        plaid.Client(
+          R.merge(configs, {
+            secret: null,
+          }),
+        );
+      }).to.throwException((e) => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Missing Plaid "secret"');
       });
@@ -68,10 +65,12 @@ describe('plaid.Client', () => {
 
     it('throws for invalid environment', () => {
       expect(() => {
-        plaid.Client(R.merge(configs, {
-          env: 'gingham',
-        }));
-      }).to.throwException(e => {
+        plaid.Client(
+          R.merge(configs, {
+            env: 'gingham',
+          }),
+        );
+      }).to.throwException((e) => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Invalid Plaid environment');
       });
@@ -80,7 +79,7 @@ describe('plaid.Client', () => {
     it('throws for too many arguments', () => {
       expect(() => {
         plaid.Client(configs, 'extra arg');
-      }).to.throwException(e => {
+      }).to.throwException((e) => {
         expect(e).to.be.ok();
         expect(e.message).to.equal('Too many arguments to constructor');
       });
@@ -88,248 +87,281 @@ describe('plaid.Client', () => {
 
     it('succeeds with all arguments', () => {
       expect(() => {
-        R.forEachObjIndexed(env => {
-          plaid.Client(R.merge(configs, {
-            env: env,
-          }));
+        R.forEachObjIndexed((env) => {
+          plaid.Client(
+            R.merge(configs, {
+              env: env,
+            }),
+          );
         }, plaid.environments);
       }).not.to.throwException();
     });
 
     it('succeeds without any options', () => {
       expect(() => {
-        R.forEachObjIndexed(env => {
-          plaid.Client(R.merge(configs, {
-            options: null,
-            env: env,
-          }));
+        R.forEachObjIndexed((env) => {
+          plaid.Client(
+            R.merge(configs, {
+              options: null,
+              env: env,
+            }),
+          );
         }, plaid.environments);
       }).not.to.throwException();
     });
   });
 
-  it('can create link tokens with required', cb => {
-    pCl.createLinkToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
+  it('can create link tokens with required', (cb) => {
+    pCl.createLinkToken(
+      {
+        user: {
+          client_user_id: new Date().getTime().toString(),
+        },
+        client_name: 'Plaid App',
+        products: ['auth', 'transactions'],
+        language: 'en',
+        country_codes: ['US'],
       },
-      client_name: 'Plaid App',
-      products: ['auth', 'transactions'],
-      language: 'en',
-      country_codes: ['US'],
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.link_token).to.match(/^link-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
+      (err, successResponse) => {
+        expect(err).to.be(null);
+        expect(successResponse.link_token).to.match(/^link-sandbox-/);
+        expect(successResponse.expiration).to.be.ok();
+        cb();
+      },
+    );
   });
 
-  it('can create link tokens with optional', cb => {
-    pCl.createLinkToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-        legal_name: 'John Doe',
-        phone_number: '+1 415 555 0123',
-        phone_number_verified_time: '2020-01-01T00:00:00Z',
-        email_address: 'example@plaid.com',
-        email_address_verified_time: '2020-01-01T00:00:00Z'
-      },
-      client_name: 'Plaid App',
-      products: ['auth', 'transactions'],
-      country_codes: ['GB'],
-      language: 'en',
-      webhook: 'https://sample-web-hook.com',
-      account_filters: {
-        depository: {
-          account_subtypes: ['checking', 'savings'],
+  it('can create link tokens with optional', (cb) => {
+    pCl.createLinkToken(
+      {
+        user: {
+          client_user_id: new Date().getTime().toString(),
+          legal_name: 'John Doe',
+          phone_number: '+1 415 555 0123',
+          phone_number_verified_time: '2020-01-01T00:00:00Z',
+          email_address: 'example@plaid.com',
+          email_address_verified_time: '2020-01-01T00:00:00Z',
+        },
+        client_name: 'Plaid App',
+        products: ['auth', 'transactions'],
+        country_codes: ['GB'],
+        language: 'en',
+        webhook: 'https://sample-web-hook.com',
+        account_filters: {
+          depository: {
+            account_subtypes: ['checking', 'savings'],
+          },
         },
       },
-    }, (err, successResponse) => {
-      expect(err).to.be(null);
-      expect(successResponse.link_token).to.match(/^link-sandbox-/);
-      expect(successResponse.expiration).to.be.ok();
-      cb();
-    });
+      (err, successResponse) => {
+        expect(err).to.be(null);
+        expect(successResponse.link_token).to.match(/^link-sandbox-/);
+        expect(successResponse.expiration).to.be.ok();
+        cb();
+      },
+    );
   });
 
-  it('can get link tokens', cb => {
-    pCl.createLinkToken({
-      user: {
-        client_user_id: (new Date()).getTime().toString(),
-        legal_name: 'John Doe',
-        phone_number: '+1 415 555 0123',
-        phone_number_verified_time: '2020-01-01T00:00:00Z',
-        email_address: 'example@plaid.com',
-        email_address_verified_time: '2020-01-01T00:00:00Z'
-      },
-      client_name: 'Plaid App',
-      products: ['auth', 'transactions'],
-      country_codes: ['GB'],
-      language: 'en',
-      webhook: 'https://sample-web-hook.com',
-      account_filters: {
-        depository: {
-          account_subtypes: ['checking', 'savings'],
+  it('can get link tokens', (cb) => {
+    pCl.createLinkToken(
+      {
+        user: {
+          client_user_id: new Date().getTime().toString(),
+          legal_name: 'John Doe',
+          phone_number: '+1 415 555 0123',
+          phone_number_verified_time: '2020-01-01T00:00:00Z',
+          email_address: 'example@plaid.com',
+          email_address_verified_time: '2020-01-01T00:00:00Z',
+        },
+        client_name: 'Plaid App',
+        products: ['auth', 'transactions'],
+        country_codes: ['GB'],
+        language: 'en',
+        webhook: 'https://sample-web-hook.com',
+        account_filters: {
+          depository: {
+            account_subtypes: ['checking', 'savings'],
+          },
         },
       },
-    }, (err, createTokenResponse) => {
-      expect(err).to.be(null);
-      expect(createTokenResponse.link_token).to.match(/^link-sandbox-/);
-      expect(createTokenResponse.expiration).to.be.ok();
-      pCl.getLinkToken(createTokenResponse.link_token,
-        (err, getTokenResponse) => {
-          expect(err).to.be(null);
-          expect(getTokenResponse.link_token)
-            .to.be(createTokenResponse.link_token);
-          expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
-          expect(getTokenResponse.metadata.initial_products).to
-            .eql(['auth', 'transactions']);
-          expect(getTokenResponse.metadata.country_codes).to.eql(['GB']);
-          expect(getTokenResponse.metadata.language).to.be('en');
-          expect(getTokenResponse.metadata.webhook).to
-            .be('https://sample-web-hook.com');
-          expect(getTokenResponse.metadata.account_filters).to.eql({
-            depository: {
-              account_subtypes: ['checking', 'savings']
-            }
+      (err, createTokenResponse) => {
+        expect(err).to.be(null);
+        expect(createTokenResponse.link_token).to.match(/^link-sandbox-/);
+        expect(createTokenResponse.expiration).to.be.ok();
+        pCl.getLinkToken(createTokenResponse.link_token,
+          (err, getTokenResponse) => {
+            expect(err).to.be(null);
+            expect(getTokenResponse.link_token)
+              .to.be(createTokenResponse.link_token);
+            expect(getTokenResponse.metadata.client_name).to.be('Plaid App');
+            expect(getTokenResponse.metadata.initial_products).to
+              .eql(['auth', 'transactions']);
+            expect(getTokenResponse.metadata.country_codes).to.eql(['GB']);
+            expect(getTokenResponse.metadata.language).to.be('en');
+            expect(getTokenResponse.metadata.webhook).to
+              .be('https://sample-web-hook.com');
+            expect(getTokenResponse.metadata.account_filters).to.eql({
+              depository: {
+                account_subtypes: ['checking', 'savings']
+              }
+            });
+            cb();
           });
-          cb();
-        });
-    });
+      },
+    );
   });
 
   describe('endpoints', () => {
-
     const now = moment().format('YYYY-MM-DD');
     let testAccessToken;
 
-    before(cb => {
-      async.waterfall([
-        cb => {
-          pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-            testConstants.PRODUCTS, {}, cb);
-        },
-        (successResponse, cb) => {
-          pCl.exchangePublicToken(successResponse.public_token,
-            (err, successResponse) => {
-              if (err != null) {
-                return cb(err);
-              }
-              testAccessToken = successResponse.access_token;
-              cb();
-            });
-        },
-      ], cb);
+    before((cb) => {
+      async.waterfall(
+        [
+          (cb) => {
+            pCl.sandboxPublicTokenCreate(
+              testConstants.INSTITUTION,
+              testConstants.PRODUCTS,
+              {},
+              cb,
+            );
+          },
+          (successResponse, cb) => {
+            pCl.exchangePublicToken(
+              successResponse.public_token,
+              (err, successResponse) => {
+                if (err != null) {
+                  return cb(err);
+                }
+                testAccessToken = successResponse.access_token;
+                cb();
+              },
+            );
+          },
+        ],
+        cb,
+      );
     });
 
     describe('item', () => {
-
       describe('itemManagement', () => {
-
-        it('create and exchange a public token', cb => {
-          async.waterfall([
-            cb =>
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-                testConstants.PRODUCTS, {},
-                (err, successResponse) => {
+        it('create and exchange a public token', (cb) => {
+          async.waterfall(
+            [
+              (cb) => {
+                pCl.sandboxPublicTokenCreate(
+                  testConstants.INSTITUTION,
+                  testConstants.PRODUCTS,
+                  {},
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    expect(successResponse.public_token).to.be.ok();
+                    cb(null, successResponse.public_token);
+                  },
+                );
+              },
+              (publicToken, cb) => {
+                pCl.exchangePublicToken(publicToken, (err, successResponse) => {
                   expect(err).to.be(null);
-                  expect(successResponse.status_code).to.be(200);
-                  expect(successResponse.public_token).to.be.ok();
-                  cb(null, successResponse.public_token);
-                }),
-            (publicToken, cb) =>
-              pCl.exchangePublicToken(publicToken, (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse.status_code).to.be(200);
-                expect(successResponse.access_token).to.be.ok();
-                cb(null, successResponse.access_token);
-              }),
-            (access_token, cb) =>
-              pCl.createPublicToken(access_token, (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse.status_code).to.be(200);
-                expect(successResponse.public_token).to.be.ok();
-                cb(null, successResponse.public_token);
-              }),
-          ], cb);
+                  expect(successResponse.access_token).to.be.ok();
+
+                  cb();
+                });
+              },
+            ],
+            cb,
+          );
         });
 
-        it('invalidate an access_token, then remove the item', cb => {
-          async.waterfall([
-            cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-                testConstants.PRODUCTS, {},
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  cb(null, successResponse);
-                });
-            },
-            (publicTokenResponse, cb) => {
-              pCl.exchangePublicToken(publicTokenResponse.public_token,
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  cb(null, successResponse);
-                });
-            },
-            (successResponse, cb) => {
-              pCl.invalidateAccessToken(successResponse.access_token,
-                (err, successResponse) => {
+        it('invalidate an access_token, then remove the item', (cb) => {
+          async.waterfall(
+            [
+              (cb) => {
+                pCl.sandboxPublicTokenCreate(
+                  testConstants.INSTITUTION,
+                  testConstants.PRODUCTS,
+                  {},
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    cb(null, successResponse);
+                  },
+                );
+              },
+              (publicTokenResponse, cb) => {
+                pCl.exchangePublicToken(
+                  publicTokenResponse.public_token,
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    cb(null, successResponse);
+                  },
+                );
+              },
+              (successResponse, cb) => {
+                pCl.invalidateAccessToken(
+                  successResponse.access_token,
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    expect(successResponse).to.be.ok();
+                    cb(null, successResponse.new_access_token);
+                  },
+                );
+              },
+              (newAccessToken, cb) => {
+                pCl.removeItem(newAccessToken, (err, successResponse) => {
                   expect(err).to.be(null);
                   expect(successResponse).to.be.ok();
-                  expect(successResponse.status_code).to.be(200);
-
-                  cb(null, successResponse.new_access_token);
+                  cb();
                 });
-            },
-            (newAccessToken, cb) => {
-              pCl.removeItem(newAccessToken, (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse).to.be.ok();
-
-                cb();
-              });
-            }
-          ], cb);
+              },
+            ],
+            cb,
+          );
         });
 
-        it('update webhook', cb => {
-          async.waterfall([
-            cb => {
-              pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-                testConstants.PRODUCTS, {},
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  cb(null, successResponse);
-                });
-            },
-            (publicTokenResponse, cb) => {
-              pCl.exchangePublicToken(publicTokenResponse.public_token,
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  cb(null, successResponse);
-                });
-            },
-            (successResponse, cb) => {
-              const accessToken = successResponse.access_token;
-              pCl.updateItemWebhook(accessToken,
-                'https://httpstat.us/200',
-                (err, successResponse) => {
-                  expect(err).to.be(null);
-                  expect(successResponse).to.be.ok();
-                  expect(successResponse.status_code).to.be(200);
-
-                  cb(null, accessToken);
-                });
-            }
-          ], cb);
+        it('update webhook', (cb) => {
+          async.waterfall(
+            [
+              (cb) => {
+                pCl.sandboxPublicTokenCreate(
+                  testConstants.INSTITUTION,
+                  testConstants.PRODUCTS,
+                  {},
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    cb(null, successResponse);
+                  },
+                );
+              },
+              (publicTokenResponse, cb) => {
+                pCl.exchangePublicToken(
+                  publicTokenResponse.public_token,
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    cb(null, successResponse);
+                  },
+                );
+              },
+              (successResponse, cb) => {
+                const accessToken = successResponse.access_token;
+                pCl.updateItemWebhook(
+                  accessToken,
+                  'https://httpstat.us/200',
+                  (err, successResponse) => {
+                    expect(err).to.be(null);
+                    expect(successResponse).to.be.ok();
+                    cb(null, accessToken);
+                  },
+                );
+              },
+            ],
+            cb,
+          );
         });
       });
     });
 
     describe('product access', () => {
-
-      it('gets item', cb => {
+      it('gets item', (cb) => {
         pCl.getItem(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -342,7 +374,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('imports item without option', cb => {
+      it('imports item without option', (cb) => {
         pCl.importItem(
           ['identity', 'auth'],
           {
@@ -355,11 +387,11 @@ describe('plaid.Client', () => {
             expect(successResponse).to.be.ok();
             expect(successResponse.access_token).to.be.ok();
             cb();
-          }
+          },
         );
       });
 
-      it('imports item with option', cb => {
+      it('imports item with option', (cb) => {
         pCl.importItem(
           ['identity', 'auth'],
           {
@@ -374,11 +406,11 @@ describe('plaid.Client', () => {
             expect(successResponse).to.be.ok();
             expect(successResponse.access_token).to.be.ok();
             cb();
-          }
+          },
         );
       });
 
-      it('accounts', cb => {
+      it('accounts', (cb) => {
         pCl.getAccounts(testAccessToken, {}, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -386,21 +418,10 @@ describe('plaid.Client', () => {
           expect(successResponse.accounts).to.be.ok();
 
           cb();
-        });
+        })
       });
 
-      it('accounts (w/o options arg)', cb => {
-        pCl.getAccounts(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.item).to.be.ok();
-          expect(successResponse.accounts).to.be.ok();
-
-          cb();
-        });
-      });
-
-      it('balance', cb => {
+      it('balance', (cb) => {
         pCl.getBalance(testAccessToken, {}, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -411,18 +432,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('balance (w/o options arg)', cb => {
-        pCl.getBalance(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.item).to.be.ok();
-          expect(successResponse.accounts).to.be.ok();
-
-          cb();
-        });
-      });
-
-      it('auth', cb => {
+      it('auth', (cb) => {
         pCl.getAuth(testAccessToken, {}, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -434,19 +444,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('auth (w/o options arg)', cb => {
-        pCl.getAuth(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.item).to.be.ok();
-          expect(successResponse.accounts).to.be.ok();
-          expect(successResponse.numbers).to.be.ok();
-
-          cb();
-        });
-      });
-
-      it('identity', cb => {
+      it('identity', (cb) => {
         pCl.getIdentity(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -468,18 +466,7 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('credit details', cb => {
-        pCl.getCreditDetails(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.item).to.be.ok();
-          expect(successResponse.credit_details).to.be.ok();
-
-          cb();
-        });
-      });
-
-      it('transactions refresh', cb => {
+      it('transactions refresh', (cb) => {
         pCl.refreshTransactions(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -488,8 +475,8 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('liabilities', cb => {
-        pCl.getLiabilities(testAccessToken, (err, successResponse) => {
+      it('liabilities', (cb) => {
+        pCl.getLiabilities(testAccessToken, {}, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
@@ -500,8 +487,8 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('holdings', cb => {
-        pCl.getHoldings(testAccessToken, (err, successResponse) => {
+      it('holdings', (cb) => {
+        pCl.getHoldings(testAccessToken, {}, (err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
           expect(successResponse.item).to.be.ok();
@@ -513,9 +500,12 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('investmentTransactions', cb => {
+      it('investmentTransactions', (cb) => {
         pCl.getInvestmentTransactions(
-          testAccessToken, '2019-01-01', '2019-06-10', {},
+          testAccessToken,
+          '2019-01-01',
+          '2019-06-10',
+          {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
@@ -525,297 +515,138 @@ describe('plaid.Client', () => {
             expect(successResponse.securities).to.be.ok();
 
             cb();
-          });
+          },
+        );
       });
 
       describe('transactions', () => {
         let accessToken;
 
-        var getTransactionsWithRetries = (accessToken, startDate, endDate,
-          count, offset, num_retries_remaining, cb) => {
+        var getTransactionsWithRetries = (
+          accessToken,
+          startDate,
+          endDate,
+          count,
+          offset,
+          num_retries_remaining,
+          cb,
+        ) => {
           if (num_retries_remaining <= 0) {
-            throw new
-            Error('Ran out of retries while polling for transactions');
+            throw new Error(
+              'Ran out of retries while polling for transactions',
+            );
           }
-          pCl.getTransactions(accessToken, startDate, endDate,
-            { count: count, offset: offset }, (err, response) => {
+          pCl.getTransactions(
+            accessToken,
+            startDate,
+            endDate,
+            { count: count, offset: offset },
+            (err, response) => {
               if (err) {
-                if (err.status_code === 400 &&
-                  err.error_code === 'PRODUCT_NOT_READY') {
+                if (
+                  err.status_code === 400 &&
+                  err.error_code === 'PRODUCT_NOT_READY'
+                ) {
                   setTimeout(() => {
                     getTransactionsWithRetries(
-                      accessToken, startDate, endDate, count,
-                      offset, num_retries_remaining - 1, cb
+                      accessToken,
+                      startDate,
+                      endDate,
+                      count,
+                      offset,
+                      num_retries_remaining - 1,
+                      cb,
                     );
                   }, 1000);
                 } else {
                   throw new Error(
-                    'Unexpected error while polling for transactions', err);
+                    'Unexpected error while polling for transactions',
+                    err,
+                  );
                 }
               } else {
                 cb(null, response);
               }
-            });
+            },
+          );
         };
 
-        var getAllTransactionsWithRetries = (accessToken, startDate, endDate,
-          num_retries_remaining, cb) => {
-          if (num_retries_remaining <= 0) {
-            throw new Error(
-              'Ran out of retries while polling for all transactions');
-          }
-          pCl.getAllTransactions(accessToken, startDate, endDate,
-            (err, response) => {
-              if (err) {
-                if (err.status_code === 400 &&
-                  err.error_code === 'PRODUCT_NOT_READY') {
-                  setTimeout(() => {
-                    getAllTransactionsWithRetries(
-                      accessToken, startDate, endDate,
-                      num_retries_remaining - 1, cb);
-                  }, 1000);
-                } else {
-                  throw new Error('Unexpected error while polling ' +
-                    'for all transactions', err);
-                }
-              } else {
-                cb(null, response);
-              }
-            });
-        };
-
-        beforeEach(done => {
+        beforeEach((done) => {
           pCl.sandboxPublicTokenCreate(
-            testConstants.INSTITUTION, testConstants.PRODUCTS, {
+            testConstants.INSTITUTION,
+            testConstants.PRODUCTS,
+            {
               transactions: { start_date: now, end_date: now },
-            }, (err, successResponse) => {
+            },
+            (err, successResponse) => {
               expect(err).to.be(null);
-              pCl.exchangePublicToken(successResponse.public_token,
+              pCl.exchangePublicToken(
+                successResponse.public_token,
                 (err, successResponse) => {
                   expect(err).to.be(null);
                   accessToken = successResponse.access_token;
                   done();
-                });
-            });
+                },
+              );
+            },
+          );
         });
 
-        it('normal flow', cb => {
-          getTransactionsWithRetries(accessToken, now, now, 100, 0, 10,
+        it('normal flow', (cb) => {
+          getTransactionsWithRetries(
+            accessToken,
+            now,
+            now,
+            100,
+            0,
+            10,
             (err, successResponse) => {
               expect(err).to.be(null);
               expect(successResponse).to.be.ok();
               expect(successResponse.transactions).to.be.an(Array);
 
               cb();
-            });
+            },
+          );
         });
 
-        it('all transactions', cb => {
-          getAllTransactionsWithRetries(accessToken, now, now, 10,
-            (err, transactions) => {
-              expect(err).to.be(null);
-              expect(transactions.accounts).to.not.be(null);
-              expect(transactions.item).to.not.be(null);
-              expect(transactions.total_transactions).to.not.be(null);
-              expect(transactions.transactions).to.be.an(Array);
-
-              cb();
-            });
-        });
-
-        it('all transactions (promise)', cb => {
-          P.promisify(getAllTransactionsWithRetries)
-          (accessToken, now, now, 5).then(
-            transactions => {
-              expect(transactions.accounts).to.not.be(null);
-              expect(transactions.item).to.not.be(null);
-              expect(transactions.total_transactions).to.not.be(null);
-              expect(transactions.transactions).to.be.an(Array);
-
-              cb();
-            }).catch(err => cb(err));
-        });
-
-        it('all transactions (error)', cb => {
-          pCl.getAllTransactions(accessToken, now, -1,
-            (err, transactions) => {
+        it('transactions (with 400)', (cb) => {
+          pCl.getTransactions(
+            'invalid token',
+            now,
+            now,
+            {},
+            (err, successResponse) => {
               expect(err).to.be.ok();
+              expect(successResponse).not.to.be.ok();
               expect(err.status_code).to.be(400);
               expect(err.request_id).to.be.ok();
-              expect(err.error_code).to.equal('INVALID_FIELD');
-              expect(transactions).to.not.be.ok();
+              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
 
               cb();
-            });
+            },
+          );
         });
 
-        it('all transactions (error) (promise)', cb => {
-          pCl.getAllTransactions(accessToken, now, -1).then(() => {
-            cb(new Error('unexpected code path for test'));
-          }).catch(err => {
+        it('transactions refresh', (cb) => {
+          pCl.refreshTransactions(accessToken, (err, successResponse) => {
+            expect(err).to.be(null);
+            expect(successResponse).to.be.ok();
+
+            cb();
+          });
+        });
+
+        it('transactions refresh (with 400)', (cb) => {
+          pCl.refreshTransactions('invalid token', (err, successResponse) => {
             expect(err).to.be.ok();
+            expect(successResponse).not.to.be.ok();
             expect(err.status_code).to.be(400);
             expect(err.request_id).to.be.ok();
-            expect(err.error_code).to.equal('INVALID_FIELD');
+            expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
 
             cb();
           });
-        });
-
-        it('all < 500 transactions with correct pagination', cb => {
-          sinon.stub(pCl, 'getTransactions').callsFake(
-            (access_token, start_date, end_date, options) => {
-              if (options.offset === 0) {
-                return Promise.resolve({
-                  transactions: R.range(0, 200),
-                  total_transactions: 200,
-                });
-              } else {
-                throw new Error('Invalid nonzero offset value');
-              }
-            });
-
-          pCl.getAllTransactions(accessToken, now, now,
-            (err, transactions) => {
-              expect(err).to.be(null);
-              expect(transactions.accounts).to.not.be(null);
-              expect(transactions.item).to.not.be(null);
-              expect(transactions.total_transactions).to.not.be(null);
-              expect(transactions.transactions).to.eql(R.range(0, 200));
-
-              pCl.getTransactions.restore();
-              cb();
-            });
-        });
-
-        it('all < 500 transactions with correct pagination (promise)', cb => {
-          sinon.stub(pCl, 'getTransactions').callsFake(
-            (access_token, start_date, end_date, options) => {
-              if (options.offset === 0) {
-                return Promise.resolve({
-                  transactions: R.range(0, 200),
-                  total_transactions: 200,
-                });
-              } else {
-                throw new Error('Invalid nonzero offset value');
-              }
-            });
-
-          pCl.getAllTransactions(accessToken, now, now).then(transactions => {
-            expect(transactions.accounts).to.not.be(null);
-            expect(transactions.item).to.not.be(null);
-            expect(transactions.total_transactions).to.not.be(null);
-            expect(transactions.transactions).to.eql(R.range(0, 200));
-
-            pCl.getTransactions.restore();
-            cb();
-          }).catch(err => {
-            pCl.getTransactions.restore();
-            cb(err);
-          });
-        });
-
-        it('all > 500 transactions with correct pagination', cb => {
-          sinon.stub(pCl, 'getTransactions').callsFake(
-            (access_token, start_date, end_date, options) => {
-              let transactionsResponse = {
-                total_transactions: 1200,
-              };
-              if (options.offset === 0) {
-                transactionsResponse.transactions = R.range(0, 500);
-              } else if (options.offset === 500) {
-                transactionsResponse.transactions = R.range(500, 1000);
-              } else if (options.offset === 1000) {
-                transactionsResponse.transactions = R.range(1000, 1200);
-              } else {
-                throw new Error('Invalid offset value');
-              }
-              return Promise.resolve(transactionsResponse);
-            });
-
-          pCl.getAllTransactions(accessToken, now, now,
-            (err, transactions) => {
-              expect(err).to.be(null);
-              expect(transactions.accounts).to.not.be(null);
-              expect(transactions.item).to.not.be(null);
-              expect(transactions.total_transactions).to.not.be(null);
-              expect(transactions.transactions).to.eql(R.range(0, 1200));
-
-              pCl.getTransactions.restore();
-              cb();
-            });
-        });
-
-        // Temporarily skipped
-        // See https://github.com/plaid/plaid-node/issues/186
-        it.skip('all > 500 transactions with correct pagination (promise)',
-          cb => {
-            sinon.stub(pCl, 'getTransactions').callsFake(
-              (access_token, start_date, end_date, options) => {
-                let transactionsResponse = {
-                  total_transactions: 1200,
-                };
-                if (options.offset === 0) {
-                  transactionsResponse.transactions = R.range(0, 500);
-                } else if (options.offset === 500) {
-                  transactionsResponse.transactions = R.range(500, 1000);
-                } else if (options.offset === 1000) {
-                  transactionsResponse.transactions = R.range(1000, 1200);
-                } else {
-                  throw new Error('Invalid offset value');
-                }
-                return Promise.resolve(transactionsResponse);
-              });
-
-            getAllTransactionsWithRetries(accessToken, now, now).then(
-              transactions => {
-                expect(transactions.accounts).to.not.be(null);
-                expect(transactions.item).to.not.be(null);
-                expect(transactions.total_transactions).to.not.be(null);
-                expect(transactions.transactions).to.eql(R.range(0, 1200));
-
-                pCl.getTransactions.restore();
-                cb();
-              }).catch(err => {
-              pCl.getTransactions.restore();
-              cb(err);
-            });
-          });
-
-        it('transactions (w/o options arg) (with 400)', cb => {
-          pCl.getTransactions('invalid token', now, now,
-            (err, successResponse) => {
-              expect(err).to.be.ok();
-              expect(successResponse).not.to.be.ok();
-              expect(err.status_code).to.be(400);
-              expect(err.request_id).to.be.ok();
-              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
-
-              cb();
-            });
-        });
-
-        it('transactions refresh', cb => {
-          pCl.refreshTransactions(accessToken,
-            (err, successResponse) => {
-              expect(err).to.be(null);
-              expect(successResponse).to.be.ok();
-
-              cb();
-            });
-        });
-
-        it('transactions refresh (with 400)', cb => {
-          pCl.refreshTransactions('invalid token',
-            (err, successResponse) => {
-              expect(err).to.be.ok();
-              expect(successResponse).not.to.be.ok();
-              expect(err.status_code).to.be(400);
-              expect(err.request_id).to.be.ok();
-              expect(err.error_code).to.be('INVALID_ACCESS_TOKEN');
-
-              cb();
-            });
         });
       });
     });
@@ -835,10 +666,12 @@ describe('plaid.Client', () => {
           email: 'hello@test.com',
         },
       };
-      var auditor_id = CLIENT_ID;
 
       var createAssetReport = (cb) => {
-        pCl.createAssetReport([testAccessToken], days_requested, options,
+        pCl.createAssetReport(
+          [testAccessToken],
+          days_requested,
+          options,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -847,44 +680,59 @@ describe('plaid.Client', () => {
             expect(response.asset_report_id).to.be.ok();
 
             cb(null, response.asset_report_token);
-          });
+          },
+        );
       };
 
-      var getAssetReportWithRetries =
-        (asset_report_token, num_retries_remaining, cb) => {
-          if (num_retries_remaining <= 0) {
-            throw new Error('Ran out of retries while polling for asset ' +
-              'report');
-          }
+      var getAssetReportWithRetries = (
+        asset_report_token,
+        num_retries_remaining,
+        cb,
+      ) => {
+        if (num_retries_remaining <= 0) {
+          throw new Error(
+            'Ran out of retries while polling for asset ' + 'report',
+          );
+        }
 
-          // By default, we don't want to retrieve the report as an
-          // Asset Report with Insights. For information about Asset
-          // Reports with Insights,
-          // see https://plaid.com/docs/#retrieve-json-report-request.
-          var include_insights = false;
+        // By default, we don't want to retrieve the report as an
+        // Asset Report with Insights. For information about Asset
+        // Reports with Insights,
+        // see https://plaid.com/docs/#retrieve-json-report-request.
+        var include_insights = false;
 
-          pCl.getAssetReport(asset_report_token, include_insights,
-            (err, response) => {
-              if (err) {
-                if (err.status_code === 400 &&
-                  err.error_code === 'PRODUCT_NOT_READY') {
-                  setTimeout(() => {
-                    getAssetReportWithRetries(
-                      asset_report_token, num_retries_remaining - 1, cb);
-                  }, 1000);
-                } else {
-                  throw new Error(
-                    'Unexpected error while polling for asset report', err);
-                }
+        pCl.getAssetReport(
+          asset_report_token,
+          include_insights,
+          (err, response) => {
+            if (err) {
+              if (
+                err.status_code === 400 &&
+                err.error_code === 'PRODUCT_NOT_READY'
+              ) {
+                setTimeout(() => {
+                  getAssetReportWithRetries(
+                    asset_report_token,
+                    num_retries_remaining - 1,
+                    cb,
+                  );
+                }, 1000);
               } else {
-                expect(err).to.be(null);
-                expect(response).to.be.ok();
-                expect(response.report).to.be.ok();
-
-                cb(null, asset_report_token);
+                throw new Error(
+                  'Unexpected error while polling for asset report',
+                  err,
+                );
               }
-            });
-        };
+            } else {
+              expect(err).to.be(null);
+              expect(response).to.be.ok();
+              expect(response.report).to.be.ok();
+
+              cb(null, asset_report_token);
+            }
+          },
+        );
+      };
 
       var getAssetReportWithInsights = (asset_report_token, cb) => {
         pCl.getAssetReport(asset_report_token, true, (err, response) => {
@@ -894,8 +742,8 @@ describe('plaid.Client', () => {
 
           for (const item of response.report.items) {
             for (const account of item.accounts) {
-              // The transactions of an Asset Report with Insights should have
-              // a non-null `name` (when available).
+              //The transactions of an Asset Report with Insights should have
+              //a non-null `name` (when available).
               for (const transaction of account.transactions) {
                 expect(transaction.name).to.be.ok();
               }
@@ -906,7 +754,6 @@ describe('plaid.Client', () => {
                   expect(addr.data.region).to.be.ok();
                   expect(addr.data.postal_code).to.be.ok();
                   expect(addr.data.street).to.be.ok();
-                  expect(addr.data.country).to.be.ok();
                 }
               }
             }
@@ -919,14 +766,16 @@ describe('plaid.Client', () => {
       var filterAssetReport = (asset_report_token, report, cb) => {
         var account_ids_to_exclude = [report.items[0].accounts[0].account_id];
 
-        pCl.filterAssetReport(asset_report_token,
+        pCl.filterAssetReport(
+          asset_report_token,
           account_ids_to_exclude,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
 
             cb(null, asset_report_token);
-          });
+          },
+        );
       };
 
       var refreshAssetReport = (asset_report_token, cb) => {
@@ -948,14 +797,14 @@ describe('plaid.Client', () => {
       };
 
       var createAuditCopy = (asset_report_token, cb) => {
-        pCl.createAuditCopy(asset_report_token, auditor_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.audit_copy_token).to.be.ok();
+        const auditor_id = CLIENT_ID;
+        pCl.createAuditCopy(asset_report_token, auditor_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.audit_copy_token).to.be.ok();
 
-            cb(null, asset_report_token, response.audit_copy_token);
-          });
+          cb(null, asset_report_token, response.audit_copy_token);
+        });
       };
 
       var getAuditCopy = (asset_report_token, audit_copy_token, cb) => {
@@ -987,21 +836,24 @@ describe('plaid.Client', () => {
         });
       };
 
-      it('successfully goes through the entire flow', cb => {
-        async.waterfall([
-          createAssetReport,
-          (asset_report_token, cb) => {
-            getAssetReportWithRetries(asset_report_token, 60, cb);
-          },
-          getAssetReportWithInsights,
-          filterAssetReport,
-          refreshAssetReport,
-          getAssetReportPdf,
-          createAuditCopy,
-          getAuditCopy,
-          removeAuditCopy,
-          removeAssetReport,
-        ], cb);
+      it('successfully goes through the entire flow', (cb) => {
+        async.waterfall(
+          [
+            createAssetReport,
+            (asset_report_token, cb) => {
+              getAssetReportWithRetries(asset_report_token, 60, cb);
+            },
+            getAssetReportWithInsights,
+            filterAssetReport,
+            refreshAssetReport,
+            getAssetReportPdf,
+            createAuditCopy,
+            getAuditCopy,
+            removeAuditCopy,
+            removeAssetReport,
+          ],
+          cb,
+        );
       });
     });
 
@@ -1024,9 +876,9 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.request_id).to.be.ok();
             expect(response.recipient_id).to.be.ok();
-
             cb(null, response.recipient_id);
-          });
+          },
+        );
       };
 
       const createPaymentRecipientWithBacs = (cb) => {
@@ -1045,37 +897,36 @@ describe('plaid.Client', () => {
             expect(response.recipient_id).to.be.ok();
 
             cb(null, response.recipient_id);
-          });
+          },
+        );
       };
 
       const getPaymentRecipientWithIban = (recipient_id, cb) => {
-        pCl.getPaymentRecipient(recipient_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.request_id).to.be.ok();
-            expect(response.recipient_id).to.be.ok();
-            expect(response.name).to.be.ok();
-            expect(response.iban).to.be.ok();
-            expect(response.address).to.be.ok();
+        pCl.getPaymentRecipient(recipient_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+          expect(response.name).to.be.ok();
+          expect(response.iban).to.be.ok();
+          expect(response.address).to.be.ok();
 
-            cb(null, recipient_id);
-          });
+          cb(null, recipient_id);
+        });
       };
 
       const getPaymentRecipientWithBacs = (recipient_id, cb) => {
-        pCl.getPaymentRecipient(recipient_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.request_id).to.be.ok();
-            expect(response.recipient_id).to.be.ok();
-            expect(response.name).to.be.ok();
-            expect(response.bacs).to.be.ok();
-            expect(response.address).to.be.ok();
+        pCl.getPaymentRecipient(recipient_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
+          expect(response.name).to.be.ok();
+          expect(response.bacs).to.be.ok();
+          expect(response.address).to.be.ok();
 
-            cb(null, recipient_id);
-          });
+          cb(null, recipient_id);
+        });
       };
 
       const listPaymentRecipients = (recipient_id, cb) => {
@@ -1092,10 +943,14 @@ describe('plaid.Client', () => {
       const createPayment = (recipient_id, cb) => {
         const amount = {
           currency: 'GBP',
-          value: 100.00,
+          value: 100.0,
         };
 
-        pCl.createPayment(recipient_id, 'TestPayment', amount,
+        pCl.createPayment(
+          recipient_id,
+          'TestPayment',
+          amount,
+          undefined,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
@@ -1104,54 +959,24 @@ describe('plaid.Client', () => {
             expect(response.status).to.be.ok();
 
             cb(null, response.payment_id);
-          });
-      };
-
-      const createPaymentToken = (payment_id, cb) => {
-        pCl.createPaymentToken(payment_id, (err, response) => {
-          expect(err).to.be(null);
-          expect(response).to.be.ok();
-          expect(response.payment_token).to.be.ok();
-          expect(response.payment_token_expiration_time).to.be.ok();
-          cb(null, payment_id);
-        });
-      };
-
-      const createLinkToken = (payment_id, cb) => {
-        pCl.createLinkToken({
-          user: {
-            client_user_id: (new Date()).toString(),
           },
-          products: ['transactions'],
-          country_codes: ['US'],
-          language: 'en',
-          client_name: 'Plaid Test',
-          payment_id,
-        }, (err, response) => {
-          expect(err).to.be(null);
-          expect(response).to.be.ok();
-          expect(response.link_token).to.be.ok();
-          expect(response.expiration).to.be.ok();
-
-          cb(null, payment_id);
-        });
+        );
       };
 
       const getPayment = (payment_id, cb) => {
-        pCl.getPayment(payment_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.request_id).to.be.ok();
-            expect(response.payment_id).to.be.ok();
-            expect(response.reference).to.be.ok();
-            expect(response.amount).to.be.ok();
-            expect(response.status).to.be.ok();
-            expect(response.last_status_update).to.be.ok();
-            expect(response.recipient_id).to.be.ok();
+        pCl.getPayment(payment_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.request_id).to.be.ok();
+          expect(response.payment_id).to.be.ok();
+          expect(response.reference).to.be.ok();
+          expect(response.amount).to.be.ok();
+          expect(response.status).to.be.ok();
+          expect(response.last_status_update).to.be.ok();
+          expect(response.recipient_id).to.be.ok();
 
-            cb(null);
-          });
+          cb(null);
+        });
       };
 
       const listPayments = (cb) => {
@@ -1164,64 +989,58 @@ describe('plaid.Client', () => {
         });
       };
 
-      it('successfully goes through the entire flow with iban', cb => {
-        async.waterfall([
-          createPaymentRecipientWithIban,
-          getPaymentRecipientWithIban,
-          listPaymentRecipients,
-          createPayment,
-          createLinkToken,
-          getPayment,
-          listPayments,
-        ], cb);
+      it('successfully goes through the entire flow with iban', (cb) => {
+        async.waterfall(
+          [
+            createPaymentRecipientWithIban,
+            getPaymentRecipientWithIban,
+            listPaymentRecipients,
+            createPayment,
+            getPayment,
+            listPayments,
+          ],
+          cb,
+        );
       });
 
-      it('successfully goes through the entire flow with bacs', cb => {
-        async.waterfall([
-          createPaymentRecipientWithBacs,
-          getPaymentRecipientWithBacs,
-          listPaymentRecipients,
-          createPayment,
-          createLinkToken,
-          getPayment,
-          listPayments,
-        ], cb);
-      });
-
-      it(`successfully goes through the entire
-      flow with bacs with legacy payment_token`, cb => {
-        async.waterfall([
-          createPaymentRecipientWithBacs,
-          getPaymentRecipientWithBacs,
-          listPaymentRecipients,
-          createPayment,
-          createPaymentToken,
-          getPayment,
-          listPayments,
-        ], cb);
+      it('successfully goes through the entire flow with bacs', (cb) => {
+        async.waterfall(
+          [
+            createPaymentRecipientWithBacs,
+            getPaymentRecipientWithBacs,
+            listPaymentRecipients,
+            createPayment,
+            getPayment,
+            listPayments,
+          ],
+          cb,
+        );
       });
     });
+
     describe('deposit switch', () => {
       const getAccessToken = (cb) => {
         pCl.importItem(
           ['identity', 'auth'],
-          { 'user_id': 'user_good', 'auth_token': 'pass_good' },
+          { user_id: 'user_good', auth_token: 'pass_good' },
+          {},
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
             expect(response.access_token).to.be.ok();
             cb(null, response.access_token);
-          });
+          },
+        );
       };
 
       const getAccountId = (access_token, cb) => {
-        pCl.getAccounts(access_token, (err, response) => {
+        pCl.getAccounts(access_token, {}, (err, response) => {
           expect(err).to.be(null);
           expect(response).to.be.ok();
           expect(response.accounts).to.be.ok();
           cb(null, {
             account_id: response.accounts.filter(
-              a => a.type === 'depository'
+              (a) => a.type === 'depository',
             )[0].account_id,
             access_token: access_token,
           });
@@ -1237,64 +1056,63 @@ describe('plaid.Client', () => {
             expect(response).to.be.ok();
             expect(response.deposit_switch_id).to.be.ok();
             cb(null, response.deposit_switch_id);
-          });
+          },
+        );
       };
 
       const getDepositSwitch = (deposit_switch_id, cb) => {
-        pCl.getDepositSwitch(
-          deposit_switch_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.deposit_switch_id).to.be.ok();
-            expect(response.target_item_id).to.be.ok();
-            expect(response.target_account_id).to.be.ok();
-            expect(response.date_created).to.be.ok();
-            expect(response.state).to.be.ok();
-            cb(null, deposit_switch_id);
-          }
-        );
+        pCl.getDepositSwitch(deposit_switch_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.deposit_switch_id).to.be.ok();
+          expect(response.target_item_id).to.be.ok();
+          expect(response.target_account_id).to.be.ok();
+          expect(response.date_created).to.be.ok();
+          expect(response.state).to.be.ok();
+          cb(null, deposit_switch_id);
+        });
       };
 
       const createDepositSwitchToken = (deposit_switch_id, cb) => {
-        pCl.createDepositSwitchToken(
-          deposit_switch_id,
-          (err, response) => {
-            expect(err).to.be(null);
-            expect(response).to.be.ok();
-            expect(response.deposit_switch_token).to.be.ok();
-            expect(response.deposit_switch_token_expiration_time).to.be.ok();
-            cb(null, response.deposit_switch_token);
-          }
-        );
+        pCl.createDepositSwitchToken(deposit_switch_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.deposit_switch_token).to.be.ok();
+          expect(response.deposit_switch_token_expiration_time).to.be.ok();
+          cb(null, response.deposit_switch_token);
+        });
       };
 
-      it('successfully goes through the entire deposit switch flow', cb => {
-        async.waterfall([
-          getAccessToken,
-          getAccountId,
-          createDepositSwitch,
-          getDepositSwitch,
-          createDepositSwitchToken,
-        ], cb);
+      it('successfully goes through the entire deposit switch flow', (cb) => {
+        async.waterfall(
+          [
+            getAccessToken,
+            getAccountId,
+            createDepositSwitch,
+            getDepositSwitch,
+            createDepositSwitchToken,
+          ],
+          cb,
+        );
       });
     });
 
     describe('institutions', () => {
+      it('get', (cb) => {
+        pCl.getInstitutions(10, 0, ['US'], {}, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          expect(successResponse.institutions).to.be.an(Array);
 
-      it('get', cb => {
-        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES,
-          (err, successResponse) => {
-            expect(err).to.be(null);
-            expect(successResponse).to.be.ok();
-            expect(successResponse.institutions).to.be.an(Array);
-
-            cb();
-          });
+          cb();
+        });
       });
 
-      it('get with include_optional_metadata', cb => {
-        pCl.getInstitutions(10, 0, testConstants.INSTITUTION_COUNTRY_CODES,
+      it('get with include_optional_metadata', (cb) => {
+        pCl.getInstitutions(
+          10,
+          0,
+          ['US'],
           { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
@@ -1302,36 +1120,29 @@ describe('plaid.Client', () => {
             expect(successResponse.institutions).to.be.an(Array);
 
             cb();
-          });
+          },
+        );
       });
 
-      it('getById', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION,
-          testConstants.INSTITUTION_COUNTRY_CODES, {},
+      it('getById', (cb) => {
+        pCl.getInstitutionById(
+          testConstants.INSTITUTION,
+          ['US'],
+          {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
             expect(successResponse.institution).to.be.ok();
 
             cb();
-          });
+          },
+        );
       });
 
-      it('getById (w/o options arg)', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION,
-          testConstants.INSTITUTION_COUNTRY_CODES,
-          (err, successResponse) => {
-            expect(err).to.be(null);
-            expect(successResponse).to.be.ok();
-            expect(successResponse.institution).to.be.ok();
-
-            cb();
-          });
-      });
-
-      it('getById with include_optional_metadata', cb => {
-        pCl.getInstitutionById(testConstants.INSTITUTION,
-          testConstants.INSTITUTION_COUNTRY_CODES,
+      it('getById with include_optional_metadata', (cb) => {
+        pCl.getInstitutionById(
+          testConstants.INSTITUTION,
+          ['US'],
           { include_optional_metadata: true },
           (err, successResponse) => {
             expect(err).to.be(null);
@@ -1339,37 +1150,33 @@ describe('plaid.Client', () => {
             expect(successResponse.institution).to.be.ok();
 
             cb();
-          });
+          },
+        );
       });
 
-      it('search', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
-          testConstants.INSTITUTION_COUNTRY_CODES, {},
+      it('search', (cb) => {
+        pCl.searchInstitutionsByName(
+          testConstants.INSTITUTION,
+          null,
+          ['US'],
+          {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
 
             cb();
-          });
+          },
+        );
       });
 
-      it('search (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
-          testConstants.INSTITUTION_COUNTRY_CODES,
-          (err, successResponse) => {
-            expect(err).to.be(null);
-            expect(successResponse).to.be.ok();
-            expect(successResponse.institutions).to.be.an(Array);
-
-            cb();
-          });
-      });
-
-      it('searches with options include_optional_metadata', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, null,
-          testConstants.INSTITUTION_COUNTRY_CODES, {
-            include_optional_metadata: true
+      it('searches with options include_optional_metadata', (cb) => {
+        pCl.searchInstitutionsByName(
+          testConstants.INSTITUTION,
+          null,
+          ['US'],
+          {
+            include_optional_metadata: true,
           },
           (err, successResponse) => {
             expect(err).to.be(null);
@@ -1377,12 +1184,13 @@ describe('plaid.Client', () => {
             expect(successResponse.institutions).to.be.an(Array);
 
             cb();
-          });
+          },
+        );
       });
     });
 
     describe('categories', () => {
-      it('get', cb => {
+      it('get', (cb) => {
         pCl.getCategories((err, successResponse) => {
           expect(err).to.be(null);
           expect(successResponse).to.be.ok();
@@ -1394,7 +1202,7 @@ describe('plaid.Client', () => {
     });
 
     describe('webhook-verification', () => {
-      it('getWebhookVerificationKey', cb => {
+      it('getWebhookVerificationKey', (cb) => {
         pCl.getWebhookVerificationKey(
           testConstants.WEBHOOK_VERIFICATION_KEY_ID,
           (err, successResponse) => {
@@ -1411,10 +1219,11 @@ describe('plaid.Client', () => {
             expect(successResponse.key.y).to.be.ok();
 
             cb();
-          });
+          },
+        );
       });
 
-      it('getWebhookVerificationKey error', cb => {
+      it('getWebhookVerificationKey error', (cb) => {
         pCl.getWebhookVerificationKey(
           'invalid key_id',
           (err, successResponse) => {
@@ -1422,76 +1231,296 @@ describe('plaid.Client', () => {
             expect(successResponse).not.to.be.ok();
             expect(err.status_code).to.be(400);
             expect(err.request_id).to.be.ok();
-            expect(err.error_code).to.be(
-              'INVALID_WEBHOOK_VERIFICATION_KEY_ID');
+            expect(err.error_code).to.be('INVALID_WEBHOOK_VERIFICATION_KEY_ID');
 
             cb();
-          });
+          },
+        );
+      });
+    });
+
+    describe('bank transfers', () => {
+
+      let test_account_id;
+      const bankTransferCreateRequest = {
+        type: 'credit',
+        network: 'ach',
+        amount: '10.00',
+        iso_currency_code: 'USD',
+        description: 'PLAID',
+        ach_class: 'ppd',
+        user: {
+          legal_name: 'First Lastname',
+        },
+      };
+
+      const randomIdempotencyKey = () => {
+        const max_key =  1000000000;
+        return Math.floor(Math.random() * max_key).toString();
+      };
+
+
+      const createBankTransfer = (cb) => {
+        const createRequest = bankTransferCreateRequest;
+        createRequest.account_id = test_account_id;
+        createRequest.access_token = testAccessToken;
+        createRequest.idempotency_key = randomIdempotencyKey();
+        pCl.bankTransferCreate(createRequest, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.bank_transfer).to.be.ok();
+          expect(response.bank_transfer.id).to.be.ok();
+          cb(null, response.bank_transfer.id);
+        });
+      };
+
+      const cancelBankTransferSuccess = (bank_transfer_id, cb) => {
+        pCl.bankTransferCancel(bank_transfer_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          cb(null, bank_transfer_id);
+        });
+      };
+
+      const cancelBankTransferFail = (bank_transfer_id, cb) => {
+        pCl.bankTransferCancel(bank_transfer_id, (err, response) => {
+          expect(err).to.be.ok();
+          expect(response).to.be(null);
+          cb(null, bank_transfer_id);
+        });
+      };
+
+      const postBankTransfer = (bank_transfer_id, cb) => {
+        pCl.sandboxBankTransferSimulate(bank_transfer_id, "posted", null, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          cb(null, bank_transfer_id);
+        })
+      };
+
+      const migrateAccount = (cb) => {
+        pCl.bankTransferMigrateAccount('100000000', '121122676', 'checking', (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.access_token).to.be.ok();
+          expect(response.account_id).to.be.ok();
+          cb();
+        });
+      };
+
+      const getBankTransfer = (bank_transfer_id, cb) => {
+        pCl.bankTransferGet(bank_transfer_id, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.bank_transfer).to.be.ok();
+          expect(response.bank_transfer.id).to.equal(bank_transfer_id);
+          cb();
+        });
+      }
+
+      const syncEvents = (bank_transfer_id, cb) => {
+        pCl.bankTransferEventSync(0, null, (err, response) => {
+          expect(err).to.be(null);
+          expect(response.bank_transfer_events).to.be.ok();
+          expect(response.bank_transfer_events.length).to.equal(2)
+        });
+      };
+
+      before((cb) => {
+        pCl.getAccounts(testAccessToken, {}, (err, response) => {
+          expect(err).to.be(null);
+          expect(response).to.be.ok();
+          expect(response.accounts).to.be.ok();
+          test_account_id = response.accounts.filter(
+            (a) => a.type === 'depository',
+          )[0].account_id;
+          cb();
+        });
+      });
+
+      it('creates transfer', (cb) => {
+        createBankTransfer(cb);
+      });
+
+      it('cancels transfer that is still pending', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          cancelBankTransferSuccess,
+        ],
+        cb);
+      });
+
+      it('fails to cancel posted transfer', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          postBankTransfer,
+          cancelBankTransferFail,
+        ],
+        cb);
+      });
+
+      it('migrates account', (cb) => {
+        migrateAccount(cb);
+      });
+
+      it('gets ODFI balance', (cb) => {
+        pCl.bankTransferBalanceGet(null, (err, response) => {
+          expect(err).to.be(null);
+          expect(response.balance.available).to.not.be(null);
+          cb();
+        });
+      });
+
+      it('gets a bank transfer', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          getBankTransfer,
+        ],
+        cb);
+      });
+
+      it('lists bank transfers', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          (bank_transfer_id, cb) => {
+            pCl.bankTransferList({count: 1}, (err, response) => {
+              expect(err).to.be(null);
+              expect(response).to.be.ok();
+              expect(response.bank_transfers).to.be.ok();
+              expect(response.bank_transfers[0]).to.be.ok();
+              expect(response.bank_transfers[0].id).to.equal(bank_transfer_id);
+              cb(null, bank_transfer_id);
+            });
+          },
+        ],
+        cb);
+      });
+
+      it('syncs events', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          postBankTransfer,
+          (_, cb) => {
+            pCl.bankTransferEventSync(0, undefined, (err, response) => {
+              expect(err).to.be(null);
+              expect(response.bank_transfer_events).to.be.ok();
+              // At least 2 total events (create and post)
+              expect(response.bank_transfer_events.length).to.be.greaterThan(1);
+              cb();
+            })
+          },
+        ],
+        cb);
+      });
+
+      it('lists events', (cb) => {
+        async.waterfall([
+          createBankTransfer,
+          postBankTransfer,
+          (bank_transfer_id, cb) => {
+            pCl.bankTransferEventList(
+              {bank_transfer_id: bank_transfer_id},
+              (err, response) => {
+                expect(err).to.be(null);
+                expect(response.bank_transfer_events).to.be.ok();
+                // Create and post events
+                expect(response.bank_transfer_events.length).to.equal(2);
+                response.bank_transfer_events.forEach((event) => {
+                  expect(event.bank_transfer_id).to.equal(bank_transfer_id);
+                })
+                cb();
+              },
+            );
+          },
+        ],
+        cb);
       });
     });
 
     describe('sandbox-only', () => {
-      it('sandboxPublicTokenCreate', cb => {
+      it('sandboxPublicTokenCreate', (cb) => {
         pCl.sandboxPublicTokenCreate(
-          testConstants.INSTITUTION, [testConstants.PRODUCTS[0]], {},
+          testConstants.INSTITUTION,
+          [testConstants.PRODUCTS[0]],
+          {},
           (err, successResponse) => {
             expect(err).to.be(null);
             expect(successResponse).to.be.ok();
             expect(successResponse.public_token).to.be.ok();
             // Ensure the generated public_token can be
             // exchanged for an access_token
-            pCl.exchangePublicToken(successResponse.public_token,
+            pCl.exchangePublicToken(
+              successResponse.public_token,
               (err, exchangeSuccessResponse) => {
                 expect(err).to.be(null);
                 expect(exchangeSuccessResponse).to.be.ok();
                 expect(exchangeSuccessResponse.access_token).to.be.ok();
                 cb();
-              });
-          });
+              },
+            );
+          },
+        );
       });
 
-      it('sandboxItemFireWebhook', cb => {
-        async.waterfall([
-          cb => {
-            pCl.sandboxPublicTokenCreate(
-              testConstants.INSTITUTION,
-              testConstants.PRODUCTS, {
-                webhook: 'https://httpstat.us/200'
-              }, (err, successResponse) => {
-                expect(err).to.be(null);
-                cb(null, successResponse);
-              });
-          },
-          (publicTokenResponse, cb) => {
-            pCl.exchangePublicToken(publicTokenResponse.public_token,
-              (err, successResponse) => {
-                expect(err).to.be(null);
-                cb(null, successResponse);
-              });
-          },
-          (successResponse, cb) => {
-            const accessToken = successResponse.access_token;
-            pCl.sandboxItemFireWebhook(accessToken,
-              'DEFAULT_UPDATE',
-              (err, successResponse) => {
-                expect(err).to.be(null);
-                expect(successResponse).to.be.ok();
-                expect(successResponse.status_code).to.be(200);
-                expect(successResponse.webhook_fired).to.be(true);
-                cb(null, accessToken);
-              });
-          }
-        ], cb);
+      it('testing sandbox resetting the login for an item', (cb) => {
+        pCl.resetLogin(testAccessToken, (err, successResponse) => {
+          expect(err).to.be(null);
+          expect(successResponse).to.be.ok();
+          cb();
+        });
+      });
+
+      it('sandboxItemFireWebhook', (cb) => {
+        async.waterfall(
+          [
+            (cb) => {
+              pCl.sandboxPublicTokenCreate(
+                testConstants.INSTITUTION,
+                testConstants.PRODUCTS,
+                {
+                  webhook: 'https://httpstat.us/200',
+                },
+                (err, successResponse) => {
+                  expect(err).to.be(null);
+                  cb(null, successResponse);
+                },
+              );
+            },
+            (publicTokenResponse, cb) => {
+              pCl.exchangePublicToken(
+                publicTokenResponse.public_token,
+                (err, successResponse) => {
+                  expect(err).to.be(null);
+                  cb(null, successResponse);
+                },
+              );
+            },
+            (successResponse, cb) => {
+              const accessToken = successResponse.access_token;
+              pCl.sandboxItemFireWebhook(
+                accessToken,
+                'DEFAULT_UPDATE',
+                (err, successResponse) => {
+                  expect(err).to.be(null);
+                  expect(successResponse).to.be.ok();
+                  expect(successResponse.webhook_fired).to.be(true);
+                  cb(null, accessToken);
+                },
+              );
+            },
+          ],
+          cb,
+        );
       });
     });
 
     describe('errors', () => {
-      it('no MFA bad request (library error)', cb => {
+      it('no MFA bad request (library error)', (cb) => {
         pCl.env = null;
 
         pCl.getItem(null, (err, successResponse) => {
           expect(err).to.be.ok();
-          expect(err.status_code).not.to.be.ok();
+          expect(err.status_code).to.be(400);
           expect(successResponse).not.to.be.ok();
 
           cb();
@@ -1504,75 +1533,77 @@ describe('plaid.Client', () => {
     let testPublicToken;
     let testAccessToken;
 
-    beforeEach(cb => {
+    beforeEach((cb) => {
       const createItem = pCl.sandboxPublicTokenCreate(
-        testConstants.INSTITUTION, testConstants.PRODUCTS, {});
-      createItem.then(successResponse => {
-        testPublicToken = successResponse.public_token;
-      }).then(() => {
-        pCl.exchangePublicToken(testPublicToken).then(successResponse => {
-          testAccessToken = successResponse.access_token;
-          cb();
+        testConstants.INSTITUTION,
+        testConstants.PRODUCTS,
+        {},
+      );
+      createItem
+        .then((successResponse) => {
+          testPublicToken = successResponse.public_token;
+        })
+        .then(() => {
+          pCl.exchangePublicToken(testPublicToken).then((successResponse) => {
+            testAccessToken = successResponse.access_token;
+            cb();
+          });
+        })
+        .catch((err) => {
+          void err;
+          throw new Error('Unreachable code block for test');
         });
-      }).catch(err => {
-        void err;
-        throw new Error('Unreachable code block for test');
-      });
     });
 
     describe('success path', () => {
-      it('normal', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'],
-          testConstants.INSTITUTION_COUNTRY_CODES, {})
-          .then(successResponse => {
+      it('normal', (cb) => {
+        pCl
+          .searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], ['US'], {})
+          .then((successResponse) => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
-          }).catch(err => {
+          })
+          .catch((err) => {
             void err;
             throw new Error('Unreachable code block for test');
-          }).then(() => {
+          })
+          .then(() => {
             cb();
           });
       });
 
-      it('normal (w/o options arg)', cb => {
-        pCl.searchInstitutionsByName(testConstants.INSTITUTION, ['auth'],
-          testConstants.INSTITUTION_COUNTRY_CODES)
-          .then(successResponse => {
+      it('normal (w/o options arg)', (cb) => {
+        pCl
+          .searchInstitutionsByName(testConstants.INSTITUTION, ['auth'], ['US'])
+          .then((successResponse) => {
             expect(successResponse).to.be.ok();
             expect(successResponse.institutions).to.be.an(Array);
-          }).catch(err => {
+          })
+          .catch((err) => {
             void err;
             throw new Error('Unreachable code block for test');
-          }).then(() => {
+          })
+          .then(() => {
             cb();
           });
       });
     });
 
     describe('error path', () => {
-      it('normal', cb => {
-        pCl.getAccounts('promise', {}).then(successResponse => {
-          void successResponse;
-          throw new Error('Unreachable code block for test');
-        }).catch(err => {
-          expect(err).to.be.ok();
-          expect(err.status_code).to.be(400);
-        }).then(() => {
-          cb();
-        });
-      });
-
-      it('normal (w/o options arg)', cb => {
-        pCl.getAccounts('promise').then(successResponse => {
-          void successResponse;
-          throw new Error('Unreachable code block for test');
-        }).catch(err => {
-          expect(err).to.be.ok();
-          expect(err.status_code).to.be(400);
-        }).then(() => {
-          cb();
-        });
+      it('normal', (cb) => {
+        pCl
+          .getAccounts('promise')
+          .then((successResponse) => {
+            void successResponse;
+            throw new Error('Unreachable code block for test');
+          })
+          .catch((err) => {
+            expect(err).to.be.ok();
+            expect(err.status_code).to.be(400);
+          })
+          .then(() => {
+            cb();
+          });
       });
     });
   });
