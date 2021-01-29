@@ -1055,16 +1055,17 @@ declare module 'plaid' {
 
     createPaymentRecipient(
       name: string,
-      iban: string,
+      iban: string | null,
       address: PaymentRecipientAddress | null,
+      bacs: PaymentRecipientBacs | null,
       cb: Callback<PaymentRecipientCreateResponse>,
     ): void;
 
     createPaymentRecipient(
       name: string,
       iban: string | null,
-      bacs: PaymentRecipientBacs | null,
       address: PaymentRecipientAddress | null,
+      bacs: PaymentRecipientBacs | null,
     ): Promise<PaymentRecipientCreateResponse>;
 
     getPaymentRecipient(
