@@ -12,7 +12,7 @@ A node.js client library for the [Plaid API][1].
   - [Callbacks](#callbacks)
   - [Error Handling](#error-handling)
   - [Examples](#examples)
-  - [Payment Initiation](#payment-initiation)
+    - [Payment Initiation](#payment-initiation)
   - [Promise Support](#promise-support)
   - [Support](#support)
   - [Contributing](#contributing)
@@ -255,7 +255,9 @@ plaidClient.getAccounts(access_token, (err, res) => {
 });
 ```
 
-## Payment Initiation
+### Payment Initiation
+
+For more information about this product, head to the [Payment Initiation docs][14].
 
 Create payment recipient using IBAN and address without BACS
 
@@ -304,7 +306,7 @@ plaidClient.createPayment(recipient_id, reference, amount, (err, res) => {
 });
 ```
 
-Create Link Token
+Create Link Token (for Payment Initiation only)
 
 ```javascript
 plaidClient.createLinkToken({
@@ -442,3 +444,4 @@ Click [here][7]!
 [11]: https://blog.plaid.com/improving-our-api/
 [13]: https://github.com/plaid/plaid-node-legacy
 [api-upgrades]: https://plaid.com/docs/api/versioning/
+[14]: https://plaid.com/docs/payment-initiation/
