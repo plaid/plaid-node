@@ -12,6 +12,7 @@ A node.js client library for the [Plaid API][1].
   - [Callbacks](#callbacks)
   - [Error Handling](#error-handling)
   - [Examples](#examples)
+  - [Payment Initiation](#payment-initiation)
   - [Promise Support](#promise-support)
   - [Support](#support)
   - [Contributing](#contributing)
@@ -251,6 +252,74 @@ plaidClient.getAccounts(access_token, {
 
 plaidClient.getAccounts(access_token, (err, res) => {
   console.log(res.accounts);
+});
+```
+
+## Payment Initiation
+
+Create payment recipient using IBAN and address
+
+```javascript
+const name =  'John Doe'
+const iban = 'NL02ABNA0123456789'
+const address = {
+    street: ['street name 999'],
+    city: 'London',
+    postal_code: '99999',
+    country: 'GB',
+};
+
+// Passing bacs as null
+plaidClient.createPaymentRecipient(name, iban, address, null, (err, res) => {
+    console.log(res.recipient_id)
+});
+```
+
+Create payment recipient using BACS
+
+```javascript
+const name =  'John Doe'
+const bacs = {
+    account: '26207729',
+    sort_code: '560029',
+}
+
+// For UK recipients, only bacs is required. iban and address are null
+plaidClient.createPaymentRecipient(name, null, null, bacs, (err, res) => {
+    console.log(res.recipient_id)
+});
+```
+
+Create payment
+
+```javascript
+const reference = 'testPayment'
+const amount = {
+    currency: 'GBP',
+    value: 100.00,
+};
+
+plaidClient.createPayment(recipient_id, reference, amount, (err, res) => {
+    console.log(res.payment_id)
+});
+```
+
+Create Link Token
+
+```javascript
+plaidClient.createLinkToken({
+  user: {
+      client_user_id: '123-test-user-id',
+  },
+  client_name: 'Plaid Test App',
+  products: ['payment_initiation'],
+  country_codes: ['GB'],
+  language: 'en',
+  payment_initiation : {
+      payment_id : 'some_payment_id'
+  }
+}, (err, res) => {
+  console.log(res.link_token)
 });
 ```
 
