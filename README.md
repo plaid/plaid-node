@@ -257,7 +257,7 @@ plaidClient.getAccounts(access_token, (err, res) => {
 
 ## Payment Initiation
 
-Create payment recipient using IBAN and address
+Create payment recipient using IBAN and address without BACS
 
 ```javascript
 const name =  'John Doe'
@@ -275,7 +275,7 @@ plaidClient.createPaymentRecipient(name, iban, address, null, (err, res) => {
 });
 ```
 
-Create payment recipient using BACS
+Create payment recipient using BACS with no IBAN or address
 
 ```javascript
 const name =  'John Doe'
