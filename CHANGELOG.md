@@ -1,5 +1,10 @@
+## 9.0.0-beta.4
+This version represents a transition in how we maintain our external client libraries. We are now using `OpenAPI 3.0.0`, running our definition file through the OpenAPI `typescript-axios` generator.
+
+More docs coming 2/15/21.
+
 ## 8.1.2
-- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)   
+- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)
 
 ## 8.1.0
 - The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
@@ -10,7 +15,7 @@
 
 ## 8.0.0
 
-BREAKING CHANGES: 
+BREAKING CHANGES:
 
 - The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
 - the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create
