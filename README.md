@@ -303,6 +303,7 @@ const amount = {
 
 plaidClient.createPayment(recipient_id, reference, amount, (err, res) => {
     console.log(res.payment_id)
+    console.log(res.status)
 });
 ```
 
