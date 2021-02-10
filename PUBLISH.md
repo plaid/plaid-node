@@ -22,8 +22,6 @@ update the [`CHANGELOG.md`][2], with the following format:
   - `/api_route`
 ```
 
-Also, feel free to make the `package.json` version changes within this PR as well so you don't have to create two separate ones.
-
 3. **Create a new version**
 
 Creating a new release and publishing to npm is simple and bundled into a
