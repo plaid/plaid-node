@@ -1,19 +1,14 @@
 # Contributing
 
-Instructions for contributing to [plaid-node][1]. A node.js client library for the [Plaid API][2].
+Instructions for contributing to [plaid-node][1]. A node.js client library for the [Plaid API][2]. This library is fully generated from the [Plaid OpenAPI spec](3).
+
+TODO: Instructions for running the generator from this repo.
 
 ## Setup
 
-1. From the `plaid-node` directory, create the `.env` file, which will be used to configure the Plaid client.
+1. Go to the [Plaid Dashboard](https://dashboard.plaid.com/) and copy and paste your `client_id` and sandbox `secret` into your client file.
 
-  ```
-  cp .env.example .env
-  ```
-
-2. Go to the [Plaid Dashboard](https://dashboard.plaid.com/) and copy and paste your `client_id` and sandbox `secret`
-   into `.env` using a text editor of your choice.
-
-3. Install the necessary dependencies.
+2. Install the necessary dependencies.
 
   ```
   make setup
@@ -38,3 +33,4 @@ Code coverage information is written to `/coverage`.
 
 [1]: https://github.com/plaid/plaid-node
 [2]: https://plaid.com
+[3]: https://github.com/plaid/plaid-openapi
