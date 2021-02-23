@@ -468,17 +468,6 @@ describe('plaid.Client', () => {
         });
       });
 
-      it('credit details', cb => {
-        pCl.getCreditDetails(testAccessToken, (err, successResponse) => {
-          expect(err).to.be(null);
-          expect(successResponse).to.be.ok();
-          expect(successResponse.item).to.be.ok();
-          expect(successResponse.credit_details).to.be.ok();
-
-          cb();
-        });
-      });
-
       it('transactions refresh', cb => {
         pCl.refreshTransactions(testAccessToken, (err, successResponse) => {
           expect(err).to.be(null);
