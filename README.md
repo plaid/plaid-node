@@ -1,6 +1,8 @@
 plaid-node  [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg&circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)](https://circleci.com/gh/plaid/plaid-node)  [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 ==============
 
+:warning: This major version of the library will only receive critical security patches after 7/12/21. Please consider trying out our new [beta version](https://github.com/plaid/plaid-node/tree/9.0.0-beta-release).
+
 A node.js client library for the [Plaid API][1].
 
 ## Table of Contents
