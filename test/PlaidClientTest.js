@@ -1265,8 +1265,6 @@ describe('plaid.Client', () => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
             expect(response.deposit_switch_id).to.be.ok();
-            expect(response.target_item_id).to.be.ok();
-            expect(response.target_account_id).to.be.ok();
             expect(response.date_created).to.be.ok();
             expect(response.state).to.be.ok();
             cb(null, deposit_switch_id);
@@ -1301,7 +1299,6 @@ describe('plaid.Client', () => {
         async.waterfall([
           createDepositSwitchAlt,
           getDepositSwitch,
-          createDepositSwitchToken,
         ], cb);
       });
     });
