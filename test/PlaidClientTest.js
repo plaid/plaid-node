@@ -1295,7 +1295,8 @@ describe('plaid.Client', () => {
         ], cb);
       });
 
-      it('successfully goes through the entire deposit switch alt flow', cb => {
+      it(`successfully goes through the 
+      entire deposit switch alt flow`, cb => {
         async.waterfall([
           createDepositSwitchAlt,
           getDepositSwitch,
