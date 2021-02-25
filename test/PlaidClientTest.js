@@ -1229,6 +1229,35 @@ describe('plaid.Client', () => {
           });
       };
 
+      const createDepositSwitchAlt = (cb) => {
+        pCl.createDepositSwitchAlt(
+          {
+              account_number: '9900009606',
+              routing_number: '011401533',
+              account_name: 'Pilot Partner CHKG',
+              account_subtype: 'checking',
+          },
+          {
+              given_name: 'Alberta',
+              family_name: 'Charleston',
+              phone: '14085551234',
+              address: {
+                  street: '1098 Harrison St',
+                  city: 'San Francisco',
+                  region: 'CA',
+                  postal_code: '94107',
+                  country: 'US'
+              },
+              email: 'alberta.charleston@example.com',
+          },
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.deposit_switch_id).to.be.ok();
+            cb(null, response.deposit_switch_id);
+          });
+      };
+
       const getDepositSwitch = (deposit_switch_id, cb) => {
         pCl.getDepositSwitch(
           deposit_switch_id,
@@ -1263,6 +1292,14 @@ describe('plaid.Client', () => {
           getAccessToken,
           getAccountId,
           createDepositSwitch,
+          getDepositSwitch,
+          createDepositSwitchToken,
+        ], cb);
+      });
+
+      it('successfully goes through the entire deposit switch alt flow', cb => {
+        async.waterfall([
+          createDepositSwitchAlt,
           getDepositSwitch,
           createDepositSwitchToken,
         ], cb);

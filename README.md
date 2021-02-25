@@ -134,6 +134,8 @@ plaidClient.getLiabilities(access_token, cb);
 plaidClient.getDepositSwitch(deposit_switch_id, options, cb)
 // createDepositSwitch(String, String, Object?, Function)
 plaidClient.createDepositSwitch(target_account_id, target_access_token, options, cb);
+// createDepositSwitchAlt(Object, Object, Object?, Function)
+plaidClient.createDepositSwitchAlt(target_account, target_user, options, cb);
 // createDepositSwitchToken(String, Function)
 plaidClient.createDepositSwitchToken(deposit_switch_id, options, cb)
 
