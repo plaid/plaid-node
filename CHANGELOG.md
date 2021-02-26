@@ -1,3 +1,8 @@
+## 8.2.0
+- Added support for `/deposit_switch/alt/create` endpoint
+- Added support for providing a `deposit_switch_id` to the `/link/token/create` endpoint
+- Upgrade package versions
+
 ## 8.1.4
 - Corrected the type description for `createPaymentRecipient`. [#396](https://github.com/plaid/plaid-node/pull/396)
 - Added support for endpoints `/income/verification/paystub/get` and `/income/verification/summary/get` via `getPaystub` and `getSummary` respectively. [#400](https://github.com/plaid/plaid-node/pull/400)
