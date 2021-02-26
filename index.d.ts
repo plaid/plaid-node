@@ -86,6 +86,10 @@ declare module 'plaid' {
     payment_id: string;
   }
 
+  interface DepositSwitchOptions {
+    deposit_switch_id: string;
+  }
+
   interface CreateLinkTokenOptions {
     user: User;
     client_name: string;
@@ -100,6 +104,7 @@ declare module 'plaid' {
     account_filters?: AccountFiltersOptions;
     cross_app_item_add?: CrossAppItemAddOptions;
     payment_initiation?: PaymentInitiationOptions;
+    deposit_switch?: DepositSwitchOptions;
   }
 
   // DATA TYPES //////////////////////////////////////////////////////////////
