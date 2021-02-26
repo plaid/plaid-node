@@ -1,5 +1,6 @@
 ## 8.2.0
 - Added support for `/deposit_switch/alt/create` endpoint
+- Added support for providing a `deposit_switch_id` to the `/link/token/create` endpoint
 - Upgrade package versions
 
 ## 8.1.4
