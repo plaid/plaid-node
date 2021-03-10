@@ -1,7 +1,118 @@
-## 8.2.0
-- Added support for `/deposit_switch/alt/create` endpoint
-- Added support for providing a `deposit_switch_id` to the `/link/token/create` endpoint
-- Upgrade package versions
+## 9.0.0-beta.11
+This version represents a transition in how we maintain our external client libraries. We are now using an [API spec](https://github.com/plaid/plaid-openapi) written in `OpenAPI 3.0.0` and running our definition file through [OpenAPITool's `typescript-axios` generator](https://github.com/OpenAPITools/openapi-generator). All tests have been rewritten in Typescript.
+
+**Node Migration Guide**
+### Client initialization
+From:
+```javascript
+const configs = {
+  clientID: CLIENT_ID,
+  secret: SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2020-09-14',
+  },
+};
+
+new plaid.Client(configs);
+```
+
+To:
+```typescript
+const configuration = new Configuration({
+  basePath: PlaidEnvironments.sandbox,
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': CLIENT_ID,
+      'PLAID-SECRET': SECRET,
+      'Plaid-Version': '2020-09-14'
+    }
+  }
+});
+
+new PlaidApi(configuration);
+```
+
+### Endpoints
+
+All endpoint requests now take a request model, have better Typescript support and the functions have been renamed to move the verb to the end (e.g `getTransactions` is now `transactionsGet`).
+Callbacks are no longer supported.
+
+From:
+```javascript
+pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+  testConstants.PRODUCTS, {}, cb);
+
+```
+
+To:
+```typescript
+const request: SandboxPublicTokenCreateRequest = {
+  institution_id: TestConstants.INSTITUTION,
+  initial_products: TestConstants.PRODUCTS as Products[],
+  options,
+};
+
+const response = await plaidClient.sandboxPublicTokenCreate(request);
+```
+
+### Errors
+From:
+```javascript
+pCl.getTransactions(accessToken, startDate, endDate,
+{ count: count, offset: offset }, (err, response) => {
+  if (err) {
+    if (err.status_code === 400 &&
+      err.error_code === 'PRODUCT_NOT_READY') {
+      setTimeout(() => {
+        getTransactionsWithRetries(
+          accessToken, startDate, endDate, count,
+          offset, num_retries_remaining - 1, cb
+        );
+      }, 1000);
+    } else {
+      throw new Error(
+        'Unexpected error while polling for transactions', err);
+    }
+  } else {
+    cb(null, response);
+  }
+});
+```
+
+To:
+```typescript
+
+plaidClient
+  .transactionsGet(request)
+  .then((response) => resolve(response.data))
+  .catch(() => {
+    setTimeout(() => {
+      if (retriesLeft === 1) {
+        return reject('Ran out of retries while polling for transactions');
+      }
+      getTransactionsWithRetries(
+        plaidClient,
+        access_token,
+        start_date,
+        end_date,
+        count,
+        offset,
+        ms,
+        retriesLeft - 1,
+      ).then((response) => resolve(response));
+    }, ms);
+  });
+
+or use `try/catch`
+
+try {
+  await plaidClient.transactionsGet(request);
+} catch (error) {
+  const err = error.response.data;
+  ...
+}
+```
 
 ## 8.1.4
 - Corrected the type description for `createPaymentRecipient`. [#396](https://github.com/plaid/plaid-node/pull/396)
@@ -11,7 +122,7 @@
 Security patch
 
 ## 8.1.2
-- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)   
+- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)
 
 ## 8.1.0
 - The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
@@ -22,7 +133,7 @@ Security patch
 
 ## 8.0.0
 
-BREAKING CHANGES: 
+BREAKING CHANGES:
 
 - The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
 - the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create

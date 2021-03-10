@@ -22,12 +22,10 @@ update the [`CHANGELOG.md`][2], with the following format:
   - `/api_route`
 ```
 
-Also, feel free to make the `package.json` version changes within this PR as well so you don't have to create two separate ones.
-
 3. **Create a new version**
 
 Creating a new release and publishing to npm is simple and bundled into a
-single make command.
+single make command. If you are publishing a beta, please skip to step 5.
 
 Use semantic versioning to determine whether a release should be one of the
 follow version bumps:
@@ -59,7 +57,26 @@ Once you have done that, the following command will publish the latest version
 npm --registry=https://registry.npmjs.com publish
 ```
 
-5. **Updating github**
+5. **Publish 9.0.0-beta.X to npm**
+
+Pull down and build the openapi file.
+- `make pull-openapi`
+- `make build-openapi`
+
+Run the tests using the docker image.
+- `docker build -t plaid-node .`
+- `docker run -e CLIENT_ID=$(CLIENT_ID) -e SECRET=$(SECRET) plaid-node`
+
+If the tests pass, update the semantic version in the package.json and update the changelog as mentioned in step 2.
+
+Tag the repository with the current version.
+- `git tag 9.0.0-beta.11`
+
+**IMPORTANT**
+Finally run
+- `npm --registry=https://registry.npmjs.com publish --tag beta`
+
+6. **Updating github**
 Be sure to push the right tag corresponding to the npm release version to github.
 
 ```bash
