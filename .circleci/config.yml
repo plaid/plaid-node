@@ -2,16 +2,18 @@ version: 2
 
 jobs:
   build:
-    docker:
-      - image: circleci/node:12
+    machine: true
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: make setup
+          name: Download OpenAPI file via Curl from github
+          command: make pull-openapi
       - run:
-          name: Lint
-          command: make lint
+          name: Build generated code using docker cli openapigenerator
+          command: make build-openapi
       - run:
-          name: Tests
-          command: make test
+          name: Build Docker image for running node tests
+          command: docker build -t plaid-node .
+      - run:
+          name: Run node tests in Docker
+          command: docker run --rm -e CLIENT_ID=$CLIENT_ID -e SECRET=$SECRET plaid-node
