@@ -21,7 +21,7 @@ A node.js client library for the [Plaid API][1].
 ## Install
 
 ```console
-$ npm install plaid
+$ npm install plaid@beta
 ```
 
 ### Versioning
