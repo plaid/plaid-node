@@ -70,7 +70,7 @@ Run the tests using the docker image.
 If the tests pass, update the semantic version in the package.json and update the changelog as mentioned in step 2.
 
 Tag the repository with the current version.
-- `git tag 9.0.0-beta.11`
+- `git tag 9.0.0-beta.{VERSION}`
 
 **IMPORTANT**
 Finally run
