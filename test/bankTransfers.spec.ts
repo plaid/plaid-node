@@ -26,6 +26,21 @@ const randomIdempotencyKey = () => {
   return Math.floor(Math.random() * max_key).toString();
 };
 
+const retryOnError = async (f: ()=>Promise<void>) => {
+  const numRetries = 5;
+  for (let i = 0; i < numRetries; i++) {
+    try {
+      await f();
+      return;
+    } catch (e) {
+      if (i+1 == numRetries) {
+        throw e;
+      }
+      continue;
+    }
+  }
+}
+
 describe('Bank Transfers', () => {
   let plaidClient: PlaidApi;
   let testAccessToken: string | undefined;
@@ -117,17 +132,19 @@ describe('Bank Transfers', () => {
     );
 
     const request: BankTransferListRequest = {
-      count: 1,
+      count: 5,
     };
 
-    const response = await plaidClient.bankTransferList(request);
-    expect(response.data).to.be.ok;
-    expect(response.data.bank_transfers).to.be.ok;
-    expect(response.data.bank_transfers.filter((x, key) => key === 0)?.[0]).to
-      .be.ok;
-    expect(
-      response.data.bank_transfers.filter((x, key) => key === 0)?.[0].id,
-    ).to.equal(bankTransferId);
+    // One of the first few transfers will be the one we just created.
+    // We allow for flexibility in case multiple transfers have the same
+    // created timestamp.
+    await retryOnError( async () => {
+      const response = await plaidClient.bankTransferList(request);
+      expect(response.data).to.be.ok;
+      expect(response.data.bank_transfers).to.be.ok;
+      expect(response.data.bank_transfers.filter((x, key) => x.id === bankTransferId)?.[0]).to
+        .be.ok;
+    });
   });
 
   it('syncs events', async () => {
@@ -141,9 +158,11 @@ describe('Bank Transfers', () => {
     const request: BankTransferEventSyncRequest = {
       after_id: 0,
     };
-    const response = await plaidClient.bankTransferEventSync(request);
-    expect(response.data.bank_transfer_events).to.be.ok;
-    expect(response.data.bank_transfer_events.length).to.be.greaterThan(1);
+    await retryOnError( async () => {
+      const response = await plaidClient.bankTransferEventSync(request);
+      expect(response.data.bank_transfer_events).to.be.ok;
+      expect(response.data.bank_transfer_events.length).to.be.greaterThan(1);
+    });
   });
 
   it('lists events', async () => {
@@ -158,11 +177,13 @@ describe('Bank Transfers', () => {
       bank_transfer_id: bankTransferId as string,
     };
 
-    const response = await plaidClient.bankTransferEventList(request);
-    expect(response.data.bank_transfer_events).to.be.ok;
-    expect(response.data.bank_transfer_events.length).to.equal(2);
-    response.data.bank_transfer_events.forEach((event) => {
-      expect(event.bank_transfer_id).to.equal(bankTransferId);
+    await retryOnError( async () => {
+      const response = await plaidClient.bankTransferEventList(request);
+      expect(response.data.bank_transfer_events).to.be.ok;
+      expect(response.data.bank_transfer_events.length).to.equal(2);
+      response.data.bank_transfer_events.forEach((event) => {
+        expect(event.bank_transfer_id).to.equal(bankTransferId);
+      });
     });
   });
 });
@@ -201,9 +222,11 @@ const bankTransferCancel = async (
   const request: BankTransferCancelRequest = {
     bank_transfer_id,
   };
-  const response = await plaidClient.bankTransferCancel(request);
-  expect(response.data.request_id).to.be.ok;
-  return response;
+
+  retryOnError( async () => {
+    const response = await plaidClient.bankTransferCancel(request);
+    expect(response.data.request_id).to.be.ok;
+  });
 };
 
 const bankTransferPost = async (
@@ -215,9 +238,10 @@ const bankTransferPost = async (
     event_type: 'posted',
   };
 
-  const response = await plaidClient.sandboxBankTransferSimulate(request);
-  expect(response.data).to.be.ok;
-  return response;
+  retryOnError(async () => {
+    const response = await plaidClient.sandboxBankTransferSimulate(request);
+    expect(response.data).to.be.ok;
+  });
 };
 
 const bankTransferGet = async (
@@ -228,9 +252,10 @@ const bankTransferGet = async (
     bank_transfer_id,
   };
 
-  const response = await plaidClient.bankTransferGet(request);
-  expect(response.data).to.be.ok;
-  expect(response.data.bank_transfer).to.be.ok;
-  expect(response.data.bank_transfer.id).to.equal(bank_transfer_id);
-  return response;
+  retryOnError(async () => {
+    const response = await plaidClient.bankTransferGet(request);
+    expect(response.data).to.be.ok;
+    expect(response.data.bank_transfer).to.be.ok;
+    expect(response.data.bank_transfer.id).to.equal(bank_transfer_id);
+  });
 };
