@@ -1,6 +1,7 @@
 {
   "name": "plaid",
   "version": "8.2.0",
+  "registry": "https://registry.npmjs.com/",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
