@@ -90,6 +90,10 @@ declare module 'plaid' {
     deposit_switch_id: string;
   }
 
+  interface IncomeVerificationOptions {
+    income_verification_id: string;
+  }
+
   interface CreateLinkTokenOptions {
     user: User;
     client_name: string;
@@ -105,6 +109,7 @@ declare module 'plaid' {
     cross_app_item_add?: CrossAppItemAddOptions;
     payment_initiation?: PaymentInitiationOptions;
     deposit_switch?: DepositSwitchOptions;
+    income_verification?: IncomeVerificationOptions;
   }
 
   // DATA TYPES //////////////////////////////////////////////////////////////
