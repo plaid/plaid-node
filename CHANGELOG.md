@@ -1,3 +1,6 @@
+## 9.0.0-beta.13
+Fix publish regression.
+
 ## 9.0.0-beta.12
 Type fixes, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
