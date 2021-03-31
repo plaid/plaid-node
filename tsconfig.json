@@ -18,5 +18,6 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "typeRoots": ["node_modules/@types", "dist/index.d.ts"]
-  }
+  },
+  "exclude": ["test/*.ts"]
 }

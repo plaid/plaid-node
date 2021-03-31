@@ -59,10 +59,6 @@ npm --registry=https://registry.npmjs.com publish
 
 5. **Publish 9.0.0-beta.X to npm**
 
-Pull down and build the openapi file.
-- `make pull-openapi`
-- `make build-openapi`
-
 Run the tests using the docker image.
 - `docker build -t plaid-node .`
 - `docker run -e CLIENT_ID=$(CLIENT_ID) -e SECRET=$(SECRET) plaid-node`

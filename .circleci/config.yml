@@ -6,12 +6,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Download OpenAPI file via Curl from github
-          command: make pull-openapi
-      - run:
-          name: Build generated code using docker cli openapigenerator
-          command: make build-openapi
-      - run:
           name: Build Docker image for running node tests
           command: docker build -t plaid-node .
       - run:

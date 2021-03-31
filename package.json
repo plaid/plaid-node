@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "9.0.0-beta.12",
+  "version": "9.0.0-beta.13",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -21,6 +21,9 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.com"
+  },
+  "scripts": {
+    "build": "tsc --outDir dist/"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
