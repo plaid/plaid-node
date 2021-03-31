@@ -2,16 +2,12 @@ version: 2
 
 jobs:
   build:
-    docker:
-      - image: circleci/node:12
+    machine: true
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: make setup
+          name: Build Docker image for running node tests
+          command: docker build -t plaid-node .
       - run:
-          name: Lint
-          command: make lint
-      - run:
-          name: Tests
-          command: make test
+          name: Run node tests in Docker
+          command: docker run --rm -e CLIENT_ID=$CLIENT_ID -e SECRET=$SECRET plaid-node

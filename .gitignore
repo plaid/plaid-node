@@ -4,3 +4,5 @@
 .env
 .vs/
 .idea/
+/test.js
+dist
