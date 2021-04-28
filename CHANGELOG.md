@@ -1,5 +1,8 @@
+## 8.3.0
+- Added support for `/income/verification/paystubs/get`.
+
 ## 8.2.1
-- Added support for `income/verfication/create`.
+- Added support for `/income/verfication/create`.
 
 ## 8.2.0
 - Added support for `/deposit_switch/alt/create` endpoint
