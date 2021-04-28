@@ -1,3 +1,6 @@
+## 8.2.1
+- Added support for `income/verfication/create`.
+
 ## 8.2.0
 - Added support for `/deposit_switch/alt/create` endpoint
 - Added support for providing a `deposit_switch_id` to the `/link/token/create` endpoint
@@ -11,7 +14,7 @@
 Security patch
 
 ## 8.1.2
-- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)   
+- Corrected typings for `ClientOptions` and `ClientConfigs`. `ClientOptions` now extends `AxiosRequestConfig` instead of `ClientConfigs`. Request configuration now is typed to underlying implementation. [#384](https://github.com/plaid/plaid-node/issues/384)
 
 ## 8.1.0
 - The legacy `/item/public_token/create` endpoint is added back. This endpoint should only be used if you
@@ -22,7 +25,7 @@ Security patch
 
 ## 8.0.0
 
-BREAKING CHANGES: 
+BREAKING CHANGES:
 
 - The library has been pinned to the '2020-09-14' API release. Visit the [docs](https://plaid.com/docs/api/versioning/) to see what changed.
 - the `/item/public_token/create` endpoint has been disabled in favor of the /link/token/create
