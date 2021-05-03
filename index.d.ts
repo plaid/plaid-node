@@ -44,6 +44,10 @@ declare module 'plaid' {
 
   interface GetAllTransactionsRequestOptions extends ItemRequestOptions {}
 
+  interface BalanceRequestOptions extends ItemRequestOptions {
+    min_last_updated_datetime?: string;
+  }
+
   interface AssetReportUser {
     client_user_id?: string | null;
     first_name?: string | null;
@@ -136,6 +140,7 @@ declare module 'plaid' {
       limit: number | null;
       iso_currency_code: string | null;
       unofficial_currency_code: string | null;
+      last_updated_datetime: string | null;
     };
   }
 
@@ -915,12 +920,12 @@ declare module 'plaid' {
 
     getBalance(
       accessToken: string,
-      options?: ItemRequestOptions,
+      options?: BalanceRequestOptions,
     ): Promise<AccountsResponse>;
     getBalance(accessToken: string, cb: Callback<AccountsResponse>): void;
     getBalance(
       accessToken: string,
-      options: ItemRequestOptions,
+      options: BalanceRequestOptions,
       cb: Callback<AccountsResponse>,
     ): void;
 
