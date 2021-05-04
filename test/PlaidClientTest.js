@@ -1107,9 +1107,13 @@ describe('plaid.Client', () => {
             account: '26207729',
             sort_code: '560029',
           }
-        }
+        };
 
-        pCl.createPaymentWithOptions(recipient_id, 'TestPayment', amount, options,
+        pCl.createPaymentWithOptions(
+          recipient_id,
+          'TestPayment',
+          amount,
+          options,
           (err, response) => {
             expect(err).to.be(null);
             expect(response).to.be.ok();
