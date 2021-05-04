@@ -1096,6 +1096,31 @@ describe('plaid.Client', () => {
           });
       };
 
+      const createPaymentWithOptions = (recipient_id, cb) => {
+        const amount = {
+          currency: 'GBP',
+          value: 100.00,
+        };
+        const options = {
+          request_refund_details: true,
+          bacs: {
+            account: '26207729',
+            sort_code: '560029',
+          }
+        }
+
+        pCl.createPaymentWithOptions(recipient_id, 'TestPayment', amount, options,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.payment_id).to.be.ok();
+            expect(response.status).to.be.ok();
+
+            cb(null, response.payment_id);
+          });
+      };
+
       const createPaymentToken = (payment_id, cb) => {
         pCl.createPaymentToken(payment_id, (err, response) => {
           expect(err).to.be(null);
@@ -1187,6 +1212,12 @@ describe('plaid.Client', () => {
           createPaymentToken,
           getPayment,
           listPayments,
+        ], cb);
+      });
+      it('successfully creates payments with options', cb => {
+        async.waterfall([
+          createPaymentRecipientWithIban,
+          createPaymentWithOptions,
         ], cb);
       });
     });
@@ -1295,7 +1326,7 @@ describe('plaid.Client', () => {
         ], cb);
       });
 
-      it(`successfully goes through the 
+      it(`successfully goes through the
       entire deposit switch alt flow`, cb => {
         async.waterfall([
           createDepositSwitchAlt,
