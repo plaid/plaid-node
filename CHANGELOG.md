@@ -1,5 +1,3 @@
-## 8.5.0
-- Added support for new payment initiation options
 ## 8.4.0
 - Added support for `min_last_updated_datetime` in the `/balance/get` request and
     `last_updated_datetime` in the `/balance/get` response.

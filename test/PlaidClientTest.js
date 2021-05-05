@@ -1109,7 +1109,7 @@ describe('plaid.Client', () => {
           }
         };
 
-        pCl.createPaymentWithOptions(
+        pCl.createPayment(
           recipient_id,
           'TestPayment',
           amount,
@@ -1172,6 +1172,24 @@ describe('plaid.Client', () => {
           });
       };
 
+      const getPaymentWithBacsOptions = (payment_id, cb) => {
+        pCl.getPayment(payment_id,
+          (err, response) => {
+            expect(err).to.be(null);
+            expect(response).to.be.ok();
+            expect(response.request_id).to.be.ok();
+            expect(response.payment_id).to.be.ok();
+            expect(response.reference).to.be.ok();
+            expect(response.amount).to.be.ok();
+            expect(response.status).to.be.ok();
+            expect(response.last_status_update).to.be.ok();
+            expect(response.recipient_id).to.be.ok();
+            expect(response.bacs).to.be.ok();
+
+            cb(null);
+          });
+      };
+
       const listPayments = (cb) => {
         pCl.listPayments({ count: 10 }, (err, response) => {
           expect(err).to.be(null);
@@ -1222,6 +1240,7 @@ describe('plaid.Client', () => {
         async.waterfall([
           createPaymentRecipientWithIban,
           createPaymentWithOptions,
+          getPaymentWithBacsOptions,
         ], cb);
       });
     });
