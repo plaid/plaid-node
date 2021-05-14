@@ -1,3 +1,6 @@
+## 8.5.0
+- Add support for `options` to `/payment_initiation/payment/create`
+
 ## 8.4.0
 - Added support for `min_last_updated_datetime` in the `/balance/get` request and
     `last_updated_datetime` in the `/balance/get` response.
