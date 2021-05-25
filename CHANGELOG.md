@@ -1,3 +1,6 @@
+## 8.5.1
+- Upgrade package versions
+
 ## 8.5.0
 - Add support for `options` to `/payment_initiation/payment/create`
 
