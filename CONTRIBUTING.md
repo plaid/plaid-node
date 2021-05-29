@@ -1,6 +1,6 @@
 # Contributing
 
-Instructions for contributing to [plaid-node][1]. A node.js client library for the [Plaid API][2]. This library is fully generated from the [Plaid OpenAPI spec](3).
+Instructions for contributing to [plaid-node][1]. A node.js client library for the [Plaid API][2]. This library is fully generated from the [Plaid OpenAPI spec][3].
 
 ## Setup
 
