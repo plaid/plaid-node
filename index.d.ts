@@ -1106,19 +1106,25 @@ declare module 'plaid' {
 
     listPaymentRecipients(): Promise<PaymentRecipientListResponse>;
 
+    // createPayment(String, String, Object, Object?, Function)
     createPayment(
       recipient_id: string,
       reference: string,
       amount: PaymentAmount,
-      options: PaymentCreateOptions | null,
+      options: PaymentCreateOptions,
       cb: Callback<PaymentCreateResponse>,
     ): void;
-
     createPayment(
       recipient_id: string,
       reference: string,
       amount: PaymentAmount,
-      options: PaymentCreateOptions | null,
+      cb: Callback<PaymentCreateResponse>,
+    ): void;
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+      options?: PaymentCreateOptions,
     ): Promise<PaymentCreateResponse>;
 
     createPaymentToken(
