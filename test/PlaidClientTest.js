@@ -1123,7 +1123,7 @@ describe('plaid.Client', () => {
           });
       };
 
-      const createPaymentWithOptions = (recipient_id, cb) => {
+      const createPaymentWithBacsOptions = (recipient_id, cb) => {
         const amount = {
           currency: 'GBP',
           value: 100.00,
@@ -1149,6 +1149,32 @@ describe('plaid.Client', () => {
             expect(response.status).to.be.ok();
 
             cb(null, response.payment_id);
+          });
+      };
+
+      const createPaymentWithEMIAccountIDOptions = (recipient_id, cb) => {
+        const amount = {
+          currency: 'GBP',
+          value: 100.00,
+        };
+        const options = {
+          emi_account_id: '123456789'
+        };
+
+        // This payment and recipient do not have an associated EMI account
+        // so this request is expected to error.
+        pCl.createPayment(
+          recipient_id,
+          'TestPayment',
+          amount,
+          options,
+          (err) => {
+            expect(err).to.be.ok();
+            expect(err.status_code).to.be(400);
+            expect(err.error_code).to.be('INVALID_FIELD');
+            expect(err.error_message).to.be('no associated emi recipient');
+
+            cb();
           });
       };
 
@@ -1263,11 +1289,19 @@ describe('plaid.Client', () => {
           listPayments,
         ], cb);
       });
-      it('successfully creates payments with options', cb => {
+
+      it('successfully creates payments with BACS options', cb => {
         async.waterfall([
           createPaymentRecipientWithIban,
-          createPaymentWithOptions,
+          createPaymentWithBacsOptions,
           getPaymentWithBacsOptions,
+        ], cb);
+      });
+
+      it('fails to create payment with EMI account ID options', cb => {
+        async.waterfall([
+          createPaymentRecipientWithIban,
+          createPaymentWithEMIAccountIDOptions,
         ], cb);
       });
     });

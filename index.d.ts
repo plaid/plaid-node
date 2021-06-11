@@ -122,6 +122,13 @@ declare module 'plaid' {
     eu_config?: LinkTokenEUConfig;
   }
 
+  interface PaymentCreateOptions {
+    bacs?: PaymentRecipientBacs;
+    emi_account_id?: string;
+    iban?: string;
+    request_refund_details?: boolean;
+  }
+
   // DATA TYPES //////////////////////////////////////////////////////////////
 
   interface AccountCommon {
@@ -550,6 +557,7 @@ declare module 'plaid' {
     name: string;
     iban: string;
     address: PaymentRecipientAddress;
+    emi_recipient_id: string;
   }
 
   interface PaymentAmount {
@@ -731,6 +739,7 @@ declare module 'plaid' {
     name: string;
     iban: string;
     address: PaymentRecipientAddress | null;
+    emi_recipient_id: string;
   }
 
   interface PaymentRecipientListResponse extends BaseResponse {
@@ -749,6 +758,7 @@ declare module 'plaid' {
     status: string;
     last_status_update: Iso8601DateTimeString;
     recipient_id: string;
+    emi_account_id: string;
   }
 
   interface PaymentTokenCreateResponse extends BaseResponse {
@@ -1102,17 +1112,25 @@ declare module 'plaid' {
 
     listPaymentRecipients(): Promise<PaymentRecipientListResponse>;
 
+    // createPayment(String, String, Object, Object?, Function)
+    createPayment(
+      recipient_id: string,
+      reference: string,
+      amount: PaymentAmount,
+      options: PaymentCreateOptions,
+      cb: Callback<PaymentCreateResponse>,
+    ): void;
     createPayment(
       recipient_id: string,
       reference: string,
       amount: PaymentAmount,
       cb: Callback<PaymentCreateResponse>,
     ): void;
-
     createPayment(
       recipient_id: string,
       reference: string,
       amount: PaymentAmount,
+      options?: PaymentCreateOptions,
     ): Promise<PaymentCreateResponse>;
 
     createPaymentToken(
