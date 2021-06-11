@@ -1,3 +1,7 @@
+## 8.5.2
+- Added additional EMI (E-Money Institution) support `options` to `/payment_initiation/payment/create`
+- Updated `/payment_initiation/payment/get`, `/payment_initiation/recipient/get`, and `/payment_initiation/recipient/list` to return additional EMI related fields
+
 ## 8.5.1
 - Upgrade package versions
 
