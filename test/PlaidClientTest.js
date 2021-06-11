@@ -1141,7 +1141,7 @@ describe('plaid.Client', () => {
           'TestPayment',
           amount,
           options,
-          (err, response) => {
+          (err) => {
             expect(err).to.be.ok();
             expect(err.status_code).to.be(400);
             expect(err.error_code).to.be('INVALID_FIELD');
