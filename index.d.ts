@@ -550,8 +550,29 @@ declare module 'plaid' {
     recipient_id: string;
     name: string;
     iban: string;
-    address: PaymentRecipientAddress;
+    address: PaymentRecipientAddress | null;
     emi_recipient_id: string;
+  }
+
+  interface Payment {
+    payment_id: string;
+    reference: string;
+    amount: PaymentAmount;
+    status: string;
+    last_status_update: Iso8601DateTimeString;
+    recipient_id: string;
+    emi_account_id: string;
+    schedule: PaymentSchedule | null;
+    bacs: PaymentRecipientBacs | null;
+    iban: string | null;
+  }
+
+  interface PaymentSchedule {
+    interval: string;
+    interval_execution_day: number;
+    start_date: string;
+    end_date: string;
+    adjusted_start_date: string | null;
   }
 
   interface PaymentAmount {
@@ -630,8 +651,7 @@ declare module 'plaid' {
     new_access_token: string;
   }
 
-  interface ItemRemoveResponse extends BaseResponse {
-  }
+  interface ItemRemoveResponse extends BaseResponse {}
 
   interface ResetLoginResponse extends BaseResponse {
     reset_login: true;
@@ -728,13 +748,9 @@ declare module 'plaid' {
     recipient_id: string;
   }
 
-  interface PaymentRecipientGetResponse extends BaseResponse {
-    recipient_id: string;
-    name: string;
-    iban: string;
-    address: PaymentRecipientAddress | null;
-    emi_recipient_id: string;
-  }
+  interface PaymentRecipientGetResponse
+    extends BaseResponse,
+      PaymentRecipient {}
 
   interface PaymentRecipientListResponse extends BaseResponse {
     recipients: Array<PaymentRecipient>;
@@ -745,14 +761,10 @@ declare module 'plaid' {
     status: string;
   }
 
-  interface PaymentGetResponse extends BaseResponse {
-    payment_id: string;
-    reference: string;
-    amount: PaymentAmount;
-    status: string;
-    last_status_update: Iso8601DateTimeString;
-    recipient_id: string;
-    emi_account_id: string;
+  interface PaymentGetResponse extends BaseResponse, Payment {}
+
+  interface PaymentListResponse extends BaseResponse {
+    payments: Array<Payment>;
   }
 
   interface PaymentTokenCreateResponse extends BaseResponse {
@@ -854,13 +866,8 @@ declare module 'plaid' {
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
-    getLinkToken(
-      link_token: string,
-    ): Promise<GetLinkTokenResponse>;
-    getLinkToken(
-      link_token: string,
-      cb: Callback<GetLinkTokenResponse>,
-    ): void;
+    getLinkToken(link_token: string): Promise<GetLinkTokenResponse>;
+    getLinkToken(link_token: string, cb: Callback<GetLinkTokenResponse>): void;
 
     createProcessorToken(
       accessToken: string,
@@ -1137,6 +1144,10 @@ declare module 'plaid' {
     getPayment(payment_id: string, cb: Callback<PaymentGetResponse>): void;
 
     getPayment(payment_id: string): Promise<PaymentGetResponse>;
+
+    listPayments(cb: Callback<PaymentListResponse>): void;
+
+    listPayments(): Promise<PaymentListResponse>;
 
     // getTransactions(String, Date, Date, Object?, Function)
     getTransactions(
