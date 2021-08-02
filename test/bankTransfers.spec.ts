@@ -180,7 +180,7 @@ describe('Bank Transfers', () => {
     await retryOnError( async () => {
       const response = await plaidClient.bankTransferEventList(request);
       expect(response.data.bank_transfer_events).to.be.ok;
-      expect(response.data.bank_transfer_events.length).to.equal(2);
+      expect(response.data.bank_transfer_events.length).to.equal(1);
       response.data.bank_transfer_events.forEach((event) => {
         expect(event.bank_transfer_id).to.equal(bankTransferId);
       });

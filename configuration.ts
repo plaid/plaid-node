@@ -99,7 +99,7 @@ export class Configuration {
         if(!this.baseOptions.headers) this.baseOptions.headers = {};
         this.baseOptions.headers = {
           ...this.baseOptions.headers,
-          ['User-Agent']: `Plaid Node v9.0.0-beta.14`
+          ['User-Agent']: `Plaid Node v9.0.0-beta.15`
         }
     }
 
