@@ -1,3 +1,7 @@
+## 9.0.0-beta.15
+- Added `options` field for the /deposit_switch/create endpoint.
+- Type fixes, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md#2020-09-14_11912).
+
 ## 9.0.0-beta.14
 Type fixes from `OpenAPI version 2020-09-14_1.16.2`, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
