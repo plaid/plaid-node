@@ -83,12 +83,13 @@ export class Configuration {
         this.baseOptions = param.baseOptions;
         this.formDataCtor = param.formDataCtor;
 
-        //Edited by Plaid, lines 87-92
+        {{! Edited by Plaid, lines 87-93 }}
         if(!this.baseOptions) this.baseOptions = {};
         if(!this.baseOptions.headers) this.baseOptions.headers = {};
         this.baseOptions.headers = {
+          ['User-Agent']: `Plaid Node v{{npmVersion}}`,
+          ['Plaid-Version']: '{{{plaidApiVersion}}}',
           ...this.baseOptions.headers,
-          ['User-Agent']: `Plaid Node v{{npmVersion}}`
         }
     }
 
