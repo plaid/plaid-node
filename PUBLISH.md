@@ -11,7 +11,17 @@ new version of `plaid-node`:
 make setup
 ```
 
-2. **Update the CHANGELOG.md**
+2. **Create a new version**
+
+Use semantic versioning to determine whether a release should be one of the
+follow version bumps:
+- `patch`
+- `minor`
+- `major`
+
+Once you come up with your new version number, you'll have to update the CHANGELOG and package.json manually.
+
+3. **Update the CHANGELOG.md**
 
 Before publishing a new version to NPM, create and merge a Pull Request to
 update the [`CHANGELOG.md`][2], with the following format:
@@ -24,21 +34,11 @@ update the [`CHANGELOG.md`][2], with the following format:
 
 When generating from an OAS version, indicate what version of the schema you're using.
 
-3. **Create a new version**
-
-Use semantic versioning to determine whether a release should be one of the
-follow version bumps:
-- `patch`
-- `minor`
-- `major`
-
 4. **Publish the version to npm**
 
 Run the tests using the docker image.
 - `docker build -t plaid-node .`
 - `docker run -e CLIENT_ID=$(CLIENT_ID) -e SECRET=$(SECRET) plaid-node`
-
-If the tests pass, **update the semantic version in the package.json** and update the changelog as mentioned in step 2.
 
 Tag the repository with the current version.
 - `git tag {VERSION}`
