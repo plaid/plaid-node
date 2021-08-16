@@ -1,3 +1,138 @@
+## 9.0.0
+
+The official release of the `plaid-node` generated library. Refer to the beta migration guide for tips on migrating from older version of the libraries.
+
+This particular version is pinned to OpenAPI version `2020-09-14_1.20.6`.
+
+## 9.0.0-beta.15
+- Added `options` field for the /deposit_switch/create endpoint.
+- Type fixes, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md#2020-09-14_11912).
+
+## 9.0.0-beta.14
+Type fixes from `OpenAPI version 2020-09-14_1.16.2`, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
+
+## 9.0.0-beta.13
+Fix publish regression.
+
+## 9.0.0-beta.12
+Type fixes, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
+
+## 9.0.0-beta.11
+This version represents a transition in how we maintain our external client libraries. We are now using an [API spec](https://github.com/plaid/plaid-openapi) written in `OpenAPI 3.0.0` and running our definition file through [OpenAPITool's `typescript-axios` generator](https://github.com/OpenAPITools/openapi-generator). All tests have been rewritten in Typescript.
+
+**Node Migration Guide**
+### Client initialization
+From:
+```javascript
+const configs = {
+  clientID: CLIENT_ID,
+  secret: SECRET,
+  env: plaid.environments.sandbox,
+  options: {
+    version: '2020-09-14',
+  },
+};
+
+new plaid.Client(configs);
+```
+
+To:
+```typescript
+const configuration = new Configuration({
+  basePath: PlaidEnvironments.sandbox,
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': CLIENT_ID,
+      'PLAID-SECRET': SECRET,
+      'Plaid-Version': '2020-09-14'
+    }
+  }
+});
+
+new PlaidApi(configuration);
+```
+
+### Endpoints
+
+All endpoint requests now take a request model, have better Typescript support and the functions have been renamed to move the verb to the end (e.g `getTransactions` is now `transactionsGet`).
+Callbacks are no longer supported.
+
+From:
+```javascript
+pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
+  testConstants.PRODUCTS, {}, cb);
+
+```
+
+To:
+```typescript
+const request: SandboxPublicTokenCreateRequest = {
+  institution_id: TestConstants.INSTITUTION,
+  initial_products: TestConstants.PRODUCTS as Products[],
+  options,
+};
+
+const response = await plaidClient.sandboxPublicTokenCreate(request);
+```
+
+### Errors
+From:
+```javascript
+pCl.getTransactions(accessToken, startDate, endDate,
+{ count: count, offset: offset }, (err, response) => {
+  if (err) {
+    if (err.status_code === 400 &&
+      err.error_code === 'PRODUCT_NOT_READY') {
+      setTimeout(() => {
+        getTransactionsWithRetries(
+          accessToken, startDate, endDate, count,
+          offset, num_retries_remaining - 1, cb
+        );
+      }, 1000);
+    } else {
+      throw new Error(
+        'Unexpected error while polling for transactions', err);
+    }
+  } else {
+    cb(null, response);
+  }
+});
+```
+
+To:
+```typescript
+
+plaidClient
+  .transactionsGet(request)
+  .then((response) => resolve(response.data))
+  .catch(() => {
+    setTimeout(() => {
+      if (retriesLeft === 1) {
+        return reject('Ran out of retries while polling for transactions');
+      }
+      getTransactionsWithRetries(
+        plaidClient,
+        access_token,
+        start_date,
+        end_date,
+        count,
+        offset,
+        ms,
+        retriesLeft - 1,
+      ).then((response) => resolve(response));
+    }, ms);
+  });
+
+or use `try/catch`
+
+try {
+  await plaidClient.transactionsGet(request);
+} catch (error) {
+  const err = error.response.data;
+  ...
+}
+```
+
 ## 8.5.2
 - Added additional EMI (E-Money Institution) support `options` to `/payment_initiation/payment/create`
 - Updated `/payment_initiation/payment/get`, `/payment_initiation/recipient/get`, and `/payment_initiation/recipient/list` to return additional EMI related fields
