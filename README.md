@@ -1,6 +1,6 @@
 # plaid-node [![Circle CI](https://circleci.com/gh/plaid/plaid-node.svg?style=svg&circle-token=2efcf082d8df7e119325a4dbed9a1091ff5db422)](https://circleci.com/gh/plaid/plaid-node) [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 
-A node.js client library for the [Plaid API][1].
+The official node.js client library for the [Plaid API][1].
 
 ## Table of Contents
 
@@ -8,8 +8,6 @@ A node.js client library for the [Plaid API][1].
 - [Install](#install)
   - [Versioning](#versioning)
 - [Getting started](#getting-started)
-- [Methods](#methods)
-- [Callbacks](#callbacks)
 - [Error Handling](#error-handling)
 - [Examples](#examples)
   - [Payment Initiation](#payment-initiation)
@@ -21,12 +19,12 @@ A node.js client library for the [Plaid API][1].
 ## Install
 
 ```console
-$ npm install plaid@beta
+$ npm install plaid
 ```
 
 ### Versioning
 
-This release only supports the latest Plaid API version, `2020-09-14`.
+This release only supports the latest Plaid API version, `2020-09-14`, and is generated from our [OpenAPI schema](https://github.com/plaid/plaid-openapi).
 
 ```typescript
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
@@ -37,7 +35,6 @@ const configuration = new Configuration({
     headers: {
       'PLAID-CLIENT-ID': CLIENT_ID,
       'PLAID-SECRET': SECRET,
-      'Plaid-Version': '2020-09-14',
     },
   },
 });
@@ -52,7 +49,7 @@ For information about what has changed between versions and how to update your i
 The module supports all Plaid API endpoints. For complete information about the API, head
 to the [docs][2].
 
-All endpoints require a valid `client_id` and `secret` in the request body or in the headers.
+Most endpoints require a valid `client_id` and `secret` as authentication. Attach them via the configuration.
 
 ```typescript
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
@@ -63,7 +60,6 @@ const configuration = new Configuration({
     headers: {
       'PLAID-CLIENT-ID': CLIENT_ID,
       'PLAID-SECRET': SECRET,
-      'Plaid-Version': '2020-09-14',
     },
   },
 });

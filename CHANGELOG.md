@@ -1,3 +1,9 @@
+## 9.0.0
+
+The official release of the `plaid-node` generated library. Refer to the beta migration guide for tips on migrating from older version of the libraries.
+
+This particular version is pinned to OpenAPI version `2020-09-14_1.20.6`.
+
 ## 9.0.0-beta.15
 - Added `options` field for the /deposit_switch/create endpoint.
 - Type fixes, see full changelog [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md#2020-09-14_11912).
