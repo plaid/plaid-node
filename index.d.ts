@@ -488,8 +488,8 @@ declare module 'plaid' {
   }
 
   interface StudentLoanRepaymentPlan {
-    type: string;
-    description: string;
+    type: string | null;
+    description: string | null;
   }
 
   interface PslfStatus {
@@ -516,7 +516,6 @@ declare module 'plaid' {
     is_overdue: boolean | null;
     last_payment_amount: number | null;
     last_payment_date: Iso8601DateString | null;
-    last_statement_balance: number | null;
     last_statement_issue_date: Iso8601DateString | null;
     loan_name: string | null;
     loan_status: StudentLoanStatus | null;
@@ -532,6 +531,60 @@ declare module 'plaid' {
     servicer_address: StudentLoanServicerAddress | null;
     ytd_interest_paid: number | null;
     ytd_principal_paid: number | null;
+  }
+
+  interface CreditLiability {
+    account_id: string | null;
+    aprs: AnnualPercentageRate[];
+    is_overdue: boolean | null;
+    last_payment_amount: number;
+    last_payment_date: string;
+    last_statement_issue_date: string;
+    minimum_payment_amount: number;
+    next_payment_due_date: string | null;
+  }
+
+  interface MortgageLiability {
+    account_id: string;
+    account_number: string;
+    current_late_fee: number | null;
+    escrow_balance: number | null;
+    has_pmi: boolean | null;
+    has_prepayment_penalty: boolean | null;
+    interest_rate: InterestRate;
+    last_payment_amount: number | null;
+    last_payment_date: string | null;
+    loan_type_description: string | null;
+    loan_term: string | null;
+    maturity_date: string | null;
+    next_monthly_payment: number | null;
+    next_payment_due_date: string | null;
+    origination_date: string | null;
+    origination_principal_amount: number | null;
+    past_due_amount: number | null;
+    property_address: PropertyAddress;
+    ytd_interest_paid: number | null;
+    ytd_principal_paid: number | null;
+  }
+
+  interface AnnualPercentageRate {
+    apr_percentage: number;
+    apr_type: string;
+    balance_subject_to_apr: string | null;
+    interest_charge_amount: string | null;
+  }
+
+  interface InterestRate {
+    percentage: number | null;
+    type: string | null;
+  }
+
+  interface PropertyAddress {
+    city: string | null;
+    country: string | null;
+    postal_code: string | null;
+    region: string | null;
+    street: string | null;
   }
 
   interface PaymentRecipientAddress {
@@ -606,6 +659,8 @@ declare module 'plaid' {
   interface LiabilitiesResponse extends AccountsResponse {
     liabilities: {
       student: Array<StudentLoanLiability>;
+      credit: Array<CreditLiability>;
+      mortgage: Array<MortgageLiability>;
     };
   }
 
@@ -630,8 +685,7 @@ declare module 'plaid' {
     new_access_token: string;
   }
 
-  interface ItemRemoveResponse extends BaseResponse {
-  }
+  interface ItemRemoveResponse extends BaseResponse {}
 
   interface ResetLoginResponse extends BaseResponse {
     reset_login: true;
@@ -854,13 +908,8 @@ declare module 'plaid' {
 
     createPublicToken: AccessTokenFn<CreatePublicTokenResponse>;
 
-    getLinkToken(
-      link_token: string,
-    ): Promise<GetLinkTokenResponse>;
-    getLinkToken(
-      link_token: string,
-      cb: Callback<GetLinkTokenResponse>,
-    ): void;
+    getLinkToken(link_token: string): Promise<GetLinkTokenResponse>;
+    getLinkToken(link_token: string, cb: Callback<GetLinkTokenResponse>): void;
 
     createProcessorToken(
       accessToken: string,
