@@ -1,5 +1,9 @@
-## 9.0.0
+See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+## 9.1.0
+Updating to OAS 2020-09-14_1.26.1.
+
+## 9.0.0
 The official release of the `plaid-node` generated library. Refer to the beta migration guide for tips on migrating from older version of the libraries.
 
 This particular version is pinned to OpenAPI version `2020-09-14_1.20.6`.
