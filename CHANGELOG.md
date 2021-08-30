@@ -1,5 +1,7 @@
-## 9.0.0
+## 9.1.0
+Updating to OAS 2020-09-14_1.26.1.
 
+## 9.0.0
 The official release of the `plaid-node` generated library. Refer to the beta migration guide for tips on migrating from older version of the libraries.
 
 This particular version is pinned to OpenAPI version `2020-09-14_1.20.6`.
@@ -132,31 +134,6 @@ try {
   ...
 }
 ```
-
-## 8.5.2
-- Added additional EMI (E-Money Institution) support `options` to `/payment_initiation/payment/create`
-- Updated `/payment_initiation/payment/get`, `/payment_initiation/recipient/get`, and `/payment_initiation/recipient/list` to return additional EMI related fields
-
-## 8.5.1
-- Upgrade package versions
-
-## 8.5.0
-- Add support for `options` to `/payment_initiation/payment/create`
-
-## 8.4.0
-- Added support for `min_last_updated_datetime` in the `/balance/get` request and
-    `last_updated_datetime` in the `/balance/get` response.
-
-## 8.3.0
-- Added support for `/income/verification/paystubs/get`.
-
-## 8.2.1
-- Added support for `/income/verfication/create`.
-
-## 8.2.0
-- Added support for `/deposit_switch/alt/create` endpoint
-- Added support for providing a `deposit_switch_id` to the `/link/token/create` endpoint
-- Upgrade package versions
 
 ## 8.1.4
 - Corrected the type description for `createPaymentRecipient`. [#396](https://github.com/plaid/plaid-node/pull/396)
