@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "9.1.0",
+  "version": "9.2.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:plaid/plaid-node.git"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   },
   "bugs": {
     "url": "https://github.com/plaid/plaid-node/issues"
