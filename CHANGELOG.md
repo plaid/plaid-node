@@ -1,3 +1,6 @@
+## 8.5.3
+- Extend `CreateLinkTokenOptions` interface with `institution_id` and `eu_config` to support initializing Modular and Headless link for EU products.
+
 ## 8.5.1
 - Upgrade package versions
 
