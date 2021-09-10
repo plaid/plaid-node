@@ -1,5 +1,8 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 9.2.1
+- Update Axios dependency to 0.21.2
+
 # 9.2.0
 Updating to OAS 2020-09-14_1.31.1.
 
