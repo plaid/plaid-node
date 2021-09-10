@@ -90,6 +90,10 @@ declare module 'plaid' {
     payment_id: string;
   }
 
+  interface LinkTokenEUConfig {
+    headless?: boolean;
+  }
+
   interface DepositSwitchOptions {
     deposit_switch_id: string;
   }
@@ -114,6 +118,8 @@ declare module 'plaid' {
     payment_initiation?: PaymentInitiationOptions;
     deposit_switch?: DepositSwitchOptions;
     income_verification?: IncomeVerificationOptions;
+    institution_id?: string;
+    eu_config?: LinkTokenEUConfig;
   }
 
   interface PaymentCreateOptions {
