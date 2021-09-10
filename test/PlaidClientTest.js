@@ -1158,7 +1158,7 @@ describe('plaid.Client', () => {
           value: 100.00,
         };
         const options = {
-          emi_account_id: '123456789'
+          emi_account_id: 'sandbox-emi-account-id-123456789'
         };
 
         // This payment and recipient do not have an associated EMI account
