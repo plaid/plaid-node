@@ -1,3 +1,6 @@
+## 8.5.3
+- Extend `CreateLinkTokenOptions` interface with `institution_id` and `eu_config` to support initializing Modular and Headless link for EU products.
+
 ## 8.5.2
 - Added additional EMI (E-Money Institution) support `options` to `/payment_initiation/payment/create`
 - Updated `/payment_initiation/payment/get`, `/payment_initiation/recipient/get`, and `/payment_initiation/recipient/list` to return additional EMI related fields

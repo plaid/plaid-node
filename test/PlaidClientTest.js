@@ -153,6 +153,33 @@ describe('plaid.Client', () => {
     });
   });
 
+  it('can create eu link tokens for modular link', cb => {
+    pCl.createLinkToken({
+      user: {
+        client_user_id: (new Date()).getTime().toString(),
+        legal_name: 'John Doe',
+        phone_number: '+1 415 555 0123',
+        phone_number_verified_time: '2020-01-01T00:00:00Z',
+        email_address: 'example@plaid.com',
+        email_address_verified_time: '2020-01-01T00:00:00Z'
+      },
+      client_name: 'Plaid App',
+      products: ['auth', 'transactions'],
+      country_codes: ['GB'],
+      language: 'en',
+      webhook: 'https://sample-web-hook.com',
+      institution_id: 'ins_116834',
+      eu_config: {
+        headless: true,
+      },
+    }, (err, successResponse) => {
+      expect(err).to.be(null);
+      expect(successResponse.link_token).to.match(/^link-sandbox-/);
+      expect(successResponse.expiration).to.be.ok();
+      cb();
+    });
+  });
+
   it('can get link tokens', cb => {
     pCl.createLinkToken({
       user: {
@@ -1130,9 +1157,12 @@ describe('plaid.Client', () => {
           currency: 'GBP',
           value: 100.00,
         };
+
         const options = {
-          emi_account_id: '123456789'
+          emi_account_id:
+          'emi-account-id-sandbox-1dc17e1f-aa82-4d79-9312-bef95797f8dc',
         };
+
 
         // This payment and recipient do not have an associated EMI account
         // so this request is expected to error.
