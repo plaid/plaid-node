@@ -1,5 +1,8 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 9.4.0
+- Updating to OAS 2020-09-14_1.36.1
+
 # 9.3.0
 - Updating to OAS 2020-09-14_1.33.0.
 - Bumped `axios` from `0.21.1` to `0.21.4` due to a vulnerability.

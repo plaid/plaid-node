@@ -21,6 +21,9 @@ follow version bumps:
 
 Once you come up with your new version number, you'll have to update the CHANGELOG and package.json manually.
 
+Also, update the package.json to have the new version number as well and rebuild the client
+library to have this propogate to the package-lock.json.
+
 3. **Update the CHANGELOG.md**
 
 Before publishing a new version to NPM, create and merge a Pull Request to
