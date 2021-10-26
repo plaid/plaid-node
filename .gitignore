@@ -1,5 +1,4 @@
 /coverage/
-/dist/coverage/
 /node_modules/
 /npm-debug.log
 .env
