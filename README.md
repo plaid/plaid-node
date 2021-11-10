@@ -44,7 +44,7 @@ const client = new PlaidApi(configuration);
 
 For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
 
-The plaid-node client library is typically updated on a weekly basis. The canonical source for the latest version is [npm](https://www.npmjs.com/package/plaid).
+The plaid-node client library is typically updated on a weekly basis. The canonical source for the latest version number is the [client library changelog](https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md).
 
 ## Getting started
 
