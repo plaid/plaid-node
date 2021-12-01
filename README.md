@@ -44,6 +44,8 @@ const client = new PlaidApi(configuration);
 
 For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
 
+The plaid-node client library is typically updated on a biweekly basis. The canonical source for the latest version number is the [client library changelog](https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md).
+
 ## Getting started
 
 The module supports all Plaid API endpoints. For complete information about the API, head
