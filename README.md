@@ -46,6 +46,23 @@ For information about what has changed between versions and how to update your i
 
 The plaid-node client library is typically updated on a biweekly basis. The canonical source for the latest version number is the [client library changelog](https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md).
 
+## Data type differences from API and from previous versions
+
+### Enums
+While the API and previous library versions represent enums using strings, this current library uses Node enums.
+
+Old:
+```
+products: ['auth', 'transactions'],
+country_codes: ['US'],
+```
+
+Current:
+```
+products: [Products.Auth, Products.Transactions],
+country_codes: [Products.Us],
+```
+
 ## Getting started
 
 The module supports all Plaid API endpoints. For complete information about the API, head
