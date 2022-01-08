@@ -131,9 +131,9 @@ retrieve account data:
 
 ```typescript
 const response = await plaidClient.itemPublicTokenExchange({ public_token });
-const access_token = response.access_token;
+const access_token = response.data.access_token;
 const accounts_response = await plaidClient.accountsGet({ access_token });
-const accounts = accounts_response.accounts;
+const accounts = accounts_response.data.accounts;
 ```
 
 Retrieve transactions for a transactions user for the last thirty days:
@@ -148,7 +148,7 @@ const response = await plaidClient.transactionsGet({
   start_date: thirtyDaysAgo,
   end_date: today,
 });
-const transactions = response.transactions;
+const transactions = response.data.transactions;
 console.log(
   `You have ${res.transactions.length} transactions from the last thirty days.`,
 );
@@ -163,7 +163,7 @@ const response = await plaidClient.accountsGet({
     account_ids: ['123456790'],
   },
 });
-console.log(response.accounts);
+console.log(response.data.accounts);
 ```
 
 ### Payment Initiation
