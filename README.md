@@ -150,7 +150,7 @@ const response = await plaidClient.transactionsGet({
 });
 const transactions = response.data.transactions;
 console.log(
-  `You have ${res.transactions.length} transactions from the last thirty days.`,
+  `You have ${transactions.length} transactions from the last thirty days.`,
 );
 ```
 
@@ -188,7 +188,7 @@ const response = await plaidClient.paymentInitiationRecipientCreate({
   iban,
   address,
 });
-console.log(response.recipient_id);
+console.log(response.data.recipient_id);
 ```
 
 Create payment recipient using BACS with no IBAN or address
@@ -205,7 +205,7 @@ const response = await plaidClient.paymentInitiationRecipientCreate({
   name,
   bacs,
 });
-console.log(response.recipient_id);
+console.log(response.data.recipient_id);
 ```
 
 Create payment
@@ -222,8 +222,8 @@ const response = await plaidClient.paymentInitiationPaymentCreate({
   reference,
   amount,
 });
-console.log(response.payment_id);
-console.log(response.status);
+console.log(response.data.payment_id);
+console.log(response.data.status);
 ```
 
 Create Link Token (for Payment Initiation only)
@@ -242,7 +242,7 @@ const response = await plaidClient.linkTokenCreate({
   },
 });
 
-console.log(response.link_token);
+console.log(response.data.link_token);
 ```
 
 Download Asset Report PDF
@@ -312,20 +312,20 @@ app.post('/plaid_exchange', (req, res) => {
 
   return plaidClient
     .itemPublicTokenExchange({ public_token })
-    .then((res) => res.access_token)
+    .then((tokenResponse) => tokenResponse.access_token)
     .then((accessToken) => plaidClient.accountsGet({ accessToken }))
-    .then((res) => console.log(res.accounts))
+    .then((accountsResponse) => console.log(accountsResponse.accounts))
     .catch((error) => {
       const err = error.response.data;
 
       // Indicates plaid API error
-      console.log('/exchange token returned an error', {
+      console.error('/exchange token returned an error', {
         error_type: err.error_type,
-        error_code: res.statusCode,
+        error_code: err.error_code,
         error_message: err.error_message,
         display_message: err.display_message,
+        documentation_url: err.documentation_url,
         request_id: err.request_id,
-        status_code: err.status_code,
       });
 
       // Inspect error_type to handle the error in your application

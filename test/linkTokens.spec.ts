@@ -8,7 +8,7 @@ import {
   PlaidApi,
   Products,
 } from '../dist';
-import { AccountSubtype } from '../dist';
+import { DepositoryAccountSubtype } from '../dist';
 
 describe('Link Tokens', () => {
   let plaidClient: PlaidApi;
@@ -50,7 +50,7 @@ describe('Link Tokens', () => {
       webhook: 'https://sample-web-hook.com',
       account_filters: {
         depository: {
-          account_subtypes: [AccountSubtype.Checking, AccountSubtype.Savings],
+          account_subtypes: [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings],
         },
       },
     };
@@ -77,7 +77,7 @@ describe('Link Tokens', () => {
       webhook: 'https://sample-web-hook.com',
       account_filters: {
         depository: {
-          account_subtypes: [AccountSubtype.Checking, AccountSubtype.Savings],
+          account_subtypes: [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings],
         },
       },
     };
@@ -105,7 +105,7 @@ describe('Link Tokens', () => {
     );
     expect(getResponse.data.metadata?.account_filters).to.deep.equal({
       depository: {
-        account_subtypes: [AccountSubtype.Checking, AccountSubtype.Savings],
+        account_subtypes: [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings],
       },
     });
   });

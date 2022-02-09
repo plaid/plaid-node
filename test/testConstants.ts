@@ -10,7 +10,9 @@ export const TestConstants = {
     LOGIN_REQUIRED: 'error_ITEM_LOGIN_REQUIRED',
   },
   INSTITUTION: 'ins_109508',
+  INCOME_INSTITUTION: 'ins_129618',
   PRODUCTS: ['transactions', 'auth', 'assets', 'investments'],
+  INCOME_PRODUCTS: ['income_verification'],
   MFA_RESPONSES: {
     DEVICE: ['1234'],
     QUESTIONS_1_1: [['answer_0_0']],

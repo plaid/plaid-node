@@ -19,4 +19,4 @@ setup:
 
 .PHONY: test
 test:
-	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 60000 -r ts-node/register test/**/*.spec.ts
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- --exit --timeout 60000 -r ts-node/register test/**/*.spec.ts
