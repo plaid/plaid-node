@@ -4,11 +4,9 @@ import { createPlaidClient } from './clientHelper';
 import {
   PlaidApi,
   Products,
-  IncomeVerificationPaystubGetRequest,
   SandboxPublicTokenCreateRequest,
   ItemPublicTokenExchangeRequest,
   IncomeVerificationTaxformsGetRequest,
-  IncomeVerificationSummaryGetRequest,
 } from '../dist';
 import { TestConstants } from './testConstants';
 
@@ -37,18 +35,6 @@ describe('Income Verification', () => {
     testAccessToken = exchangeResponse.data.access_token;
   });
 
-  it('income verification paystubs get', async () => {
-    const request: IncomeVerificationPaystubGetRequest = {
-      access_token: testAccessToken,
-    };
-
-    const response = await plaidClient.incomeVerificationPaystubsGet(request);
-    expect(response).to.be.ok;
-    expect(response.data.error).to.be.undefined;
-    expect(response.data.paystubs).to.not.be.empty;
-    expect(response.data.document_metadata).to.not.be.empty;
-  });
-
   it('income verification taxforms get', async () => {
     const request: IncomeVerificationTaxformsGetRequest = {
       access_token: testAccessToken,
@@ -59,15 +45,5 @@ describe('Income Verification', () => {
     expect(response.data.error).to.be.undefined;
     expect(response.data.taxforms).to.not.be.empty;
     expect(response.data.document_metadata).to.not.be.empty;
-  });
-
-  it('income verification summary get', async () => {
-    const request: IncomeVerificationSummaryGetRequest = {
-      access_token: testAccessToken,
-    };
-
-    const response = await plaidClient.incomeVerificationSummaryGet(request);
-    expect(response).to.be.ok;
-    expect(response.data.error).to.be.undefined;
   });
 });

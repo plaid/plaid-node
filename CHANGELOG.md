@@ -1,5 +1,93 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 9.11.0
+- Updating to OAS 2020-09-14_1.77.1
+
+# Breaking changes
+- Many enum fields have been de-anonymized and renamed, new names can be found in the `2020-09-14_1.64.15` change message
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.77.1
+- Fix extraneous field in enum that caused issue in code generation
+- Added `asset_report_id` to the example for `/asset_report/relay/refresh`
+
+### 2020-09-14_1.77.0
+- Explicitly set `format: double` for non-integer numbers so generated fields prefer float64
+
+### 2020-09-14_1.76.0
+- Add three new endpoints for Assets: `/asset_report/relay/create`, `/asset_report/relay/get`, and `/asset_report/relay/rmeove`
+
+### 2020-09-14_1.75.0
+- Added `/asset_report/relay/refresh` endpoint
+
+### 2020-09-14_1.74.0
+- Add `recurring_transactions` to list of products
+
+### 2020-09-14_1.73.0
+- Add new endpoint for `/credit/bank_income/get`
+
+### 2020-09-14_1.72.0
+- Updated documentation URLs for all product endpoints. They can now be found
+at `/docs/api/products/<product-name>/#endpoint` instead of `/docs/api/products/#endpoint`
+
+### 2020-09-14_1.71.0
+- internal changes
+
+### 2020-09-14_1.70.0
+- Remove deprecated `income_verification_id` from `/sandbox/income/fire_webhook`
+
+### 2020-09-14_1.69.1
+- Reorder processors enum
+
+### 2020-09-14_1.69.0
+- Added `/beta/transactions/v1/enhance` endpoint
+
+### 2020-09-14_1.68.1
+- Added `status` object to sample responses for `/institutions/get` and `institutions/search` endpoints
+
+### 2020-09-14_1.68.0
+- Mark `include_personal_finance_category_beta` property as deprecated.
+- Add new argument `include_personal_finance_category` to TransactionsGetRequestOptions.
+- Update docs for `/transactions/get` request and response, referencing personal_finance_category taxonomy csv file.
+
+### 2020-09-14_1.67.1
+- internal changes
+
+### 2020-09-14_1.67.0
+- Removed unused `/income/verification/summary/get` endpoint
+
+### 2020-09-14_1.66.0
+- Added Payment Consent endpoints
+
+### 2020-09-14_1.65.0
+- Removed unused `/income/verification/paystub/get` endpoint
+
+### 2020-09-14_1.64.15
+- De-anonymized enums:
+  - `PaymentInitiationPaymentReverseResponse.properties.status` => `PaymentInitiationRefundStatus`
+  - `PaymentInitiationPaymentCreateResponse.properties.status` => `PaymentInitiationPaymentCreateStatus`
+  - `PaymentInitiationRefund.properties.status` => `PaymentInitiationRefundStatus`
+  - `PaymentAmount.properties.currency` => `PaymentAmountCurrency`
+  - `InvestmentTransaction.properties.type` => `InvestmentTransactionType`
+  - `InvestmentTransaction.properties.subtype` => `InvestmentTransactionSubtype`
+  - `TransferAuthorizationDecisionRationale.properties.code` => `TransferAuthorizationDecisionRationaleCode`
+  - `TransferAuthorizationGuaranteeDecisionRationale.properties.code` => `TransferAuthorizationGuaranteeDecisionRationaleCode`
+  - `TransferAuthorization.properties.decision` => `TransferAuthorizationDecision`
+  - `TransferEventListRequest.properties.transfer_type` => `TransferEventListTransferType`
+  - `BankTransferEventListRequest.properties.bank_transfer_type` => `BankTransferEventListBankTransferType`
+  - `BankTransferEventListRequest.properties.direction` => `BankTransferEventListDirection`
+  - `TransferIntentCreate.properties.status` => `TransferIntentStatus`
+  - `TransferIntentGet.properties.status` => `TransferIntentStatus`
+  - `TransferIntentGet.properties.authorization_decision` => `TransferIntentAuthorizationDecision`
+- `IncomeVerificationPrecheckMilitaryInfo.properties.branch` is now a string field (previously enum)
+
+### 2020-09-14_1.64.15
+- Made `last_statement_balance` and `minimum_payment_amount` `nullable` for credit card liabilities schema to reflect existing API behavior.
+
+### 2020-09-14_1.64.14
+- Made `last_payment_amount` and `last_statement_issue_date` `nullable` for credit card liabilities schema to reflect existing API behavior.
+- Fix transfers examples to reflect more consistent usage of `region` field.
+
 # 9.10.1
 - Updating to OAS 2020-09-14_1.64.13
 
