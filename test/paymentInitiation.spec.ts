@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import { createPlaidClient } from './clientHelper';
 import {
-  PaymentAmountCurrency,
+  PaymentAmountCurrencyEnum,
   PaymentInitiationPaymentCreateRequest,
   PaymentInitiationPaymentGetRequest,
   PaymentInitiationPaymentListRequest,
@@ -71,7 +71,7 @@ describe('Payment Initiation', () => {
       recipient_id: getResponse.data.recipient_id as string,
       reference: 'TestPayment',
       amount: {
-        currency: PaymentAmountCurrency.Gbp,
+        currency: PaymentAmountCurrencyEnum.Gbp,
         value: 100.0,
       },
     };
@@ -161,7 +161,7 @@ describe('Payment Initiation', () => {
       recipient_id: getResponse.data.recipient_id as string,
       reference: 'TestPayment',
       amount: {
-        currency: PaymentAmountCurrency.Gbp,
+        currency: PaymentAmountCurrencyEnum.Gbp,
         value: 100.0,
       },
     };
