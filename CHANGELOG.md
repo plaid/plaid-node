@@ -1,5 +1,25 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.0.0
+- Updating to OAS 2020-09-14_1.79.0
+
+## Breaking changes
+- Many enum fields have been de-anonymized and renamed, new names can be found in the `2020-09-14_1.64.15` change message
+- Non integer numbers are now `float64` fields
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.79.0
+- Update to include all changes up to `2020-09-14_1.77.4` (Undo revert from `1.78.x` updates)
+
+### 2020-09-14_1.77.4
+- Remove the word "Asset" before "Relay" in every asset report relay related responses and request objects
+
+### 2020-09-14_1.77.3
+- Add "AssetReport" at the beginning of relay related responses and request objects to match the same pattern as other assets related objects
+
+### 2020-09-14_1.77.2
+- Add `ProductAccess` fields for upcoming partner
+
 # 9.12.0
 - Updating to OAS 2020-09-14_1.78.2
 - Node library 9.11.0 was erroneously released as a `minor` version; 9.11.0 changes will be re-released as a `major` version shortly.
