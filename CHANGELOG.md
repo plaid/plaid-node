@@ -1,5 +1,48 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.0.1
+- Updating to OAS 2020-09-14_1.84.5
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.84.5
+- Added missing `asset_report_id` field to `/asset_report/relay/refresh`
+
+### 2020-09-14_1.84.4
+- Change summary description and url for `/credit/bank_income/get`
+
+### 2020-09-14_1.84.3
+- Slight wording change for `/credit/bank_income/get` response fields
+
+### 2020-09-14_1.84.3
+- Move `user_token` to top level of `link/token/create` request 
+
+### 2020-09-14_1.84.2
+- Correct typo in enum value for Investment subtypes (`person` -> `pension`)
+
+### 2020-09-14_1.84.1
+- Fix schema to properly handle personal finance categories in `/transactions/get`
+
+### 2020-09-14_1.84.0
+- Add `user_token` parameter to `link/token/create`
+
+### 2020-09-14_1.83.1
+- Add new fields to `/credit/bank_income/get` response
+
+### 2020-09-14_1.83.0
+- Remove `permitted` decision for `/transfer/authorization/create`
+
+### 2020-09-14_1.82.0
+- Add beta field `consented_products` to `/item/get/` endpoint response
+
+### 2020-09-14_1.82.0
+- Revamp LinkTokenCreate.IncomeVerificationOptions for GA
+
+### 2020-09-14_1.81.0
+- Add `/transaction/rules/create`, `/transaction/rules/list` and `/transaction/rules/remove` endpoints
+
+### 2020-09-14_1.80.0
+- Added `/user/create` endpoint
+
 # 10.0.0
 - Updating to OAS 2020-09-14_1.79.0
 
