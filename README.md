@@ -44,23 +44,26 @@ const client = new PlaidApi(configuration);
 
 For information about what has changed between versions and how to update your integration, head to the [API upgrade guide][api-upgrades].
 
-The plaid-node client library is typically updated on a biweekly basis. The canonical source for the latest version number is the [client library changelog](https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md).
+The plaid-node client library is typically updated on a monthly basis. The canonical source for the latest version number is the [client library changelog](https://github.com/plaid/plaid-node/blob/master/CHANGELOG.md).
 
 ## Data type differences from API and from previous versions
 
 ### Enums
-While the API and previous library versions represent enums using strings, this current library uses Node enums.
+While the API and previous library versions represent enums using strings, this current library allows either strings or Node enums.
 
 Old:
 ```
 products: ['auth', 'transactions'],
-country_codes: ['US'],
 ```
 
 Current:
+products: ['auth', 'transactions'],
 ```
+OR
+
+```
+const { Products } = require("plaid");
 products: [Products.Auth, Products.Transactions],
-country_codes: [Products.Us],
 ```
 
 ## Getting started
