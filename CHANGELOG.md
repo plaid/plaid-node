@@ -1,5 +1,89 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.2.0
+- Updating to OAS 2020-09-14_1.94.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.94.0
+- Add `use_case`, `company_legal_name`, `city`, `region`, `country_code`, `postal_code` as a required response field of `Application`
+
+### 2020-09-14_1.93.2
+- Remove `income_verification_id` from income webhook example
+- Fix incorrect URL for `/user/create` endpoint
+
+### 2020-09-14_1.93.1
+- Remove deprecated `income_verification_id` from income webhooks
+- Standardize income webhook casing
+
+### 2020-09-14_1.93.0
+- Add several new fields to `/signal/evaluate` response
+- 
+### 2020-09-14_1.92.4
+- Add `/sandbox/transfer/fire_webhook` endpoint
+
+### 2020-09-14_1.91.4
+- Mark certain Income endpoints as deprecated in favor of the new `/credit/*` endpoints.
+
+### 2020-09-14_1.91.3
+- Add `checkout` processor to `/processor/token/create`
+
+### 2020-09-14_1.91.2
+- Add `webhook_type` parameter to `/sandbox/item/fire_webhook`
+- Support for investments transactions, investments holdings and liabilities `DEFAULT_UPDATE` webhooks
+
+### 2020-09-14_1.90.2
+- Add new warning type to `/credit/bank_income/get` response
+
+### 2020-09-14_1.90.1
+- Add `marqeta` and `solid` as Auth processor partners
+- Fix schema of `cause` parameter for Asset Reports
+- Fix some invalid examples
+ 
+### 2020-09-14_1.90.0
+- Add `/credit/employment/get` endpoint
+- Add optional `access_tokens` array to `/credit/payroll_income/precheck` request
+
+### 2020-09-14_1.89.3
+- Update description of `/sandbox/item/fire_webhook`
+
+### 2020-09-14_1.89.2
+- Update description of `accounts/get`
+
+### 2020-09-14_1.89.1
+- Added `AUTH_DATA_UPDATE` webhook code as valid input to `/sandbox/item/fire_webhook`
+- Update description for `/sandbox/item/fire_webhook`
+
+### 2020-09-14_1.89.0
+- Add `/transfer/migrate_account` endpoint
+
+### 2020-09-14_1.88.2
+- Fix operationId for `/credit/payroll_income/precheck`
+
+### 2020-09-14_1.88.1
+- Remove deprecated fields from `/item/application/list`
+
+### 2020-09-14_1.88.0
+- Add `wire_routing_number` parameter to `/bank_transfer/migrate_account`
+
+### 2020-09-14_1.87.1
+- Specify minimum length of 1 for `description` on `TransferIntentCreateRequest`
+
+### 2020-09-14_1.87.0
+- Add `consent_id` support in the Institutions Search request
+
+### 2020-09-14_1.86.1
+- Add `apex_clearing` as a processor partner
+
+### 2020-09-14_1.86.0
+- Introduce Credit Payroll Income APIs
+- Introduce Credit Precheck API
+
+### 2020-09-14_1.85.1
+- Add `/identity_verification/create` endpoint, kept private for now
+
+### 2020-09-14_1.85.0
+- Add `status` field to `ConnectedApplication`
+
 # 10.1.0
 - Updating to OAS 2020-09-14_1.84.5
 
