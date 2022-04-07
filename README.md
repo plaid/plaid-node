@@ -52,17 +52,19 @@ The plaid-node client library is typically updated on a monthly basis. The canon
 While the API and previous library versions represent enums using strings, this current library allows either strings or Node enums.
 
 Old:
-```
+```typescript
 products: ['auth', 'transactions'],
 ```
 
 Current:
-products: ['auth', 'transactions'],
-```
-OR
 
-```
+```typescript
+products: ['auth', 'transactions'],
+
+// or
+
 const { Products } = require("plaid");
+
 products: [Products.Auth, Products.Transactions],
 ```
 
@@ -115,7 +117,7 @@ try {
   const err = error.response.data;
 }
 
-or;
+// or
 
 plaidClient
   .transactionsGet(request)
