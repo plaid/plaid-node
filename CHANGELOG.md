@@ -1,5 +1,28 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.3.0
+- Updating to OAS 2020-09-14_1.97.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.97.0
+- [Beta] Rename some `Credit` refs that were preventing client library generation from completing successfully
+
+### 2020-09-14_1.96.0
+- remove unused `payroll_income_id` from `/credit/payroll_income/get` field
+- add status object to items in `/credit/payroll_income/get` response body
+
+### 2020-09-14_1.95.1
+- Add `TransferEventsUpdateWebhook` schema
+
+### 2020-09-14_1.95.0
+- Add `institution_data` parameter to `/link/token/create`
+
+### 2020-09-14_1.94.2
+- Tidy up YAML
+
+### 2020-09-14_1.94.1
+- Add `highnote` processor to `/processor/token/create`
+
 # 10.2.0
 - Updating to OAS 2020-09-14_1.94.0
 
