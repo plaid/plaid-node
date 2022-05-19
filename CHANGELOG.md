@@ -1,5 +1,170 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.4.0
+- Updating to OAS 2020-09-14_1.115.2
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.115.2
+- Update description fields to fix formatting errors
+- Reflect that `error.suggested_action` is `nullable`
+
+### 2020-09-14_1.115.1
+- Update OpenAPI spec
+
+### 2020-09-14_1.115.0
+- Added `income_report_token` to `/credit/payroll_income/get` response
+
+### 2020-09-14_1.114.2
+- Add `/wallet/create` endpoint
+
+### 2020-09-14_1.114.1
+- Add beta `additional_consented_products` field to `/link/token/create`
+
+### 2020-09-14_1.113.1
+- Updated `/transactions/recurring/get` description
+
+### 2020-09-14_1.113.0
+- Add webhooks for new Monitor and Identity Verification products
+
+### 2020-09-14_1.112.0
+- Add endpoints for new Monitor and Identity Verification products
+
+### 2020-09-14_1.111.15
+- Remove `emi_recipient_id` from Payment Initiation Recipient
+
+### 2020-09-14_1.111.14
+- Add optional `iban` and `bacs` fields to `options` in the `/payment_initiation/consent/create` request
+
+### 2020-09-14_1.111.13
+- Updated `/transactions/sync` description
+
+### 2020-09-14_1.111.12
+- Add more accurate enum documentations to `/transactions/recurring/get` API doc
+
+### 2020-09-14_1.111.11
+- Additional documentation for `/transactions/sync`
+
+### 2020-09-14_1.111.9
+- Remove deprecated field `createdAt` from `/application/get` response
+
+### 2020-09-14_1.111.8
+- Add field validation to `BankTransferDirection`
+
+### 2020-09-14_1.111.7
+- Remove deprecated field `createdAt` from `/application/get` response
+
+### 2020-09-14_1.111.6
+- Add external doc link to `transactions/recurring/get`
+
+### 2020-09-14_1.111.5
+- Updating the API doc for Recurring Transactions
+
+### 2020-09-14_1.111.4
+- Add `DisplayName` in `/application/get` response
+
+### 2020-09-14_1.111.3
+- Updated sample responses for all Transfer endpoints
+
+### 2020-09-14_1.111.2
+- Changing `beta/transactions/rules/` routes to `beta/transactions/rules/v1`
+
+### 2020-09-14_1.111.1
+- Fixing `InsitututionMetadata` typo to `InstitutionMetadata` in private `/beta/credit/payroll_income/risk_signals/get`endpoint response
+
+### 2020-09-14_1.111.0
+- Added `require_guarantee`, `guarantee_decision`, and `guarantee_decision_rationale` to `/transfer/intent` in order to support Guarantee when using Transfer UI.
+
+### 2020-09-14_1.110.2
+- Add additional supported `type` enums in `WalletTransaction`.
+
+### 2020-09-14_1.110.1
+- Add Additional History billing information for /asset_report/create.
+
+### 2020-09-14_1.110.0
+- Add `user_id` to income verification webhook payload
+
+### 2020-09-14_1.109.1
+- Make `consent_id` field nullable in `PaymentInitiationPayment`.
+
+### 2020-09-14_1.109.0
+- Replace `initiated_refunds` with `refund_ids` in the `/payment_initiation/payment/get` and `/payment_initiation/payment/list` responses
+
+### 2020-09-14_1.108.0
+- Added `/beta/credit/payroll_income/risk_signals/get` endpoint (currently private)
+
+### 2020-09-14_1.107.4
+- Remove unsupported ACH classes from `bank_transfer/` and `transfer/` endpoints.
+
+### 2020-09-14_1.107.3
+- Add `enable_multiple_items` parameter for bank income.
+
+### 2020-09-14_1.107.2
+- Fix typo in `institution_name` parameter for credit endpoints.
+
+### 2020-09-14_1.107.0
+- Added `reference` and `idempotency_key` fields to the `payment_initiation/payment/reverse` request.
+
+### 2020-09-14_1.106.0
+- Added `is_update_mode` to `income_verification` in the `/link/token/create` body
+
+### 2020-09-14_1.105.2
+- Consolidate item schemas
+
+### 2020-09-14_1.105.1
+- Removed `client_id` and `secret` as required fields from `/transfer/intent/{get,create}` to match actual API behavior.
+
+### 2020-09-14_1.105.0
+- Add `/credit/payroll_income/refresh` endpoint
+
+### 2020-09-14_1.104.0
+- Added `/signal/prepare`
+
+### 2020-09-14_1.102.0
+- Added `/watchlist_screening/individual/list` (currently private)
+- Added `/watchlist_screening/individual/create` (currently private)
+- Added `/watchlist_screening/individual/get` (currently private)
+- Added `/watchlist_screening/individual/update` (currently private)
+- Added `/watchlist_screening/individual/history/list` (currently private)
+- Added `/watchlist_screening/individual/review/list` (currently private)
+- Added `/watchlist_screening/individual/review/create` (currently private)
+- Added `/watchlist_screening/individual/hit/list` (currently private)
+- Added `/watchlist_screening/entity/list` (currently private)
+- Added `/watchlist_screening/entity/create` (currently private)
+- Added `/watchlist_screening/entity/get` (currently private)
+- Added `/watchlist_screening/entity/update` (currently private)
+- Added `/watchlist_screening/entity/history/list` (currently private)
+- Added `/watchlist_screening/entity/hit/list` (currently private)
+- Added `/watchlist_screening/entity/review/list` (currently private)
+- Added `/watchlist_screening/entity/review/create` (currently private)
+- Added `/watchlist_screening/individual/program/list` (currently private)
+- Added `/watchlist_screening/individual/program/get` (currently private)
+- Added `/watchlist_screening/entity/program/list` (currently private)
+- Added `/watchlist_screening/entity/program/get` (currently private)
+- Added `/dashboard_user/list` (currently private)
+- Added `/dashboard_user/get` (currently private)
+- Added `/identity_verification/list` (currently private)
+- Added `/identity_verification/get` (currently private)
+- Added `/identity_verification/retry` (currently private)
+- Modified `/identity_verification/create` (currently private)
+
+### 2020-09-14_1.101.0
+- Add endpoint for `/credit/bank_income/refresh`
+
+### 2020-09-14_1.100.0
+- Add `include_original_description`, `include_personal_finance_category` options to `/transactions/sync` request.
+
+### 2020-09-14_1.99.0
+- API changes for /credit/employment/get
+
+### 2020-09-14_1.98.1
+- Add `gusto` as processor partner
+
+### 2020-09-14_1.98.0
+- Add `user_token` as a request parameter for `/sandbox/public_token/create`
+
+### 2020-09-14_1.97.1
+- Remove `auth`, `transactions_updates`, `investments_updates`, and `identity` as required fields from Item status to match actual API behavior.
+
 # 10.3.0
 - Updating to OAS 2020-09-14_1.97.0
 

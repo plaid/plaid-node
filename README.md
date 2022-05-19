@@ -48,21 +48,41 @@ The plaid-node client library is typically updated on a monthly basis. The canon
 
 ## Data type differences from API and from previous versions
 
+### Dates
+
+Dates and datetimes in requests and responses are represented in this version of the Node client library as strings. 
+
+Time zone information is required for request fields that accept datetimes. Failing to include time zone information will result in an error. See the following examples for guidance on syntax.
+
+If the API reference documentation for a field specifies `format: date`, use a string formatted as `'YYYY-MM-DD'`:
+
+```js
+const start_date = '2022-05-05';
+```
+
+If the API reference documentation for a field specifies `format: date-time`, use a string formatted as `'YYYY-MM-DDTHH:mm:ssZ'`:
+
+```js
+const start_date = '2019-12-12T22:35:49Z';
+```
+
 ### Enums
 While the API and previous library versions represent enums using strings, this current library allows either strings or Node enums.
 
 Old:
-```
+```typescript
 products: ['auth', 'transactions'],
 ```
 
 Current:
-products: ['auth', 'transactions'],
-```
-OR
 
-```
+```typescript
+products: ['auth', 'transactions'],
+
+// or
+
 const { Products } = require("plaid");
+
 products: [Products.Auth, Products.Transactions],
 ```
 
@@ -115,7 +135,7 @@ try {
   const err = error.response.data;
 }
 
-or;
+// or
 
 plaidClient
   .transactionsGet(request)
