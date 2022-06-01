@@ -1,5 +1,32 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.5.0
+- Updating to OAS 2020-09-14_1.121.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.121.0
+- Add TimestampNullable type
+
+### 2020-09-14_1.120.0
+- Removed `Uploaded`, `Created` and `APPROVAL_STATUS_APPROVED` enum strings from `PayrollItemStatus` field.
+
+### 2020-09-14_1.119.0
+- Add `returned` to TransferStatus enum
+- Add `return_swept` to TransferSweepStatus enum
+- Add `returned` and `return_swept` to TransferEventType enum
+
+### 2020-09-14_1.118.0
+- Added `employee_type` and `last_paystub_date` to `/credit/employment/get` response
+
+### 2020-09-14_1.117.1
+- Make `/payment_initiation/consent/create` API more strict
+
+### 2020-09-14_1.117.0
+- Add `/credit/audit_copy_token/create` endpoint
+
+### 2020-09-14_1.116.0
+- Add `/wallet/list` endpoint
+
 # 10.4.0
 - Updating to OAS 2020-09-14_1.115.2
 
