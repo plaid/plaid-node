@@ -1,5 +1,59 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.6.0
+- Updating to OAS 2020-09-14_1.128.4
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.128.4
+- Add `identity_verification` as a new optional parameter for `/link/token/create`
+
+### 2020-09-14_1.128.3
+- Add category rules beta to `personal_finance_category` field description
+in `/transactions/get`
+
+### 2020-09-14_1.128.2
+- Update description of `/investments/transactions/get` endpoint
+- Update description of `cost_basis` field
+
+### 2020-09-14_1.128.1
+- Add `merchant_website` and `merchant_logo_url` to `/beta/transactions/v1/enhance` response
+
+### 2020-09-14_1.128.0
+- Add `auth_type_select_enabled`, `automated_microdeposits_enabled`, `instant_match_enabled`, and `same_day_microdeposits_enabled` to `/link/token/create`
+- Marked `flow_type` parameter as deprecated
+
+### 2020-09-14_1.127.0
+- Add `consent_id` filter to `/payment_initiation/payment/list`
+- Add `consent_id` to `/link/token/create`
+
+### 2020-09-14_1.126.0
+
+- Added `/credit/relay/create` endpoint
+
+### 2020-09-14_1.125.0
+
+- Add `accounts` object to `/credit/payroll_income/get` response
+
+### 2020-09-14_1.124.0
+- Added `include_fast_report` in `asset_report/create` endpoint. Added `fast_report` in `asset_report/get` endpoint
+
+### 2020-09-14_1.123.1
+- Removed `reversed` and `reverse_swept` from possible event_type values in TransferEventListRequest docs
+
+### 2020-09-14_1.123.0
+
+- Change `tokens` to `report_tokens` in `/credit/audit_copy_token/create` request
+
+### 2020-09-14_1.122.0
+
+- Add `request_id` to all Identity Verification and Monitor responses
+
+### 2020-09-14_1.121.2
+- Added sample user_id to INCOME_VERIFICATION webhook
+
+### 2020-09-14_1.121.1
+- Pre-release API refinements to Monitor and Flow endpoints
+
 # 10.5.0
 - Updating to OAS 2020-09-14_1.121.0
 
