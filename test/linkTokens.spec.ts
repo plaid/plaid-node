@@ -109,4 +109,23 @@ describe('Link Tokens', () => {
       },
     });
   });
+
+  it('can get link tokens with extended auth', async () => {
+    const request: LinkTokenCreateRequest = {
+      user: { client_user_id: new Date().getTime().toString() },
+      client_name: 'Plaid App',
+      products: [Products.Auth],
+      country_codes: [CountryCode.Us],
+      language: 'en',
+      auth: {
+        auth_type_select_enabled: true,
+        automated_microdeposits_enabled: true,
+        instant_match_enabled: true,
+        same_day_microdeposits_enabled: true,
+      },
+    };
+    const response = await plaidClient.linkTokenCreate(request);
+    expect(response.data.link_token).to.match(/^link-sandbox-/);
+    expect(response.data.expiration).to.be.ok;
+  });
 });

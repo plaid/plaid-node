@@ -1,5 +1,37 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.7.0
+- Updating to OAS 2020-09-14_1.131.3
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.131.3
+- Update external URL for `/transfer/migrate_account` endpoint
+
+### 2020-09-14_1.131.2
+- Add `TRANSFER_LIMIT_REACHED` to enum `TransferAuthorizationDecisionRationaleCode`
+
+### 2020-09-14_1.131.1
+- Update `/payment_initiation/consent/*` external docs URLs
+
+### 2020-09-14_1.131.0
+- Add `iban` to `counterparty`'s `numbers` field in `/wallet/transaction/execute`
+
+### 2020-09-14_1.130.0
+- Update description of `/user/create` to make it more clear what would happen when a client calls the user creation endpoint with the same client_user_id multiple times.
+
+### 2020-09-14_1.129.0
+- Add `signal_description` for each risk signal in `/beta/credit/payroll_income/risk_signals/get`
+- Change `DocumentRiskSignalInstitutionMetadata` to be nullable
+
+### 2020-09-14_1.128.6
+- Fix category rules formatting
+
+### 2020-09-14_1.128.5
+- Change description in `UserCustomPassword` to reflect that only top level fields are optional not all fields
+
+### 2020-09-14_1.128.4
+- Move Category Rules description to `include_personal_finance_category` flag
+
 # 10.6.0
 - Updating to OAS 2020-09-14_1.128.4
 
