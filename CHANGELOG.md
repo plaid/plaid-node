@@ -1,5 +1,86 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.8.0
+- Updating to OAS 2020-09-14_1.146.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.146.0
+
+- make item_logins field not required
+
+### 2020-09-14_1.145.0
+
+- Make changes to IdentityMatchRequest to support options data
+
+### 2020-09-14_1.144.0
+
+- Remove unsupported error_code (`PRODUCTS_NOT_SUPPORTED`) for the `force_error` config in Sandbox
+
+### 2020-09-14_1.143.0
+
+- Make changes to support crypto in Investments product
+
+### 2020-09-14_1.142.0
+
+- Add new endpoints `/payment_profile/get` and `/payment_profile/remove`
+
+### 2020-09-14_1.141.1
+
+- Bug fix: add `identity_verification` to `Products` array
+
+### 2020-09-14_1.141.0
+
+- Add a new endpoint `/payment_profile/create`
+
+### 2020-09-14_1.140.1
+
+- Add `stated_income_sources` as a field under `income_verification` for `/link/token/create`
+
+### 2020-09-14_1.140.0
+
+- Add `bin` as a field under `institution_metadata` for `/link/token/create`
+
+### 2020-09-14_1.139.0
+
+- Add `international` IBAN numbers to `WalletNumbers` field in `/wallet/get` and `/wallet/list` responses.
+- Wrap the `iban` field in the `WalletTransactionCounterpartyNumbers` under new field `international`.
+
+### 2020-09-14_1.138.0
+
+- Add new `identity/match` endpoint, and `IdentityMatchRequest` and `IdentityMatchResponse`
+
+### 2020-09-14_1.137.1
+
+- Update comment for the `recipient.name` field with recommendation to avoid long strings and special characters.
+
+### 2020-09-14_1.137.0
+
+- Reverts the changes made in 2020-09-14_1.135.0. ProductAccess and AccountProductAccess once again have all fields explicitly defined.
+
+### 2020-09-14_1.136.0
+
+- Add `products` in `asset_report/create` endpoint.
+
+### 2020-09-14_1.135.0
+
+- Convert ProductAccess and AccountProductAccess to optional.Map
+
+### 2020-09-14_1.134.0
+
+- Rename `merchant_website` and `merchant_logo_url` in `/beta/transactions/v1/enhance` to `website` and `logo_url`
+
+### 2020-09-14_1.133.0
+
+- Update `/credit/payroll_income/get` response to have a `pull_id` instead of an `income_report_token` and add `pull_id` to `/credit/employment/get` response
+
+### 2020-09-14_1.132.1
+
+- Made several fields nullable for `/signal/evaluate`
+
+### 2020-09-14_1.132.0
+
+- Add `/credit/audit_copy_token/remove` to invalidate Audit Copy tokens
+
 # 10.7.0
 - Updating to OAS 2020-09-14_1.131.3
 
