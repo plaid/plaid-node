@@ -1,5 +1,107 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 10.9.0
+- Updating to OAS 2020-09-14_1.161.5
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.161.5
+
+- Reverts the changes made in 2020-09-14_1.157.0
+
+### 2020-09-14_1.161.4
+
+- Update description for webhook `USER_PERMISSION_REVOKED`
+
+### 2020-09-14_1.161.3
+ 
+- Bug fix: Put quotes around the '529' account type to prevent generated client libraries from treating it as an integer.
+- Add `RECURRING_TRANSACTIONS_UPDATE` to description of sandbox webhook testing endpoint
+
+### 2020-09-14_1.161.2
+
+- Change the Item schema to refer to `PlaidError` rather than `Error` to avoid namespace conflicts in client libraries.
+
+### 2020-09-14_1.161.1
+
+- Add required fields back to AssetReport schema
+
+### 2020-09-14_1.161.0
+- Remove `access_token` request parameter from `/beta/partner/v1/customers/create`
+
+### 2020-09-14_1.160.0
+
+- Add `user` fields to the `/link/token/create` `user` object.
+
+### 2020-09-14_1.159.0
+
+- Add `RECURRING_TRANSACTIONS_UPDATE` webhook specification
+- Fix typo in `/sandbox/item/fire_webhook` description
+
+### 2020-09-14_1.158.1
+
+- Add x-plaid-validation for Credit Relay Tokens
+
+### 2020-09-14_1.158.0
+
+- Add `address` and `id_number` fields to the `/link/token/create` `user` object.
+
+### 2020-09-14_1.157.0
+
+- Update and add schemas referred by `AssetReportGetResponse`
+
+### 2020-09-14_1.156.0
+
+- Add `payment_profile_id` to `/transfer/authorization/create` and `/transfer/create`
+- Make `access_token` and `account_id` optional in `/transfer/authorization/create` and `/transfer/create`
+
+### 2020-09-14_1.155.0
+
+- Add `payment_profile_id` as a field under `transfer` for `/link/token/create`
+
+### 2020-09-14_1.154.0
+
+- Create `/credit/bank_income/pdf/get` to allow customers to retrieve the bank income product as a PDF
+
+### 2020-09-14_1.153.1
+-- Add `personal_finance_category_icon_url` to `/beta/transactions/v1/enhance` response
+
+### 2020-09-14_1.153.0
+-- Add new endpoint `/beta/partner/v1/customers/create`
+
+### 2020-09-14_1.152.0
+- Add `form1099s` as part of the `credit/payroll_income/get` response.
+- Add `Credit1099` object and corresponding subtypes.
+
+### 2020-09-14_1.151.1
+- Update required fields list for guaranteed ACH customers
+
+### 2020-09-14_1.151.0
+- Mark `verification` field under `paystubs` object in `/credit/payroll_income/get` as deprecated
+
+### 2020-09-14_1.150.0
+- Make `user_present` under `/transfer/authorization/create` nullable
+
+### 2020-09-14_1.149.1
+- Update fields description for guaranteed ACH customers
+
+### 2020-09-14_1.149.0
+
+- Add `gave_consent` as a field under `identity_verification` for `/link/token/create`
+- Remove `identity_verification.consent`, which is deprecated, from documentation for `/link/token/create`
+
+### 2020-09-14_1.148.0
+
+- Add `user_present` a an optional field under `/transfer/authorization/create`, update fields description for guaranteed ACH customers
+
+### 2020-09-14_1.147.1
+
+- Remove deprecated `reversed` status from Transfer schema
+- Remove deprecated `reverse_swept` status from Transfer Event schema
+
+### 2020-09-14_1.147.0
+
+- Add new endpoints `/credit/relay/get`, `/credit/relay/refresh` and `/credit/relay/remove`
+
 # 10.8.0
 - Updating to OAS 2020-09-14_1.146.0
 
