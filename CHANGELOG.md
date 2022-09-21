@@ -1,5 +1,219 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 11.0.0
+- Updating to OAS 2020-09-14_1.181.1
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.181.1
+- Update `report_tokens` in `/credit/relay/create` endpoint request to be a list of strings instead a list of objects
+
+### 2020-09-14_1.181.0
+
+- Add `credit/sessions/get` endpoint
+
+### 2020-09-14_1.180.0
+
+- Remove `Date` and `DateNullable` types in identity_verification and monitor endpoints. Replace with `ISO8601Date` and `ISO8601DateNullable`
+    instead.
+
+### 2020-09-14_1.179.0
+
+- Remove `idempotency_key` field from resp of /transfer/authorization/create endpoint.
+
+### 2020-09-14_1.178.2
+
+- Change `institution_price_as_of` field on the Holdings object to nullable
+
+### 2020-09-14_1.178.1
+
+- Add `AUTHORISING` wallet transaction status
+
+### 2020-09-14_1.178.0
+
+- Add `/partner/customer/get` endpoint.
+- Add `status` to the response for `/partner/customer/create`.
+
+### 2020-09-14_1.177.4
+
+- Add `settled` as a valid event type for `/sandbox/transfer/simulate`
+
+### 2020-09-14_1.177.3
+- Replace `ASSET_TRANSACTION_DESCRIPTION` with `ASSET_TRANSACTION_DESCRIPTON` in Freddie Mac
+  Asset Report
+
+### 2020-09-14_1.177.2
+- Add `ownership_type` to Asset Report account object, to reflect actual API behavior.
+- Update and clarify docs, including update to reflect new Transfers cutoff times.
+
+### 2020-09-14_1.177.1
+- Add `settled` as a possible Transfer status and `swept_settled` as a possible Transfer sweep status
+- Add `settled` and `swept_settled` as new Transfer event types
+- Add `settled` field to Transfer sweep object
+- Add `standard_return_window` and `unauthorized_return_window` fields to Transfer object
+
+### 2020-09-14_1.177.0
+
+- Add `options` and `days_to_included` to `AssetReportGetRequest`
+
+### 2020-09-14_1.176.2
+- Add `recipient_id` field examples to the `/wallet/create`, `/wallet/get`, and `/wallet/list` responses
+
+### 2020-09-14_1.176.1
+- Set `employment_report_token` field in the `/credit/employment/get` endpoint to be not required
+
+### 2020-09-14_1.176.0
+
+- Add `mask` to the `meta` field of overridden accounts in the sandbox custom user configuration object schema.
+
+### 2020-09-14_1.175.0
+
+- Remove `MiddleName` and add `VALIDATION_SOURCES` to Freddie Mac Asset Report
+
+### 2020-09-14_1.174.1
+
+- Add `adyen` as processor partner
+
+### 2020-09-14_1.174.0
+
+- Add `environment` as an attribute to all webhook payloads
+
+### 2020-09-14_1.173.0
+
+- Add `idempotency_key` field in req/resp of /transfer/authorization/create endpoint.
+
+### 2020-09-14_1.172.1
+
+- Removed `/asset_report/relay/` endpoints
+
+### 2020-09-14_1.172.0
+
+- Add payroll institution to /credit/income/precheck endpoint.
+
+### 2020-09-14_1.171.0
+
+- Add `recipient_id` to the `/wallet/create`, `/wallet/get`, and `/wallet/list` responses
+
+### 2020-09-14_1.170.1
+
+- Fix that `client_id` and `secret` were erroneously marked as `required` for the request bodies of some endpoints. (These fields can be sent in the header and thus are not required in bodies).
+
+### 2020-09-14_1.170.0
+
+- Add `with_guarantee` field in request of `/transfer/authorization/create`
+
+### 2020-09-14_1.169.0
+
+- Add `issuing_region` as a field in the extracted data to documentary verification documents `/identity_verification/create`, `/identity_verification/get`, `/identity_verification/list` and `/identity_verification/retry` responses.
+
+### 2020-09-14_1.168.2
+
+- Add `bacs`/`iban` recommendation for `/payment_initiation/recipient/create`
+
+### 2020-09-14_1.168.1
+
+- Update descriptions for `/payment_profile/create`, `/payment_profile/get` and `/payment_profile/remove`
+
+### 2020-09-14_1.168.0
+
+-- Add `counterparties` to `/beta/transactions/v1/enhance` response
+
+### 2020-09-14_1.167.1
+
+- Added `MICRODEPOSIT_ERROR` which was returned by the API but missing from the error type enum.
+- Various fixes to typos and descriptions
+
+### 2020-09-14_1.167.0
+
+- Add authorization code `MIGRATED_ACCOUNT_ITEM` for Items created via `/transfer/migrate_account` endpoint
+
+### 2020-09-14_1.166.0
+
+- Add `updated_at` field to Payroll Item entries in `/credit/payroll_income/get`
+
+### 2020-09-14_1.165.3
+
+- removed LoanRoleType, ReportIdentifierType, and ReportDateTime fields from `/credit/asset_report/freddie_mac/get`
+
+### 2020-09-14_1.165.2
+
+- Remove deprecated reverse_swept enum value from documentation
+
+### 2020-09-14_1.165.1
+
+- Update example response for the `wallet/list` endpoint
+
+### 2020-09-14_1.165.0
+
+- Add details for `IdentityMatchResponse` for `/identity/match` endpoint
+
+### 2020-09-14_1.164.10
+
+- Update descriptions for `HOLDINGS: DEFAULT_UPDATE` and `INVESTMENT_TRANSACTIONS: DEFAULT_UPDATE` webhooks
+
+### 2020-09-14_1.164.9
+
+- Removed report_type from the request to `/credit/asset_report/freddie_mae/get`
+
+### 2020-09-14_1.164.8
+
+- Add documentation for credit categories in the `/asset_report/get` endpoint
+
+### 2020-09-14_1.164.7
+
+- Remove redundant parameters from the `/transfer/create` endpoint from docs and mark them as deprecated
+
+### 2020-09-14_1.164.6
+
+- Add the following new currencies for the `/payment_initiation` API route group: PLN, SEK, DKK, NOK, CHF, CZK
+
+### 2020-09-14_1.164.5
+
+- Update description for `/payment_initiation/payment/reverse` to indicate that this endpoint only works with virtual accounts
+- Update description for `/wallet/transaction/execute` to indicate that settlement will take seconds to days
+
+### 2020-09-14_1.164.4
+
+- Remove verification fields from `/credit/payroll_income/get` and `/income/verification/paystubs/get`
+
+### 2020-09-14_1.164.3
+
+- Remove pull_id field from `/credit/payroll_income/get`
+
+### 2020-09-14_1.164.2
+
+- Update external documentation links for the `/wallet/` API route group
+- Update `/payment_initiation/payment/reverse` description to cover which payments are eligible for refunds
+- Update `/payment_initiation/payment/create` reference field description to indicate that references should be unique and will be adjusted automatically
+- Update `PaymentInitiationPaymentStatus` description to indicate that payments may take seconds to days to settle depending on the payment rail used
+- Update `WalletTransactionStatus` description to indicate that transactions may take seconds to days to settle depending on the payment rail used
+
+### 2020-09-14_1.164.1
+
+- Make `is_savings_or_money_market_account` field in `SignalEvaluateCoreAttributes` nullable
+
+### 2020-09-14_1.164.0
+
+- Add new endpoint `/credit/asset_report/freddie_mac`
+
+### 2020-09-14_1.163.0
+
+- Add `/link_delivery/create` endpoint
+- Add `/link_delivery/get` endpoint
+
+### 2020-09-14_1.162.2
+
+- Fix minimum and maximum values in `/signal/evaluate` scores
+
+### 2020-09-14_1.162.1
+
+- Make holdings `institution_price_as_of` non-nullable
+
+### 2020-09-14_1.162.0
+
+- Add `WalletTransactionStatusUpdateWebhook` object
+- Update `WalletTransactionStatus` to include an additional `SETTLED` enum
+- Update `PaymentInitiationPaymentStatus` to include an additional `PAYMENT_STATUS_SETTLED` enum
+
 # 10.9.0
 - Updating to OAS 2020-09-14_1.161.5
 

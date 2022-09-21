@@ -130,7 +130,7 @@ All errors can now be caught using `try/catch` with `async/await` or through pro
 
 ```typescript
 try {
-  await plaidClient.transactionsGet(request);
+  await plaidClient.transactionsSync(request);
 } catch (error) {
   const err = error.response.data;
 }
@@ -138,7 +138,7 @@ try {
 // or
 
 plaidClient
-  .transactionsGet(request)
+  .transactionsSync(request)
   .then((data) => {
     console.log(data);
   })
@@ -159,7 +159,18 @@ const accounts_response = await plaidClient.accountsGet({ access_token });
 const accounts = accounts_response.data.accounts;
 ```
 
-Retrieve transactions for a transactions user for the last thirty days:
+
+Retrieve the last 100 transactions for a transactions user (new, recommended method):
+
+```typescript
+const response = await plaidClient.transactionsSync({
+  access_token
+});
+const transactions = response.data.transactions;
+);
+```
+
+Retrieve the transactions for a transactions user for the last thirty days (using the older method):
 
 ```typescript
 const now = moment();
