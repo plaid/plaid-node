@@ -10,6 +10,7 @@ import {
   SandboxItemFireWebhookRequestWebhookCodeEnum,
   SandboxItemResetLoginRequest,
 } from '../dist';
+import {IncomeVerificationSourceType} from "../api";
 
 describe('Sandbox', () => {
   let plaidClient: PlaidApi;
@@ -41,5 +42,24 @@ describe('Sandbox', () => {
     const response = await plaidClient.sandboxItemResetLogin(request);
     expect(response.data).to.be.ok;
     expect(response.data.reset_login).to.be.true;
+  });
+});
+
+describe('Sandbox Income Verification', () => {
+  let testAccessToken: string | undefined;
+
+  before(async () => {
+    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken({
+      income_verification: {
+        income_source_types: [IncomeVerificationSourceType.Bank],
+        bank_income: {
+          days_requested: 180,
+        },
+      },
+    });
+  });
+
+  it('should have a valid public token', () => {
+    expect(testAccessToken).to.be.ok
   });
 });
