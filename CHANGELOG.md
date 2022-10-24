@@ -1,5 +1,91 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 12.0.0
+- Updating to OAS 2020-09-14_1.196.0
+
+## Breaking changes
+- Consolidate usages of `Error` into `PlaidError`
+- Rename `LOGIN_REQUIRED` from transfer authorizations `decision_rationale` to `ITEM_LOGIN_REQUIRED`
+- Update `IdentityVerificationRequestUser.date_of_birth` to be required to match the existing behavior of the API.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.196.0
+- Added endpoint `/sandbox/payment_profile/reset_login` 
+
+### 2020-09-14_1.195.0
+- Consolidate usages of `Error` into `PlaidError`
+- Add a `PlaidErrorType` enum
+
+### 2020-09-14_1.194.2
+- Fix typo for `income_verification` in `/sandbox/public_token/create` options
+
+### 2020-09-14_1.194.1
+- Update field descriptions in `/partner/customer/*` responses.
+- Make `PartnerEndCustomerWithSecrets` extend `PartnerEndCustomer`.
+- Fix documentation links in `/partner/customer/*` endpoints.
+
+### 2020-09-14_1.194.0
+- Add `/partner/customer/enable` endpoint
+
+### 2020-09-14_1.193.0
+- Rename `LOGIN_REQUIRED` from transfer authorizations `decision_rationale` to `ITEM_LOGIN_REQUIRED`
+
+### 2020-09-14_1.192.3
+- Add `/fdx/notifications` endpoint.
+
+### 2020-09-14_1.192.2
+- Add `USER_REPORTED_NO_INCOME` to CreditSessionBankIncomeStatus
+
+### 2020-09-14_1.192.1
+- Update description for `payment_profile_token` field
+
+### 2020-09-14_1.192.0
+- Add `income_verfication` field to `/sandbox/public_token/create`
+
+### 2020-09-14_1.191.1
+- Add `document_income_result` field to `credit/sessions/get`
+
+### 2020-09-14_1.191.0
+- Remove `payment_profile_id` from `/payment_profile/*`, `/transfer/authorization/create`, and `/transfer/create` endpoints and replace with `payment_profile_token`
+
+### 2020-09-14_1.190.0
+- Removed auditor_id from /credit/audit_copy/token/create
+
+### 2020-09-14_1.189.0
+- Add length boundary for the `client_user_id` field in `user/create`
+
+### 2020-09-14_1.188.0
+- Add `SchemaVersion` field to Freddie Mac Verification of Assets Schema
+
+### 2020-09-14_1.187.0
+- Add `non-custodial wallet` to account subtypes supported for investments
+- Add `trade` investment transaction subtype as a subtype of `transfer` investment transaction type
+
+### 2020-09-14_1.186.2
+- Add `errors` field to `credit/sessions/get`
+
+### 2020-09-14_1.186.1
+- Add `payroll_income_result` field to `credit/sessions/get`
+
+### 2020-09-14_1.186.0
+
+- Update `IdentityVerificationRequestUser.date_of_birth` to be required to match the existing behavior of the API.
+
+### 2020-09-14_1.185.0
+
+- Add support for `USER_INPUT_TIMEOUT` as a value for `force_error` in the sandbox custom user schema.
+
+### 2020-09-14_1.184.0
+
+- Make `payment_id` not required in `/link/token/create` under the `payment_initiation` field.
+
+### 2020-09-14_1.183.0
+
+- Add `beacon_session_id` field in req of /transfer/authorization/create endpoint.
+
+### 2020-09-14_1.182.0
+- Add `/link/oauth/correlation_id/exchange` endpoint.
+
 # 11.0.0
 - Updating to OAS 2020-09-14_1.181.1
 
