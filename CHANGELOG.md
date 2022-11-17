@@ -1,5 +1,101 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 12.1.0
+- Updating to OAS 2020-09-14_1.205.3
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.205.3
+- Update description for `/signal/evaluate` endpoint
+
+### 2020-09-14_1.205.2
+- Update response examples, descriptions, and formatting for `/transactions/enrich` endpoint
+
+### 2020-09-14_1.205.1
+- Update descriptions for `CUSIP` and `ISIN` fields in the investments `Security` type to reflect CGS license requirements
+
+### 2020-09-14_1.205.0
+- Add `/transactions/enrich` endpoint, the EA version of `/beta/transactions/v1/enhance`.
+
+### 2020-09-14_1.204.0
+- Remove `/income/verification/refresh` endpoint
+
+### 2020-09-14_1.203.0
+- Add 7 brand new recurring transfer APIs
+- Add `/transfer/recurring/create`
+- Add `/transfer/recurring/list`
+- Add `/transfer/recurring/get`
+- Add `/transfer/recurring/cancel`
+- Add `/sandbox/transfer/test_clock/create`
+- Add `/sandbox/transfer/test_clock/advance`
+- Add `/sandbox/transfer/test_clock/get`
+
+### 2020-09-14_1.202.6
+- IdentityMatchResponse `PhoneNumberMatchScore` and `EmailAddressMatchScore` use `score` instead of `scores`
+
+### 2020-09-14_1.202.5
+- Add `/partner/customer/remove` endpoint
+
+### 2020-09-14_1.202.4
+- Internal changes
+
+### 2020-09-14_1.202.3
+- New Transfer API routes for hosted onboarding of TPS end-customers
+
+### 2020-09-14_1.202.0
+- Add `refunds` field to `Transfer` object
+- Add `refund_id` field to `TransferEvent` object
+- Fix typo for `transfer/get` and `transfer/refund/get`
+
+### 2020-09-14_1.201.0
+- Add support for partial refunds
+- Add `amount` field to `/payment_initiation/payment/reverse` request
+- Add `amount_refunded` field to `/payment_initiation/payment/get` and `/payment_initiation/payment/list` responses
+
+### 2020-09-14_1.200.0
+- Add `risk_summary` and `page_number` to `/beta/credit/payroll_income/risk_signals/get`
+
+### 2020-09-14_1.199.0
+- Renamed `/wallet/transactions/list` into `/wallet/transaction/list` as endpoint
+
+### 2020-09-14_1.198.8
+- `/transfer/authorization/create` and `/transfer/create` may not return `account_id` in response.
+
+### 2020-09-14_1.198.7
+- Add `SYNC_UPDATES_AVAILABLE` support to `/sandbox/item/fire_webhook`
+
+### 2020-09-14_1.198.6
+- Make `ProductStatus` object nullable to reflect Sandbox-specific behavior.
+- Clarify documentation for `SYNC_UPDATES_AVAILABLE` webhook.
+
+### 2020-09-14_1.198.5
+- Internal changes
+
+### 2020-09-14_1.198.4
+- Add `deleted_at` to `/payment_profile/get` response.
+
+### 2020-09-14_1.198.3
+- Change `start_date` to `start_time` for `/wallet/transaction/list` response.
+
+### 2020-09-14_1.198.2
+- Update list of available products for `/partner/customer/create`.
+
+### 2020-09-14_1.198.1
+- Add `institution_name` and `institution_id` fields to `/credit/payroll_income/get` response.
+
+### 2020-09-14_1.198.0
+- Add `options.start_date` and `options.end_date` to `/wallet/transaction/list` endpoint.
+- Add `last_status_update` and `payment_id` field to `WalletTransaction`.
+- Add `transaction_id` field to `PaymentInitiationPayment`
+
+### 2020-09-14_1.197.6
+- Add `originator_client_id` to Transfer API endpoints
+
+### 2020-09-14_1.197.5
+- Deprecate `origination_account_id` from `/transfer/authorization/create` endpoint.
+
+### 2020-09-14_1.197.4
+- Add `asset_under_management` field to `PartnerCustomerCreateRequest`.
+
 # 12.0.0
 - Updating to OAS 2020-09-14_1.197.3
 
