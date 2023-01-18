@@ -1,5 +1,45 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 12.3.0
+- Updating to OAS 2020-09-14_1.214.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.214.0
+- Add `/credit/freddie_mac/reports/get` endpoint
+
+### 2020-09-14_1.213.1
+- Reflect that `days_requested` field in Bank Income Verification object in `/link/token/create` request is required when using Bank Income.
+- Reflect that `is_update_mode` field in Bank Income Verification object in `/link/token/create` request defaults to `false`.
+- Update description to reflect that Document Income object in `/link/token/create` request is not required, even when using Document Income. 
+
+### 2020-09-14_1.213.0
+- Update `PartnerEndCustomerStatus` enum values.
+
+### 2020-09-14_1.212.0
+- Add `/credit/audit_copy_token/update` endpoint
+- Add `report_type` to AssetReportCreateRequest
+
+### 2020-09-14_1.211.1
+
+- Fix `US_MBS` list code which was mistakenly documented as `US_MBC` for screening individuals with Monitor
+- Document `TR_CMB` list code for screening individuals with Monitor
+- Document `IZ_WBK` list code for screening individuals and entities with Monitor
+
+### 2020-09-14_1.211.0
+- Add `/partner/customer/oauth_institutions/get` endpoint.
+
+### 2020-09-14_1.210.8
+- Update example response for `/credit/bank_income/get`
+
+### 2020-09-14_1.210.7
+- Documentation updates for Investments APIs and Bank Transfer APIs.
+
+### 2020-09-14_1.210.6
+- Add validation on `originator_client_id` and `redirect_uri` for `/transfer/originator/create` and `transfer/originator/get` request
+
+### 2020-09-14_1.210.5
+- Add `company_name` to TransferOriginatorGetResponse
+
 # 12.2.0
 - Updating to OAS 2020-09-14_1.210.4
 

@@ -11,32 +11,32 @@ import {
 const SAMPLE_TRANSACTIONS_TO_ENRICH: Array<ClientProvidedTransaction> = [
   {
     id: "1",
-    description: "DDA PURCHASE *XXXX XXXXXXXX FAMILY DOLLAR",
+    description: "TST *JETTIES BAGELS",
     amount: 10.21,
     iso_currency_code: "USD",
     location: {
-      city: "Philadelphia",
-      region: "PA",
+      city: "Ipswich",
+      region: "MA",
     },
     direction: EnrichTransactionDirection.Outflow,
   },
   {
     id: "2",
-    description: "PURCHASE JUNIATA SUPE PHILADELPHIA PA CARDXXXX",
+    description: "AMAZON.COM*MJ3LO9AN2",
     amount: 10.21,
     iso_currency_code: "USD",
     direction: EnrichTransactionDirection.Outflow
   },
   {
     id: "3",
-    description: "DEBIT CARD PURCHASE",
+    description: "GOOGLE *FRESHBOOKS",
     amount: 10.21,
     iso_currency_code: "USD",
     direction: EnrichTransactionDirection.Outflow
   },
   {
     id: "4",
-    description: "DIRECT DEP* UBER.COM",
+    description: "EARNIN TRANSFER",
     amount: 150.21,
     iso_currency_code: "USD",
     direction: EnrichTransactionDirection.Inflow
