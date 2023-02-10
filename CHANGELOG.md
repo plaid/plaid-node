@@ -1,5 +1,80 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 12.4.0
+- Updating to OAS 2020-09-14_1.229.2
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.229.2
+- Undeprecated the `legal_name` field in the `/link/token/create` request.
+
+### 2020-09-14_1.229.1
+- Add `income_verification` as a supported product in the request for `/partner/customer/create`.
+
+### 2020-09-14_1.229.0
+- Add `network` field to `/transfer/intent/create` request.
+- Updated `reference` minLength for `/wallet/transaction/execute` request and `/payment_initiation/payment/reverse` request.
+
+### 2020-09-14_1.228.0
+- Add `access_tokens` and `item_ids` to `/link_delivery/get` response
+
+### 2020-09-14_1.227.0
+- Add optional `persistent_account_id` field to account responses
+
+### 2020-09-14_1.226.0
+- Add `employment` fields to `/link/token/create`
+
+### 2020-09-14_1.225.0
+- Add `redacted_at` field in Identity Verification response and Documentary Verification Document component
+- Update `original_front` field in Identity Verification Document Images to be nullable in redacted Identity Verification sessions
+
+### 2020-09-14_1.224.0
+- Add `earliest_deposit_date` and change `last_deposit_date` to `latest_deposit_date` for `/beta/credit/v1/bank_employment/get`
+
+### 2020-09-14_1.223.0
+- Add `redirect_uris` to `/partner/customer/create` request.
+
+### 2020-09-14_1.222.0
+- Add `wallet_id` field to `/wallet/transaction/get` and `/wallet/transaction/list` responses
+
+### 2020-09-14_1.221.0
+- Update `link_delivery/get` to remove `public_tokens` from the response
+
+### 2020-09-14_1.220.0
+- Update `link_delivery/create` to accept `communication_methods` and deprecate `delivery_method` and `delivery_destination`
+
+### 2020-09-14_1.219.1
+- Fix the `refund_id` example.
+- Update address objects to reflect that in rare instances, `city` may be `null`.
+
+### 2020-09-14_1.219.0
+- Add partner webhook event type
+
+### 2020-09-14_1.218.1
+- Mark `phone_number_verified_time` and `email_address_verified_time` as deprecated, since it is no longer required to provide these fields to enable to enable the Returning User Experience.
+
+### 2020-09-14_1.218.1
+- Introduce `expected_settlement_date` field in the Transfer object
+
+### 2020-09-14_1.218.0
+- Add `/beta/credit/v1/bank_employment/get` endpoint
+
+### 2020-09-14_1.217.0
+- Add `updated` field to `/credit/audit_copy_token/update` response
+- Add `SchemaVersion` to VOE and VOA schemas for `/credit/freddie_mac/reports/get`
+
+### 2020-09-14_1.216.0
+- Introduce `funding_account_id` field in the Transfer API
+- Remove deprecated `origination_account_id` field from the Transfer documentation
+
+### 2020-09-14_1.215.2
+- Use more strict validation for `payment_id` and `recipient_id` fields in API
+
+### 2020-09-14_1.215.1
+- Use more strict validation for payment `consent_id` field in API
+
+### 2020-09-14_1.215.0
+- Add `status` to Wallet schema
+
 # 12.3.0
 - Updating to OAS 2020-09-14_1.214.0
 
