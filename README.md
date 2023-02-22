@@ -409,7 +409,7 @@ Click [here][7]!
 [3]: https://plaid.com/docs/api/#errors-overview
 [4]: https://github.com/plaid/plaid-node/issues/new
 [5]: https://github.com/plaid/plaid-node/blob/master/LICENSE
-[6]: https://plaid.com/docs/api#creating-items-with-plaid-link
+[6]: https://plaid.com/docs/link/
 [7]: ./CONTRIBUTING.md
 [9]: https://plaid.com/docs/link/stripe
 [10]: https://stripe.com/docs/api#create_bank_account_token
