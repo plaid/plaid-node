@@ -1,5 +1,26 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 12.5.0
+- Updating to OAS 2020-09-14_1.334.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.334.0
+- Add "entity_id" field to /transactions/enrich
+
+### 2020-09-14_1.333.0
+- Add "add_ons" field to asset_report/create
+
+### 2020-09-14_1.332.0
+- [Breaking] Remove `/wallet/transaction/list` endpoint
+  - [Note] Determined that `/wallet/transaction/list` is unused
+
+### 2020-09-14_1.331.0
+Add `LinkDeliveryCallbackWebhook`, `LinkUserDeliveryStatusWebhook` for Link Delivery.
+
+### 2020-09-14_1.330.0
+- [Breaking] Remove `options.wallet_id` field in `/payment_initiation/payment/create` and `/payment_initiation/consent/create` request.
+  - [Note] Determined that this field is unused.
+
 # 12.4.0
 - Updating to OAS 2020-09-14_1.229.2
 
