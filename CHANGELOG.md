@@ -1,5 +1,72 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 13.0.0
+- Updating to OAS 2020-09-14_1.343.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.343.0
+- Add new `warnings` field to the response of `/signal/evaluate`
+
+### 2020-09-14_1.342.0
+- Add `report_type` to assets webhook docs
+- Make `add_ons` public in assets docs for /asset_report/create
+- Make `fast_report` public in assets docs for /asset_report/get
+
+### 2020-09-14_1.341.0
+- Add `risk_check` attribute to all Identity Verification responses
+
+### 2020-09-14_1.340.1
+- Update examples for `entity_id` in `/transactions/enrich`
+
+### 2020-09-14_1.340.0
+- Create `options` in `/link_delivery/create`
+- Create `recipient` within `options` field
+- Move `communication_methods` from top level to `recipient`
+- Add `first_name` in `recipient`
+
+### 2020-09-14_1.339.0
+- Add `callback_type` to link delivery webhooks
+
+### 2020-09-14_1.338.2
+- Make `communication_methods` optional in `/link_delivery/create`
+
+### 2020-09-14_1.338.1
+- Remove beta description from `/transactions/enrich` endpoint docs
+
+### 2020-09-14_1.338.0
+- Add `transaction_id` to `/payment-initiation/#payment_status_update`
+- Add `payment_id` and `wallet_id` to `/virtual-accounts/#wallet_transaction_status_update`
+
+### 2020-09-14_1.337.4
+- Modify documentation for credit categories in the `/asset_report/get` based on GTM feedback
+
+### 2020-09-14_1.337.3
+- Update description for the `address` field in `/payment_initiation/recipient/create`.
+
+### 2020-09-14_1.337.2
+- Add annually recurring frequency to `/transactions/recurring/get`
+
+### 2020-09-14_1.337.1
+- Make documentation for credit categories in the `/asset_report/get` endpoint public
+
+### 2020-09-14_1.337.0
+- Add bank employment results to `/credit/sessions/get`
+
+### 2020-09-14_1.336.1
+- Add `signal` to Products array.
+
+### 2020-09-14_1.336.0
+- Add options to `/credit/payroll_income/refresh` to allow item-level refresh
+
+### 2020-09-14_1.335.2
+- Updated `amount.value` description field with new minimum requirement for `/payment_initiation/payment/reverse` and `/wallet/transaction/execute`
+
+### 2020-09-14_1.335.1
+- Add 'employment' as an available product in the request to `/partner/customer/create`
+
+### 2020-09-14_1.335.0
+- [Breaking] Renamed Identity Verification UserName objects to IdentityVerificationRequestUserName and IdentityVerificationResponseUserName
+
 # 12.5.0
 - Updating to OAS 2020-09-14_1.334.0
 
