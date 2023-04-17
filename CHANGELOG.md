@@ -1,5 +1,37 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 13.1.0
+- Updating to OAS 2020-09-14_1.345.1
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.345.1
+- Update `/transactions/enrich` field `is_recurring` field to be optional.bool
+
+### 2020-09-14_1.345.0
+- Fix bug in which `environment` field was incorrectly missing from Assets webhooks.
+
+### 2020-09-14_1.344.0
+- Add recurrence and is_recurring fields to `/transactions/enrich`
+
+### 2020-09-14_1.343.6
+
+- Update incorrect required fields for `/watchlist_screening/entity/update`
+
+### 2020-09-14_1.343.5
+- Update `owners` description for `/credit/bank_income/get` and `/beta/credit/v1/bank_employment/get`
+
+### 2020-09-14_1.343.4
+- Make comment about `webhook` field in `/link/token/create` request more explicit
+
+### 2020-09-14_1.343.3
+- Make VOA in /credit/freddie_mac/reports/get optional
+
+### 2020-09-14_1.343.2
+- Update `warnings` description for `/credit/bank_income/get` and `/beta/credit/v1/bank_employment/get`
+
+### 2020-09-14_1.343.1
+- Updated Asset endpoint descriptions related to Verification of Employment
+
 # 13.0.0
 - Updating to OAS 2020-09-14_1.343.0
 
