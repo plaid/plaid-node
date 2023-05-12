@@ -147,6 +147,8 @@ plaidClient
   });
 ```
 
+Note that the full error object includes the API configuration object, including the request headers, which in turn include the API key and secret. To avoid logging your API secret, log only `error.data` and/or avoid logging the full `error.config.headers` object.
+
 ## Examples
 
 Exchange a `public_token` from [Plaid Link][6] for a Plaid `access_token` and then
