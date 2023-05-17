@@ -1,5 +1,130 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 14.0.0
+- Updating to OAS 2020-09-14_1.370.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.370.0
+- Add `investments/refresh` endpoint
+
+### 2020-09-14_1.369.3
+- Update `description` field in `/transfer/create` to have max length of 15
+
+### 2020-09-14_1.369.2
+- Add new `CreditBankIncomeCategory` value
+
+### 2020-09-14_1.369.1
+- Fix `/processor/transactions` routes doc links
+
+### 2020-09-14_1.369.0
+- Add `/processor/token/permissions/get` endpoint
+- Add `/processor/token/permissions/set` endpoint
+
+### 2020-09-14_1.368.2
+- Add `transfer/diligence/submit` endpoint
+
+### 2020-09-14_1.368.1
+- Update `client_user_id` description for Identity Verification endpoints
+- Update `user` description for Identity Match via Identity Verification Data use case
+
+### 2020-09-14_1.368.0
+- Add `/transfer/balance/get` endpoint
+
+### 2020-09-14_1.367.0
+- Added `LinkEventsWebhook` schema
+
+### 2020-09-14_1.366.0
+- Add `credit_funds_source` field for authorizations and transfers
+- Make `funding_account_id` nullable in various /transfer API responses
+
+### 2020-09-14_1.356.0
+- Update `notificationsPayload.customFields` datatype from an object to an array of objects
+
+### 2020-09-14_1.355.1
+- Added `warnings` to `/processor/signal/evaluate` response.
+
+### 2020-09-14_1.355.0
+- Added `/processor/identity/match` endpoint.
+
+### 2020-09-14_1.354.0
+- Adds a `selfie_check` object to the response schema of all the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+  
+### 2020-09-14_1.353.1
+- Update `INCOME_VERIFICATION_RISK_SIGNALS` with webhook tag
+
+### 2020-09-14_1.353.0
+- Add `ASSETS: PRODUCT_READY` and `ASSETS: ERROR` webhooks to `/sandbox/item/fire_webhook` endpoint
+
+### 2020-09-14_1.352.0
+- Removed explicit `additionalProperties: true` marker for request objects and objects used only within request objects, primarily impacting the Payment Initiation API. This will result in more strict type checking for those objects, but should not be a breaking change.
+
+### 2020-09-14_1.351.1
+- Update `transfer/authorization/create` copy
+
+### 2020-09-14_1.351.0
+- Add new `INCOME_VERIFICATION_RISK_SIGNALS` webhook
+
+### 2020-09-14_1.350.0
+- Remove `settled_amount`
+- Rename `expected_settlement_schedule` as `expected_sweep_settlement_schedule`
+
+### 2020-09-14_1.349.0
+- [Breaking] Converts several types that were incorrectly typed as `number` to `integer`. In some languages, this will change the type used for this field, which may be a breaking change for some Plaid integrations. The following fields are impacted:
+
+For all products:
+  - `PlaidError.status`
+
+For Liabilities:
+  - `PSLFStatus.payments_made`
+  - `PSLFStatus.payments_remaining`
+
+For Identity Verification and Monitor:
+  - `DocumentaryVerificationDocument.DocumentAnalysis.attempt`
+  - `EntityScreeningHitAnalysis.search_terms_version`
+  - `EntityWatchlistScreeningSearchTerms.search_terms_version`
+  - `IdentityVerificationTemplateReference.version`
+
+The following client library languages are impacted:
+
+- Go: Type changes from Float64 to Int32
+- Java: Type changes from Double to Integer
+- Python: Type changes from float to int
+- Ruby: Type changes from Float to Integer
+
+### 2020-09-14_1.348.2
+- Update `/identity/match`'s score description to explicitly mention that null values are returned if input is missing from either the financial institution or the API
+- Update `/identity/match` sample response to include `is_business_name_detected`
+
+### 2020-09-14_1.348.1
+- Make the `warnings` field in `SignalEvaluateResponse` non-nullable
+
+### 2020-09-14_1.348.0
+- Add `STARTED` and `INTERNAL_ERROR` to bank income and employment `/credit/sessions/get` status
+
+### 2020-09-14_1.347.1
+
+- Change invalid format `datetime` to `date` on `initiated_date` field
+- Update `SignalWarning` descriptions
+
+### 2020-09-14_1.347.0
+Fix npm publish
+
+### 2020-09-14_1.346.0
+- Releasing new `/credit/payroll_income/risk_signals/get` endpoint
+
+### 2020-09-14_1.345.4
+- Revert `sweep_amount` description
+
+### 2020-09-14_1.345.3
+- Update `sweep_amount` description
+
+### 2020-09-14_1.345.2
+- Internal changes
+
 # 13.1.0
 - Updating to OAS 2020-09-14_1.345.1
 
