@@ -146,6 +146,7 @@ plaidClient
     console.log(e.response.data);
   });
 ```
+Note that the full error object includes the API configuration object, including the request headers, which in turn include the API key and secret. To avoid logging your API secret, log only `error.data` and/or avoid logging the full `error.config.headers` object.
 
 ## Examples
 
