@@ -1,5 +1,70 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 14.1.0
+- Updating to OAS 2020-09-14_1.379.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.379.0
+- Add `scheme` to `/wallet/transaction/get` and `/wallet/transaction/list`
+
+### 2020-09-14_1.378.1
+- Fix issue in which `request_id` was erroneously not listed as required in `ItemActivityListResponse` 
+
+### 2020-09-14_1.378.0
+- Add `reroute_to_credentials` to `/link/token/create` auth request
+
+### 2020-09-14_1.377.0
+- Add definitions for `/investments/auth/get`
+
+### 2020-09-14_1.376.0
+- Add `required_if_supported_products` to `/link/token/create` request
+
+### 2020-09-14_1.375.0
+- Add hidden `account_type` to `/transactions/enrich` request and response
+- Add hidden `account_subtype` to `/transactions/enrich` request and response
+
+### 2020-09-14_1.374.3
+- Add `num_bank_statements_uploaded` to `document_income_results` object in `/credit/sessions/get` response
+
+### 2020-09-14_1.374.2
+- Add `income_source` enum to `/transactions/enrich` `counterparty_type` field
+
+### 2020-09-14_1.374.1
+- Update `oauth` descriptions for `/institutions/get` and `/institutions/search`
+
+### 2020-09-14_1.374.0
+- Add `/credit/bank_statements/uploads/get` endpoint
+
+### 2020-09-14_1.373.0
+- Add support for address and date of birth in `virtual-accounts/#wallettransactionexecute` endpoint
+
+### 2020-09-14_1.372.3
+- Modify `/transactions/enrich` field `user_id` to `client_user_id`
+- Modify `/transactions/enrich` field `account_id` to `client_account_id`
+
+### 2020-09-14_1.372.2
+- Update docs for `/transactions/enrich` response to include non-null example values for `lat` and `lon` fields
+
+### 2020-09-14_1.372.1
+- Update descriptions for `PAYMENT_STATUS_EXECUTED` and `PAYMENT_STATUS_INITIATED`
+- Update description for `PaymentAmountCurrency`
+
+### 2020-09-14_1.372.0
+- Add `user_id` and `account_id` fields to `/transactions/enrich` request and resposne
+
+### 2020-09-14_1.371.4
+- Update descriptions for `/credit/payroll_income/risk_signals/get` and `INCOME_VERIFICATION_RISK_SIGNALS` webhook
+
+### 2020-09-14_1.371.3
+- Add test_clock_id to `/transfer/simulate`
+- [Breaking change for Go] Make `virtual_time` optional in `/sandbox/transfer/test_clock/create`
+
+### 2020-09-14_1.371.2
+- Add test_clock_id to `/sandbox/transfer/simulate` and `/sandbox/transfer/sweep/simulate` endpoints
+
+### 2020-09-14_1.371.1
+- Update `transfer/diligence/submit` copy
+
 # 14.0.0
 - Updating to OAS 2020-09-14_1.370.0
 

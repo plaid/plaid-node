@@ -7,8 +7,11 @@ import {
 import {
   InvestmentsHoldingsGetRequest,
   InvestmentsTransactionsGetRequest,
+  InvestmentsAuthGetRequest,
   PlaidApi,
 } from '../dist';
+
+const { SECRET, CLIENT_ID } = process.env;
 
 describe('Investments', () => {
   let plaidClient: PlaidApi;
@@ -45,4 +48,19 @@ describe('Investments', () => {
     expect(response.data.investment_transactions).to.be.ok;
     expect(response.data.securities).to.be.ok;
   });
+  it('get investments auth', async() => {
+    const request: InvestmentsAuthGetRequest = {
+      access_token: testAccessToken as string,
+      client_id: CLIENT_ID as string,
+      secret: SECRET as string,
+    }
+    const response = await plaidClient.investmentsAuthGet(request);
+    expect(response).to.be.ok;
+    expect(response.data.item).to.be.ok;
+    expect(response.data.accounts).to.be.ok;
+    expect(response.data.holdings).to.be.ok;
+    expect(response.data.securities).to.be.ok;
+    expect(response.data.owners).to.be.ok;
+    expect(response.data.numbers).to.be.ok;
+  })
 });
