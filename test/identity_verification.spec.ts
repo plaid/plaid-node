@@ -6,7 +6,8 @@ import {
 import { 
         IdentityVerificationGetRequest, 
         IdentityVerificationListRequest, 
-        IdentityVerificationCreateRequest, 
+        IdentityVerificationCreateRequest,
+        IdentityVerificationCreateRequestUser,
         IdentityVerificationRequestUser, 
         IdentityVerificationRetryRequest, 
         PlaidApi, 
@@ -15,6 +16,7 @@ import {
 
 const TEMPLATE_ID = "flwtmp_aWogUuKsL6NEHU";
 const CLIENT_USER_ID = "idv-user-" + Math.floor(new Date().getTime() / 1000);
+const EMAIL = CLIENT_USER_ID + "@example.com";
 
 
 describe('Identity Verification', () => {
@@ -25,11 +27,11 @@ describe('Identity Verification', () => {
     });
 
     it('create identity verification with retry', async () => {
-        const user: IdentityVerificationRequestUser = {
-            client_user_id: CLIENT_USER_ID,
-            email_address: CLIENT_USER_ID + "@example.com",
+        const user: IdentityVerificationCreateRequestUser = {
+            email_address: EMAIL,
         };
         const create_request: IdentityVerificationCreateRequest = {
+            client_user_id: CLIENT_USER_ID,
             is_shareable: true,
             template_id: TEMPLATE_ID,
             gave_consent: true,
@@ -41,11 +43,14 @@ describe('Identity Verification', () => {
         expect(create_response.data.shareable_url).to.be.not.null;
         expect(create_response.data.status).to.be.equals("active");
 
-
+        const retryUser: IdentityVerificationRequestUser = {
+          email_address: EMAIL,
+        }
         const retry_request: IdentityVerificationRetryRequest = {
             template_id: TEMPLATE_ID,
             client_user_id: CLIENT_USER_ID,
             strategy: Strategy.Reset,
+            user: retryUser,
         };
         const retry_response = await plaidClient.identityVerificationRetry(retry_request);
         expect(retry_response).to.be.ok;
