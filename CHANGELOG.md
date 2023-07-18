@@ -1,5 +1,33 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 15.1.0
+- Updating to OAS 2020-09-14_1.390.0
+
+## OpenAPI Schema Changes
+###  2020-09-14_1.390.0
+- Add `transfer_id` field to `/transfers/sweep/list` request
+
+### 2020-09-14_1.389.0
+- Add `InvestmentsHistoricalUpdateWebhook`, a `HISTORICAL_UPDATE` webhook of type `INVESTMENTS_TRANSACTIONS`.
+
+### 2020-09-14_1.388.1
+- Add `status` field to a sweep object. Add `status` field to `/transfers/sweep/list` request
+
+### 2020-09-14_1.388.0
+- [Breaking] Remove `asset_report_token` as required field in `/asset_report/get` and mark as nullable
+
+### 2020-09-14_1.387.1
+- Allow empty `mask` on the `meta` field of overridden accounts in the sandbox custom user configuration object schema.
+
+### 2020-09-14_1.387.0
+- Mark `region` and `postal_code` fields as nullable in `/identity_verification/create`, `/identity_verification/retry`, and `/link/token/create`
+
+### 2020-09-14_1.386.0
+- Add payloads for processor Transactions webhooks.
+
+### 2020-09-14_1.385.2
+- Mark `next_origination_date` nullable
+
 # 15.0.0
 - Updating to OAS 2020-09-14_1.385.1
 
