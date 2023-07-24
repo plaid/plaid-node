@@ -1,5 +1,57 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 15.2.0
+- Updating to OAS 2020-09-14_1.394.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.394.0
+- Made `/statements/list` and `/statements/download` APIs for Plaid's Statements PDF beta product available in client SDKs 
+
+### 2020-09-14_1.393.0
+- Add `date_of_birth` and `address` fields to `documentary_verification.documents[].extracted_data` in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+  
+### 2020-09-14_1.392.4
+- Update the following about identity/match name, phone number, email, and address score descriptions:
+  - Ensure consistent language across all fields
+  - Include score recommended "match" threshold for all fields.
+
+### 2020-09-14_1.392.3
+- Update the `async_update` field description.
+
+### 2020-09-14_1.392.2
+
+- Mark a few response fields as always present in the identity verification API:
+  - `selfie_check.selfies[].capture.image_url`
+  - `selfie_check.selfies[].capture.video_url`
+  - `risk_check.identity_abuse_signals`
+  - `risk_check.identity_abuse_signals.synthetic_identity.score`
+  - `risk_check.identity_abuse_signals.stolen_identity.score`
+
+### 2020-09-14_1.392.1
+- Documentation updates for the `/link/token/create` endpoint
+
+### 2020-09-14_1.392.0
+- Add `confidence_level` field to Counterparty and PersonalFinanceCategory for `/transactions/enrich`
+
+### 2020-09-14_1.391.3
+- Remove the `core_attributes` field in `signal_insights` of /transfer/authorization/create
+
+### 2020-09-14_1.391.2
+- Update the `pending_manual_verification` field's description in `/auth/get` response
+
+### 2020-09-14_1.391.1
+- Update the description of `/investments/transactions/get`
+
+### 2020-09-14_1.391.0
+- Update the `async_update` option to be visible in `/investments/transactions/get`
+
+### 2020-09-14_1.390.1
+- Update the `signal_insights` field's description in `/transfers/authorization/create` request
+
 # 15.1.0
 - Updating to OAS 2020-09-14_1.390.0
 
