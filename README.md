@@ -348,7 +348,7 @@ app.post('/plaid_exchange', (req, res) => {
   return plaidClient
     .itemPublicTokenExchange({ public_token })
     .then((tokenResponse) => tokenResponse.access_token)
-    .then((accessToken) => plaidClient.accountsGet({ accessToken }))
+    .then((access_token) => plaidClient.accountsGet({ access_token }))
     .then((accountsResponse) => console.log(accountsResponse.accounts))
     .catch((error) => {
       const err = error.response.data;
