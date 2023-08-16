@@ -1,5 +1,20 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 15.4.0
+- Updating to OAS 2020-09-14_1.413.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.413.0
+- Add `statements` to `/link/token/create` request
+
+### 2020-09-14_1.412.0
+- Add `hosted_link_url` to `/link/token/create` response
+- Add `hosted_link.delivery_method` to `/link/token/create`
+
+### 2020-09-14_1.411.0
+- Add `link_sessions` to `/link/token/get`
+- Add `LINK:SESSION_FINISHED` webhook
+
 # 15.3.0
 - Updating to OAS 2020-09-14_1.410.1
 
