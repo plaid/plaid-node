@@ -1,5 +1,34 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 15.5.0
+- Updating to OAS 2020-09-14_1.419.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.419.0
+
+- Update `/signal/decision/report` description
+  - Overwriting `initiated` field is now supported and no longer returns an `INVALID_FIELD` error
+  
+### 2020-09-14_1.418.0
+
+- Add `frequency` to `/transactions/enrich`
+
+### 2020-09-14_1.417.0
+
+- Remove `category`, `category_id`, `transaction_type`, `name`, `payment_meta` fields from Base Report insights
+
+### 2020-09-14_1.416.0
+
+- Add `card_switch` to `/link/token/create`
+
+### 2020-09-14_1.415.0
+
+- Add `consumer_report_permissible_purpose` to `link/token/create`
+
+### 2020-09-14_1.414.0
+
+- Update `currency` on `payment/reverse` and `amount_refunded` on `payment/get`
+
 # 15.4.0
 - Updating to OAS 2020-09-14_1.413.0
 
