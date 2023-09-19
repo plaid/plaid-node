@@ -1,5 +1,120 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 16.0.0
+- Updating to OAS 2020-09-14_1.431.7
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.431.7
+- Add processor Zero Hash
+
+### 2020-09-14_1.431.6
+- Update response example of `sandbox/transfer/ledger/deposit/simulate` and `sandbox/transfer/ledger/withdraw/simulate`
+
+### 2020-09-14_1.431.5
+- Update the description of `sweep.settled` event
+
+### 2020-09-14_1.431.4
+- Update description of endpoint `/sandbox/transfer/ledger/simulate_available`
+
+### 2020-09-14_1.431.3
+- Deprecate `originator_client_id` in `/transfer/get`, `/transfer/cancel`, and `/transfer/balance/get`
+
+### 2020-09-14_1.431.2
+- Docs updates for Statements endpoints
+
+### 2020-09-14_1.431.1
+- Remove `balance` field from response of `/sandbox/transfer/ledger/simulate_available`
+
+### 2020-09-14_1.431.0
+- Add `/user/update` and update the description for consumer report user identity
+
+### 2020-09-14_1.430.3
+- Add `sandbox/transfer/ledger/deposit/simulate` and `sandbox/transfer/ledger/withdraw/simulate`
+
+### 2020-09-14_1.430.2
+- Update `transfer/sweep/list` to support filter by `trigger`
+
+### 2020-09-14_1.430.1
+- Add `transfer/ledger/withdraw` route
+
+### 2020-09-14_1.430.0
+- Add `transfer/originator/funding_account/update` route
+
+### 2020-09-14_1.429.3
+- add ledger sweep event types to `TransferEventType`
+
+### 2020-09-14_1.429.2
+- Documentation updates for `LOGIN_REPAIRED` webhook and transfer.
+- Add `transfer/ledger/deposit` route
+
+### 2020-09-14_1.429.1
+- Updated /identity/match's address score threshold recommendation from 80 or above to 70 or above
+
+### 2020-09-14_1.429.0
+- [Breaking change for Go client library] For Transfer endpoints that take payment profiles as input, remove `payment_profile` field and make 
+`account_id` and `access_token` mandatory. The removed field is not in use.
+- Mark all payment profile-specific endpoints as `deprecated`.
+- Docs updates for Transfer, including clarifying that certain request fields for `/transfer/authorization/create`
+are not currently used.
+- Propagate Signal docs update from 2020-09-14_1.419.0 to all relevant endpoints.
+- Add `institution_not_supported` as a property to `LinkSessionExitMetadata.Status`
+
+### 2020-09-14_1.428.1
+- Change `/credit/reports/freddie_mac/get` schema to contain new `ReportingInformationParentIdentifier` field
+
+### 2020-09-14_1.428.0
+- Add `verification_report_type` to `asset_report/create` request
+
+### 2020-09-14_1.427.1
+- Remove references to the verification `report_type` field in `asset_report/get` and `asset_report/pdf/get`
+
+### 2020-09-14_1.427.0
+- Add `/processor/account/get` route
+
+### 2020-09-14_1.426.0
+- Add `instant_microdeposits_enabled` field to `auth` object in `link/token/create`
+
+### 2020-09-14_1.425.0
+- Add `investments` field to `asset_report/get` response as part of the `items.accounts` object
+
+### 2020-09-14_1.424.2
+- Update descriptions of some Transactions endpoint fields
+
+### 2020-09-14_1.424.1
+- Add clarification to processor webhook doc that the processor can call it
+- Fix `sandbox/transfer/ledger/simulate_available` doc url
+
+### 2020-09-14_1.424.0
+- Add `/sandbox/transfer/ledger/simulate_available` route
+
+### 2020-09-14_1.423.0
+- Update code of `BaseReportsErrorWebhook` to `ERROR`
+- Add new enum to StudentRepaymentPlan and add to description of repayment_plan_type
+
+### 2020-09-14_1.422.0
+- Move `BaseReportsProductReadyWebhook` and `BaseReportsErrorWebhook`
+- Remove `asset_report_id` and add `user_id` to `BaseReportsErrorWebhook`
+
+### 2020-09-14_1.421.0
+
+- Update permissible purpose code `LEGITIMATE_BUSINESS_NEED_TENANT_OTHER` to `LEGITIMATE_BUSINESS_NEED_OTHER`
+
+### 2020-09-14_1.420.1
+
+- Add new enums to `canonical_description` in `credit/payroll_income/get`
+
+### 2020-09-14_1.420.0
+
+- Add `database_match_enabled` field to `auth` object in `link/token/create`
+
+### 2020-09-14_1.419.2
+
+- Add `/transfer/ledger/get` route
+
+### 2020-09-14_1.419.1
+
+- Add `submitted` and `not_submitted` to transferDiligenceStatus
+
 # 15.5.0
 - Updating to OAS 2020-09-14_1.419.0
 
