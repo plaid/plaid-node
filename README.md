@@ -88,8 +88,7 @@ products: [Products.Auth, Products.Transactions],
 
 ## Getting started
 
-The module supports all Plaid API endpoints. For complete information about the API, head
-to the [docs][2].
+The module supports all Plaid API endpoints. For complete information about the API, head to the [docs][2].
 
 Most endpoints require a valid `client_id` and `secret` as authentication. Attach them via the configuration.
 
