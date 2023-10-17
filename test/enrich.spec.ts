@@ -2,7 +2,7 @@ import 'mocha';
 import {expect} from 'chai';
 import {createPlaidClient} from './clientHelper';
 import {
-  TransactionsEnrichGetRequest,
+  TransactionsEnrichRequest,
   EnrichTransactionDirection,
   ClientProvidedTransaction,
   PlaidApi
@@ -51,7 +51,7 @@ describe('Enrich', () => {
   });
 
   it('successfully enriches transactions', async () => {
-    const request: TransactionsEnrichGetRequest = {
+    const request: TransactionsEnrichRequest = {
       account_type: "depository",
       transactions: SAMPLE_TRANSACTIONS_TO_ENRICH
     };
