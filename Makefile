@@ -1,7 +1,6 @@
 BIN = node_modules/.bin
 CURRENT_DIR:=$(shell pwd)
 ESLINT = $(BIN)/eslint --config .eslintrc.json
-ISTANBUL = node --harmony node_modules/.bin/istanbul
 JSHINT = $(BIN)/jshint --config .jshintrc
 NODE_PACKAGE_VERSION:=$(shell cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' |  sed 's/  version: //g')
 TSC = $(BIN)/tsc
@@ -19,4 +18,4 @@ setup:
 
 .PHONY: test
 test:
-	$(ISTANBUL) cover node_modules/.bin/_mocha -- --exit --timeout 60000 -r ts-node/register test/**/*.spec.ts
+	node_modules/.bin/_mocha -- --exit --timeout 60000 -r ts-node/register test/**/*.spec.ts
