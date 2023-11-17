@@ -1,5 +1,112 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 18.0.0
+- Updating to OAS 2020-09-14_1.470.0
+
+## Breaking changes in this version
+
+- Update date format in Base reports
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.470.0
+- Add balance insights firleds to CRA Base Reports
+
+### 2020-09-14_1.469.1
+- Change visibility of `/transactions/recurring/streams/...` endpoints
+
+### 2020-09-14_1.469.0
+- Update date format in Base reports
+
+### 2020-09-14_1.468.0
+- [Breaking change for Go client library] Mark `income_verification.access_tokens` and `access_token` nullable in `link/token/create` request, to match the actual behavior of the API.
+- Add  `other` to `account_filters` in `link/token/create` request
+
+### 2020-09-14_1.467.0
+- Change `/transactions/recurring/streams/merge` and `/transactions/recurring/streams/update` return type
+
+### 2020-09-14_1.466.0
+- Add `/transactions/recurring/streams/create`, `/transactions/recurring/streams/merge`, and `/transactions/recurring/streams/update` endpoints
+
+### 2020-09-14_1.465.0
+- [Breaking change for Go client library] Mark `products`, `required_if_supported_products`, `optional_products`, `additional_consented_products`, and `user.ssn` as nullable in `/link/token/create` request.
+- Set `minLength` for `client_name`, `language`, `access_token`, and `user.client_user_id` in `/link/token/create` request, to match actual validation behavior of the API.
+
+### 2020-09-14_1.464.1
+- Add `webhook_code` to `/sandbox/income/fire_webhook`
+- Change `verification_status` to be an optional field in `/sandbox/income/fire_webhook`
+
+### 2020-09-14_1.464.0
+- Add `/processor/signal/prepare` endpoint.
+
+### 2020-09-14_1.463.7
+- Internal changes only
+
+### 2020-09-14_1.463.6
+- Add `database_matched` to `verification_status` for database matched items.
+
+### 2020-09-14_1.463.5
+- Add `hosted_link.url_lifetime_seconds` to `/link/token/create` request
+
+### 2020-09-14_1.463.4
+- Add `database_match_enabled` field to `auth` object in `link/token/create`
+
+### 2020-09-14_1.463.3
+- Mark `RecurringInsightsStream` fields `is_active`, `merchant_name`, and `average_days_apart` as required.
+
+### 2020-09-14_1.463.2
+- Add `user_id` into the webhook schema for `AssetsProductReadyWebhook`
+
+### 2020-09-14_1.463.1
+- [Breaking change for Go client library] Mark `access_token` and `account_id` required in `/transfer/create`, to match the actual behavior of the API.
+
+### 2020-09-14_1.463.0
+- Add is_user_modified and last_user_modified_date to TransactionStream
+
+### 2020-09-14_1.462.0
+- Update `/beta/transactions/user_insights/v1/get` endpoint with recurring transactions and feature updates.
+
+### 2020-09-14_1.461.2
+- Clean up description for transfer refund simulate route.
+
+### 2020-09-14_1.461.1
+- Remove `client_id` and `secret` from required param list of `/transfer/ledger/distribute`
+
+### 2020-09-14_1.461.0
+- Add `/beacon/user/review` route for updating the status of Beacon Users
+
+### 2020-09-14_1.460.0
+- Permissions manager API: bug fix: update `date` field in ConnectedApplication schema to `date-time` to match API behavior
+- Permissions manager API: add `/item/application/unlink` endpoint
+
+### 2020-09-14_1.459.2
+- Do not support .docx or .doc file for `/transfer/diligence/document/upload`
+
+### 2020-09-14_1.459.1
+- Make `products` request parameter for `/partner/customer/create` optional.
+
+### 2020-09-14_1.459.0
+- Add route `/transfer/ledger/distribute`
+
+### 2020-09-14_1.458.1
+- Refunds start processing after 4 days (not 3 days).
+
+### 2020-09-14_1.458.0
+- Remove `account_ids` parameter `/processor/transactions/get` options object
+- Change `accounts` response field for `/processor/transactions/get` to `account`
+
+### 2020-09-14_1.457.4
+Add BASE_REPORT_WARNING warning type
+
+### 2020-09-14_1.457.3
+Add `BE` to the list of available countries
+
+### 2020-09-14_1.457.2
+- Add `access_tokens` field to `/link/token/create` request
+
+### 2020-09-14_1.457.1
+- Clean up description for transfer ledger simulate routes.
+
+
 # 17.0.0
 
 - Updating to OAS 2020-09-14_1.457.0
