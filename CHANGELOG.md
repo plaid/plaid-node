@@ -1,5 +1,80 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 18.2.0
+- Updating to OAS 2020-09-14_1.482.3
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.482.3
+- Update `description` description for `/transfer/create`
+
+### 2020-09-14_1.482.2
+- Update /credit/relay/get response example
+
+### 2020-09-14_1.482.1
+- Update `funding_account_id` description for `/transfer/intent/create`
+
+### 2020-09-14_1.482.0
+- Adds a new field `payment_details` to `/accounts/balance/get` request
+- Adds a new field `payment_risk_assessment` to `/accounts/balance/get` response
+
+### 2020-09-14_1.481.1
+- Update `USER_ACCOUNT_REVOKED` description and set to visible
+
+### 2020-09-14_1.481.0
+- Add `available` to balance object in `wallet/get` and `wallet/list` response
+
+### 2020-09-14_1.480.1
+- Documentation-only change to Investments `Security` object for new fields and sandbox availability
+
+### 2020-09-14_1.480.0
+- Add `phone_number` to `/transactions/enrich` response
+
+### 2020-09-14_1.479.0
+- [Breaking change for Go client library] Make `street` and `city` optional in the address attribute of `identity_verification/create`
+
+### 2020-09-14_1.478.4
+- Add `registration_number` to `/partner/customer/create` request
+
+### 2020-09-14_1.478.3
+
+### 2020-09-14_1.478.2
+- Deprecate `funding_account_id` from `/transfer/recurring/create` request
+
+### 2020-09-14_1.478.1
+- Description-only changes to support Hosted Link (beta)
+
+### 2020-09-14_1.478.0
+- Add `market_identifier_code` and `option_contract` fields in the Security (investment) object
+- `option_contract` object contains `contract_type`, `expiration_date`, `strike_price`, and `underlying_security_ticker`
+
+### 2020-09-14_1.477.1
+- Changes `last_user_modified_date` to `last_user_modified_datetime` on transaction stream object.
+
+### 2020-09-14_1.477.0
+- Bug fix nullability definitions for `/beacon/user/create` and `/beacon/user/update` request payloads
+
+### 2020-09-14_1.476.1
+- Update Recurring Transaction description
+
+### 2020-09-14_1.476.0
+- Add `/beacon/user/update`
+
+### 2020-09-14_1.475.0
+- Add `/beacon/report_syndication/get` route
+
+### 2020-09-14_1.474.4
+- Add Statements Refresh webhook
+
+### 2020-09-14_1.474.3
+- Internal changes only
+
+### 2020-09-14_1.474.2
+- Deprecate `credit_funds_source` in `/transfer/authorization/create` request
+
+### 2020-09-14_1.474.1
+
+- Added `identity_match` to Products schema object
+
 # 18.1.0
 - Updating to OAS 2020-09-14_1.474.0
 - Updated axios from v1.5 to v1.6
