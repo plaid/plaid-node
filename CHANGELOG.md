@@ -1,5 +1,27 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 18.3.0
+- Updating to OAS 2020-09-14_1.485.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.485.0
+- Add `/processor/liabilities/get` endpoint
+
+### 2020-09-14_1.484.1
+- Add `/identity_verification/autofill/create` (closed beta)
+
+### 2020-09-14_1.484.0
+- Add `/statements/refresh` endpoint
+
+### 2020-09-14_1.483.2
+- Add `/beacon/duplicate/get` route
+
+### 2020-09-14_1.483.1
+- Internal changes only
+
+### 2020-09-14_1.483.0
+- Added net new fields to StatementsAccount object: `account_mask`, `account_subtype`, `account_official_name` 
+
 # 18.2.0
 - Updating to OAS 2020-09-14_1.482.3
 
