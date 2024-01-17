@@ -1,5 +1,17 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 19.0.0
+- Updating to OAS 2020-09-14_1.485.1
+
+## Breaking changes in this version
+- Most usage of index signatures has been removed.
+  - Plaid recommends updating to the latest version of `plaid-node` to access the latest type definitions.
+  - If unable to update `plaid-node`, consider using type assertions and defining custom types based on the types available in the currently-used version of `plaid-node`.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.485.1
+- Update `legal_name` description in `user` object in `/link/token.create` request
+
 # 18.3.0
 - Updating to OAS 2020-09-14_1.485.0
 
