@@ -1,5 +1,37 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 19.0.0
+- Updating to OAS 2020-09-14_1.485.1
+
+## Breaking changes in this version
+- Most usage of index signatures has been removed. This will allow for stricter types and improved type safety for a better developer experience.
+  - For versions `19.0.0` and beyond, Plaid recommends updating to the latest version of `plaid-node` to access the latest type definitions.
+    - In most cases, updating to the latest version of `plaid-node` will not require code changes - available fields should be explicitly defined on the provided types.
+  - When upgrading from `<19.0.0`, there is a small chance that code depending on properties that previously were not explicitly defined on a type may need to be updated. To do so:
+    - Identify properties that the index signature previously covered.
+    - Identify uses of these properties in your code.
+    - Refactor your code. Some possible solutions include:
+      - No longer using these properties.
+      - Defining a new type that re-introduces index signatures via type intersection. For example:
+        ```typescript
+        type ExtendedSandboxPublicTokenCreateResponse = SandboxPublicTokenCreateResponse & { [key: string]: any; }
+        ```
+      - Using type assertions. For example, if your code previously relied on a string property `foo` of `SandboxPublicTokenCreateResponse`:
+        ```typescript
+        type ExtendedSandboxPublicTokenCreateResponse = SandboxPublicTokenCreateResponse & { foo: string }
+
+        const response = await plaidClient.sandboxPublicTokenCreate(request);
+
+        if ((response.data as any).foo != null) {
+          const { foo } = response.data as ExtendedSandboxPublicTokenCreateResponse;
+        }
+        ```
+  - If you are unable to update `plaid-node`, previous versions of `plaid-node` will not have index signatures removed. If you wish to improve type safety, consider using type assertions and defining custom types based on the types available in the currently-used version of `plaid-node` (See the example above for a suggested approach).
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.485.1
+- Update `legal_name` description in `user` object in `/link/token.create` request
+
 # 18.3.0
 - Updating to OAS 2020-09-14_1.485.0
 
