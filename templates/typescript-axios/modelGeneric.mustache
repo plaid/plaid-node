@@ -3,12 +3,8 @@
  * @export
  * @interface {{classname}}
  */
-// Edited by Plaid, line 9. any to unknown
+// Edited by Plaid, line 8. remove index signature
 export interface {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{
-{{#additionalPropertiesType}}
-    [key: string]: {{{additionalPropertiesType}}}{{#hasVars}} | unknown{{/hasVars}};
-
-{{/additionalPropertiesType}}
 {{#vars}}
     /**
      * {{{description}}}
