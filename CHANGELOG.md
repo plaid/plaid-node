@@ -1,5 +1,58 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 20.0.0
+- Updating to OAS 2020-09-14_1.491.3
+
+## Breaking changes in this version
+
+- [Breaking] Introduce a new `AssetReportAccountBalance` object which duplicates the existing `AccountBalance` object with an additional `margin_loan_amount` field. Updated `AccountAssets.balances` to return the new `AssetReportAccountBalance` object instead of the existing `AccountBalance` object.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.491.3
+- Increase max length of description field on `/transfer/intent/create` from 8 to 15
+
+### 2020-09-14_1.491.2
+- Added documentation for the `securities.type` field in `investments/holdings/get` and `investments/transactions/get` endpoints.
+
+### 2020-09-14_1.491.1
+- Add new `no_data` type to `name` and `date_of_birth` fields in `documentary_verification.documents[].analysis.extracted_data` in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.491.0
+- Add `identity` object to `link/token/create` request body
+
+### 2020-09-14_1.490.0
+- Add `events` field to the `sessions` parameter in the `/link/token/get` response
+
+### 2020-09-14_1.489.1
+- Mark optional `scope` and `reference` fields in `/payment_initiation/consent/payment/execute` as nullable
+
+### 2020-09-14_1.489.0
+- Add optional `scope` and `reference` fields to `/payment_initiation/consent/payment/execute`
+
+### 2020-09-14_1.488.0
+- Add optional `item_ids` field to the request of `credit/payroll_income/get` and `credit/bank_statements/uploads/get`
+
+### 2020-09-14_1.487.2
+- Add `num_1099s_uploaded` to `document_income_results` object in `/credit/sessions/get` response
+
+### 2020-09-14_1.487.1
+- Correct the Document Income Verification `parsing_config` enum used by `/link/token/create` to contain `risk_signals` instead of `fraud_risk` to match the actual API implementation.
+- Dcumentation updates to reflect updates to Signal, including that new Items with Signal should now be created with `signal` in `/link/token/create` instead of using `/signal/prepare`.
+
+### 2020-09-14_1.487.0
+- [Breaking] Introduce a new `AssetReportAccountBalance` object which duplicates the existing `AccountBalance` object with an additional `margin_loan_amount` field. Updated `AccountAssets.balances` to return the new `AssetReportAccountBalance` object instead of the existing `AccountBalance` object.
+- Add `vested_quantity` and `vested_value` fields to the `AssetReportInvestments` object.
+
+### 2020-09-14_1.486.1
+- Update `bank_income_sources` in CRA Bank Income Get to be required in response since the empty array is being omitted.
+
+### 2020-09-14_1.486.0
+- Add `requires_real_time_balance_refresh`, `risk_reasons`, `attributes`, `balance_last_updated`, and `score` fields to `/accounts/balance/get` endpoint
+
 # 19.0.0
 - Updating to OAS 2020-09-14_1.485.1
 
