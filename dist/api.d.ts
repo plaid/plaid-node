@@ -46701,9 +46701,7 @@ export declare const PlaidApiAxiosParamCreator: (configuration?: Configuration |
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    transferIntentGet: (requestBody: {
-        [key: string]: object;
-    }, options?: any) => Promise<RequestArgs>;
+    transferIntentGet: (transferIntentGetRequest: TransferIntentGetRequest, options?: any) => Promise<RequestArgs>;
     /**
      * Use the `/transfer/ledger/deposit` endpoint to deposit funds into Plaid Ledger.
      * @summary Deposit funds into a Plaid Ledger balance
@@ -48739,9 +48737,7 @@ export declare const PlaidApiFp: (configuration?: Configuration | undefined) => 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    transferIntentGet(requestBody: {
-        [key: string]: object;
-    }, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<TransferIntentGetResponse>>;
+    transferIntentGet(transferIntentGetRequest: TransferIntentGetRequest, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<TransferIntentGetResponse>>;
     /**
      * Use the `/transfer/ledger/deposit` endpoint to deposit funds into Plaid Ledger.
      * @summary Deposit funds into a Plaid Ledger balance
@@ -50777,9 +50773,7 @@ export declare const PlaidApiFactory: (configuration?: Configuration | undefined
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    transferIntentGet(requestBody: {
-        [key: string]: object;
-    }, options?: any): AxiosPromise<TransferIntentGetResponse>;
+    transferIntentGet(transferIntentGetRequest: TransferIntentGetRequest, options?: any): AxiosPromise<TransferIntentGetResponse>;
     /**
      * Use the `/transfer/ledger/deposit` endpoint to deposit funds into Plaid Ledger.
      * @summary Deposit funds into a Plaid Ledger balance
@@ -53018,9 +53012,7 @@ export declare class PlaidApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PlaidApi
      */
-    transferIntentGet(requestBody: {
-        [key: string]: object;
-    }, options?: any): Promise<import("axios").AxiosResponse<TransferIntentGetResponse, any>>;
+    transferIntentGet(transferIntentGetRequest: TransferIntentGetRequest, options?: any): Promise<import("axios").AxiosResponse<TransferIntentGetResponse, any>>;
     /**
      * Use the `/transfer/ledger/deposit` endpoint to deposit funds into Plaid Ledger.
      * @summary Deposit funds into a Plaid Ledger balance
