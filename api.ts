@@ -54371,9 +54371,6 @@ export const PlaidApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(transferIntentGetRequest, localVarRequestOptions, configuration)
-            console.log(transferIntentGetRequest)
-            console.log("RESET")
-            console.log(localVarRequestOptions)
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
