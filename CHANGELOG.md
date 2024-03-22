@@ -1,5 +1,82 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 22.0.0
+- Updating to OAS 2020-09-14_1.502.4
+
+## Breaking changes in this version
+- [Breaking] Update `network` field type in `/transfer/recurring/create` request from `TransferNetwork` to `TransferACHNetwork` since recurring currently only works for ACH.
+- [Breaking] Update `network` field type in `RecurringTransfer` and `RecurringTransferNullable` from `TransferNetwork` to `TransferACHNetwork` since recurring currently only works for ACH.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.502.4
+- Add `sms_microdeposits_verification_enabled` to `auth` object inside `/link/token/create` calls.
+
+### 2020-09-14_1.502.3
+- Added descriptions for `vested_quantity` and `vested_amount` fields for `investments/holdings/get`
+- Removed description for `vested_quantity` and `vested_amount` fields for `HoldingsOverride` object (for sandbox)
+
+### 2020-09-14_1.502.2
+- [Breaking] Update `network` field type in `/transfer/recurring/create` request from `TransferNetwork` to `TransferACHNetwork` since recurring currently only works for ACH.
+- [Breaking] Update `network` field type in `RecurringTransfer` and `RecurringTransferNullable` from `TransferNetwork` to `TransferACHNetwork` since recurring currently only works for ACH.
+
+### 2020-09-14_1.502.1
+- Update description for `/item/remove` and `/asset_report/remove`
+
+### 2020-09-14_1.502.0
+- Add `client_report_id` fields to `/link/token/create` and `/cra/base_report/get`
+
+### 2020-09-14_1.501.2
+- Updating `insights` field in `/cra/partner_insights/get` response to contain both numerical and string values
+
+### 2020-09-14_1.501.1
+- Enable original description for all customers on `/transactions/get` endpoint
+
+### 2020-09-14_1.501.0
+[Breaking change for Go client library] Mark `address` field in `/beacon/user/create` as optional
+
+### 2020-09-14_1.500.0
+- Remove `prime_trust` processor partner
+
+### 2020-09-14_1.499.2
+- Fix broken link from previous update
+
+### 2020-09-14_1.499.1
+- Updated doc url for some Transfer and processor endpoints to support documentation reorganization
+- Minor documentation updates and clarifications
+
+### 2020-09-14_1.499.0
+- [Breaking change for Go client library] Make `account_id` optional in `/transactions/recurring/get` endpoint
+
+### 2020-09-14_1.489.3
+- Update description of `network_trace_id`
+
+### 2020-09-14_1.489.2
+- Correct documentation to indicate that `assets` is not supported in the `additional_consented_products` field
+- Remove `additionalProperties: true` incorrectly applied to `transferIntentGet` object and missed in `2020-09-14_1.352.0`. This will result in more strict type checking for this object, but should not be a breaking change.
+
+### 2020-09-14_1.498.1
+- Enable original description for all customers
+
+### 2020-09-14_1.498.0
+- Add `POST /beacon/account_risk/v1/evaluate` endpoint
+
+### 2020-09-14_1.497.0
+- Add `institution_id` to `processor/account/get` endpoint.
+
+### 2020-09-14_1.496.5
+- Update the description and enum values for `linked_services` in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.496.4
+  Add `POST /beacon/user/history/list`
+
+### 2020-09-14_1.496.3
+- Add `timestamp` to the beacon user's `audit_trail` object
+- Add `version` to the beacon user object.
+
 # 21.0.0
 - Updating to OAS 2020-09-14_1.496.2
 
