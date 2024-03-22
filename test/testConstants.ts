@@ -11,7 +11,7 @@ export const TestConstants = {
   },
   INSTITUTION: 'ins_109508',
   INCOME_INSTITUTION: 'ins_129618',
-  PRODUCTS: ['transactions', 'auth', 'assets', 'investments'],
+  PRODUCTS: ['transactions', 'auth', 'assets', 'investments', 'statements'],
   INCOME_PRODUCTS: ['income_verification'],
   MFA_RESPONSES: {
     DEVICE: ['1234'],
