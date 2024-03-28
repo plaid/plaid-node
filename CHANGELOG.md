@@ -1,5 +1,24 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 22.0.1
+- Updating to OAS 2020-09-14_1.503.4
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.503.4
+- Improve description for `TransferNetworkTraceID`
+
+### 2020-09-14_1.503.3
+- Update description for `TransferNetworkTraceID`
+
+### 2020-09-14_1.503.2
+- Change `forecasted_average_monthly_income_prediction_intervals` to plural.
+
+### 2020-09-14_1.503.1
+- Add `has_more` field to /transfer/event/list and /transfer/event/sync to indicate there are more events to be pulled
+
+### 2020-09-14_1.503.0
+- Add new `/cra/base_report/create` endpoint
+
 # 22.0.0
 - Updating to OAS 2020-09-14_1.502.4
 
