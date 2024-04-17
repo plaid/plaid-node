@@ -1,5 +1,54 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 23.0.0
+- Updating to OAS 2020-09-14_1.508.0
+
+## Breaking changes in this version
+### 2020-09-14_1.504.2
+- [Breaking] Update `network` field type in `/transfer/recurring/create` request from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+- [Breaking] Update `network` field type in `RecurringTransfer` and `RecurringTransferNullable` from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.508.0
+- Add new fields to `/cra/bank_income/get` endpoint
+
+### 2020-09-14_1.507.3
+- Add `paystub` and `w2` values to custom sandbox configuration schema
+
+### 2020-09-14_1.507.2
+- Mark `/transfer/balance/get` endpoint deprecated
+
+### 2020-09-14_1.507.1
+- Update `funds_available` description
+
+### 2020-09-14_1.507.0
+- Add `funds_available` transfer status and transfer event type
+
+### 2020-09-14_1.506.0
+- Add `statements` to the `options` field in the request object for `/sandbox/public_token/create` endpoint
+
+### 2020-09-14_1.505.1
+- Internal changes only
+
+### 2020-09-14_1.505.0
+- Add `profile` product
+
+### 2020-09-14_1.504.2
+- [Breaking] Update `network` field type in `/transfer/recurring/create` request from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+- [Breaking] Update `network` field type in `RecurringTransfer` and `RecurringTransferNullable` from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+
+### 2020-09-14_1.504.1
+- Documentation updates for `/transactions/sync` and Database Match / Database Insights (beta).
+
+### 2020-09-14_1.504.0
+- Add new fields to `/transactions/sync` and `/processor/transactions/sync` endpoints
+
+### 2020-09-14_1.503.6
+- [Breaking change for Go client library] Make `start_date` and `end_date` required in the `statements` object for the `/link/token/create` endpoint
+
+### 2020-09-14_1.503.5
+- Improve description for `RiskCheckIdentityAbuseSignals`
+
 # 22.0.1
 - Updating to OAS 2020-09-14_1.503.4
 

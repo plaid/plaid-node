@@ -27,12 +27,13 @@ export const createPlaidClient = () => {
 };
 
 export const createAndExchangeSandboxPublicTokenForAccessToken = async (
+  products:Products[] = TestConstants.PRODUCTS,
   options?: SandboxPublicTokenCreateRequestOptions,
 ) => {
   const plaidClient = createPlaidClient();
   const request: SandboxPublicTokenCreateRequest = {
     institution_id: TestConstants.INSTITUTION,
-    initial_products: TestConstants.PRODUCTS as Products[],
+    initial_products: products,
     options,
   };
 
