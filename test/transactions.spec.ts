@@ -17,7 +17,9 @@ describe('Transactions', () => {
 
   beforeEach(async () => {
     plaidClient = createPlaidClient();
-    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken({
+    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken(
+      undefined,
+      {
       transactions: {
         start_date: new Date().toISOString().substr(0, 10),
         end_date: new Date().toISOString().substr(0, 10),
