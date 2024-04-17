@@ -37,6 +37,10 @@ See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/
 ### 2020-09-14_1.505.0
 - Add `profile` product
 
+### 2020-09-14_1.504.2
+- [Breaking] Update `network` field type in `/transfer/recurring/create` request from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+- [Breaking] Update `network` field type in `RecurringTransfer` and `RecurringTransferNullable` from `TransferACHNetwork` to `TransferRecurringNetwork` as recurring now supports rtp.
+
 ### 2020-09-14_1.504.1
 - Documentation updates for `/transactions/sync` and Database Match / Database Insights (beta).
 
