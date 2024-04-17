@@ -1,3 +1,5 @@
+import {Products} from "../api";
+
 export const TestConstants = {
   USERNAME: 'user_good',
   PASSWORDS: {
@@ -11,7 +13,7 @@ export const TestConstants = {
   },
   INSTITUTION: 'ins_109508',
   INCOME_INSTITUTION: 'ins_135842',
-  PRODUCTS: ['transactions', 'auth', 'assets', 'investments', 'statements'],
+  PRODUCTS: [Products.Transactions, Products.Auth, Products.Assets, Products.Investments],
   INCOME_PRODUCTS: ['income_verification'],
   MFA_RESPONSES: {
     DEVICE: ['1234'],

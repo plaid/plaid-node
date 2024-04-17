@@ -11,6 +11,7 @@ import {
   StatementsRefreshRequest,
   PlaidApi,
 } from '../dist';
+import {Products} from "../api";
 
 describe('Statements', () => {
   let plaidClient: PlaidApi;
@@ -18,7 +19,13 @@ describe('Statements', () => {
 
   before(async () => {
     plaidClient = createPlaidClient();
-    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken();
+    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken(
+      [Products.Statements],{
+      statements: {
+        start_date: '2023-11-01',
+        end_date: '2023-12-01'
+      },
+    });
   });
 
   it('goes through the entire statements flow', async () => {
@@ -49,7 +56,7 @@ describe('Statements', () => {
     // 3. /statements/refresh
     const refreshRequest: StatementsRefreshRequest = {
       access_token: testAccessToken as string,
-      start_date: '2023-11-01',
+      start_date: '2024-01-01',
       end_date: '2024-02-01',
     };
 

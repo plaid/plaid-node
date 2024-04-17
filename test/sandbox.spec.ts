@@ -18,7 +18,9 @@ describe('Sandbox', () => {
 
   before(async () => {
     plaidClient = createPlaidClient();
-    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken({
+    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken(
+      undefined,
+      {
       webhook: 'https://httpstat.us/200',
     });
   });
@@ -49,7 +51,9 @@ describe('Sandbox Income Verification', () => {
   let testAccessToken: string | undefined;
 
   before(async () => {
-    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken({
+    testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken(
+      undefined,
+      {
       income_verification: {
         income_source_types: [IncomeVerificationSourceType.Bank],
         bank_income: {
