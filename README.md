@@ -445,4 +445,4 @@ Click [here][7]!
 [11]: https://blog.plaid.com/improving-our-api/
 [13]: https://github.com/plaid/plaid-node-legacy
 [api-upgrades]: https://plaid.com/docs/api/versioning/
-[14]: https://plaid.com/docs/payment-initiation/
+[14]: https://plaid.com/docs/payment-initiation/ 
