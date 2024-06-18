@@ -1,5 +1,119 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 25.0.0
+- Updating to OAS 2020-09-14_1.525.1
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.525.1
+[Breaking] Renamed `bank_income` to `report` in the `cra/check_report/income_insights/get` response
+
+### 2020-09-14_1.524.1
+
+- Remove `minLength` validations from several attributes. Fixes multiple validation bugs in the ruby client libraries which do not handle `nil` gracefully before this change.
+
+### 2020-09-14_1.524.0
+
+- Add transfer refund event types to TransferEventType enum.
+
+### 2020-09-14_1.523.0
+
+- Added support for the `layer` product.
+
+### 2020-09-14_1.522.0
+
+- Added support for the `/user_account/session/get` API.
+
+### 2020-09-14_1.521.0
+
+- Internal changes only
+
+### 2020-09-14_1.520.0
+
+- [Breaking] Contains fixes to Balance Plus (beta):
+  - [Breaking] Convert `risk_level` string to an enum object `RiskLevel`.
+  - [Breaking] Adds missing `required` labels to certain fields within `BalancePlusAttributes`, `AccountsBalanceGetResponsePaymentRiskAssessment`, `AccountsBalanceGetRequestPaymentDetails`, and `RiskReason`.
+  - Adds missing `additionalProperties` field to `BalancePlusAttributes`
+  - Fix incorrect response example for Balance Plus
+  - Docs updates for Balance Plus
+
+### 2020-09-14_1.519.0
+
+- Add `rtp` to network options in `/transfer/intent/create`
+- Added `access_tokens` field to `/beacon/user/create` and `/beacon/user/update` requests
+- Added `item_ids` to `/beacon/user/*` responses
+
+### 2020-09-14_1.518.9
+
+- Update `description` field for `decision_rationale` in `transfer/authorization/create` response
+
+### 2020-09-14_1.518.8
+
+- Fix incorrect documentation for ENTITY_SCREENING: STATUS_UPDATED webhook which wrongly documented `screening_id` instead of `entity_screening_id` in the payload.
+
+### 2020-09-14_1.518.7
+
+- Internal changes only
+
+### 2020-09-14_1.518.6
+
+- Add `add_ons` in cra/check_report/pdf/get
+
+### 2020-09-14_1.518.5
+
+- Internal changes only
+
+### 2020-09-14_1.518.4
+
+- Add `Recall` as a possible Virtual Account wallet transaction type
+
+### 2020-09-14_1.518.3
+
+- Internal changes only
+
+### 2020-09-14_1.518.2
+
+- Documentation edits to cra endpoints
+- Add `income-sensitive repayment` to StudentRepaymentPlan and update description for repayment plan type
+
+### 2020-09-14_1.518.1
+
+- Documentation edits to cra endpoints
+- Add item, account, and transaction IDs to `/cra/base_report/get` response
+
+### 2020-09-14_1.518.0
+
+- Add several cra related properties to `/user/create` and `/link/token/create`
+
+### 2020-09-14_1.517.7
+
+- Add `cra/check_report/pdf/get` endpoint
+
+### 2020-09-14_1.517.6
+
+- Add `cra/check_report/base_report/get` endpoint
+
+### 2020-09-14_1.517.5
+
+- Add `error_message` to `document_metadata` object for `credit/payroll_income/get` and `credit/bank_statements/uploads/get`
+
+### 2020-09-14_1.517.4
+
+- Add `production` to the `secrets` object in `/partner/customer/create` response and deprecate `development`
+
+### 2020-09-14_1.517.3
+
+- Add new enums to `canonical_description` in `credit/payroll_income/get`: `RETIREMENT`, `GIG ECONOMY`, and `STOCK COMPENSATION`
+
+### 2020-09-14_1.517.2
+
+- Added `ITEM: EVENTS` webhook and example to documentation
+
+### 2020-09-14_1.517.1
+
+- Added `public_tokens` on `SESSION_FINISHED` webhook
+- Deprecated `public_token` on `SESSION_FINISHED` webhook
+- Added `ITEM_ADD_RESULT` webhook
+
 # 24.0.0
 - Updating to OAS 2020-09-14_1.517.0
 
