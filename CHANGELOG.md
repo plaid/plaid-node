@@ -1,8 +1,92 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 26.0.0
+- Updating to OAS 2020-09-14_1.534.3
+
+## Breaking changes in this version
+### 2020-09-14_1.532.2
+- [Breaking] Rename `/cra/check_report/network_attributes/get` to `/cra/check_report/network_insights/get`
+
+### 2020-09-14_1.528.0
+- [Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
+
+### 2020-09-14_1.527.0
+- [Breaking] Removed `development.plaid.com` as a valid server and updated docs to remove references to Development, due to the decomissioning of the Development environment
+
+### 2020-09-14_1.526.0
+
+[Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
+
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.534.3
+- Add 'Beacon' to product enum list and make available in `/link/token/create` products
+
+### 2020-09-14_1.534.2
+- Mark some `BaseReportAccountInsights` fields as optional.
+
+### 2020-09-14_1.534.1
+
+- Internal changes only
+
+### 2020-09-14_1.533.1
+- Add `user_action_required` to transfer authorization's `decision` enum.
+- Add `authorization_id` to transfer object in `/link/token/create` request.
+
+### 2020-09-14_1.533.0
+- Made `user` request field optional in `beacon/user/update`
+
+### 2020-09-14_1.532.4
+- fix `/cra/check_report/pdf/get` external doc url
+
+### 2020-09-14_1.532.3
+- Docs updates
+
+### 2020-09-14_1.532.2
+- [Breaking] Rename `/cra/check_report/network_attributes/get` to `/cra/check_report/network_insights/get`
+
+### 2020-09-14_1.532.1
+
+- Internal changes only
+
+### 2020-09-14_1.531.1
+- Update idempotency key expiration time to 48 hours in `virtual-accounts/#wallet-transaction-execute-request-idempotency-key`
+
+### 2020-09-14_1.531.0
+- Add `balance_plus` to `products` in `LinkTokenCreateRequest`
+- Add `balance_plus` to `additional_consented_products` in `LinkTokenCreateRequest`
+
+### 2020-09-14_1.530.0
+- Add `/user/remove` endpoint
+
+### 2020-09-14_1.529.0
+- Added `/sandbox/user/reset_login` endpoint
+
+### 2020-09-14_1.528.0
+- Added `beacon/user/account_insights/get` endpoint
+- Updated `description`field for `access_tokens` in `beacon/user/create` and `beacon/user/update` requests
+- [Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
+
+### 2020-09-14_1.527.0
+- [Breaking] Removed `development.plaid.com` as a valid server and updated docs to remove references to Development, due to the decomissioning of the Development environment
+
+### 2020-09-14_1.526.0
+
+[Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
+
 # 25.0.0
 - Updating to OAS 2020-09-14_1.525.1
 
+## Breaking changes in this version
+
+### 2020-09-14_1.525.1
+[Breaking] Renamed `bank_income` to `report` in the `cra/check_report/income_insights/get` response
+
+### 2020-09-14_1.520.0
+
+- [Breaking] Contains fixes to Balance Plus (beta):
+  - [Breaking] Convert `risk_level` string to an enum object `RiskLevel`.
+  - [Breaking] Adds missing `required` labels
 ## OpenAPI Schema Changes
 ### 2020-09-14_1.525.1
 [Breaking] Renamed `bank_income` to `report` in the `cra/check_report/income_insights/get` response

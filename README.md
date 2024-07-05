@@ -51,8 +51,7 @@ const configuration = new Configuration({
 
 The `PlaidEnvironments` parameter dictates which Plaid API environment you will access. Values are:
 
-- `PlaidEnvironments.production` - production use, creates `Item`s on https://production.plaid.com
-- `PlaidEnvironments.development` - use for integration development and testing, creates `Item`s on https://development.plaid.com
+- `PlaidEnvironments.production` - production use and live data testing, creates `Item`s on https://production.plaid.com
 - `PlaidEnvironments.sandbox` - quickly build out your integration with stateful test data, creates `Item`s on https://sandbox.plaid.com
 
 The `baseOptions` field allows for clients to override the default options used to make requests. e.g.
@@ -68,7 +67,7 @@ const configuration = new Configuration({
 
 ## Dates
 
-Dates and datetimes in requests and responses are represented as strings. 
+Dates and datetimes in requests and responses are represented as strings.
 
 Time zone information is required for request fields that accept datetimes. Failing to include time zone information will result in an error. See the following examples for guidance on syntax.
 
@@ -106,6 +105,7 @@ plaidClient
     console.log(e.response.data);
   });
 ```
+
 Note that the full error object includes the API configuration object, including the request headers, which in turn include the API key and secret. To avoid logging your API secret, log only `error.data` and/or avoid logging the full `error.config.headers` object.
 
 ## Examples
@@ -121,7 +121,6 @@ const access_token = response.data.access_token;
 const accounts_response = await plaidClient.accountsGet({ access_token });
 const accounts = accounts_response.data.accounts;
 ```
-
 
 Retrieve the last 100 transactions for a transactions user (new, recommended method):
 
@@ -164,6 +163,7 @@ console.log(response.data.accounts);
 ```
 
 Download Asset Report PDF:
+
 ```typescript
 const pdfResp = await plaidClient.assetReportPdfGet(
   {
@@ -176,7 +176,6 @@ const pdfResp = await plaidClient.assetReportPdfGet(
 
 fs.writeFileSync('asset_report.pdf', pdfResp.data);
 ```
-
 
 ## Promise Support
 
@@ -284,12 +283,14 @@ Migrating from version 9.0.0 or later of the library to a recent version should 
 
 ### Pre-9.0.0 to latest
 
-Version 9.0.0 of the client library was released in August 2021 and represents a major interface change. Any customer migrating from a version prior to 9.0.0 should consult the migration guide below. 
+Version 9.0.0 of the client library was released in August 2021 and represents a major interface change. Any customer migrating from a version prior to 9.0.0 should consult the migration guide below.
 
 This version represents a transition in how we maintain our external client libraries. We are now using an [API spec](https://github.com/plaid/plaid-openapi) written in `OpenAPI 3.0.0` and running our definition file through [OpenAPITool's `typescript-axios` generator](https://github.com/OpenAPITools/openapi-generator). All tests have been rewritten in Typescript.
 
 #### Client initialization
+
 From:
+
 ```javascript
 const configs = {
   clientID: CLIENT_ID,
@@ -304,6 +305,7 @@ new plaid.Client(configs);
 ```
 
 To:
+
 ```typescript
 const configuration = new Configuration({
   basePath: PlaidEnvironments.sandbox,
@@ -311,9 +313,9 @@ const configuration = new Configuration({
     headers: {
       'PLAID-CLIENT-ID': CLIENT_ID,
       'PLAID-SECRET': SECRET,
-      'Plaid-Version': '2020-09-14'
-    }
-  }
+      'Plaid-Version': '2020-09-14',
+    },
+  },
 });
 
 new PlaidApi(configuration);
@@ -325,13 +327,18 @@ All endpoint requests now take a request model, have better Typescript support a
 Callbacks are no longer supported.
 
 From:
-```javascript
-pCl.sandboxPublicTokenCreate(testConstants.INSTITUTION,
-  testConstants.PRODUCTS, {}, cb);
 
+```javascript
+pCl.sandboxPublicTokenCreate(
+  testConstants.INSTITUTION,
+  testConstants.PRODUCTS,
+  {},
+  cb,
+);
 ```
 
 To:
+
 ```typescript
 const request: SandboxPublicTokenCreateRequest = {
   institution_id: TestConstants.INSTITUTION,
@@ -343,30 +350,41 @@ const response = await plaidClient.sandboxPublicTokenCreate(request);
 ```
 
 #### Errors
+
 From:
+
 ```javascript
-pCl.getTransactions(accessToken, startDate, endDate,
-{ count: count, offset: offset }, (err, response) => {
-  if (err) {
-    if (err.status_code === 400 &&
-      err.error_code === 'PRODUCT_NOT_READY') {
-      setTimeout(() => {
-        getTransactionsWithRetries(
-          accessToken, startDate, endDate, count,
-          offset, num_retries_remaining - 1, cb
-        );
-      }, 1000);
+pCl.getTransactions(
+  accessToken,
+  startDate,
+  endDate,
+  { count: count, offset: offset },
+  (err, response) => {
+    if (err) {
+      if (err.status_code === 400 && err.error_code === 'PRODUCT_NOT_READY') {
+        setTimeout(() => {
+          getTransactionsWithRetries(
+            accessToken,
+            startDate,
+            endDate,
+            count,
+            offset,
+            num_retries_remaining - 1,
+            cb,
+          );
+        }, 1000);
+      } else {
+        throw new Error('Unexpected error while polling for transactions', err);
+      }
     } else {
-      throw new Error(
-        'Unexpected error while polling for transactions', err);
+      cb(null, response);
     }
-  } else {
-    cb(null, response);
-  }
-});
+  },
+);
 ```
 
 To:
+
 ```typescript
 
 plaidClient
@@ -401,9 +419,11 @@ try {
 ```
 
 #### Enums
+
 While the API and pre-9.0.0 versions represent enums using strings, 9.0.0 and later allows either strings or Node enums.
 
 Old:
+
 ```typescript
 products: ['auth', 'transactions'],
 ```
@@ -419,7 +439,6 @@ const { Products } = require("plaid");
 
 products: [Products.Auth, Products.Transactions],
 ```
-
 
 ## Support
 
