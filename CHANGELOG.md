@@ -1,5 +1,142 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 27.0.0
+- Updating to OAS 2020-09-14_1.555.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.555.0
+- Add `require_all_items` field to /asset_report/create
+
+### 2020-09-14_1.554.0
+- Add `sector` and `industry` properties to the `Security` model.
+
+### 2020-09-14_1.553.0
+- Add `ISSUE_RESOLVED` webhook
+
+### 2020-09-14_1.552.0
+- Add `ytd_amount` to `PaystubOverrideEarningsTotal` in /credit/payroll_income/get
+
+### 2020-09-14_1.551.0
+- Internal changes only
+
+### 2020-09-14_1.550.0
+- Add `/fdx/recipient` and `/fdx/recipients` endpoints
+
+### 2020-09-14_1.549.0
+- Made fields required instead of omitempty for CRA Income Insights Transactions
+
+### 2020-09-14_1.548.4
+- Set CreditAmountWithCurrency fields as required
+
+### 2020-09-14_1.548.3
+- Added missing `LOGIN_REPAIRED` enum value to possible webhook codes for `/sandbox/item/fire_webhook` request in order to match endpoint description.
+
+### 2020-09-14_1.548.2
+- [BREAKING] Moved `forecasted_monthly_income` to be a level higher.
+
+### 2020-09-14_1.548.1
+- Made the fields in account_insights array fields as required.
+
+### 2020-09-14_1.548.0
+- [BREAKING] Changed fields of `CraMonitoringGetResponse` to be simple `objects` instead of `arrays`
+- [BREAKING] Moved `income_sources` to the `income` module in the response
+
+### 2020-09-14_1.547.2
+- Add `cra_item_add_results` field to `results` object in `/link/token/get` response.
+
+### 2020-09-14_1.547.1
+- Increase `/wallet/transactions/list` cursor size to 1024 characters.
+
+### 2020-09-14_1.547.0
+- Add `ledger_id` to the request and response of a number of transfer endpoints.
+
+### 2020-09-14_1.546.0
+- Added `WalletTransactionRelation` object.
+- Added `related_transactions` field to WalletTransaction object.
+
+### 2020-09-14_1.545.3
+- Some description updates to CRA Base Report fields
+
+### 2020-09-14_1.545.2
+- Updated phone number examples in Identity Verification endpoints.
+
+### 2020-09-14_1.545.1
+- Add `update.item_ids` field to `/link/token/create` request.
+
+### 2020-09-14_1.545.0
+- [BREAKING] Rename network attributes to network insights in the `cra/check_report/network_insights/get` schemas
+
+### 2020-09-14_1.544.0
+- Added `is_shareable` field to the `/identity_verification/retry` endpoint
+
+### 2020-09-14_1.543.2
+- [Breaking] Added `data_breach` report type to BeaconReport response object
+
+### 2020-09-14_1.543.1
+- Added `consumer_statement` field to `Account` in `BaseReport`
+- make `warnings` for BaseReportGetResponse required
+
+### 2020-09-14_1.543.0
+- Add `/network_insights/report/get`
+
+### 2020-09-14_1.542.0
+- Added `error_code_reason` field to plaidError
+
+### 2020-09-14_1.541.1
+- Add `update.user` field to `/link/token/create` request.
+
+### 2020-09-14_1.541.0
+- (pre-release) Add `reauthorization_enabled` field to /link/token/create request
+
+### 2020-09-14_1.540.2
+- [Breaking] Updated `document_status` field in `identity/document/upload` to include parsing_type
+
+### 2020-09-14_1.540.1
+- Added `MonitoringInsightsWebhook`
+- Added `webhook` field in `cra/monitoring_insights/subscribe`
+
+### 2020-09-14_1.540.0
+- Added `file_type` field to `/credit/payroll_income/risk_signals/get`
+
+### 2020-09-14_1.539.0
+- Add `authorization_usage` field to the `transfer/metrics/get` response
+
+### 2020-09-14_1.538.0
+- Added cra/monitoring_insights/subscribe
+- Added cra/monitoring_insights/unsubscribe
+- Added cra/monitoring_insights/get
+
+### 2020-09-14_1.537.0
+- Added depository_accounts to Beacon
+- Added event_date to BeaconReports
+
+### 2020-09-14_1.536.0
+- Internal changes only
+
+### 2020-09-14_1.535.3
+
+- Added missing values to `PlaidErrorType` enum.
+
+### 2020-09-14_1.535.2
+- Make some `CraBankIncomeSummary` fields visible.
+- 
+### 2020-09-14_1.535.1
+
+### 2020-09-14_1.535.0
+- [Breaking for Go] Updated `consumer_report_user_identity` field in `/user/update` to be required to reflect actual API behavior.
+
+### 2020-09-14_1.534.7
+- Add `stated_account_number_enabled` to `investments_auth` in `LinkTokenCreateRequest` 
+
+### 2020-09-14_1.534.6
+- [Breaking] Updated base report endpoints and objects to include `cra` prefix
+
+### 2020-09-14_1.534.5
+- Add `enable_multi_item_link` field to `/link/token/create`
+
+### 2020-09-14_1.534.4
+- Undeprecate `/identity/match`'s `legal_name.is_business_name_detected`
+
 # 26.0.0
 - Updating to OAS 2020-09-14_1.534.3
 
@@ -14,9 +151,7 @@ See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/
 - [Breaking] Removed `development.plaid.com` as a valid server and updated docs to remove references to Development, due to the decomissioning of the Development environment
 
 ### 2020-09-14_1.526.0
-
-[Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
-
+- [Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
 
 ## OpenAPI Schema Changes
 ### 2020-09-14_1.534.3
@@ -71,8 +206,7 @@ See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/
 - [Breaking] Removed `development.plaid.com` as a valid server and updated docs to remove references to Development, due to the decomissioning of the Development environment
 
 ### 2020-09-14_1.526.0
-
-[Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
+- [Breaking] Renamed `/user_account/session/get` operationId `sessionGet` to `userAccountSessionGet` for consistency with existing API naming scheme.
 
 # 25.0.0
 - Updating to OAS 2020-09-14_1.525.1
