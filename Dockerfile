@@ -9,5 +9,3 @@ COPY . /usr/src/app
 RUN npm install
 
 CMD ["make", "test"]
-
-
