@@ -1,5 +1,73 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 28.0.0
+- Updating to OAS 2020-09-14_1.565.0
+
+## Breaking changes in this version
+### 2020-09-14_1.156.2
+- [BREAKING] Remove `from_client_id` and `to_client_id` from `/transfer/ledger/distribute` request
+- Add `from_ledger_id` and `to_ledger_id` to `/transfer/ledger/distribute` request
+- Add `ledger_id` in transfer routes response examples
+
+### 2020-09-14_1.561.0
+- [BREAKING] Add `authorization_id` to /transfer/get request and make `transfer_id` optional.
+
+### 2020-09-14_1.559.0
+- Add `name`, `is_default` to /transfer/ledger/get response
+- [BREAKING] Move `ledger_id` from nested `balance` struct to top level in /transfer/ledger/get response
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.565.0
+- Removed `deposit_switch` from the `products` field in the `/link/token/create` request
+- Deprecated DepositSwitch endpoints, requests and response
+
+### 2020-09-14_1.564.0
+- add `/issues/get`, `/issues/search`, and `/issues/subscribe` for Support API endpoints.
+
+### 2020-09-14_1.563.0
+- Update fields on `item` object in `/item/get` response 
+  - Add `consented_use_cases` field
+  - Add `consented_data_scopes` field
+  - Add `created_at` field
+  - Update descriptions for `consented_products` and `consent_expiration_time` fields
+- Add `/consent/events/get` endpoint
+
+### 2020-09-14_1.157.1
+- Internal changes
+
+### 2020-09-14_1.157.0
+  - (pre-release) Add `facial_analysis` to the `analysis` within each `selfie_check.selfies` object in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.156.1
+- Update `account type schema` link to reference the correct URL.
+
+### 2020-09-14_1.562.0
+- Add `data_sources` object to the `/investments/auth/get` response
+    - `data_sources` object contains the `numbers`, `owners`, and `holdings` fields
+
+### 2020-09-14_1.560.0
+- Add `pay_by_bank` to product enum list
+
+### 2020-09-14_1.558.0
+- Add `liveness_check` to the `analysis` within each `selfie_check.selfies` object in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.557.2
+- Internal changes only
+
+### 2020-09-14_1.557.1
+- Internal changes only
+
+### 2020-09-14_1.557.0
+- Add `ledger_id` to /transfer/ledger/get response
+
 # 27.0.0
 - Updating to OAS 2020-09-14_1.556.0
 
