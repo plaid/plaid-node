@@ -1,3 +1,4 @@
+# Note: This image is also built in CircleCI, so limit references to internal repositories.
 FROM node:15
 
 # Create app directory
