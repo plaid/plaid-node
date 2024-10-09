@@ -1,5 +1,98 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 29.0.0
+- Updating to OAS 2020-09-14_1.575.0
+
+## Breaking changes in this version
+- [BREAKING] removed `products` field from `cra/check_report/create` request
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.575.0
+- Add `primary_account_score` and `is_primary_account` fields to the `cra/check_report/base_report/get` response
+
+### 2020-09-14_1.574.1
+- Add `FAILED` enum for Monitoring
+
+### 2020-09-14_1.574.0
+- Make `MonitoringInsights` nullable
+
+### 2020-09-14_1.573.2
+- Update session results array fields in `/link/token/get` response to be required
+
+### 2020-09-14_1.573.1
+- mark `category_id` in BaseReport transaction as nullable
+- Update `date_of_birth` description in `user/create`
+
+### 2020-09-14_1.573.0
+- Removed `is_missing_income` from `/cra/monitoring_insights/get`
+
+### 2020-09-14_1.572.0
+- Add `uuid` validation for `subscription_id` in `/cra/monitoring_insights/get`
+- Add `ConsumerReportPermissiblePurpose` to `CraMonitoringInsightsGetRequest`
+- Add `HistoricalAnnualIncome` insight
+
+### 2020-09-14_1.571.0
+- Add `attributes` and `nsf_overdraft_transactions_count` to `cra/check_report/base_report/get`
+
+### 2020-09-14_1.570.3
+- Update product list for `/partner/customer/create`
+
+### 2020-09-14_1.570.2
+- Add `predicted_next_date` field to `/transactions/recurring/get`
+
+### 2020-09-14_1.570.1
+- Add `end_customer` hidden field to `user/create` for client RealPage
+
+### 2020-09-14_1.569.5
+- Show `date_of_birth` on the open API doc
+
+### 2020-09-14_1.569.4
+- Add `ssn_last_4` to ConsumerReportUserIdentity
+
+### 2020-09-14_1.569.3
+- Add `USER_FRAUD_ALERT` to BaseReportWarningCode
+
+### 2020-09-14_1.569.2
+- Removed erroneous `required` attribute from `request_id` field in LinkMetadataEvent object.
+
+### 2020-09-14_1.569.1
+-  Add `processing_mode` field to the `PaymentInitiationConsentPaymentExecuteRequest` object for the `/payment_initiation/consent/payment/execute` endpoint
+
+### 2020-09-14_1.568.1
+- Updated description of CRA Base Report API fields with new deprecation date
+
+### 2020-09-14_1.568.0
+  -  Add `name` object to the `extracted_data` within each `documentary_verification.documents` object in the response of all of the identity verification endpoints:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.567.5
+- Add `error_reason` to `/cra/check_report/partner_insights/get`
+
+### 2020-09-14_1.567.4
+- [internal only] Hiding plaid_check_score_version from docs
+
+### 2020-09-14_1.567.3
+- Update description for `email` field in `/identity_verification/create` and `/identity_verification/retry` to include link to RFC specification on email format
+
+### 2020-09-14_1.567.2
+- Publish processor Paynote
+
+### 2020-09-14_1.567.1
+- Update description for `add_ons` field in `/asset_report/create`
+
+### 2020-09-14_1.567.0
+- [BREAKING] removed `products` field from `cra/check_report/create` request
+
+### 2020-09-14_1.566.0
+- Added `status` to the `MonitoringInsightsWebhook` object
+- Changed `webhook_code` to be deterministic
+
+### 2020-09-14_1.565.1
+- Update `days_available` field description for Asset Reports and CRA Base Reports.
+
 # 28.0.0
 - Updating to OAS 2020-09-14_1.565.0
 
