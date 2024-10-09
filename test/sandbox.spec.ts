@@ -9,6 +9,7 @@ import {
   SandboxItemFireWebhookRequest,
   SandboxItemFireWebhookRequestWebhookCodeEnum,
   SandboxItemResetLoginRequest,
+  WebhookType,
 } from '../dist';
 import {IncomeVerificationSourceType} from "../api";
 
@@ -29,6 +30,7 @@ describe('Sandbox', () => {
     const request: SandboxItemFireWebhookRequest = {
       access_token: testAccessToken as string,
       webhook_code: SandboxItemFireWebhookRequestWebhookCodeEnum.DefaultUpdate,
+      webhook_type: WebhookType.Transactions,
     };
 
     const response = await plaidClient.sandboxItemFireWebhook(request);
