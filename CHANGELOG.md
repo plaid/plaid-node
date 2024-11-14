@@ -1,5 +1,120 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 30.0.0
+- Updating to OAS 2020-09-14_1.586.4
+
+## Breaking changes in this version
+- [Breaking] Changed the type returned by `/item/get` from `Item` to `ItemWithConsentFields`.
+- [Breaking] Changed `ConsentEventCode` enum values. Replaced `PLAID_END_USER_PRIVACY_POLICY` with `USER_AGREEMENT`
+- [Breaking] Created `ItemWithConsentFields`, a new object definition that extends the `Item` object to include 1033-related consent fields.
+- [Breaking] Removed the 1033-related consent fields from the `Item` object, ensuring that these fields now only appear in the `ItemWithConsentFields` object within the `/item/get` response.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.586.4
+- Update `cause` and make it nullable
+
+### 2020-09-14_1.586.3
+- Update `email` description in `/user_account/session/get` response
+
+### 2020-09-14_1.586.2
+- Update `event_type` description of `/sandbox/transfer/simulate`. Added `funds_available` to status list
+
+### 2020-09-14_1.586.1
+- [Breaking] Changed `ConsentEventCode` enum values. Replaced `PLAID_END_USER_PRIVACY_POLICY` with `USER_AGREEMENT`
+
+### 2020-09-14_1.586.0
+- Add `webhook` field to requests for `/sandbox/transfer/simulate`, `/sandbox/transfer/refund/simulate`, `/sandbox/transfer/ledger/simulate_available` and `/sandbox/transfer/sweep/simulate`.
+
+### 2020-09-14_1.585.5
+- Correct a typo in /link/token/create description
+
+### 2020-09-14_1.585.4
+- Updated transition date to move away from deprecated fields in CRA Base Report API
+
+### 2020-09-14_1.585.3
+- Fixed erroneous missing `last_statement_balance` field in `StudentLoan` object -- field was returned in API but not in specification.
+
+### 2020-09-14_1.585.2
+- Remove minimum length for `end_customer` in `user/create`
+
+### 2020-09-14_1.585.1
+- Deprecate `options` in `payment_initiation/consent/create`
+
+### 2020-09-14_1.585.0
+- [Breaking] Created `ItemWithConsentFields`, a new object definition that extends the `Item` object to include 1033-related consent fields.
+- [Breaking] Removed the 1033-related consent fields from the `Item` object, ensuring that these fields now only appear in the `ItemWithConsentFields` object within the `/item/get` response.
+
+### 2020-09-14_1.584.1
+- Deprecated `version` in `cra/check_report/partner_insights/get` in favor of `model_version`
+
+### 2020-09-14_1.584.0
+- Made total inflow/outflow amount fields in the `cra/check_report/base_report/get` response nullable
+
+### 2020-09-14_1.583.1
+- Updated `description` field in `payment_configuration` object in `/link/token/create` to be optional
+
+### 2020-09-14_1.583.0
+- Added total inflow/outflow amount fields to `attributes` object in the `cra/check_report/base_report/get` response
+
+### 2020-09-14_1.582.0
+- Added a new field in `/link/token/create`
+
+### 2020-09-14_1.581.0
+-  Update `verify_sms` object in the response of all of the identity verification endpoints to add `redacted_at` timestamp:
+  - `identity_verification/create`
+  - `identity_verification/get`
+  - `identity_verification/list`
+  - `identity_verification/retry`
+
+### 2020-09-14_1.580.4
+- Fixed an incorrect example response in `/user_account/session/get`
+
+### 2020-09-14_1.580.3
+- Fix wrong nullable annotation in `/signal/evaluate` response
+
+### 2020-09-14_1.580.2
+- Make `scores` nullable in `/signal/evaluate` and `/processor/signal/evaluate` response
+
+### 2020-09-14_1.580.1
+ - Add new `payer_details` field to `payment_initiation/consent/create` in preparation to new account restrictions
+
+### 2020-09-14_1.579.1
+ - Add new `type` field to `payment_initiation/consent/create` and deprecate the `scopes` field
+
+### 2020-09-14_1.578.1
+-  Update `verify_sms` object in the response of all of the identity verification endpoints to support nullable `verification.phone_number` and expand allowed statuses for `verification.status`:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.578.0
+-  Add `verify_sms` object in the response of all of the identity verification endpoints:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.577.1
+- Added support for `signal` to `required_if_supported_products`.
+- Added support for `cra_network_insights` to `Products` array.
+- Define `MonitoringInsightsWebhook`
+- Fix definition for JWTHeader object
+
+### 2020-09-14_1.577.0
+- Updated description for the `is_primary_account` field of base reports
+
+### 2020-09-14_1.576.0
+- Expose beacon_user_id in `/identity_verification/*` endpoints
+- Added new optional parameter `days_required` to `cra_options` in `/link/token/create` and to `/cra/check_report/create`
+- Added new metadata object with `start_date` and `end_date` in the responses for:
+    - `/cra/check_report/base_report/get`
+    - `/cra/check_report/income_insights/get`
+    - `/cra/check_report/partner_insights/get`
+
+### 2020-09-14_1.575.1
+- Update `date_of_birth` field description in `user/create`
+
 # 29.0.0
 - Updating to OAS 2020-09-14_1.575.0
 

@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "29.0.0",
+  "version": "30.0.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
