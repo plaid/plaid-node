@@ -20,7 +20,7 @@
   "license": "MIT",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "axios": "^1.6.2"
+    "axios": "^1.7.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.com"
