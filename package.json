@@ -1,6 +1,6 @@
 {
   "name": "plaid",
-  "version": "30.0.0",
+  "version": "30.1.0",
   "description": "A node.js client for the Plaid API",
   "keywords": [
     "plaid",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "axios": "^1.6.2"
+    "axios": "^1.7.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.com"
