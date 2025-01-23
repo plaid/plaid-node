@@ -1,5 +1,128 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 30.1.0
+- Updating to OAS 2020-09-14_1.610.1
+- Updated minimum Axios version to 1.7.4.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.610.1
+- Add `funds_available` sweep status and event type
+
+### 2020-09-14_1.610.0
+- Add `PaymentInitiationConsentStatusUpdateWebhook` definition.
+
+### 2020-09-14_1.609.0
+- Remove `/profile/get` and `/link/profile/eligibility/check` endpoints
+
+### 2020-09-14_1.608.0
+- Remove erroneous UserToken object from LinkTokenGetMetadataResponse, as the specification was incorrect and the object was never returned as part of the response.
+
+### 2020-09-14_1.607.0
+- Add failure_code and description fields to `/transfer/sweep/get` and `transfer/sweep/list` endpoints. Deprecated `ach_return_code` field of the TransferFailure and TransferRefundFailure objects.
+
+### 2020-09-14_1.606.1
+- Updated description to `funding_account_id` field of `transfer/ledger/deposit` and `transfer/ledger/withdraw`
+
+### 2020-09-14_1.606.0
+- Add `sandbox/payment/simulate` endpoint to enable testing of payment status transitions.
+
+### 2020-09-14_1.605.0
+- Add `nsf_overdraft_transactions_count_30d/60d/90d` fields to `attributes` field of `cra/check_report/base_report/get`
+
+### 2020-09-14_1.604.1
+- Add `account_id` to `/transactions/sync` request `options` object.
+
+### 2020-09-14_1.603.2
+- Fix incorrect `USER_ACCOUNT_REVOKED` schema and example
+
+### 2020-09-14_1.603.1
+- Internal changes only
+
+### 2020-09-14_1.603.0
+- (pre-release) Add `fraud_analysis_details` and `image_quality_details` objects to the `analysis`  object within each `documentary_verification.documents` object. These changes affect the response of all of the identity verification endpoints:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.602.1
+- Documentation-only change to `/cra/monitoring_insights/subscribe` for cadence
+
+### 2020-09-14_1.602.0
+- Added `payer_details` field to `payment_initiation/consent/get` response
+
+### 2020-09-14_1.601.2
+- Documentation-only change to Investments `Security` object for new Fixed Income fields and sandbox availability
+
+### 2020-09-14_1.601.1
+- Update descriptions for `/network/status/get` request fields
+
+### 2020-09-14_1.601.0
+- Clean up legacy `/cra/base_report/*` endpoints from libraries in favor of `/cra/check_report/*`
+endpoints.
+
+### 2020-09-14_1.600.2
+- Update descriptions for `/network/status/get` request and response fields
+- Add `nullable: true` to mortgage `account_number` field in the `MortgageLiability` schema to reflect actual behavior.
+- Add `transactions_refresh` to `Products` array to reflect actual behavior; this field is not accepted as input to `/link/token/create` but can be part of supported products array in the `Institution` object. 
+
+### 2020-09-14_1.600.1
+- `depository`+`cash management` Accounts are now eligible for Auth data for certain institutions
+
+### 2020-09-14_1.600.0
+- Added `is_tokenized_account_number` to the `numbers.ach` object
+
+### 2020-09-14_1.599.0
+- Added `auth_method` field to `Item` object
+
+### 2020-09-14_1.598.0
+- Add `user_insights_id` to `/cra/monitoring_insights/get` response
+-
+### 2020-09-14_1.597.0
+- (beta) Add /network/status/get endpoint
+
+### 2020-09-14_1.596.0
+- Unhide `/sandbox/cra/cashflow_updates/update`
+
+### 2020-09-14_1.595.0
+- Add `ruleset_key` to `/transfer/authorization/create` request
+
+### 2020-09-14_1.594.0
+- Deprecated `consumer_dispute_id` field on consumer dispute object
+
+### 2020-09-14_1.593.0
+- Add `fixed_income` object (which contains the `yield_rate`, `maturity_date`, `issue_date`, and `face_value` fields) to the Security object (Investments)
+
+### 2020-09-14_1.592.1
+
+### 2020-09-14_1.592.0
+- Add `/sandbox/cra/cashflow_updates/update` endpoint
+
+### 2020-09-14_1.591.1
+- Hide `TransferMigratedFundingAccountIDRequest` from docs
+
+### 2020-09-14_1.591.0
+- (pre-release) Add overall `risk_level`, and in some cases `factors` to each type of `risk_check` object. Also add `first_party_synthentic_fraud` and `third_party_synthentic_fraud` objects to`risk_check.identity_abuse_signals.synthetic_identity`. These changes affect the response of all of the identity verification endpoints:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.590.0
+- Add `webhook` field to `TransferPlatformOriginatorCreateRequest`
+
+### 2020-09-14_1.589.0
+- Add `PLATFORM_ONBOARDING_UPDATE` webhook for transfer
+
+### 2020-09-14_1.588.0
+- Add `/processor/investments/transactions/get` endpoint
+
+### 2020-09-14_1.587.1
+- Add `institution_name` field in the `Item` object
+
+### 2020-09-14_1.587.0
+- Add `/processor/investments/holdings/get` endpoint
+
 # 30.0.0
 - Updating to OAS 2020-09-14_1.586.4
 
