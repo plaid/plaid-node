@@ -1,5 +1,43 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 31.1.0
+- Updating to OAS 2020-09-14_1.620.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.620.0
+- Add `intent_id` field to `/transfer/event/sync` response
+
+### 2020-09-14_1.619.1
+- Add new `cashflow_updates` webhook triggers
+- Remove `reason` field from `MonitoringInsightsWebhook`
+
+### 2020-09-14_1.619.0
+- Add `/session/token/create` endpoint
+
+### 2020-09-14_1.618.2
+- Add `beacon_user_id` to `/beacon/report_syndication/get` and `/beacon/report_syndication/list` response
+
+### 2020-09-14_1.618.1
+- `/cashflow_report/get` endpoint is added. This includes defining the `CashflowReportGetRequest` and `CashflowReportGetResponse` fields. Adding `access_token` as required field in `CashflowReportRefreshRequest`. 
+
+### 2020-09-14_1.618.0
+- Add `attributes` object to `BaseReport` definition.
+
+### 2020-09-14_1.617.6
+- `/cashflow_report/refresh` endpoint is added. This includes defining the `CashflowReportRefreshRequest` and `CashflowReportRefreshResponse` fields. 
+
+### 2020-09-14_1.617.5
+- `submitted_at` is added as an optional field to `/signal/decision/report`.
+
+### 2020-09-14_1.617.4
+- `persistentId` and `isTokenizedAccountNumber` fields now only populated for select institutions in sandbox related to TAN-based institutions (ins_13, ins_56) or the default testing OAuth institution (ins_127287)
+
+### 2020-09-14_1.617.3
+- Modified how contribution transactions are summed up in `account_details_401k.contribution_details` object in `/investments/auth/get` endpoint.
+
+### 2020-09-14_1.617.2
+- Updated PrismCashScore and PrismFirstDetect to allow Score in /cra/check_report/partner_insights/get to be nullable
+
 # 31.0.0
 - Updating to OAS 2020-09-14_1.617.1
 
