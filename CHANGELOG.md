@@ -1,5 +1,106 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 32.0.0
+- Updating to OAS 2020-09-14_1.633.1
+
+## Breaking changes in this version
+- [BREAKING] Update `account` object to nullable in `/processor/transactions/sync` response
+- [BREAKING] Update `webhook` field in `IssuesSubscribeRequest` to be required
+- [BREAKING] Correct the schema object returned by `AssetReport` `investments` field -- it is now correctly represented as an `AssetReportInvestments` object, not an `AssetReportInvestmentsTransaction` object, to accurately reflect the API behavior.
+- [BREAKING] Date of birth is now required within consumer report user identity for `user/create` and `user/update`
+- [BREAKING] Update `posted_date` field on `/statements/list` response to be nullable
+- [BREAKING] Updated the `investments` schema returned by `/asset_report/get` (`AssetReportInvestments`) to accurately reflect the actual API behavior, including renaming the schema object
+- [BREAKING] Changed `score` in `PlaidCheckScore` from a float to an integer
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.633.1
+- [BREAKING] Update `account` object to nullable in `/processor/transactions/sync` response
+
+### 2020-09-14_1.633.0
+- Move `user_id` field of `/session/token/create` request to be within `user`
+
+### 2020-09-14_1.632.6
+- Update descriptions for `CashFlowUpdatesLowBalanceWebhook` and `CashFlowUpdatesLargeDepositWebhook`
+
+### 2020-09-14_1.632.5
+- Add new `CashFlowUpdatesInsightsWebhook` for Cash Flow Updates
+
+### 2020-09-14_1.632.4
+- Add `triggered_rule_details` to `/signal/evaluate` response
+
+### 2020-09-14_1.632.3
+- [BREAKING] Update `webhook` field in `IssuesSubscribeRequest` to be required
+
+### 2020-09-14_1.632.2
+- Update the `warnings` field in `/cra/check_report/verification/get` response to be required
+
+### 2020-09-14_1.632.1
+- Add `AT` and `FI` to the list of available countries
+
+### 2020-09-14_1.632.0
+- Add `user_id` field to `/session/token/create` request
+
+### 2020-09-14_1.631.0
+- [BREAKING] Correct the schema object returned by `AssetReport` `investments` field -- it is now correctly represented as an `AssetReportInvestments` object, not an `AssetReportInvestmentsTransaction` object, to accurately reflect the API behavior.
+
+### 2020-09-14_1.630.0
+- Add optional `income_categories` param to `/cra/monitoring_insights/subscribe` request
+
+### 2020-09-14_1.629.0
+- [Breaking] Date of birth is now required within consumer report user identity for `user/create` and `user/update`
+
+### 2020-09-14_1.628.4
+- Renamed CRA Cash Flow Updates webhook types
+
+### 2020-09-14_1.628.3
+- Adde `warnings` to responses for `cra/check_report/income_insights/get`, `cra/check_report/network_insights/get`, `cra/check_report/cashflow_insights/get`, and `cra/check_report/partner_insights/get`
+
+### 2020-09-14_1.628.2
+- Update description for the `options.add_ons` field in `asset_reports/create`
+
+### 2020-09-14_1.628.1
+- Add `client_report_id` field to `cra/check_report/create` request and deprecate `base_report.client_report_id` field in `cra/check_report/create`.
+- Add `client_report_id` field to `LinkTokenCreateRequestCraOptions` field
+- Deprecate `client_report_id` field in `LinkTokenCreateRequestBaseReport`
+- Add `client_report_id` field to `CraIncomeInsights`
+
+### 2020-09-14_1.628.0
+- Add `redirect_uri` field to `/session/token/create` request
+
+### 2020-09-14_1.627.1
+- Update description of `transfer_id` field on `TransferEvent` schema to be empty string for Plaid Ledger Sweep events
+
+### 2020-09-14_1.627.0
+- [BREAKING] Update `posted_date` field on `/statements/list` response to be nullable
+
+### 2020-09-14_1.626.0
+- Add reason_code field to /transfer/cancel request
+
+### 2020-09-14_1.625.2
+- Add `USER_PERMISSION_REVOKED` and `USER_ACCOUNT_REVOKED` webhook codes to `WebhookCodeEnum` in `SandboxItemFireWebhookRequest` to reflect actual API behavior.
+
+### 2020-09-14_1.625.1
+- Add new `verification_name` field to `Account`
+
+### 2020-09-14_1.625.0
+- Add new `posted_date` field to `/statements/list` response
+
+### 2020-09-14_1.624.0
+- (pre-release) Add `human_review` object to the `analysis`  object within each `documentary_verification.documents` object. This change affects the response of all of the identity verification endpoints:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.623.0
+
+### 2020-09-14_1.622.0
+- [BREAKING] Updated the `investments` schema returned by `/asset_report/get` (`AssetReportInvestments`) to accurately reflect the actual API behavior, including renaming the schema object
+- Updated the Auth descriptions to reflect the fact that the preferred method to enable database and micro-deposit-based Auth verification flows is now the Dashboard, and that Database Insights has been deprecated and replaced by the similar product Database Auth.
+
+### 2020-09-14_1.621.0
+- [BREAKING] Changed `score` in `PlaidCheckScore` from a float to an integer
+
 # 31.1.0
 - Updating to OAS 2020-09-14_1.620.0
 
