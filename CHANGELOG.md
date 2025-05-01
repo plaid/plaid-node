@@ -1,5 +1,34 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 33.0.0
+- Updating to OAS 2020-09-14_1.635.2
+
+## Breaking changes in this version
+- [BREAKING] Move `result` from `triggered_rule_details` to `ruleset` in response of `/signal/evaluate`
+- [BREAKING] `client_user_id` is now required for `/session/token/create`
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.635.2
+- Update description of `ruleset.outcome` in `/signal/evaluate` response
+
+### 2020-09-14_1.635.1
+- Fix description undeprecating `report.items.accounts.attributes` after it was mistakenly deprecated for `/cra/check_report/base_report/get`
+
+### 2020-09-14_1.635.0
+- Add `expected_funds_available_date` to `transfer` and `sweep` objects in responses for `/transfer/create`, `/transfer/get`, `/transfer/list`, `/transfer/sweep/get`, `/transfer/sweep/list`
+
+### 2020-09-14_1.634.3
+- Undeprecated `report.items.accounts.attributes` after it was mistakenly deprecated for `/cra/check_report/base_report/get`
+
+### 2020-09-14_1.634.2
+- Removed `deposit_switch` from the `products` field in the `/link/token/create` request
+
+### 2020-09-14_1.634.1
+- [BREAKING] Move `result` from `triggered_rule_details` to `ruleset` in response of `/signal/evaluate`
+
+### 2020-09-14_1.634.0
+- [BREAKING] `client_user_id` is now required for `/session/token/create`
+
 # 32.0.0
 - Updating to OAS 2020-09-14_1.633.1
 
