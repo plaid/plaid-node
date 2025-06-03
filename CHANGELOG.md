@@ -1,19 +1,63 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 35.0.0
+- Updating to OAS 2020-09-14_1.641.1
+
+## Breaking changes in this version
+- [Breaking] Add /cashflow_report/transactions/get route, identital to /cashflow_report/get minus days_requested request parameter
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.641.1
+- Fix descriptions for BaseReportAccountMetadata
+
+### 2020-09-14_1.641.0
+- Deprecated `/link/token/create`'s `cra_options.base_report` object in favor of `cra_options.client_report_id`
+
+### 2020-09-14_1.640.0
+- [Breaking] Add /cashflow_report/transactions/get route, identital to /cashflow_report/get minus days_requested request parameter
+- Remove historical_balances from BusinessAccounts object
+
+### 2020-09-14_1.639.0
+- Add `webhook` field to `/session/token/create` request
+
+### 2020-09-14_1.638.6
+- Deprecate Prism Products field from Partner Insights generation and retrieval
+
+### 2020-09-14_1.638.5
+- Add client report id to partner insights
+
+### 2020-09-14_1.638.4
+- Remove unused enums for MonitoringInsightsStatus and MonitoringItemStatusCode
+
+### 2020-09-14_1.638.3
+- Add Prism Detect and Extend cashscores to CRA Partner Insights 
+
+### 2020-09-14_1.638.2
+- (beta) expect a boolean instead of a string in generated client interfaces for PLAID-NEW-USER-API-ENABLED
+
+### 2020-09-14_1.638.1
+- Support for upcoming results in `link/token/get`.
+
+### 2020-09-14_1.638.0
+-  (pre-release) Preparation for upcoming products.
+
+### 2020-09-14_1.637.6
+- Deprecate `report.items.accounts.account_insights` for `/cra/check_report/base_report/get`
+
 # 34.0.0
-- Updating to OAS 2020-09-14_1.627.4
+- Updating to OAS 2020-09-14_1.637.5
 
 ## Breaking changes in this version
 - [BREAKING] (beta) Updated `user_token` field in `UserCreateResponse` to be optional.
 
 ## OpenAPI Schema Changes
-### 2020-09-14_1.627.4
+### 2020-09-14_1.637.5
 - Fix incorrect placement of `nullable: true` on `AccountBaseNullable` object, making the object actually `nullable`.
 
-### 2020-09-14_1.627.3
+### 2020-09-14_1.637.4
 - Add missing `unsent` value as a possible `verification_status` to reflect actual API behavior.
 
-### 2020-09-14_1.637.2
+### 2020-09-14_1.637.3
 - (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/create`
 - (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/remove`
 
