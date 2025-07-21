@@ -1,5 +1,64 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 37.0.0
+- Updating to OAS 2020-09-14_1.652.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.652.0
+- Add optional `cursor` and `count` fields to the `/payment_initiation/recipient/list` request and `next_cursor` to its response
+
+### 2020-09-14_1.651.2
+- (beta) Add `user_id` field to `link/token/create` request
+- [BREAKING for Go] (beta) Make `user` object optional in `link/token/create` if `user_id` is included
+
+### 2020-09-14_1.651.1
+- Add `error` field to `WALLET_TRANSACTION_STATUS_UPDATE` webhook and to responses of `/wallet/transaction/get` and `/wallet/transaction/list`, containing error details for failed transactions.
+
+### 2020-09-14_1.651.0
+- Rename all `/verify/client/*` routes to `/protect/client/*` and update request/response body and field names accordingly.
+
+### 2020-09-14_1.650.1
+- Update description for `days_required`
+
+### 2020-09-14_1.650.0
+- Add `account_numbers` to `Counterparty` in `/transaction/get` and `/transaction/sync`
+
+### 2020-09-14_1.649.2
+- Add `InsitutionID` and `InstitutionName` to `/cra/monitoring_insights/get` response
+
+### 2020-09-14_1.649.1
+- Update max value for `cra_options.days_requested` in `link/token/create` to 731 (2 years + 1 days for leap year)
+- Reduce max value for `cra_options.days_required` in `link/token/create` to 184 (most number of days in a 6 month period) from 730
+- Set max value for `days_required` in `cra/check_report/create` to 184 (most number of days in a 6 month period)
+
+### 2020-09-14_1.649.0
+- Add wire_return_fee to Transfer and Transfer Event objects
+
+### 2020-09-14_1.648.2
+- Docs-only change to add additional subtypes to the accounts schema
+
+### 2020-09-14_1.648.1
+- Add `last_successful_update_time` to `/cashflow_report/get`
+
+### 2020-09-14_1.648.0
+- Add `require_identity` to `cra_options.base_report` in `link/token/create` and `/cra/check_report/create` requests 
+
+### 2020-09-14_1.647.1
+- Update `/transfer/ledger/distribute` summary
+
+### 2020-09-14_1.647.0
+- Add `webhook_codes` field to `/sandbox/cashflow_updates/update` request
+
+### 2020-09-14_1.646.0
+- [Breaking] Replacing `voe` references to instead be `employment_refresh` in `/cra/check_report/verification/get` and `/cra/check_report/create`
+  - `/cra/check_report/verification/get`'s `reports_requested` options are now `VOA` and `employment_refresh`
+  - `voe_options` in the request is now `employment_refresh_options`
+  - `/cra/check_report/verification/get`'s response now has `report.employment_refresh` instead of `report.voe`
+  - `gse_options.report_type` in `/cra/check_report/create` are now `VOA` and `employment_refresh` 
+
+### 2020-09-14_1.645.1
+- Update description of `/transfer/ledger/distribute`
+
 # 36.0.0
 - Updating to OAS 2020-09-14_1.645.0
 
