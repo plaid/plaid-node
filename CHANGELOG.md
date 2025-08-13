@@ -1,7 +1,64 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 38.0.0
+- Updating to OAS 2020-09-14_1.658.0
+
+## Breaking changes in this version
+
+- [BREAKING] To improve consistency and resolve a bug in a third-party client library, changed `MonitoringConsumerReportPermissiblePurpose` schema object title from `ConsumerReportPermissiblePurpose` to `MonitoringConsumerReportPermissiblePurpose`. This may be a breaking change for certain client libraries.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.658.0
+- (beta) Add `user_id` field to `/session/token/create` request.
+- [BREAKING for Go] (beta) Make `user` object optional in `/session/token/create` if `user_id` is included.
+
+### 2020-09-14_1.657.0
+Add Add `subtype` property to the `Security` model.
+
+### 2020-09-14_1.656.1
+- Renamed `protect_sdk_session_id` field in the request of `/protect/event/send` to `protect_session_id` for consistency across endpoints.
+
+### 2020-09-14_1.656.0
+- Added `aamva_verification` object in the responses of `documentary_verification.documents[].analysis`. This impacts the following endpoints: 
+    - `identity_verification/create`
+    - `identity_verification/get`
+    - `identity_verification/list`
+    - `identity_verification/retry`
+
+### 2020-09-14_1.655.0
+- Add `max_amount` and `iso_currency_code` to `rfp` in `/transfer/capabilitied/get` response
+
+### 2020-09-14_1.654.0
+- [BREAKING] To improve consistency and resolve a bug in a third-party client library, changed `MonitoringConsumerReportPermissiblePurpose` schema object title from `ConsumerReportPermissiblePurpose` to `MonitoringConsumerReportPermissiblePurpose`. This may be a breaking change for certain client libraries.
+
+### 2020-09-14_1.653.0
+- (beta) Add optional `user_id` field to `identity_verification/create` and `identity_verification/list` requests. When `user_id` is present during creation and `client_user_id` is not, the `client_user_id` from the associated user will be set on the created identity verification. If `user_id` is present during creation, the `user` object may not also be present. Modifying user data should be done via the `user/update` endpoint.
+- [BREAKING for Go] (beta) Make `client_user_id` optional in `identity_verification/list` if `user_id` is included.
+- (beta) Add nullable `user_id` to the response of all of the identity verification endpoints:
+   - `identity_verification/create`
+   - `identity_verification/get`
+   - `identity_verification/list`
+   - `identity_verification/retry`
+
+### 2020-09-14_1.652.3
+- Added support for `cra_monitoring` to `Products` array.
+
+### 2020-09-14_1.652.2
+- (beta) Add `/user/items/list` endpoint
+
+### 2020-09-14_1.652.1
+- Add `/transfer/ledger/event/list` endpoint
+
 # 37.0.0
 - Updating to OAS 2020-09-14_1.652.0
+
+## Breaking changes in this version
+- [Breaking] Replacing `voe` references to instead be `employment_refresh` in `/cra/check_report/verification/get` and `/cra/check_report/create`
+  - `/cra/check_report/verification/get`'s `reports_requested` options are now `VOA` and `employment_refresh`
+  - `voe_options` in the request is now `employment_refresh_options`
+  - `/cra/check_report/verification/get`'s response now has `report.employment_refresh` instead of `report.voe`
+  - `gse_options.report_type` in `/cra/check_report/create` are now `VOA` and `employment_refresh` 
+
 
 ## OpenAPI Schema Changes
 ### 2020-09-14_1.652.0
@@ -142,8 +199,8 @@ See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/
 - Add missing `unsent` value as a possible `verification_status` to reflect actual API behavior.
 
 ### 2020-09-14_1.637.3
-- (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/create`
-- (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/remove`
+- (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/create`. This header is only for the use of customers in the new user API beta; customers should *not* use this parameter unless they have been advised to do so by Plaid. 
+- (beta) Add `PLAID-NEW-USER-API-ENABLED` as a header parameter to `/user/remove`. This header is only for the use of customers in the new user API beta; customers should *not* use this parameter unless they have been advised to do so by Plaid. 
 
 ### 2020-09-14_1.637.2
 - (beta) Add `user_id` to `/session/token/create` response
