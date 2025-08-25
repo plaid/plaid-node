@@ -112,6 +112,37 @@ Note that the full error object includes the API configuration object, including
 
 For more examples, see the [test suites](https://github.com/plaid/plaid-node/tree/master/test), [Quickstart](https://github.com/plaid/quickstart/tree/master/node), or [API Reference documentation](https://plaid.com/docs/api/).
 
+## Webhooks
+
+Plaid sends webhooks to notify your application when events occur. Common webhook types include:
+
+- `INITIAL_UPDATE` - First data sync complete
+- `HISTORICAL_UPDATE` - Historical data sync complete  
+- `DEFAULT_UPDATE` - Regular data updates
+- `ITEM_LOGIN_REQUIRED` - User needs to re-authenticate
+- `ITEM_ERROR` - Error occurred with item
+
+### Next.js Webhook Implementation
+
+If you're using Next.js and experiencing empty request bodies in your webhook endpoints, see our [Webhook Troubleshooting Guide](./WEBHOOK_TROUBLESHOOTING.md) for solutions.
+
+**Quick Fix for Next.js:**
+```typescript
+import { buffer } from 'micro'
+
+export default async function handler(req, res) {
+  const rawBody = await buffer(req)
+  const body = JSON.parse(rawBody.toString())
+  
+  // Process webhook...
+  res.status(200).json({ status: 'ok' })
+}
+
+export const config = {
+  api: { bodyParser: false }
+}
+```
+
 Exchange a `public_token` from [Plaid Link][6] for a Plaid `access_token` and then
 retrieve account data:
 
