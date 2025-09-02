@@ -439,6 +439,26 @@ const { Products } = require("plaid");
 
 products: [Products.Auth, Products.Transactions],
 ```
+## Webhook troubleshooting with Next.js
+
+Some users on Next.js occasionally report receiving webhooks with empty bodies when using the Node library, which is caused by an issue with the `bodyParser` middleware in Next.js. This can be resolved by using the `micro` buffer for reading webhooks instead.
+
+**Quick Fix for Next.js:**
+```typescript
+import { buffer } from 'micro'
+
+export default async function handler(req, res) {
+  const rawBody = await buffer(req)
+  const body = JSON.parse(rawBody.toString())
+
+  // Process webhook...
+  res.status(200).json({ status: 'ok' })
+}
+
+export const config = {
+  api: { bodyParser: false }
+}
+```
 
 ## Support
 

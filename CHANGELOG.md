@@ -1,5 +1,43 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 38.1.0
+- Updating to OAS 2020-09-14_1.664.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.664.0
+- Add `investments_auth` to enum values for the `additional_consented_products` array in the `/link/token/create` request schema.
+
+### 2020-09-14_1.663.3
+- (beta) Add `cra_plaid_credit_score` support to `link/token/create`
+- (beta) Add `cra_plaid_credit_score` support to `cra/check_report/create`
+- (beta) Add `cra/check_report/plaid_credit_score/get` endpoint
+
+### 2020-09-14_1.663.2
+- Add `user_id` to `cra/*` endpoints
+
+### 2020-09-14_1.663.1
+- Add `overdraft` account type to the `LoanAccountSubtype` object, where it was erroneously missing 
+- Correct missing and incorrect enum values for `ItemConsentedDataScope` object
+
+### 2020-09-14_1.663.0
+- (beta) Add `/user/items/associate` endpoint
+
+### 2020-09-14_1.662.1
+- Internal changes only
+
+### 2020-09-14_1.662.0
+- Add `balance_to_transaction_amount_ratio` to `/signal/evaluate`
+
+### 2020-09-14_1.661.0
+- Add `personal_finance_category_version` to `/transactions/get`, `/transactions/sync` and `/transactions/enrich` request options as well as version field in response.
+
+### 2020-09-14_1.660.0
+- Add `gse_options` to `base_report` options in `/link/token/create` and `cra/check_report/create`
+
+### 2020-09-14_1.659.0
+- Deprecate the `sedol` field in the Investments `Security` object. 
+- Deprecate the `sedol` field in the Investments `SecurityOverride` object. 
+
 # 38.0.0
 - Updating to OAS 2020-09-14_1.658.0
 
