@@ -63,7 +63,7 @@ describe('Enrich', () => {
     expect(enrichedTransactions).to.be.ok;
     expect(enrichedTransactions.length).equals(SAMPLE_TRANSACTIONS_TO_ENRICH.length);
 
-    enrichedTransactions.forEach((item) => {
+    enrichedTransactions.forEach((item: any) => {
       expect(item['amount']).to.be.ok;
       expect(item['description']).to.be.ok;
       expect(item['direction']).to.be.ok;

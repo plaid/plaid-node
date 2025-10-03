@@ -20,11 +20,12 @@ describe('Transactions', () => {
     testAccessToken = await createAndExchangeSandboxPublicTokenForAccessToken(
       undefined,
       {
-      transactions: {
-        start_date: new Date().toISOString().substr(0, 10),
-        end_date: new Date().toISOString().substr(0, 10),
+        transactions: {
+          start_date: new Date().toISOString().substr(0, 10),
+          end_date: new Date().toISOString().substr(0, 10),
+        },
       },
-    });
+    );
   });
 
   it('normal flow', async () => {
@@ -110,7 +111,7 @@ const getTransactionsWithRetries = (
 
     plaidClient
       .transactionsGet(request)
-      .then((response) => resolve(response.data))
+      .then((response: any) => resolve(response.data))
       .catch(() => {
         setTimeout(() => {
           if (retriesLeft === 1) {

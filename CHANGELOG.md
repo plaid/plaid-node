@@ -1,5 +1,79 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 39.0.0
+- Updating to OAS 2020-09-14_1.667.0
+
+## Breaking changes in this version
+- (breaking) Remove `cra/check_report/plaid_credit_score/get`
+- [BREAKING] Add `item_id` to `/cra/monitoring_insights/subscribe` request
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.667.0
+- Add `errors` field to `institutions` objects in `/partner/customer/oauth_institutions/get` response
+
+### 2020-09-14_1.666.10
+- Add `cra_update_results` field to `results` objects in `/link/token/get` response
+
+### 2020-09-14_1.666.9
+- Updated `count` field from `TransferEventSyncRequest` to maximum of 500 and default of 100
+
+### 2020-09-14_1.666.8
+- Removed unused `id_numbers` field from `UserCreateRequest` (field was never processed by application logic)
+- (beta) updated `ClientUserIdentity.id_numbers` to use `UserIDNumber` from cognito.yml instead of the custom `ClientUserIdentityIdNumber` schema
+
+### 2020-09-14_1.666.7
+- (beta) remove `ClientUserIdentityAddressType` from `ClientUserIdentityAddress`
+
+### 2020-09-14_1.666.6
+- (beta) added `primary` boolean to `ClientUserIdentityEmail`, `ClientUserIdentityPhoneNumber`, and `ClientUserIdentityAddress`
+
+### 2020-09-14_1.666.5
+- (beta) added `SSN` to `ClientUserIdNumberType`
+
+### 2020-09-14_1.666.4
+- (beta) updated 'IdentityCreationResultType' enums to be capital
+- (beta) update `SSN_LAST_4` to `SSN_LAST_FOUR`
+
+### 2020-09-14_1.666.3
+- Updated `/user/get` `client_user_id` field properties to be nullable
+- Removed `/user/get` `updated_at` field nullable property
+
+### 2020-09-14_1.666.2
+- (beta) Add `cra_lend_score` support to `link/token/create`, `cra/check_report/create`, and `cra/check_report/lend_score/get`
+- (breaking) Remove `cra/check_report/plaid_credit_score/get`
+
+### 2020-09-14_1.666.1
+- (beta) updated `ErrorType` on `IdentityCreationResult` to be optional
+
+### 2020-09-14_1.666.0
+- (beta) Add `/user/get` endpoint to retrieve user identity and information.
+
+### 2020-09-14_1.665.6
+- (beta) Add new version of `/user/update`
+
+### 2020-09-14_1.665.5
+- Mark `expected_settlement_date` deprecated in `transfer`
+
+### 2020-09-14_1.665.4
+- (beta) updated `UserCreateRequest` to include `identity`
+- (beta) updated `UserCreateResponse` to include `identity_creation_result`
+- (beta) renamed `UserIdentity` to `ClientUserIdentity`
+
+### 2020-09-14_1.665.3
+- (beta) created `IdentityCreationResult` shared object
+
+### 2020-09-14_1.665.2
+- (beta) created `UserIdentity` shared object
+
+### 2020-09-14_1.665.1
+- Hide `cashflow_insights` references
+
+### 2020-09-14_1.665.0
+- [BREAKING] Add `item_id` to `/cra/monitoring_insights/subscribe` request
+
+### 2020-09-14_1.664.1
+- Deprecate baseline values in `/cra/monitoring_insights/get` response
+
 # 38.1.0
 - Updating to OAS 2020-09-14_1.664.0
 
