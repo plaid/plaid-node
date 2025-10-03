@@ -81,11 +81,11 @@ describe('Assets', () => {
 
     if (insightsResponse.data.report?.items) {
       const itemFiltered = insightsResponse.data.report?.items.filter(
-        (_, key) => key === 0,
+        (_: any, key: number) => key === 0,
       )?.[0];
 
       const account_id_filtered = itemFiltered.accounts.filter(
-        (_, key) => key === 0,
+        (_: any, key: number) => key === 0,
       )?.[0].account_id;
 
       account_id = account_id_filtered;
