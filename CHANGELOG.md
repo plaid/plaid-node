@@ -1,5 +1,50 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 39.1.0
+- Updating to OAS 2020-09-14_1.670.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.670.0
+- Add support for investments to `/cra/check_report/verification/get`
+
+### 2020-09-14_1.669.0
+- Add `AccountInsights` to `/asset_report/get`
+
+### 2020-09-14_1.668.3
+- Update `identity_creation_result` to be `null` for V0 `/user/create` routes
+
+### 2020-09-14_1.668.2
+- (beta) use user_id in `/user/third_party_token/create`
+
+### 2020-09-14_1.668.1
+- Add `options` for `network_insights` in `link/token/create`, `cra/check_report/create`, and `cra/check_report/network_insights/get`
+
+### 2020-09-14_1.668.0
+
+- Add support for Cashflow Insights and LendScore, including adding `cra_cashflow_insights` and `cra_lend_score` to Products array and creating new `PlaidLendScoreVersion` schema object.
+- Documentation-only changes to support a single, shared Signal Rules-based integration path for Balance and Signal Transaction Scores using `/signal/evaluate`.
+- Documentation-only changes to support Transfer for Platforms.
+
+### 2020-09-14_1.667.6
+- (beta) new `/protect/report/create` endpoint
+
+### 2020-09-14_1.667.5
+- Publish `/transfer/platform/originator/create` to docs 
+- Publish `/transfer/platform/person/create` to docs
+- Publish `/transfer/platform/requirement/submit` to docs
+
+### 2020-09-14_1.667.4
+- Fixed a broken documentation link
+
+### 2020-09-14_1.667.3
+- Add cra_partner_insights as possible add_ons for `cra/check_report/pdf/get`
+
+### 2020-09-14_1.667.2
+- (beta) updated street_1, city, region, and postal_code to no longer be required
+
+### 2020-09-14_1.667.1
+- (beta) Allow ClientUserIdentityName to be nullable
+
 # 39.0.0
 - Updating to OAS 2020-09-14_1.667.0
 

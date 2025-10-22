@@ -1,5 +1,5 @@
 # Note: This image is also built in CircleCI, so limit references to internal repositories.
-FROM node:15
+FROM 345594567237.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/node:15
 
 # Create app directory
 WORKDIR /usr/src/app
