@@ -1,5 +1,51 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 41.0.0
+- Updating to OAS 2020-09-14_1.680.0
+## Breaking changes in this version
+- [BREAKING] Make Personal Financial Category version fields enums.
+- [Breaking] Remove `/user/items/list` endpoint (not used by or exposed to any customers)
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.680.0
+- Add Facial Duplicate data to IDV APIs.
+
+### 2020-09-14_1.679.1
+- Fix description and summary field for `/user/get`
+
+### 2020-09-14_1.679.0
+- Fix invalid OpenAPI syntax in `IdentityVerificationListRequest` schema object
+- Extensive documentation changes (including field re-ordering) to support new `user_id` and new user APIs
+
+### 2020-09-14_1.678.3
+- [Breaking] Remove `/user/items/list` endpoint (not used by or exposed to any customers)
+
+### 2020-09-14_1.678.2
+- Add `required_account_subtypes` and `provided_account_subtypes` to `Error` response object for NO_ACCOUNTS errors (currently only populated when `investments_auth` present in `enabled_products`)
+
+### 2020-09-14_1.678.1
+- Internal changes only
+
+### 2020-09-14_1.678.0
+- Add `request_guarantee` to `/transfer/authorization/create`
+- Mark `with_guarantee` deprecated in `/transfer/authorization/create`
+
+### 2020-09-14_1.677.3
+- Add user_id to `/link/token/get` response.
+- Remove beta from NewUserID description.
+
+### 2020-09-14_1.677.2
+- Add user_id to `/sandbox/public_token/create` request object
+
+### 2020-09-14_1.677.1
+- [BREAKING for Go] Add user_id to `/user/items/get` request object and make user_token optional.
+
+### 2020-09-14_1.677.0
+- [BREAKING for Go] (beta) Add user_id to `/sandbox/user/reset_login` request object and make user_token optional.
+
+### 2020-09-14_1.676.0
+- [BREAKING] Make Personal Financial Category version fields enums.
+
 # 40.0.0
 - Updating to OAS 2020-09-14_1.675.0
 
