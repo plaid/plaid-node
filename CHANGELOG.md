@@ -1,5 +1,24 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 41.2.0
+- Updating to OAS 2020-09-14_1.681.4
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.681.4
+- Add `client_user_id` field to `ProtectUserEventWebhook`
+
+### 2020-09-14_1.681.2
+- Add `edits_current` field to `UserAccountIdentityEditCounts` schema. This field tracks the number of edits made to a specific identity field during the current session.
+
+### 2020-09-14_1.681.1
+- Add `user_id` field to the following webhook schemas: `SyncUpdatesAvailableWebhook`, `ItemPendingExpirationWebhook`, `ItemErrorWebhook`, `ItemLoginRepairedWebhook`, `InvestmentsTransactionsDefaultUpdateWebhook`, `InvestmentsTransactionsHistoricalUpdateWebhook`, `HoldingsDefaultUpdateWebhook`, `LiabilitiesDefaultUpdateWebhook`, `ItemPendingDisconnectWebhook`, `ItemUserPermissionRevokedWebhook`, `NewAccountsAvailableWebhook`, `UserAccountRevokedWebhook`, `LinkSessionFinishedWebhook`
+
+### 2020-09-14_1.681.0
+- Add `trust_index_score` field to `risk_check` schema for IDV endpoints.
+
+### 2020-09-14_1.680.9
+- Add `payee_verification_status` field to `WalletTransaction` schema. This field indicates the result of payee verification checks for EUR payouts.
+
 # 41.1.0
 - Updating to OAS 2020-09-14_1.680.8
 
