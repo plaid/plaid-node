@@ -1,5 +1,36 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 41.4.0
+- Updating to OAS 2020-09-14_1.682.2
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.682.2
+- Add personal_finance_category to BaseReportTransaction model.
+
+### 2020-09-14_1.682.1
+- Update `ProtectComputeResponse`: promote `score` and `model` to top-level fields, rename `fraud_attributes` to `attributes`, and remove `trust_index` and `subscores`
+- Mark `ProtectComputeResponse.score` as nullable so it is omitted from the API response when no trust index score is present, preventing clients from seeing a spurious `"score": 0`
+
+### 2020-09-14_1.682.0
+- Add `has_null_available_balance` field to `OverrideAccounts` schema. When set to `true`, the Sandbox test account will always return `null` for its available balance. Cannot be set together with `force_available_balance`.
+
+### 2020-09-14_1.681.9
+- Add `fico` field to `CraCheckReportPartnerInsightsGetPartnerInsights`, `CraCheckReportCreatePartnerInsightsOptions`, and `LinkTokenCreateRequestCraOptionsPartnerInsights` schemas to support UltraFICO score generation; add new `CraPartnerInsightsFicoInput`, `CraPartnerInsightsUltraFicoScoreRequest`, `CraPartnerInsightsBaseFicoScore`, `CraPartnerInsightsUltraFicoScoreVersion`, `CraPartnerInsightsBureau`, and `CraPartnerInsightsBaseFicoScoreVersion` schemas
+
+### 2020-09-14_1.681.8
+- Update `beta/transactions/rules/v1` endpoints to use `client_user_id` instead of `access_token`
+- Split `personal_finance_category` into `pfc_primary_category` and `pfc_detailed_category` on rule request/response schemas; add optional `pfc_version` field
+- Rename `TransactionsRuleField` enum value `NAME` to `MERCHANT_NAME`
+- Add `updated_at` and `client_user_id` to `TransactionsCategoryRule`; replace `item_id` and `personal_finance_category`
+
+### 2020-09-14_1.681.7
+- Add `sdk` field to `ProtectModelInputs` on `ProtectComputeRequest`.
+
+### 2020-09-14_1.681.6
+- Clarify `/protect/compute` `model` field: version suffix is required and must be `major.minor` format; removed references to versionless model names
+- Expand `require_extracted_data` field description to document HTTP 400 / `FAILED_PRECONDITION` behavior when set to `true`
+- Add readiness error to `/protect/compute` endpoint description: for link-session models, calling the endpoint before the Link session is complete returns HTTP 400 with `error_type` = `INVALID_REQUEST` and `error_code` = `FAILED_PRECONDITION`
+
 # 41.3.0
 - Updating to OAS 2020-09-14_1.681.5
 
