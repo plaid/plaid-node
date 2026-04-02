@@ -1,5 +1,77 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 42.0.0
+- Updating to OAS 2020-09-14_1.686.0
+
+## Breaking changes in this version
+- [BREAKING] Remove deprecated beta `recurrence` field from `Enrichments` schema in `/transactions/enrich` response and remove `Recurrence` and `RecurringFrequency` schema definitions
+- [BREAKING] Update `InvestmentsHoldingsGetResponse`, `InvestmentsTransactionsGetResponse`, `InvestmentsAuthGetResponse`, `ProcessorInvestmentsHoldingsGetResponse`, and `ProcessorInvestmentsTransactionsGetResponse` to use `InvestmentAccount` instead of `AccountBase`
+- [Breaking] `CraPartnerInsightsPrism` is now nullable. The `prism` field will be omitted from `/cra/check_report/partner_insights/get` responses when Prism Data was not included in the request. Clients that always expect `prism` to be present should update to handle a null or missing value.
+- [Breaking] Remove Plaid Check Score references from the API. Plaid Check Score is not in active use by customers and has been deprecated in favor of the Plaid LendScore.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.686.0
+- Add Income Insights V2 schemas and fields to client libraries (hidden from docs)
+### 2020-09-14_1.685.3
+- Add `cfi_code` field to the Investments `Security` schema.
+
+### 2020-09-14_1.685.2
+- Add `protect_transactions` to the public `Products` and `UserBasedProducts` enums and expose it in `/link/token/create` product array docs.
+
+### 2020-09-14_1.685.1
+- Add Item IDs to FAILED CHECK_REPORT webhooks for closed beta
+
+### 2020-09-14_1.685.0
+- [BREAKING] Remove deprecated beta `recurrence` field from `Enrichments` schema in `/transactions/enrich` response and remove `Recurrence` and `RecurringFrequency` schema definitions
+
+### 2020-09-14_1.684.1
+- Add missing investment account subtypes to `InvestmentAccountSubtype` and `InvestmentAccountSubtypeStandalone` schemas: `fhsa`, `line of credit`, `roth 403B`, `roth 457b`, `roth pension`, `roth profit sharing plan`, `roth thrift savings plan`, and `thrift savings plan`. Add these subtypes plus `qshr` to the `AccountSubtype` enum.
+
+### 2020-09-14_1.684.0
+- Add `InvestmentAccountBalance` and `InvestmentAccount` schemas to expose `margin_loan_amount` on investment endpoints
+- [BREAKING] Update `InvestmentsHoldingsGetResponse`, `InvestmentsTransactionsGetResponse`, `InvestmentsAuthGetResponse`, `ProcessorInvestmentsHoldingsGetResponse`, and `ProcessorInvestmentsTransactionsGetResponse` to use `InvestmentAccount` instead of `AccountBase`
+
+### 2020-09-14_1.683.2
+
+### 2020-09-14_1.683.1
+- Add version `4.1` to `PrismDetectVersion`, `PrismCashScoreVersion`, `PrismExtendVersion`, and `PrismInsightsVersion` enums for Prism v4.1 support in `/cra/check_report/partner_insights/get`.
+
+### 2020-09-14_1.683.0
+- Add OpenAPI spec for `/item/products/terminate` and `/item/handle_fraud_report` endpoints
+
+### 2020-09-14_1.683.0
+- Add `user_id` field to `CreditBankIncomeGetRequest`, `CreditBankIncomePDFGetRequest`, `CreditBankIncomeRefreshRequest`, `CreditBankIncomeWebhookUpdateRequest`, `CreditPayrollIncomeParsingConfigUpdateRequest`, `CreditPayrollIncomeRiskSignalsGetRequest`, `CreditPayrollIncomeGetRequest`, `CreditPayrollIncomePrecheckRequest`, and `CreditPayrollIncomeRefreshRequest`.
+
+### 2020-09-14_1.682.12
+- Update `with_guarantee` field in `/transfer/authorization/create` with clearer wording
+
+### 2020-09-14_1.682.11
+- Update `/user/items/remove` description with clearer wording
+
+### 2020-09-14_1.682.10
+- Add `cfi_code` to the Investments `Security` model.
+
+### 2020-09-14_1.682.9
+- Make `with_upgraded_user` field in `/user/create` visible in docs
+
+### 2020-09-14_1.682.8
+- Remove deprecated `prism_products` field from `CraCheckReportCreatePartnerInsightsOptions`, `CraCheckReportPartnerInsightsGetOptions`, `LinkTokenCreateRequestCraOptionsPartnerInsights`, and `LinkTokenCreateRequestCreditPartnerInsights` schemas. Remove deprecated `PrismProduct` enum. Use `prism_versions` instead.
+
+### 2020-09-14_1.682.7
+[Breaking] `CraPartnerInsightsPrism` is now nullable. The `prism` field will be omitted from `/cra/check_report/partner_insights/get` responses when Prism Data was not included in the request. Clients that always expect `prism` to be present should update to handle a null or missing value.
+
+### 2020-09-14_1.682.6
+
+### 2020-09-14_1.682.5
+Update copy for Layer email availability
+
+### 2020-09-14_1.682.4
+- Add `link_session_id` field to `ProtectUserEventWebhook`
+-
+
+### 2020-09-14_1.682.3
+[Breaking] Remove Plaid Check Score references from the API. Plaid Check Score is not in active use by customers and has been deprecated in favor of the Plaid LendScore.
+
 # 41.4.0
 - Updating to OAS 2020-09-14_1.682.2
 
