@@ -1,5 +1,32 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 42.1.0
+- Updating to OAS 2020-09-14_1.688.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.688.0
+- Add additional fields to CRA Partner Insights UltraFICO response (hidden from docs)
+
+### 2020-09-14_1.687.1
+- Add `limited purpose checking` to `DepositoryAccountSubtype`, `DepositoryAccount`, and `AccountSubtype` schemas
+- Add `limited_purpose_types` filter field to `DepositoryFilter` and `LinkTokenCreateDepositoryFilter` (hidden from docs)
+- Add `LimitedPurposeTypes` and `LimitedPurposeType` schemas (hidden from docs)
+
+### 2020-09-14_1.687.0
+- Add new field `disconnect_time` to `PendingDisconnectWebhook`
+
+### 2020-09-14_1.686.4
+- Income Insights doc fixes
+
+### 2020-09-14_1.686.3
+- Update `/cra/check_report/income_insights/get` sample response to V2 schema
+
+### 2020-09-14_1.686.2
+- Unhide Income Insights V2 fields and hide Income Insights v1 fields
+
+### 2020-09-14_1.686.1
+- Add `home_lending_report_options` to `CraCheckReportCreateBaseReportOptions` and `LinkTokenCreateRequestCraOptionsBaseReport` for configuring Home Lending Report generation (VOA, Employment Refresh) on base report creation
+
 # 42.0.0
 - Updating to OAS 2020-09-14_1.686.0
 
