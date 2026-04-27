@@ -1,5 +1,28 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 42.2.0
+- Updating to OAS 2020-09-14_1.688.6
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.688.6
+- Updated `/user_account/session/get` sample response to include `identity_edit_history`
+
+### 2020-09-14_1.688.5
+- Expose `/cra/credit_profile/report/get` and its request/response schemas in the public OpenAPI spec (previously hidden from client libraries)
+- Mark `/credit/bank_income/refresh` as `deprecated: true`. The backend implementation was removed, and the endpoint returns `Unimplemented` at runtime. To refresh Bank Income data, send the user through Link Update Mode, or migrate to CRA Income Insights and call `/cra/check_report/create`.
+
+### 2020-09-14_1.688.4
+- Document that `/transfer/metrics/get` returns static placeholder values in the Sandbox environment
+
+### 2020-09-14_1.688.3
+- Mark `/protect/event/send` and `/protect/event/get` as `deprecated: true`
+
+### 2020-09-14_1.688.2
+- Hide `/protect/event/send` and `/protect/event/get` endpoints from public API docs
+
+### 2020-09-14_1.688.1
+- Add `/sandbox/item/application/seed` endpoint for seeding connected applications on Permissions Manager sandbox items
+
 # 42.1.0
 - Updating to OAS 2020-09-14_1.688.0
 
