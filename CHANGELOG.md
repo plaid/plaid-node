@@ -1,5 +1,107 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 47.0.0
+- Updating to OAS 2020-09-14_1.740.1
+
+## Breaking changes in this version
+
+ - [BREAKING] `/processor/token/create`: the `processor` enum value `paynote` is replaced by `seamlessach` (SeamlessChex rebranded Paynote to Seamless ACH). Send `seamlessach` instead. The API still accepts `paynote` during a transition period, and processor tokens already issued under `paynote` keep working and do not need to be regenerated.
+ - [BREAKING] `/protect/compute`: the generic `cash-advance-onboarding-1.0` and `cash-advance-ongoing-1.0` models are removed. Use the client-scoped model issued for your client: `cash-advance-onboarding-<client>-1.0` or `cash-advance-ongoing-<client>-1.0`.
+ - [BREAKING] `/protect/cash_advance/repayment/create`: the repayment status `DELIVERED` is replaced by `PARTIAL_PAYMENT`, which indicates a payment was made but an outstanding balance remains. `amount_paid` is no longer required and is now nullable; it is required only when `status` is `REPAID` or `PARTIAL_PAYMENT`.
+ - [BREAKING] `/protect/cash_advance/decision/create`: `is_taken` moves out of the `cash_advance` object to the top level of the request, and the `cash_advance` object schema is renamed from `CashAdvanceDetails` to `CashAdvanceInfo`. A new required `advance_type` field (`FIRST` / `REPEAT`) and an optional non-negative `previous_advance_count` field are added. `is_taken` must be `false` when the decision is `DECLINED`; when `true`, both `client_advance_id` and `cash_advance` are required. `advance_type` is required only when `is_taken` is `true`.
+ - [BREAKING] `/protect/event/send`: `protect_session_id` is renamed to `device_session_id`, both at the top level and within `event`.
+ - [BREAKING] `/protect/compute`: the `sdk` model inputs object is renamed to `device`, its `sdk_session_id` field is renamed to `device_session_id`, and the `ProtectSDKModelInputs` schema is now `ProtectDeviceModelInputs`.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.740.1
+
+- Added the missing `PRODUCT_GENERATION_ERROR` enum value to `options.error_webhook_code` on `/sandbox/cra/servicing/simulate`. This change brings the OpenAPI specification in line with actual API behavior; the endpoint already accepted the value and emitted it on the resulting `CRA_REPORT_UPDATED` webhook.
+
+### 2020-09-14_1.740.0
+
+### 2020-09-14_1.739.0
+
+- Document `options.transactions.days_requested` on `/sandbox/public_token/create`, which controls how much transaction history the Sandbox Item is created with, matching `transactions.days_requested` on `/link/token/create`. The field was already present in the client libraries; only its documentation visibility changes.
+- Deprecate `options.transactions.start_date` and `options.transactions.end_date` on `/sandbox/public_token/create` in favor of `days_requested`, and remove them from the API reference. Both are still accepted and still have no effect on the history available on the Item.
+
+### 2020-09-14_1.738.0
+
+- [Breaking] SeamlessChex has rebranded Paynote to Seamless ACH. On `/processor/token/create`, the `processor` enum value `paynote` is replaced by `seamlessach`. Client libraries no longer expose `paynote` as an enum member, so upgrading to this version requires sending `seamlessach` instead. The API still accepts `paynote` during a transition period, so integrations pinned to an older client library continue to work, but the value is retired and will stop being accepted. Processor tokens already issued under `paynote` keep working and do not need to be regenerated.
+
+### 2020-09-14_1.737.2
+
+- Add `client_user_id` to the `/cra/report/get` response.
+
+### 2020-09-14_1.737.1
+
+- Internal changes only.
+
+### 2020-09-14_1.737.0
+
+- Document the `CRA_REPORT_UPDATED` webhook (`CRA_REPORT` type), fired when a subscribed CRA report is updated. The `successful_products`/`failed_products` fields indicate which products were updated, and `scope` indicates the data the report was computed over.
+
+### 2020-09-14_1.736.3
+
+### 2020-09-14_1.736.2
+
+- [Breaking] Remove the generic `cash-advance-onboarding-1.0` and `cash-advance-ongoing-1.0` models from `/protect/compute`. Cash advance scoring now requires the client-scoped model issued for your client, named `cash-advance-onboarding-<client>-1.0` or `cash-advance-ongoing-<client>-1.0`.
+
+### 2020-09-14_1.736.1
+
+- Hide `/beta/webhook_events/list` from public API docs until GA, and document its errors, mutually exclusive `cursor`/`start_time` behavior, and additional request/response examples. The request/response shapes are unchanged.
+
+### 2020-09-14_1.736.0
+
+- [Breaking] Make `amount_paid` nullable on `/protect/cash_advance/repayment/create`; it is now required only when `status` is `REPAID` or `PARTIAL_PAYMENT`.
+- Make `advance_type` optional on `/protect/cash_advance/decision/create`; it is now required only when `is_taken` is `true`.
+
+### 2020-09-14_1.735.0
+
+- [Breaking] Add the required `advance_type` field (`FIRST` / `REPEAT`) and the optional non-negative `previous_advance_count` field to the `/protect/cash_advance/decision/create` request body.
+- [Breaking] Replace the `DELIVERED` repayment status with `PARTIAL_PAYMENT` on `/protect/cash_advance/repayment/create`. `PARTIAL_PAYMENT` indicates a payment has been made but an outstanding balance remains.
+- [Breaking] Move `is_taken` out of the `cash_advance` object to the top level of the `/protect/cash_advance/decision/create` request. It must be `false` when the decision is `DECLINED`, and when `true` both `client_advance_id` and `cash_advance` are required.
+- [Breaking] Rename the `cash_advance` object schema from `CashAdvanceDetails` to `CashAdvanceInfo` on `/protect/cash_advance/decision/create`.
+
+### 2020-09-14_1.734.1
+
+- Add `kikoff_enterprise` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the Kikoff Enterprise integration.
+
+### 2020-09-14_1.734.0
+
+- Make `device_data` optional and deprecated on `/protect/client/session/start`. The field remains accepted for backward compatibility.
+
+### 2020-09-14_1.733.0
+
+- Added a `running_balance` field to the Transaction object. It is the balance of the account after that transaction was applied, as reported by the financial institution, and is only present where the institution sends one.
+
+### 2020-09-14_1.732.0
+
+- internal changes only
+
+### 2020-09-14_1.731.0
+
+- Add the optional `holder_category` and `is_verified` fields to the counterparty on `/wallet/transaction/execute`. `holder_category` tells payee verification whether the counterparty is a person or a company, and `is_verified` lets you declare that you have already verified the counterparty so Plaid skips its own payee verification check. Both apply to GBP payouts and remain hidden from public documentation.
+- `payee_verification_status` on e-wallet transactions is now also populated for GBP payouts.
+
+### 2020-09-14_1.730.4
+
+- Clarify that client-specific Link session model requests can use a major-version alias and that `/protect/compute` responses return the exact minor version used.
+
+### 2020-09-14_1.730.3
+
+### 2020-09-14_1.730.2
+
+- Hide the `require_extracted_data` field on Protect Link-session model inputs from the public API reference. The request contract is unchanged.
+
+### 2020-09-14_1.730.1
+
+- Noted that `merchant_category_code` on the Transaction object is in beta.
+
+### 2020-09-14_1.730.0
+
+- [Breaking] Renamed the `protect_session_id` field in the request of the deprecated `/protect/event/send` to `device_session_id`, both at the top level and within `event`.
+- [Breaking] Renamed the `sdk` model inputs object in the request of `/protect/compute` to `device`, and its `sdk_session_id` field to `device_session_id`. The `ProtectSDKModelInputs` schema is now `ProtectDeviceModelInputs`.
+
 # 46.0.0
 - Updating to OAS 2020-09-14_1.729.1
 
