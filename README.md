@@ -1,5 +1,9 @@
 # plaid-node [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 
+> **Help shape Plaid’s next-generation SDKs**
+>
+> We’re modernizing Plaid’s SDKs and looking for developers to try early releases and share feedback. [Register your interest](https://docs.google.com/forms/d/e/1FAIpQLScuhIBKCGcxrDQXLZA0nyTdJEW83J-VEr8E08KMKkT0EjmxBQ/viewform) and we’ll follow up when an early release is available for your language. No migration is required today.
+
 The official Node.js client library for the [Plaid API][1].
 
 ## Table of Contents
