@@ -1,5 +1,195 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 48.0.0
+- Updating to OAS 2020-09-14_1.762.0
+
+## Breaking changes in this version
+
+ - [BREAKING] Remove the deprecated `/link_delivery/create` and `/link_delivery/get` methods and their models. Use `/link/token/create` with `hosted_link` to create Hosted Link sessions.
+ - [BREAKING] Remove the unlaunched `charge card` and `installment` account subtype enum values, and the never-populated `fund fee`, `loan payment`, and `rebalance` investment transaction subtype enum values. Remove references to those enum members when upgrading.
+ - [BREAKING] `CHECK_REPORT_FAILED` and `USER_CHECK_REPORT_FAILED` webhook models now require `error`, `repairable_items`, and `failed_products`; update any manually constructed instances accordingly. Empty item/product lists are returned as `[]`.
+ - [BREAKING for TypeScript] `street` on `AddressData`, `AddressDataNullable`, `AddressDataNotRequired`, and `AddressDataNullableNoRequiredFields` now permits `null` (OAS 2020-09-14_1.745.2). Handle `null` wherever code previously expected a string; required fields are now `string | null` and optional fields are `string | null | undefined`.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.762.0
+
+- Add the `CRA_REPORT_READY` webhook, fired when generation finishes for a CRA report requested via `/cra/report/create` or a Link session configured with `cra_report_parameter`. `successful_products` and `failed_products` list which products were generated, and `error_code`, a `CraReportErrorCode` enum, is populated when every product failed.
+
+### 2020-09-14_1.761.0
+
+- Add `cra_lend_score` to `/cra/check_report/pdf/get` to include LendScore in the PDF alongside the required Base Report.
+
+### 2020-09-14_1.760.1
+
+- `/sandbox/item/fire_webhook` accepts an optional `options.new_transactions` count for the `TRANSACTIONS` `DEFAULT_UPDATE` webhook, which previously always reported 0. The `SYNC_UPDATES_AVAILABLE` webhook it fires now derives `initial_update_complete` and `historical_update_complete` from the Item instead of always sending `true`.
+
+### 2020-09-14_1.760.0
+
+- Document `/cra/report/get`, which retrieves a CRA report's products for a user.
+- Add `cra_base_report`, `cra_lend_score`, `cra_cashflow_insights`, and `cra_network_insights` to the `/cra/report/get` request `products` union, matching the products `/cra/report/create` accepts.
+
+### 2020-09-14_1.759.0
+
+- Internal changes only.
+
+### 2020-09-14_1.758.1
+
+- Point the documentation links for the `/cra/check_report/*`, `/cra/servicing/subscription/*`, and `/cra/monitoring_insights/*` endpoints at the legacy Plaid Check reference page, which now hosts their documentation.
+
+### 2020-09-14_1.758.0
+
+- Add the optional `cra_report_parameter` object to `/link/token/create`. It configures Plaid Check products for the Link session with the same parameters and `products` entries as `/cra/report/create`.
+
+### 2020-09-14_1.757.2
+
+- Correct the `date_transacted` description for transactions in a custom Sandbox user's `override_accounts`: pending status is decided by `date_posted`, not `date_transacted`.
+
+### 2020-09-14_1.757.1
+
+- `/sandbox/transactions/create` now works on every Sandbox Item, not only those created with `user_transactions_dynamic`. Previously a call on any other Item returned a 200 and the transactions never appeared. It also accepts dates up to 730 days in the past instead of 14.
+
+### 2020-09-14_1.757.0
+
+- Add the hidden `idv_session_status` and `link_session_id` fields to `/user_account/session/get`. IDV status is optional and omitted when disabled or unavailable; when available in Sandbox, it reflects the simulated Identity Verification session.
+
+### 2020-09-14_1.756.1
+
+- Allow `/cra/report/get` to be called with an OAuth2 access token that carries the `cra:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+
+### 2020-09-14_1.756.0
+
+- Add `/cra/report/create` for generating a CRA Report for a user. Each entry in the required `products` array is a `CraReportProduct` that names a Plaid Check product and its `version`, with optional product-specific `options`. The request also requires a `decision_stage` and a `consumer_report_permissible_purpose`, and the response returns the `report_id` of the report being generated.
+
+### 2020-09-14_1.755.0
+
+- Internal changes only.
+
+### 2020-09-14_1.754.1
+
+- Document Haitian Creole (`ht`) as a supported Link language.
+
+### 2020-09-14_1.754.0
+
+- Add the optional `user_attributes` object to `/transfer/authorization/create`, with `account_created_time` for when the end user created their account on the customer's platform and `successful_payment_count` for their lifetime count of successful payments there. The object is hidden from public documentation until it is generally available.
+
+### 2020-09-14_1.753.2
+
+- `/sandbox/transactions/create` accepts an optional `account_id` on each transaction so rows can target any account on the Item, as returned by `/accounts/get`. Without it, rows go to the Item's checking account. Rows that target a student loan account return `INVALID_ACCOUNT_ID`.
+
+### 2020-09-14_1.753.1
+
+- Add `/protect/cash_advance/feedback/upload`, which accepts a `multipart/form-data` CSV of cash advance decision or repayment feedback for asynchronous processing and returns an `upload_id`. Each row is equivalent to one call to `/protect/cash_advance/decision/create` or `/protect/cash_advance/repayment/create`.
+
+### 2020-09-14_1.753.0
+
+- [Breaking] Remove the deprecated `/link_delivery/create` and `/link_delivery/get` endpoints and their request, response, and supporting schemas. The generated client-library methods `linkDeliveryCreate` and `linkDeliveryGet` and their model classes are removed along with them, so upgrading to this version is a compile break for any integration that still references them. Use `/link/token/create` with the `hosted_link` object to create Hosted Link sessions.
+
+### 2020-09-14_1.752.6
+
+- Rewrite the `/beta/webhook_events/list` description.
+
+### 2020-09-14_1.752.5
+
+- Clarify that `failure_reason.description` describes the reason for a transfer adjustment event.
+
+### 2020-09-14_1.752.4
+
+- Allow `/transactions/sync` to be called with an OAuth2 access token that carries the new `transactions:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+
+### 2020-09-14_1.752.3
+
+- Allow `/auth/get` to be called with an OAuth2 access token that carries the new `auth:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+- Allow `/accounts/balance/get` to be called with an OAuth2 access token that carries the new `accounts:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+- Allow `/identity/get` to be called with an OAuth2 access token that carries the new `identity:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+- Allow `/item/get` to be called with an OAuth2 access token that carries the `item:read` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+
+### 2020-09-14_1.752.2
+
+- Add OAuth2 as an authentication option for `/item/public_token/exchange`, callable with a bearer token carrying the new `item:write` scope. Existing `client_id`/`secret` authentication is unchanged.
+
+### 2020-09-14_1.752.1
+
+- Add `adjustment` to `TransferEventType` for adjustments due to rare activity, such as a dishonor. The `event_amount` field indicates the amount adjusted: positive amounts credit the ledger, and negative amounts debit the ledger.
+
+### 2020-09-14_1.751.1
+
+- Update documentation `/beta/webhook_events/list`.
+
+### 2020-09-14_1.751.0
+
+- Add `paired_item_id` to the `Item` object. For Items created as part of a hybrid flow with both Plaid Inc and Plaid Check products, the `paired_item_id` will indicate the Plaid Check Item that corresponds to a given Plaid Inc Item, or vice versa. It is `null` for Items that have no pairing.
+
+### 2020-09-14_1.750.1
+
+- Add OAuth authentication with the `cra:read` scope to `/cra/check_report/verification/get` and `/cra/check_report/verification/pdf/get`.
+
+### 2020-09-14_1.750.0
+
+- Add optional `language` to `/identity_verification/create` to select the starting language for an identity verification session.
+
+### 2020-09-14_1.749.0
+
+- Add `connection_availability` to the `Institution` object returned by `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search`. It is `NOT_SUPPORTED` when Plaid does not support new connections to the institution, which can only occur on `/institutions/get_by_id`, and `SUPPORTED` otherwise. Also document that `/institutions/get_by_id` still returns such institutions while `/institutions/get` and `/institutions/search` omit them.
+
+### 2020-09-14_1.748.2
+
+- Add `roll_dates_forward` to the custom Sandbox user configuration (`UserCustomPassword`). When true, dates are shifted at Item creation so the most recent activity date falls on the creation day.
+
+### 2020-09-14_1.748.1
+
+- Add `bitgo` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the BitGo integration.
+
+### 2020-09-14_1.748.0
+
+- Add `client_user_id` to the `CRA_REPORT_UPDATED` webhook. It is always present and non-empty.
+
+### 2020-09-14_1.747.1
+
+- Add `adyen_ca` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the Adyen Canada integration.
+
+### 2020-09-14_1.747.0
+
+- [Breaking] Remove the unlaunched `charge card` and `installment` values from generated account subtype enums. Plaid never returned either value to customers.
+
+### 2020-09-14_1.746.0
+
+- Mark `error`, `repairable_items`, and `failed_products` as required on `CHECK_REPORT_FAILED` and `USER_CHECK_REPORT_FAILED` webhooks. Empty `repairable_items` and `failed_products` lists are now returned as `[]` instead of being omitted.
+
+### 2020-09-14_1.745.2
+
+- Mark `street` as nullable in the `AddressData` schema used by identity responses (`/identity/get`, `/identity/match`, `/processor/identity/get`, and Asset Report identity data). The API already returns `null` for `street` when the institution does not provide a street line for an address; the specification and generated client libraries declared it non-nullable, which caused client-side validation failures on such responses. This brings the specification in line with actual API behavior.
+
+### 2020-09-14_1.745.1
+
+- Document `home equity loan` and `commercial line of credit` in the Accounts account type schema.
+
+### 2020-09-14_1.745.0
+
+- Internal changes only.
+
+### 2020-09-14_1.744.2
+
+### 2020-09-14_1.744.1
+
+### 2020-09-14_1.744.0
+
+- Add `supports_commercial_payment_consents` to `payment_initiation_metadata` on `/institutions/get`, `/institutions/get_by_id`, and `/institutions/search`, indicating whether the institution supports commercial variable recurring payment (cVRP) consents.
+
+### 2020-09-14_1.743.0
+
+- Add the external `event_type`, when available, to `/protect/event/get` responses and document it in `/protect/event/get` and `/protect/user/insights/get` examples.
+
+### 2020-09-14_1.742.1
+
+### 2020-09-14_1.742.0
+
+- Add the `cash_advance_limit` field to `CreditCardLiability` on `/liabilities/get`, hidden from public API docs until GA.
+
+### 2020-09-14_1.741.0
+
+- [Breaking] Remove three never-populated investment transaction subtypes from the `InvestmentTransactionSubtype` enum — `fund fee`, `loan payment`, and `rebalance`. Plaid has never returned any of these values, so no response is affected.
+- Deprecate the `stock distribution` investment transaction subtype: it is no longer shown in the API documentation (removed from the `cash` and `fee` transaction type schemas and hidden from the `subtype` value list), and Plaid no longer produces it. The value is retained in the `InvestmentTransactionSubtype` enum for backward compatibility, since historical transactions may still carry it. The "inflow of stock from a distribution" it described is represented by the `transfer` type's `spin off` subtype.
+
 # 47.0.0
 - Updating to OAS 2020-09-14_1.740.1
 
