@@ -8,6 +8,7 @@ See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/
  - [BREAKING] Remove the deprecated `/link_delivery/create` and `/link_delivery/get` methods and their models. Use `/link/token/create` with `hosted_link` to create Hosted Link sessions.
  - [BREAKING] Remove the unlaunched `charge card` and `installment` account subtype enum values, and the never-populated `fund fee`, `loan payment`, and `rebalance` investment transaction subtype enum values. Remove references to those enum members when upgrading.
  - [BREAKING] `CHECK_REPORT_FAILED` and `USER_CHECK_REPORT_FAILED` webhook models now require `error`, `repairable_items`, and `failed_products`; update any manually constructed instances accordingly. Empty item/product lists are returned as `[]`.
+ - [BREAKING for TypeScript] `street` on `AddressData`, `AddressDataNullable`, `AddressDataNotRequired`, and `AddressDataNullableNoRequiredFields` now permits `null` (OAS 2020-09-14_1.745.2). Handle `null` wherever code previously expected a string; required fields are now `string | null` and optional fields are `string | null | undefined`.
 
 ## OpenAPI Schema Changes
 ### 2020-09-14_1.762.0
