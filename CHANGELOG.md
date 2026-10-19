@@ -1,5 +1,184 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 49.0.0
+- Updating to OAS 2020-09-14_1.778.0
+
+## Breaking changes in this version
+
+- [BREAKING] Correct Asset Report investment data to match API behavior: remove `cost_basis` from holdings, and move `vested_quantity` and `vested_value` from investment transactions to holdings as nullable fields.
+- [BREAKING] Correct the capitalization of the enum values in the Auth and Identity `DEFAULT_UPDATE` webhooks to match the values the API sends.
+- [BREAKING] Correct Sandbox enum values to match the values the API accepts: replace `VERIFICATION_STATUS_PENDING_APPROVAL` with `VERIFICATION_STATUS_DOCUMENT_REJECTED` in `/sandbox/income/fire_webhook`, and remove `PRODUCT_GENERATION_ERROR` from `/sandbox/cra/servicing/simulate`.
+- [BREAKING] Remove `/sandbox/transfer/repayment/simulate` and `/beta/transactions/v1/enhance` from the specification to match the API, which no longer serves either endpoint.
+- [BREAKING] Correct field types in the custom Sandbox user configuration (`UserCustomPassword`) to match what the Sandbox accepts. Client library models for these objects change type:
+  - `version` is an integer, `1` or `2`.
+  - `holdings` and `investment_transactions` on an `override_accounts` entry are arrays.
+  - W2 amounts, including `box_12` and `state_and_local_wages` amounts, and `tax_year` in `income.w2s` are numbers, and `statutory_employee`, `retirement_plan`, and `third_party_sick_pay` are booleans.
+  - `liability.sequence_number` is a number, and `liability.servicer_address` is a flat address with `street`, `city`, `region`, `postal_code`, and `country`, without the `primary` and `data` wrapper.
+  - `inflow_model.payment_day_of_month` and `inflow_model.statement_day_of_month` take a whole number from 1 to 28 or the string `last`.
+  - The credit APR fields and the student loan `nominal_apr` take a value from 0 to 100, and `interest_capitalization_grace_period_months` is a non-negative integer.
+  - Remove `pay_frequency` from paystub `pay_period_details`. The Sandbox never read it.
+- [BREAKING] In the custom Sandbox user configuration, mark as required only the fields the Sandbox requires: `type` and `subtype` on each account override; `type` on `mfa`, `liability`, and `inflow_model`; `names` on `identity`; `primary`, `data.city`, `data.street`, and `data.country` on each `identity.addresses` entry; `city`, `street`, and `country` on `liability.servicer_address`; and `currency` on a holding's or investment transaction's `security`. All top-level fields and all `meta` fields are optional.
+- [BREAKING] Remove `primary_account`, `identity_match`, and `owners` from the accounts in the `cra_income_insights` product's `items` on `/cra/report/get`; Income Insights never populates them. Products that return identity data keep those fields.
+- [BREAKING] Remove the public `options` object from `cra_home_lending` products on `/cra/report/create` and `cra_report_parameter.products` on `/link/token/create`, including the unsupported `reports_requested` and `employment_refresh_options` fields and their unused component schemas. Home Lending accepts no configuration today; omit `options`.
+- [BREAKING] Require `scope` and `decision_stage` in `cra_report_parameter` on `/link/token/create`, matching `/cra/report/create`. Only `CLIENT_USER` is supported for `scope` on `/link/token/create`.
+- [BREAKING] Require `scope` on `/cra/report/create`.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.778.0
+
+- [Breaking for Go] Correct Payment Initiation institution metadata to match API behavior: `maximum_payment_amount` is no longer required, and `valid_standing_order_intervals` is nullable.
+- Add enum values that the API already returns or accepts: `BLOCKED` for wallet status; `CRA_REPORT_ERROR` and `CRA_PARTNER_INSIGHTS_ERROR` for error type; `IDENTITY` for the `/sandbox/item/fire_webhook` webhook type; and `sweep.funds_available` for `/sandbox/transfer/ledger/deposit/simulate`.
+
+### 2020-09-14_1.777.0
+
+- Add LendScore Complete (`cra_lend_score_complete`) and Income Complete (`cra_income_complete`) response entries to `/cra/report/get`. LendScore Complete bundles LendScore with the Cashflow Insights and Network Insights attributes it was computed from; Income Complete bundles Income Insights. Both products return the Items and accounts used to generate them.
+
+### 2020-09-14_1.776.0
+
+- Document the `loan` and `line_of_credit` liability types for custom Sandbox accounts with their override fields, and `last_statement_balance` for `credit` liabilities.
+
+### 2020-09-14_1.775.1
+
+- Document the Qualify product (`cra_qualify`) in the `/cra/report/get` request and response.
+
+### 2020-09-14_1.775.0
+
+- Add the Base Report product (`cra_base_report`) to the `/cra/report/get` response. It returns the report's Items and accounts with balances, transactions, owners, primary account attributes, and identity match scores.
+
+### 2020-09-14_1.774.0
+
+
+### 2020-09-14_1.773.0
+
+- Add `items` to the `cra_income_insights` and `cra_home_lending` products in the `/cra/report/get` response, listing the Items and accounts used to generate each product.
+
+### 2020-09-14_1.772.0
+
+
+### 2020-09-14_1.771.1
+
+- Allow `/user/update` to be called with an OAuth2 access token that carries the `user:write` scope, including a delegated access token. The existing `client_id` and `secret` authentication continues to work.
+
+### 2020-09-14_1.771.0
+
+- Add `include_identity_match` to `/cra/report/create` and to `cra_report_parameter` on `/link/token/create`, which opts the report into including Identity Match results. Defaults to `false`.
+
+### 2020-09-14_1.770.0
+
+- Add LendScore Complete (`cra_lend_score_complete`) and Income Complete (`cra_income_complete`) to the `products` unions of `/cra/report/create`, `/cra/report/get`, and `cra_report_parameter` on `/link/token/create`. LendScore Complete bundles LendScore with the Cashflow Insights and Network Insights attributes it was computed from and accepts the same `variants` option as `cra_lend_score`; Income Complete bundles Income Insights and accepts the same `income_insights_filter` option. Both products return the Items and accounts used to generate them.
+
+### 2020-09-14_1.769.0
+
+- Add `description` and `transactions` to each `income_streams` entry of the Income Insights product on `/cra/report/get`. Both are populated only when the report `scope` is `CLIENT_USER`; otherwise `description` is `null` and `transactions` is empty.
+
+### 2020-09-14_1.768.2
+
+- Update the `/cra/report/get` response example to use the `EXTENSION_OF_CREDIT` permissible purpose and to show LendScore (`cra_lend_score`), Cash Flow Insights (`cra_cashflow_insights`), and Network Insights (`cra_network_insights`) `V2` entries, and update the `/cra/report/create` response and `CRA_REPORT_READY` webhook examples to describe a separate report in which Base Report and Income Insights are generated and LendScore `V2` fails.
+- On `/cra/report/create` and `/cra/report/get`, list only the `decision_stage` values and `consumer_report_permissible_purpose` values that the `decision_stage` description allows, including `INSURANCE_UNDERWRITING`.
+
+### 2020-09-14_1.768.1
+
+- Add `anchorage` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the Anchorage Digital integration.
+
+### 2020-09-14_1.768.0
+
+- Add the hidden optional `institution_data.institution_id` field to `/link/token/create`, also returned in `/link/token/get` metadata, to highlight an institution in Link by its Plaid institution ID.
+
+### 2020-09-14_1.767.2
+
+- Require `GENERALIST` in the `cra_lend_score` version `V2` `options.variants` on `/cra/report/get`, `/cra/report/create`, and `cra_report_parameter` in `/link/token/create` whenever variants are specified. Omitting or leaving `variants` empty still selects `GENERALIST`.
+
+### 2020-09-14_1.767.1
+
+- Document the optional `user_attributes` object on `/transfer/authorization/create`, with `account_created_time` and `successful_payment_count`. Request and response shapes are unchanged.
+
+### 2020-09-14_1.767.0
+
+- Add `variants` to the `cra_lend_score` options on `/cra/report/create` and on `cra_report_parameter` in `/link/token/create`, selecting which LendScore V2 variants to generate.
+
+### 2020-09-14_1.766.3
+
+- Update Transactions descriptions to include loan accounts beyond mortgage and student loan accounts.
+
+### 2020-09-14_1.766.2
+
+- Publicly document `/identity/match/list`, which returns a paginated history of Link-originated Identity Match attempts. Access requires Identity Match and separate enablement for this endpoint.
+
+### 2020-09-14_1.766.1
+
+- `/protect/compute` may return `SESSION_NOT_READY` for device-session models until the Protect SDK has delivered device data for the session.
+
+### 2020-09-14_1.766.0
+
+- Add `kyc_check.id_number.ssa_verification` with the SSA match result and `is_deceased` status in Identity Verification responses.
+
+### 2020-09-14_1.765.6
+
+- Add `investment_account_type_count` to the Credit Profile and Income Insights report metadata on `/cra/report/get`, so every CRA report metadata object reports the number of investment accounts alongside the depository, credit, and other counts.
+
+### 2020-09-14_1.765.5
+
+- Add `/beta/cash_advance/income_insights/v1/get`, which returns a user's top income streams, ranked by historical net monthly income, and the next payment of the highest-ranked stream. The endpoint is hidden from public documentation during beta.
+
+### 2020-09-14_1.765.4
+
+- Clarify that `/user/products/terminate` removes Items containing Financial Management products and also removes the user when every associated Item contains a Financial Management product.
+
+### 2020-09-14_1.765.3
+
+- Temporarily remove `/transfer/return/recover` from public API documentation while the broader Guarantee documentation is being developed. The endpoint remains available in the API and client libraries.
+
+### 2020-09-14_1.765.2
+
+- Describe `/cra/report/create`, `/cra/report/get`, and the `CRA_REPORT` webhooks in terms of Consumer Reports, and list the accepted products on the `products` fields of `/cra/report/create`, `/cra/report/get`, and `cra_report_parameter`.
+- Document how `scope` determines the Items used by `/cra/report/create`, and the permissible purposes allowed for each `decision_stage`.
+- Describe `other_account_type_count` the same way on every CRA report metadata object: the number of accounts that are neither depository, credit, nor investment.
+- Document that `/cra/report/get` callers should omit `report_id` when retrieving a report without a prior `/cra/report/create` or `/link/token/create` request, and omit LendScore `options` when retrieving a report generated by either.
+
+### 2020-09-14_1.765.1
+
+
+### 2020-09-14_1.765.0
+
+- Add `paired_account_id` to the `Account` object. For accounts on Items created as part of a hybrid flow with both Plaid Inc and Plaid Check products, this is the `account_id` of the account that represents the same financial institution account on the paired Item. It is only returned for accounts on Items that have a paired Item, and is `null` when Plaid could not match the account to one on the paired Item.
+
+### 2020-09-14_1.764.4
+
+
+### 2020-09-14_1.764.3
+
+- Add OAuth2 as an authentication option for the Support API endpoints (`/beta/issues/v1/*`), callable with a bearer token carrying the new `issues:read` (`/beta/issues/v1/get`, `/match`) or `issues:write` (`/beta/issues/v1/subscribe`, `/unsubscribe`) scope. Existing `client_id`/`secret` authentication is unchanged.
+
+
+### 2020-09-14_1.764.2
+
+- Declare `minimum: 0` on `days_requested` for `/cra/report/create`, matching `cra_report_parameter` on `/link/token/create`, so negative values are rejected.
+
+### 2020-09-14_1.764.1
+
+- Document the `loan` and `line_of_credit` liability objects on `/liabilities/get`, including the client library versions required to receive the new fields and expanded loan subtype values. Supported loan subtypes are `auto`, `commercial`, `commercial line of credit`, `consumer`, `home equity`, `home equity loan`, `line of credit`, `loan`, `mortgage`, and `student`.
+- Document that `home equity loan` is normalized to `loan` and `commercial line of credit` is normalized to `line of credit` in plaid-go versions earlier than 10.1.0, plaid-java versions earlier than 44.0.0, plaid-python versions earlier than 8.3.0, and plaid-ruby versions earlier than 14.4.0.
+
+### 2020-09-14_1.764.0
+
+- Add Network Insights (`cra_network_insights`) and Cashflow Insights (`cra_cashflow_insights`) response entries to `/cra/report/get`. Each response entry returns the product's `metadata`, `attributes`, and `errors`.
+
+### 2020-09-14_1.763.2
+
+- Internal changes only.
+
+### 2020-09-14_1.763.1
+
+- Describe `version` on the product entries of the `CRA_REPORT` webhooks as a `CraProductVersion`, matching the `/cra/report/create` and `/cra/report/get` product schemas. The wire type is unchanged.
+
+### 2020-09-14_1.763.0
+
+- Add LendScore V2 variant selection and per-variant report results to the CRA `/cra/report/get` schemas.
+
+### 2020-09-14_1.762.1
+
+- Document `report_id`, `client_report_id`, and `client_user_id` on `/cra/report/get`.
+
 # 48.0.0
 - Updating to OAS 2020-09-14_1.762.0
 
