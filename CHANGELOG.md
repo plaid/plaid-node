@@ -1,5 +1,128 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 50.0.0
+- Updating to OAS 2020-09-14_1.792.1
+
+## Breaking changes in this version
+
+- [BREAKING] Remove `v1.0` from `PlaidLendScoreVersion`, used by `lend_score_version` on `/cra/check_report/create`, `/cra/check_report/lend_score/get`, and `/link/token/create`. The API no longer accepts `v1.0`; use `LS1` instead.
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.792.1
+
+- Document how the primary account fields in `/cra/report/get` are computed: `primary_account_count` in each product's `metadata` is based on a report-level view of the user's transaction history, and the Base Report account attribute `is_primary_account` is based on an Item-level view.
+
+### 2020-09-14_1.792.0
+
+- Add hidden optional `exclude_transactions` to `cra_options.base_report` in `/link/token/create` and `base_report` in `/cra/check_report/create` for Base Reports retrieved via `/cra/check_report/base_report/get`.
+
+### 2020-09-14_1.791.0
+
+- Add optional `secondary_device_data` to `/protect/client/session/update` for additional sealed device data collected by the Protect SDK.
+
+### 2020-09-14_1.790.0
+
+- (pre-release) `/business_verification/create` and `/business_verification/get`: `risk_check.score` and `digital_presence_check.score` can now be `null` when a score is unavailable, including when a check could not complete its assessment.
+
+### 2020-09-14_1.789.3
+
+- Accept `ACCOUNT_REVIEW_NON_CREDIT` and `SECONDARY_INVESTOR` as `consumer_report_permissible_purpose` values when retrieving a Servicing report by `report_id` on `/cra/check_report/base_report/get` and `/cra/check_report/income_insights/get`, and on the deprecated `/cra/monitoring_insights/get`.
+- Add `SECONDARY_INVESTOR` to `consumer_report_permissible_purpose` for `/link/token/create` and `/cra/check_report/create`.
+- Document the existing `INSURANCE_UNDERWRITING` value of `consumer_report_permissible_purpose` for `/link/token/create` and `/cra/check_report/create`.
+
+### 2020-09-14_1.789.2
+
+- Add `cra_lend_score_complete` and `cra_income_complete` to the `Products` enum.
+
+### 2020-09-14_1.789.1
+
+- Add examples to every product schema returned by `/cra/report/get`. The wire format is unchanged.
+
+### 2020-09-14_1.789.0
+
+- [Breaking] Remove `v1.0` from `PlaidLendScoreVersion`, used by `lend_score_version` on `/cra/check_report/create`, `/cra/check_report/lend_score/get`, and `/link/token/create`. The API no longer accepts `v1.0`; `v1.0` is an unsupported beta version, `LS1` should be used instead.
+
+### 2020-09-14_1.788.1
+
+- Document the LendScore error codes in `/cra/report/get`. When a consumer does not meet a LendScore eligibility requirement, `scores[].error_code` and the LendScore product's `errors` name the unmet requirement, such as `INSUFFICIENT_TRANSACTION_HISTORY_30D` or `INSUFFICIENT_INFLOW_TRANSACTIONS_30D`.
+
+### 2020-09-14_1.788.0
+
+- Add required, nullable `institution_id` to `/payment_initiation/payment/get`, containing the Plaid institution ID of the end user's financial institution from which the payment was initiated. The value is `null` when the institution is not known, for example when the end user has not linked an account, and a later request may return a value. The field is returned only by `/payment_initiation/payment/get`, not by `/payment_initiation/payment/list`. Until the field is generally available, it is not described in the documentation and is `null` unless it has been enabled for your client.
+
+### 2020-09-14_1.787.0
+
+- Add an optional `investments` field to the account schema for `/cra/check_report/base_report/get`, including holdings, securities, and investment transactions. The field is initially hidden from documentation. It may be omitted when recent investment data was unavailable at report generation. Monitoring Insights does not return this field.
+
+### 2020-09-14_1.786.0
+
+- Add `/user/transfer/limits/get` to retrieve a user's Guaranteed ACH limits under `guarantee_limits`, with dollar amounts formatted as two-decimal strings and ISO currency codes. The endpoint is hidden from public documentation until it is generally available.
+
+### 2020-09-14_1.785.2
+
+- Document the Home Lending product (`cra_home_lending`) in `/cra/report/create`, `/cra/report/get`, and the `cra_report_parameter` object of `/link/token/create`, including an example of its `/cra/report/get` response.
+
+### 2020-09-14_1.785.1
+
+- Document `paired_item_id` on the `Item` object in the API reference. The field was previously available in the schema and client libraries but hidden from the docs while in beta.
+
+### 2020-09-14_1.785.0
+
+- Add schema support for optional, nullable `holder_category` on accounts in `/cra/check_report/base_report/get` and `/cra/monitoring_insights/get`. The field is hidden from documentation pending implementation.
+
+### 2020-09-14_1.784.0
+
+- Add `cra_report_results` to the `results` object of `/link/token/get`, containing the `report_id` of the Plaid Check report for the Link session.
+
+### 2020-09-14_1.783.0
+
+- Add the hidden optional `investments.async_update` field to `/link/token/create`. When `true` and `investments` is in `products`, Link pulls 30 days of investment transactions and Plaid pulls the full history after Link, firing an `INVESTMENTS_TRANSACTIONS` `HISTORICAL_UPDATE` webhook when it is available.
+
+### 2020-09-14_1.782.4
+
+- Investment accounts in `/cra/check_report/verification/get` and their corresponding account pages in `/cra/check_report/verification/pdf/get` may be excluded when recent investment data was unavailable at report generation.
+- When recent investment data is unavailable at report generation, `/cra/check_report/freddie_mac/get` retains the investment account. Its holdings array is empty, and its transactions array contains no investment transactions. Its asset details do not include holdings-derived balances, `AssetRetirementIndicator`, or `AssetEmployerSponsoredIndicator`. Current and available balances remain included.
+
+### 2020-09-14_1.782.3
+
+- Accept `INSURANCE_UNDERWRITING` as a `consumer_report_permissible_purpose` for the `DECISIONING` decision stage on `/cra/report/create`, `/cra/report/get`, and the `cra_report_parameter` object of `/link/token/create`.
+
+### 2020-09-14_1.782.2
+
+- Clarify Investments Move fallback defaults. Masked Number Match and Stated Account Number default to `true` when omitted, while Manual Entry defaults to `false`. Earlier Ruby and Java client library releases may serialize omitted Masked Number Match and Stated Account Number fields as `false`; upgrade to the next release generated from this specification or set these fields explicitly to guarantee a specific behavior.
+
+### 2020-09-14_1.782.1
+
+- Allow `/link/token/get` to be called with an OAuth2 access token that carries the new `link:read` scope, including a delegated access token. A delegated caller receives a delegate-specific view of the session that omits the customer's public token, user ID, Link configuration, events, and accounts. The existing `client_id` and `secret` authentication continues to work.
+
+### 2020-09-14_1.782.0
+
+- Add optional, nullable `client_user_id` support to `/protect/report/create`. It is mutually exclusive with a nonempty `user_id`.
+- [Breaking for Go] Mark `/protect/report/create`'s optional `user_id` nullable so null and omission have the same meaning. Use the generated setter instead of assigning the field directly.
+
+### 2020-09-14_1.781.0
+
+- Add optional `user_id` to `/transfer/authorization/create` to identify the Plaid user associated with the transfer's Item. The field is hidden from public documentation until it is generally available.
+
+### 2020-09-14_1.780.0
+
+- [Breaking for Go] Preserve arbitrary JSON value types in the Protect `fraud_attributes` maps, the `/protect/compute` `attributes` map, and the partner end customer `product_statuses` map in generated client libraries.
+
+### 2020-09-14_1.779.0
+
+- Add granular SSA name, date of birth, SSN, and other match results to `kyc_check.id_number.ssa_verification` in Identity Verification responses.
+
+### 2020-09-14_1.778.2
+
+- Add `stripe` to the `processor` enum on `/processor/token/create` for the Stripe processor-token integration. The Stripe bank-account-token endpoint remains available.
+
+### 2020-09-14_1.778.1
+
+- Correct descriptions that disagreed with API behavior: `/link/token/create` returns `INVALID_PRODUCT` when a product isn't enabled in every listed country; `/transfer/authorization/create` requires a complete `user.address` for `rfp` transfers and limits each word of `wire_details.message_to_beneficiary` to 35 characters; the `NSF` decision rationale also covers insufficient Plaid Ledger or prefunded balances; `sweep_status` is `null` only for credits funded from a prefunded balance, and transfers cancelled, failed, or returned before sweeping stay `unswept`; on refund and `funds_available` events, `transfer_amount` is the event amount rather than the original transfer amount; `/identity/match` doesn't fail on invalid phone numbers; Signal no longer returns an Addendum error for `user` and `device` fields; and the `total_investment_transactions` array name.
+- Link `/user/products/terminate` to the subscription fee billing docs for when billing ends.
+- Add the missing descriptions for `name`, `official_name`, `mask`, and `verification_name` on the account objects returned by Identity, Identity Match, and Investments endpoints.
+- Correct the `income_insights_version` description: set it to `II2`; a version set in an earlier call is not reused.
+
 # 49.0.0
 - Updating to OAS 2020-09-14_1.778.0
 

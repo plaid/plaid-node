@@ -235,7 +235,7 @@ app.post('/plaid_exchange', (req, res) => {
 
   return plaidClient
     .itemPublicTokenExchange({ public_token })
-    .then((tokenResponse) => tokenResponse.access_token)
+    .then((tokenResponse) => tokenResponse.data.access_token)
     .then((access_token) => plaidClient.accountsGet({ access_token }))
     .then((accountsResponse) => console.log(accountsResponse.data.accounts))
     .catch((error) => {
@@ -480,12 +480,12 @@ Click [here][7]!
 
 [1]: https://plaid.com
 [2]: https://plaid.com/docs
-[3]: https://plaid.com/docs/api/#errors-overview
+[3]: https://plaid.com/docs/errors/
 [4]: https://github.com/plaid/plaid-node/issues/new
 [5]: https://github.com/plaid/plaid-node/blob/master/LICENSE
 [6]: https://plaid.com/docs/link/
 [7]: ./CONTRIBUTING.md
-[9]: https://plaid.com/docs/link/stripe
+[9]: https://plaid.com/docs/auth/partnerships/stripe/
 [10]: https://stripe.com/docs/api#create_bank_account_token
 [11]: https://blog.plaid.com/improving-our-api/
 [13]: https://github.com/plaid/plaid-node-legacy

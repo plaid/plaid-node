@@ -14,7 +14,7 @@ release-major release-minor release-patch:
 
 .PHONY: setup
 setup:
-	npm install
+	npm ci
 
 .PHONY: test
 test:
