@@ -54,6 +54,16 @@ jobs:
           fi
           node -e 'require("fs").accessSync(require("./package.json").main)'
 
+      # The previous SDK has no test suite; the Fern SDK must pass its unit and wire tests (against
+      # its mock server) before anything is published.
+      - name: Unit tests
+        if: hashFiles('pnpm-lock.yaml') != ''
+        run: pnpm test:unit --run
+
+      - name: Wire tests
+        if: hashFiles('pnpm-lock.yaml') != ''
+        run: pnpm test:wire --run
+
       # Without --tag npm marks every publish `latest`, so a release candidate would become the
       # default install.
       - name: Publish
