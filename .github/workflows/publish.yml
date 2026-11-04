@@ -1,0 +1,65 @@
+name: Publish to npm
+
+# Publishes with npm trusted publishing (OIDC): no npm token is stored in this repo. npm accepts the
+# publish only from this workflow file running in the npm-publish environment, which requires an
+# approver and only runs for version tags.
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+permissions: {}
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Trusted publishing needs npm 11.5.1 or newer, which Node 24 bundles.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Check the tag matches package.json
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          if [[ "$GITHUB_REF_NAME" != "$version" ]]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
+          fi
+
+      # The Fern SDK uses pnpm and builds dist/ here; the previous SDK commits dist/ with a
+      # package-lock.json.
+      - name: Install and build
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+        run: |
+          if [[ -f pnpm-lock.yaml ]]; then
+            corepack enable
+            pnpm install --frozen-lockfile
+            pnpm build
+          else
+            npm ci
+          fi
+          node -e 'require("fs").accessSync(require("./package.json").main)'
+
+      # Without --tag npm marks every publish `latest`, so a release candidate would become the
+      # default install.
+      - name: Publish
+        run: |
+          dist_tag="latest"
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            dist_tag="next"
+          fi
+          npm publish --tag "$dist_tag"
