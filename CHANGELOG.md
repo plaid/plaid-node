@@ -1,5 +1,52 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 51.0.0
+- Version 51 introduces a new SDK, with the previous SDK available through the `plaid/legacy` entry point. See the [migration guide](MIGRATION.md) for upgrade instructions.
+- Updating to OAS 2020-09-14_1.799.0
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.799.0
+
+- [Breaking for Go] Mark `institution_data`, `account_filters` and the `depository`, `credit`, `loan` and `investment` filters in the `/link/token/get` `metadata` nullable. API responses don't change: they're still left out when the Link token was created without them.
+
+### 2020-09-14_1.798.0
+
+- (pre-release) `/business_verification/create` accepts optional `business.tin` and `business.officers`. `/business_verification/create` and `/business_verification/get` return them in `search_terms`, and add `business_verification.tin` with a `summary` and `tin_type`, `business_verification.officers`, and `business_verification.registered_agent`. `tin_type` is `null` when no TIN was checked.
+
+### 2020-09-14_1.797.0
+
+- (pre-release) `/business_verification/create` and `/business_verification/get`: rename `kyb_check` to `business_verification` and its schema `BusinessKYBCheck` to `BusinessVerificationCheck`. `digital_presence_check.website_analysis.website_build_status` can now be `null` when the build status could not be determined. In `/business_verification/create`, `business`, `business.name`, and `business.address` are now required, matching the existing validation.
+
+### 2020-09-14_1.796.1
+
+- Make `/user/transfer/limits/get`, its request and response schemas, and the optional `user_id` field on `/transfer/authorization/create` visible in documentation.
+
+### 2020-09-14_1.796.0
+
+- [Breaking for Go] Mark `primary` and `detailed` in `CreditCategory` nullable to match API behavior. This applies everywhere `credit_category` is returned: `/asset_report/get`, `/cra/check_report/base_report/get`, `/cashflow_report/transactions/get` and `/cra/report/get`. API responses don't change: Base Report transactions already return `null` when the category is empty, and `/cra/report/get` when it's missing.
+
+### 2020-09-14_1.795.1
+
+- Add `has_perpetual_otp` to the custom Sandbox user configuration, for testing Items at institutions that require multi-factor authentication at every login.
+- Correct the description of `apy` in the custom Sandbox user configuration: when it's omitted, savings, money market, CD, cash management, and HSA accounts report a generated APY.
+
+### 2020-09-14_1.795.0
+
+- [Breaking for Go] Mark `item_logins` in the institution `status` object required to match API behavior: `/institutions/get` and `/institutions/get_by_id` always return it when `include_status` is true, as `null` when there isn't enough data. The Go `NewInstitutionStatus` constructor now takes `itemLogins`.
+
+### 2020-09-14_1.794.0
+
+- [Breaking for Go] Mark `origination_account_id` in `BankTransfer` nullable to match API behavior: `/bank_transfer/create`, `/bank_transfer/get` and `/bank_transfer/list` return `null` for transfers without an origination account. The `/processor/bank_transfer/create` response uses the same object.
+- [Breaking for Go] Mark `description` in `BankTransferFailure` nullable. API responses don't change: it's still returned as a string, `""` when a failure has a return code but no description.
+
+### 2020-09-14_1.793.1
+
+- In the custom Sandbox user configuration, `inflow_model.statement_day_of_month` also accepts a quoted number such as `"15"`, as sent by configs built with client libraries generated before 1.776.0, which typed the field as a string.
+
+### 2020-09-14_1.793.0
+
+- Remove the unreleased, hidden `investments` field from the account schema for `/cra/check_report/base_report/get` while its schema is finalized. The field was never returned by the API.
+
 # 50.0.0
 - Updating to OAS 2020-09-14_1.792.1
 

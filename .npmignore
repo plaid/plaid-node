@@ -1,8 +1,0 @@
-/test/
-/.gitignore
-/.jscsrc
-/.jshintrc
-/Makefile
-/PUBLISHING.md
-/circle.yml
-/tsconfig.json

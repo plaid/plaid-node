@@ -1,7 +1,0 @@
-.gitignore
-.npmignore
-README.md
-git_push.sh
-package.json
-package-lock.json
-tsconfig.json
