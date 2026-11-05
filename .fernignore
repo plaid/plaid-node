@@ -12,3 +12,4 @@ CONTRIBUTING.md
 LICENSE
 .npmrc
 .github/
+.circleci/config.yml
