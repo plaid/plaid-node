@@ -1,8 +1,9 @@
 name: Publish to npm
 
-# Publishes with npm trusted publishing (OIDC): no npm token is stored in this repo. npm accepts the
-# publish only from this workflow file running in the npm-publish environment, which requires an
-# approver and only runs for version tags.
+# Publishes with npm trusted publishing (OIDC): no npm token is stored in this repo. The build job
+# installs, builds, tests, and packs without any publish rights. The publish job, which alone can
+# request an OIDC token, waits for approval in the npm-publish environment and publishes exactly
+# the tarball the build job verified.
 on:
   push:
     tags:
@@ -15,18 +16,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
-    environment: npm-publish
     permissions:
       contents: read
-      id-token: write
+    outputs:
+      version: ${{ steps.pack.outputs.version }}
+      tarball: ${{ steps.pack.outputs.tarball }}
+      sha256: ${{ steps.pack.outputs.sha256 }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      # Trusted publishing needs npm 11.5.1 or newer, which Node 24 bundles.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
@@ -39,8 +41,8 @@ jobs:
             exit 1
           fi
 
-      # The Fern SDK uses pnpm and builds dist/ here; the previous SDK commits dist/ with a
-      # package-lock.json.
+      # The Fern SDK uses pnpm and builds dist/ here. The previous SDK commits dist/ with a
+      # package-lock.json, so rebuild it and fail if the committed dist/ differs from its source.
       - name: Install and build
         env:
           COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
@@ -51,8 +53,13 @@ jobs:
             pnpm build
           else
             npm ci
+            npm run build
+            if [[ -n "$(git status --porcelain -- dist)" ]]; then
+              git status --short -- dist
+              echo "Committed dist/ does not match a fresh build of the source" >&2
+              exit 1
+            fi
           fi
-          node -e 'require("fs").accessSync(require("./package.json").main)'
 
       # The previous SDK has no test suite; the Fern SDK must pass its unit and wire tests (against
       # its mock server) before anything is published.
@@ -64,12 +71,78 @@ jobs:
         if: hashFiles('pnpm-lock.yaml') != ''
         run: pnpm test:wire --run
 
-      # Without --tag npm marks every publish `latest`, so a release candidate would become the
-      # default install.
-      - name: Publish
+      - name: Pack
+        id: pack
         run: |
-          dist_tag="latest"
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
-            dist_tag="next"
+          mkdir -p "$RUNNER_TEMP/pack"
+          tarball="$(npm pack --pack-destination "$RUNNER_TEMP/pack" --json | node -p 'JSON.parse(require("fs").readFileSync(0))[0].filename')"
+          main="$(node -p 'require("./package.json").main.replace(/^\.\//, "")')"
+          if ! tar -tzf "$RUNNER_TEMP/pack/$tarball" | grep -qx "package/$main"; then
+            echo "$tarball is missing the package entry point $main" >&2
+            exit 1
           fi
-          npm publish --tag "$dist_tag"
+          {
+            echo "version=$GITHUB_REF_NAME"
+            echo "tarball=$tarball"
+            echo "sha256=$(sha256sum "$RUNNER_TEMP/pack/$tarball" | cut -d' ' -f1)"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/pack/${{ steps.pack.outputs.tarball }}
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      id-token: write
+    steps:
+      # Trusted publishing needs npm 11.5.1 or newer, which Node 24 bundles.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: npm-package
+          path: pack
+
+      - name: Verify the tarball is the one the build job tested
+        env:
+          TARBALL: ${{ needs.build.outputs.tarball }}
+          SHA256: ${{ needs.build.outputs.sha256 }}
+        run: echo "$SHA256  pack/$TARBALL" | sha256sum --check
+
+      # npm marks every publish `latest` unless told otherwise. Only a stable version newer than
+      # the current `latest` takes it: prereleases go to `next`, and an older stable version, such
+      # as a backport, goes to `latest-<major>`.
+      - name: Choose the dist-tag
+        id: dist_tag
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          if [[ "$VERSION" == *-* ]]; then
+            echo "tag=next" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          current="$(npm view plaid dist-tags.latest --registry=https://registry.npmjs.org/)"
+          newer="$(node -e '
+            const [a, b] = process.argv.slice(1).map((v) => v.split(".").map(Number));
+            const diff = a.map((n, i) => n - b[i]).find((d) => d !== 0) ?? 0;
+            console.log(diff > 0);
+          ' "$VERSION" "$current")"
+          if [[ "$newer" == "true" ]]; then
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=latest-${VERSION%%.*}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish
+        env:
+          TARBALL: ${{ needs.build.outputs.tarball }}
+          DIST_TAG: ${{ steps.dist_tag.outputs.tag }}
+        run: npm publish "pack/$TARBALL" --tag "$DIST_TAG" --ignore-scripts
