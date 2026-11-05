@@ -76,11 +76,29 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/pack"
           tarball="$(npm pack --pack-destination "$RUNNER_TEMP/pack" --json | node -p 'JSON.parse(require("fs").readFileSync(0))[0].filename')"
-          main="$(node -p 'require("./package.json").main.replace(/^\.\//, "")')"
-          if ! tar -tzf "$RUNNER_TEMP/pack/$tarball" | grep -qx "package/$main"; then
-            echo "$tarball is missing the package entry point $main" >&2
-            exit 1
-          fi
+          # Every file package.json points at (main, types, each exports and typesVersions target,
+          # such as plaid/legacy) must be in the tarball, or that import fails for users.
+          tar -tzf "$RUNNER_TEMP/pack/$tarball" > "$RUNNER_TEMP/pack/contents.txt"
+          node -e '
+            const fs = require("fs");
+            const pkg = require("./package.json");
+            const packed = new Set(fs.readFileSync(process.argv[1], "utf8").split("\n"));
+            const targets = new Set();
+            const collect = (value) => {
+              if (typeof value === "string") targets.add(value);
+              else if (value && typeof value === "object") Object.values(value).forEach(collect);
+            };
+            [pkg.main, pkg.module, pkg.types, pkg.typings, pkg.exports, pkg.typesVersions].forEach(collect);
+            const missing = [...targets]
+              .filter((t) => !t.includes("*"))
+              .map((t) => t.replace(/^\.\//, ""))
+              .filter((t) => !packed.has(`package/${t}`));
+            if (targets.size === 0 || missing.length > 0) {
+              console.error(targets.size === 0 ? "package.json has no entry points" : `Missing from the tarball:\n  ${missing.join("\n  ")}`);
+              process.exit(1);
+            }
+            console.log(`All ${targets.size} entry points are in the tarball`);
+          ' "$RUNNER_TEMP/pack/contents.txt"
           {
             echo "version=$GITHUB_REF_NAME"
             echo "tarball=$tarball"
