@@ -60,7 +60,7 @@ To use the previous SDK with version 51, update your import path:
 + import { Configuration, PlaidApi, PlaidEnvironments } from "plaid/legacy";
 ```
 
-Every exported name is unchanged, so the rest of your code does not need to change. To update all imports in your project on macOS or Linux, run the following command from the root of your project:
+Exported names are unchanged apart from schema changes listed in the [changelog](CHANGELOG.md), such as the Business Verification renames, so the rest of your code does not need to change. To update all imports in your project on macOS or Linux, run the following command from the root of your project:
 
 ```bash
 # Preview what would change
@@ -76,6 +76,8 @@ tests.
 
 > [!NOTE]
 > Import from `plaid/legacy` rather than from individual files. Deep imports such as `plaid/dist/api` no longer resolve and fail with `ERR_PACKAGE_PATH_NOT_EXPORTED`. If TypeScript reports that it cannot find `plaid/legacy`, set `moduleResolution` to `node16`, `nodenext`, or `bundler` in your `tsconfig.json`.
+>
+> Jest before version 28 and webpack 4 do not read the package's `exports` map. For Jest 27, add `"moduleNameMapper": { "^plaid/legacy$": "<rootDir>/node_modules/plaid/dist/legacy/index.js" }`. For webpack 4, set `resolve.mainFields` to `["main"]` and alias `plaid/legacy$` to `plaid/dist/legacy/index.js`.
 
 ## Create a client with the new SDK
 
@@ -118,6 +120,14 @@ The new SDK reads `PLAID_CLIENT_ID`, `PLAID_SECRET`, and `PLAID_VERSION` from th
 
 > [!WARNING]
 > Always set an environment explicitly. As in version 50, a client created without one sends requests to Production.
+
+`PlaidEnvironment` has two members, `Sandbox` and `Production`. If you previously selected an environment with `PlaidEnvironments[process.env.PLAID_ENV]`, map the string yourself:
+
+```typescript
+const environment =
+    process.env.PLAID_ENV === "production" ? PlaidEnvironment.Production : PlaidEnvironment.Sandbox;
+const client = new PlaidClient({ environment });
+```
 
 ### Retries
 
@@ -225,7 +235,9 @@ Method names move from a flat verb-first form to a product-grouped form. Some co
 | `transactionsSync`                | `transactions.sync`                 |
 | `transactionsGet`                 | `transactions.get`                  |
 
-If you cannot find the new name for a method, search the `reference.md` file at the root of the SDK repository for the endpoint path.
+Some products are grouped one level deeper, such as `client.transfer.authorization.create` for `/transfer/authorization/create` and `client.transfer.event.sync` for `/transfer/event/sync`. Their request and response types are nested the same way, for example `Plaid.transfer.TransferAuthorizationCreateRequest`.
+
+To find a method, use your editor's autocomplete on the product, for example `client.paymentInitiation.`. The `reference.md` file at the root of the SDK repository lists every method grouped by product, with the same description as the API reference.
 
 ### Types
 
@@ -273,6 +285,8 @@ const buf = await pdf.arrayBuffer();
 fs.writeFileSync("asset_report.pdf", Buffer.from(buf));
 ```
 
+Remove any `{ responseType: "arraybuffer" }` option from these calls; the new SDK does not use it. To send the file as Base64, use `Buffer.from(await pdf.arrayBuffer()).toString("base64")`.
+
 `.stream()`, `.blob()`, and `.bytes()` are also available. You can only consume the body once; check `pdf.bodyUsed` if you need to know whether it has been read.
 
 > [!NOTE]
@@ -281,6 +295,8 @@ fs.writeFileSync("asset_report.pdf", Buffer.from(buf));
 ## Update pagination logic
 
 In the new SDK, many paginated list endpoints return a page that is async iterable, so you no longer need to write your own pagination loop.
+
+This includes `/transactions/get` and `/investments/transactions/get`. Their calls return a page rather than the response body, so code that read `response.transactions` should iterate the page or read `page.response.transactions`. A page has no `.withRawResponse()`; use `page.rawResponse` instead.
 
 **Previous SDK**
 
@@ -406,8 +422,7 @@ The new SDK provides the following error types, all of which extend `PlaidError`
 - `Plaid.UnauthorizedError` (401)
 - `Plaid.TooManyRequestsError` (429)
 - `Plaid.InternalServerError` (500)
-- `Plaid.ClientRequestError` (any other 4xx status)
-- `Plaid.ServerError` (any other 5xx status)
+Errors with any other status code, such as 403, 404 or 503, are thrown as `PlaidError` itself.
 
 Each error includes `statusCode`, `body`, and `rawResponse`. If you set `timeoutInSeconds` on the client or a request, a request that exceeds it throws `PlaidTimeoutError`, which also extends `PlaidError`. Like the previous SDK, the new SDK sets no timeout by default.
 
@@ -417,7 +432,8 @@ To handle all Plaid errors the same way regardless of status code, match on `Pla
 
 ```typescript
 if (err instanceof PlaidError) {
-    console.log(err.statusCode, err.body?.error_type, err.body?.error_code);
+    const body = err.body as Plaid.PlaidError | undefined;
+    console.log(err.statusCode, body?.error_type, body?.error_code);
 }
 ```
 
