@@ -1,42 +1,968 @@
 {
-  "name": "plaid",
-  "version": "50.0.0",
-  "description": "A node.js client for the Plaid API",
-  "keywords": [
-    "plaid",
-    "plaid.com"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:plaid/plaid-node.git"
-  },
-  "engines": {
-    "node": ">=10.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/plaid/plaid-node/issues"
-  },
-  "main": "dist/index.js",
-  "license": "MIT",
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "axios": "^1.7.4"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.com"
-  },
-  "scripts": {
-    "build": "tsc --outDir dist/"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.2.14",
-    "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.14",
-    "chai": "^4.2.0",
-    "expect.js": "0.3.x",
-    "jshint": "^2.13.6",
-    "mocha": "^10.2.0",
-    "ts-node": "^9.1.1",
-    "typescript": "4.1.3"
-  }
+    "name": "plaid",
+    "version": "51.0.0",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/plaid/plaid-node.git"
+    },
+    "bugs": {
+        "url": "https://github.com/plaid/plaid-node/issues"
+    },
+    "license": "MIT",
+    "type": "commonjs",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/esm/index.d.mts",
+                "default": "./dist/esm/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.js"
+            },
+            "default": "./dist/cjs/index.js"
+        },
+        "./assetReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/assetReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/assetReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/assetReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/assetReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/assetReport/exports.js"
+        },
+        "./monitoringInsights": {
+            "import": {
+                "types": "./dist/esm/api/resources/monitoringInsights/exports.d.mts",
+                "default": "./dist/esm/api/resources/monitoringInsights/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/monitoringInsights/exports.d.ts",
+                "default": "./dist/cjs/api/resources/monitoringInsights/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/monitoringInsights/exports.js"
+        },
+        "./credit": {
+            "import": {
+                "types": "./dist/esm/api/resources/credit/exports.d.mts",
+                "default": "./dist/esm/api/resources/credit/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/credit/exports.d.ts",
+                "default": "./dist/cjs/api/resources/credit/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/credit/exports.js"
+        },
+        "./checkReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/checkReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/checkReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/checkReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/checkReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/checkReport/exports.js"
+        },
+        "./loans": {
+            "import": {
+                "types": "./dist/esm/api/resources/loans/exports.d.mts",
+                "default": "./dist/esm/api/resources/loans/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/loans/exports.d.ts",
+                "default": "./dist/cjs/api/resources/loans/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/loans/exports.js"
+        },
+        "./craReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/craReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/craReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/craReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/craReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/craReport/exports.js"
+        },
+        "./consumerReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/consumerReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/consumerReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/consumerReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/consumerReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/consumerReport/exports.js"
+        },
+        "./oAuth": {
+            "import": {
+                "types": "./dist/esm/api/resources/oAuth/exports.d.mts",
+                "default": "./dist/esm/api/resources/oAuth/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/oAuth/exports.d.ts",
+                "default": "./dist/cjs/api/resources/oAuth/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/oAuth/exports.js"
+        },
+        "./statements": {
+            "import": {
+                "types": "./dist/esm/api/resources/statements/exports.d.mts",
+                "default": "./dist/esm/api/resources/statements/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/statements/exports.d.ts",
+                "default": "./dist/cjs/api/resources/statements/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/statements/exports.js"
+        },
+        "./consent": {
+            "import": {
+                "types": "./dist/esm/api/resources/consent/exports.d.mts",
+                "default": "./dist/esm/api/resources/consent/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/consent/exports.d.ts",
+                "default": "./dist/cjs/api/resources/consent/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/consent/exports.js"
+        },
+        "./item": {
+            "import": {
+                "types": "./dist/esm/api/resources/item/exports.d.mts",
+                "default": "./dist/esm/api/resources/item/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/item/exports.d.ts",
+                "default": "./dist/cjs/api/resources/item/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/item/exports.js"
+        },
+        "./application": {
+            "import": {
+                "types": "./dist/esm/api/resources/application/exports.d.mts",
+                "default": "./dist/esm/api/resources/application/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/application/exports.d.ts",
+                "default": "./dist/cjs/api/resources/application/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/application/exports.js"
+        },
+        "./profile": {
+            "import": {
+                "types": "./dist/esm/api/resources/profile/exports.d.mts",
+                "default": "./dist/esm/api/resources/profile/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/profile/exports.d.ts",
+                "default": "./dist/cjs/api/resources/profile/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/profile/exports.js"
+        },
+        "./network": {
+            "import": {
+                "types": "./dist/esm/api/resources/network/exports.d.mts",
+                "default": "./dist/esm/api/resources/network/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/network/exports.d.ts",
+                "default": "./dist/cjs/api/resources/network/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/network/exports.js"
+        },
+        "./auth": {
+            "import": {
+                "types": "./dist/esm/api/resources/auth/exports.d.mts",
+                "default": "./dist/esm/api/resources/auth/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/auth/exports.d.ts",
+                "default": "./dist/cjs/api/resources/auth/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/auth/exports.js"
+        },
+        "./transactions": {
+            "import": {
+                "types": "./dist/esm/api/resources/transactions/exports.d.mts",
+                "default": "./dist/esm/api/resources/transactions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transactions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transactions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transactions/exports.js"
+        },
+        "./sandbox": {
+            "import": {
+                "types": "./dist/esm/api/resources/sandbox/exports.d.mts",
+                "default": "./dist/esm/api/resources/sandbox/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/sandbox/exports.d.ts",
+                "default": "./dist/cjs/api/resources/sandbox/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/sandbox/exports.js"
+        },
+        "./cashflowReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/cashflowReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/cashflowReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cashflowReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cashflowReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cashflowReport/exports.js"
+        },
+        "./user": {
+            "import": {
+                "types": "./dist/esm/api/resources/user/exports.d.mts",
+                "default": "./dist/esm/api/resources/user/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/user/exports.d.ts",
+                "default": "./dist/cjs/api/resources/user/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/user/exports.js"
+        },
+        "./institutions": {
+            "import": {
+                "types": "./dist/esm/api/resources/institutions/exports.d.mts",
+                "default": "./dist/esm/api/resources/institutions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/institutions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/institutions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/institutions/exports.js"
+        },
+        "./accounts": {
+            "import": {
+                "types": "./dist/esm/api/resources/accounts/exports.d.mts",
+                "default": "./dist/esm/api/resources/accounts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/accounts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/accounts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/accounts/exports.js"
+        },
+        "./categories": {
+            "import": {
+                "types": "./dist/esm/api/resources/categories/exports.d.mts",
+                "default": "./dist/esm/api/resources/categories/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/categories/exports.d.ts",
+                "default": "./dist/cjs/api/resources/categories/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/categories/exports.js"
+        },
+        "./identity": {
+            "import": {
+                "types": "./dist/esm/api/resources/identity/exports.d.mts",
+                "default": "./dist/esm/api/resources/identity/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/identity/exports.d.ts",
+                "default": "./dist/cjs/api/resources/identity/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/identity/exports.js"
+        },
+        "./dashboardUser": {
+            "import": {
+                "types": "./dist/esm/api/resources/dashboardUser/exports.d.mts",
+                "default": "./dist/esm/api/resources/dashboardUser/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/dashboardUser/exports.d.ts",
+                "default": "./dist/cjs/api/resources/dashboardUser/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/dashboardUser/exports.js"
+        },
+        "./watchlistScreeningEntity": {
+            "import": {
+                "types": "./dist/esm/api/resources/watchlistScreeningEntity/exports.d.mts",
+                "default": "./dist/esm/api/resources/watchlistScreeningEntity/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/watchlistScreeningEntity/exports.d.ts",
+                "default": "./dist/cjs/api/resources/watchlistScreeningEntity/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/watchlistScreeningEntity/exports.js"
+        },
+        "./watchlistScreeningIndividual": {
+            "import": {
+                "types": "./dist/esm/api/resources/watchlistScreeningIndividual/exports.d.mts",
+                "default": "./dist/esm/api/resources/watchlistScreeningIndividual/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/watchlistScreeningIndividual/exports.d.ts",
+                "default": "./dist/cjs/api/resources/watchlistScreeningIndividual/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/watchlistScreeningIndividual/exports.js"
+        },
+        "./beaconAccountRisk": {
+            "import": {
+                "types": "./dist/esm/api/resources/beaconAccountRisk/exports.d.mts",
+                "default": "./dist/esm/api/resources/beaconAccountRisk/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beaconAccountRisk/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beaconAccountRisk/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beaconAccountRisk/exports.js"
+        },
+        "./beaconUser": {
+            "import": {
+                "types": "./dist/esm/api/resources/beaconUser/exports.d.mts",
+                "default": "./dist/esm/api/resources/beaconUser/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beaconUser/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beaconUser/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beaconUser/exports.js"
+        },
+        "./beaconReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/beaconReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/beaconReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beaconReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beaconReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beaconReport/exports.js"
+        },
+        "./beaconDuplicate": {
+            "import": {
+                "types": "./dist/esm/api/resources/beaconDuplicate/exports.d.mts",
+                "default": "./dist/esm/api/resources/beaconDuplicate/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beaconDuplicate/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beaconDuplicate/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beaconDuplicate/exports.js"
+        },
+        "./protect": {
+            "import": {
+                "types": "./dist/esm/api/resources/protect/exports.d.mts",
+                "default": "./dist/esm/api/resources/protect/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/protect/exports.d.ts",
+                "default": "./dist/cjs/api/resources/protect/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/protect/exports.js"
+        },
+        "./businessVerification": {
+            "import": {
+                "types": "./dist/esm/api/resources/businessVerification/exports.d.mts",
+                "default": "./dist/esm/api/resources/businessVerification/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/businessVerification/exports.d.ts",
+                "default": "./dist/cjs/api/resources/businessVerification/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/businessVerification/exports.js"
+        },
+        "./processor": {
+            "import": {
+                "types": "./dist/esm/api/resources/processor/exports.d.mts",
+                "default": "./dist/esm/api/resources/processor/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/processor/exports.d.ts",
+                "default": "./dist/cjs/api/resources/processor/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/processor/exports.js"
+        },
+        "./webhookEvents": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhookEvents/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhookEvents/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhookEvents/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhookEvents/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhookEvents/exports.js"
+        },
+        "./webhook": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhook/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhook/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhook/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhook/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhook/exports.js"
+        },
+        "./liabilities": {
+            "import": {
+                "types": "./dist/esm/api/resources/liabilities/exports.d.mts",
+                "default": "./dist/esm/api/resources/liabilities/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/liabilities/exports.d.ts",
+                "default": "./dist/cjs/api/resources/liabilities/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/liabilities/exports.js"
+        },
+        "./paymentInitiation": {
+            "import": {
+                "types": "./dist/esm/api/resources/paymentInitiation/exports.d.mts",
+                "default": "./dist/esm/api/resources/paymentInitiation/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/paymentInitiation/exports.d.ts",
+                "default": "./dist/cjs/api/resources/paymentInitiation/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/paymentInitiation/exports.js"
+        },
+        "./investments": {
+            "import": {
+                "types": "./dist/esm/api/resources/investments/exports.d.mts",
+                "default": "./dist/esm/api/resources/investments/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/investments/exports.d.ts",
+                "default": "./dist/cjs/api/resources/investments/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/investments/exports.js"
+        },
+        "./link": {
+            "import": {
+                "types": "./dist/esm/api/resources/link/exports.d.mts",
+                "default": "./dist/esm/api/resources/link/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/link/exports.d.ts",
+                "default": "./dist/cjs/api/resources/link/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/link/exports.js"
+        },
+        "./session": {
+            "import": {
+                "types": "./dist/esm/api/resources/session/exports.d.mts",
+                "default": "./dist/esm/api/resources/session/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/session/exports.d.ts",
+                "default": "./dist/cjs/api/resources/session/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/session/exports.js"
+        },
+        "./transfer": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/exports.js"
+        },
+        "./bankTransfer": {
+            "import": {
+                "types": "./dist/esm/api/resources/bankTransfer/exports.d.mts",
+                "default": "./dist/esm/api/resources/bankTransfer/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/bankTransfer/exports.d.ts",
+                "default": "./dist/cjs/api/resources/bankTransfer/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/bankTransfer/exports.js"
+        },
+        "./employers": {
+            "import": {
+                "types": "./dist/esm/api/resources/employers/exports.d.mts",
+                "default": "./dist/esm/api/resources/employers/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/employers/exports.d.ts",
+                "default": "./dist/cjs/api/resources/employers/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/employers/exports.js"
+        },
+        "./incomeVerification": {
+            "import": {
+                "types": "./dist/esm/api/resources/incomeVerification/exports.d.mts",
+                "default": "./dist/esm/api/resources/incomeVerification/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/incomeVerification/exports.d.ts",
+                "default": "./dist/cjs/api/resources/incomeVerification/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/incomeVerification/exports.js"
+        },
+        "./employmentVerification": {
+            "import": {
+                "types": "./dist/esm/api/resources/employmentVerification/exports.d.mts",
+                "default": "./dist/esm/api/resources/employmentVerification/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/employmentVerification/exports.d.ts",
+                "default": "./dist/cjs/api/resources/employmentVerification/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/employmentVerification/exports.js"
+        },
+        "./signal": {
+            "import": {
+                "types": "./dist/esm/api/resources/signal/exports.d.mts",
+                "default": "./dist/esm/api/resources/signal/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/signal/exports.d.ts",
+                "default": "./dist/cjs/api/resources/signal/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/signal/exports.js"
+        },
+        "./wallet": {
+            "import": {
+                "types": "./dist/esm/api/resources/wallet/exports.d.mts",
+                "default": "./dist/esm/api/resources/wallet/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/wallet/exports.d.ts",
+                "default": "./dist/cjs/api/resources/wallet/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/wallet/exports.js"
+        },
+        "./ewaReport": {
+            "import": {
+                "types": "./dist/esm/api/resources/ewaReport/exports.d.mts",
+                "default": "./dist/esm/api/resources/ewaReport/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ewaReport/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ewaReport/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ewaReport/exports.js"
+        },
+        "./cashAdvance": {
+            "import": {
+                "types": "./dist/esm/api/resources/cashAdvance/exports.d.mts",
+                "default": "./dist/esm/api/resources/cashAdvance/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cashAdvance/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cashAdvance/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cashAdvance/exports.js"
+        },
+        "./issues": {
+            "import": {
+                "types": "./dist/esm/api/resources/issues/exports.d.mts",
+                "default": "./dist/esm/api/resources/issues/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/issues/exports.d.ts",
+                "default": "./dist/cjs/api/resources/issues/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/issues/exports.js"
+        },
+        "./paymentProfile": {
+            "import": {
+                "types": "./dist/esm/api/resources/paymentProfile/exports.d.mts",
+                "default": "./dist/esm/api/resources/paymentProfile/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/paymentProfile/exports.d.ts",
+                "default": "./dist/cjs/api/resources/paymentProfile/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/paymentProfile/exports.js"
+        },
+        "./partner": {
+            "import": {
+                "types": "./dist/esm/api/resources/partner/exports.d.mts",
+                "default": "./dist/esm/api/resources/partner/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/partner/exports.d.ts",
+                "default": "./dist/cjs/api/resources/partner/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/partner/exports.js"
+        },
+        "./fdx": {
+            "import": {
+                "types": "./dist/esm/api/resources/fdx/exports.d.mts",
+                "default": "./dist/esm/api/resources/fdx/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/fdx/exports.d.ts",
+                "default": "./dist/cjs/api/resources/fdx/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/fdx/exports.js"
+        },
+        "./bankTransfer/event": {
+            "import": {
+                "types": "./dist/esm/api/resources/bankTransfer/resources/event/exports.d.mts",
+                "default": "./dist/esm/api/resources/bankTransfer/resources/event/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/bankTransfer/resources/event/exports.d.ts",
+                "default": "./dist/cjs/api/resources/bankTransfer/resources/event/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/bankTransfer/resources/event/exports.js"
+        },
+        "./bankTransfer/sweep": {
+            "import": {
+                "types": "./dist/esm/api/resources/bankTransfer/resources/sweep/exports.d.mts",
+                "default": "./dist/esm/api/resources/bankTransfer/resources/sweep/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/bankTransfer/resources/sweep/exports.d.ts",
+                "default": "./dist/cjs/api/resources/bankTransfer/resources/sweep/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/bankTransfer/resources/sweep/exports.js"
+        },
+        "./bankTransfer/balance": {
+            "import": {
+                "types": "./dist/esm/api/resources/bankTransfer/resources/balance/exports.d.mts",
+                "default": "./dist/esm/api/resources/bankTransfer/resources/balance/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/bankTransfer/resources/balance/exports.d.ts",
+                "default": "./dist/cjs/api/resources/bankTransfer/resources/balance/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/bankTransfer/resources/balance/exports.js"
+        },
+        "./beaconReport/syndication": {
+            "import": {
+                "types": "./dist/esm/api/resources/beaconReport/resources/syndication/exports.d.mts",
+                "default": "./dist/esm/api/resources/beaconReport/resources/syndication/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beaconReport/resources/syndication/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beaconReport/resources/syndication/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beaconReport/resources/syndication/exports.js"
+        },
+        "./credit/profile": {
+            "import": {
+                "types": "./dist/esm/api/resources/credit/resources/profile/exports.d.mts",
+                "default": "./dist/esm/api/resources/credit/resources/profile/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/credit/resources/profile/exports.d.ts",
+                "default": "./dist/cjs/api/resources/credit/resources/profile/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/credit/resources/profile/exports.js"
+        },
+        "./identity/verification": {
+            "import": {
+                "types": "./dist/esm/api/resources/identity/resources/verification/exports.d.mts",
+                "default": "./dist/esm/api/resources/identity/resources/verification/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/identity/resources/verification/exports.d.ts",
+                "default": "./dist/cjs/api/resources/identity/resources/verification/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/identity/resources/verification/exports.js"
+        },
+        "./partner/insights": {
+            "import": {
+                "types": "./dist/esm/api/resources/partner/resources/insights/exports.d.mts",
+                "default": "./dist/esm/api/resources/partner/resources/insights/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/partner/resources/insights/exports.d.ts",
+                "default": "./dist/cjs/api/resources/partner/resources/insights/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/partner/resources/insights/exports.js"
+        },
+        "./processor/signal": {
+            "import": {
+                "types": "./dist/esm/api/resources/processor/resources/signal/exports.d.mts",
+                "default": "./dist/esm/api/resources/processor/resources/signal/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/processor/resources/signal/exports.d.ts",
+                "default": "./dist/cjs/api/resources/processor/resources/signal/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/processor/resources/signal/exports.js"
+        },
+        "./servicing": {
+            "import": {
+                "types": "./dist/esm/api/resources/servicing/exports.d.mts",
+                "default": "./dist/esm/api/resources/servicing/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/servicing/exports.d.ts",
+                "default": "./dist/cjs/api/resources/servicing/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/servicing/exports.js"
+        },
+        "./servicing/subscription": {
+            "import": {
+                "types": "./dist/esm/api/resources/servicing/resources/subscription/exports.d.mts",
+                "default": "./dist/esm/api/resources/servicing/resources/subscription/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/servicing/resources/subscription/exports.d.ts",
+                "default": "./dist/cjs/api/resources/servicing/resources/subscription/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/servicing/resources/subscription/exports.js"
+        },
+        "./transfer/recurring": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/recurring/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/recurring/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/recurring/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/recurring/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/recurring/exports.js"
+        },
+        "./transfer/authorization": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/authorization/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/authorization/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/authorization/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/authorization/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/authorization/exports.js"
+        },
+        "./transfer/balance": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/balance/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/balance/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/balance/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/balance/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/balance/exports.js"
+        },
+        "./transfer/capabilities": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/capabilities/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/capabilities/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/capabilities/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/capabilities/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/capabilities/exports.js"
+        },
+        "./transfer/configuration": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/configuration/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/configuration/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/configuration/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/configuration/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/configuration/exports.js"
+        },
+        "./transfer/ledger": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/ledger/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/ledger/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/ledger/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/ledger/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/ledger/exports.js"
+        },
+        "./transfer/originator": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/originator/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/originator/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/originator/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/originator/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/originator/exports.js"
+        },
+        "./transfer/metrics": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/metrics/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/metrics/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/metrics/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/metrics/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/metrics/exports.js"
+        },
+        "./transfer/event": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/event/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/event/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/event/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/event/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/event/exports.js"
+        },
+        "./transfer/sweep": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/sweep/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/sweep/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/sweep/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/sweep/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/sweep/exports.js"
+        },
+        "./transfer/intent": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/intent/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/intent/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/intent/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/intent/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/intent/exports.js"
+        },
+        "./transfer/repayment": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/repayment/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/repayment/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/repayment/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/repayment/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/repayment/exports.js"
+        },
+        "./transfer/platform": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/platform/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/platform/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/platform/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/platform/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/platform/exports.js"
+        },
+        "./transfer/questionnaire": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/questionnaire/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/questionnaire/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/questionnaire/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/questionnaire/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/questionnaire/exports.js"
+        },
+        "./transfer/diligence": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/diligence/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/diligence/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/diligence/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/diligence/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/diligence/exports.js"
+        },
+        "./transfer/refund": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfer/resources/refund/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfer/resources/refund/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfer/resources/refund/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfer/resources/refund/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfer/resources/refund/exports.js"
+        },
+        "./user/account": {
+            "import": {
+                "types": "./dist/esm/api/resources/user/resources/account/exports.d.mts",
+                "default": "./dist/esm/api/resources/user/resources/account/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/user/resources/account/exports.d.ts",
+                "default": "./dist/cjs/api/resources/user/resources/account/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/user/resources/account/exports.js"
+        },
+        "./package.json": "./package.json",
+        "./legacy": {
+            "types": "./dist/legacy/index.d.ts",
+            "default": "./dist/legacy/index.js"
+        }
+    },
+    "files": [
+        "dist",
+        "reference.md",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "format:check": "biome format --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint": "biome lint --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint:fix": "biome lint --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check": "biome check --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check:fix": "biome check --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "build": "pnpm build:cjs && pnpm build:esm",
+        "build:cjs": "tsc --project ./tsconfig.cjs.json",
+        "build:esm": "tsc --project ./tsconfig.esm.json && node scripts/rename-to-esm-files.js dist/esm",
+        "test": "vitest",
+        "test:unit": "vitest --project unit",
+        "test:wire": "vitest --project wire",
+        "build:legacy": "tsc --project ./legacy/tsconfig.json && node -e \"require('fs').writeFileSync('dist/legacy/package.json', '{}\\n')\"",
+        "postbuild": "pnpm build:legacy"
+    },
+    "dependencies": {
+        "axios": "^1.7.4"
+    },
+    "devDependencies": {
+        "webpack": "^5.105.4",
+        "ts-loader": "^9.5.4",
+        "vitest": "^4.1.1",
+        "msw": "2.11.2",
+        "@types/node": "^20.0.0",
+        "typescript": "~5.9.3",
+        "@biomejs/biome": "2.4.10"
+    },
+    "browser": {
+        "fs": false,
+        "os": false,
+        "path": false,
+        "stream": false,
+        "crypto": false
+    },
+    "packageManager": "pnpm@10.33.0",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "sideEffects": false,
+    "typesVersions": {
+        "*": {
+            "legacy": [
+                "./dist/legacy/index.d.ts"
+            ]
+        }
+    }
 }

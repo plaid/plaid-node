@@ -1,0 +1,15 @@
+# Specify files that shouldn't be modified by Fern
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes
+legacy/
+
+# Maintained by Plaid in the internal SDK mirror, as in plaid-go.
+README.md
+CHANGELOG.md
+MIGRATION.md
+CONTRIBUTING.md
+LICENSE
+.npmrc
+.github/
+.circleci/config.yml

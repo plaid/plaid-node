@@ -2,13 +2,32 @@ version: 2.1
 
 jobs:
   build:
-    machine:
-      image: ubuntu-2204:edge
+    docker:
+      # cimg/node:18.20.8; build and load the SDK on its minimum supported Node version.
+      - image: cimg/node@sha256:b4cda63ce8c33c7a4795cd4253f2bc907703381d9bbf4ae78de7e75ca743560f
     steps:
-      - checkout
       - run:
-          name: Build Docker image for running node tests
-          command: docker build -t plaid-node .
+          name: Check out the public SDK at the exact commit
+          command: |
+            [[ "$CIRCLE_SHA1" =~ ^[0-9a-f]{40}$ ]]
+            git init .
+            git remote add origin https://github.com/plaid/plaid-node.git
+            GIT_TERMINAL_PROMPT=0 git -c credential.helper= fetch --no-tags --depth=1 origin "$CIRCLE_SHA1"
+            git checkout --detach FETCH_HEAD
+            test "$(git rev-parse HEAD)" = "$CIRCLE_SHA1"
       - run:
-          name: Run node tests in Docker
-          command: docker run --rm -e CLIENT_ID=$CLIENT_ID -e SECRET=$SECRET plaid-node
+          name: Install dependencies
+          command: npx --yes pnpm@10.33.0 install --frozen-lockfile
+      - run:
+          name: Build both SDK entry points
+          command: npx --yes pnpm@10.33.0 build
+      - run:
+          name: Load plaid and plaid/legacy
+          command: |
+            node -e 'const { PlaidClient } = require("./dist/cjs/index.js"); if (typeof PlaidClient !== "function") process.exit(1)'
+            node -e 'const { PlaidApi } = require("./dist/legacy/index.js"); if (typeof PlaidApi !== "function") process.exit(1)'
+
+workflows:
+  build:
+    jobs:
+      - build

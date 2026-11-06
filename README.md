@@ -1,10 +1,8 @@
 # plaid-node [![npm version](https://badge.fury.io/js/plaid.svg)](http://badge.fury.io/js/plaid)
 
-> **Help shape Plaid’s next-generation SDKs**
->
-> We’re modernizing Plaid’s SDKs and looking for developers to try early releases and share feedback. [Register your interest](https://docs.google.com/forms/d/e/1FAIpQLScuhIBKCGcxrDQXLZA0nyTdJEW83J-VEr8E08KMKkT0EjmxBQ/viewform) and we’ll follow up when an early release is available for your language. No migration is required today.
-
 The official Node.js client library for the [Plaid API][1].
+
+Version 51 introduces a new SDK with endpoints grouped by product, responses returned as the response body, typed errors, and iterators for many paginated endpoints. The previous SDK remains available through the `plaid/legacy` entry point, so you can migrate one endpoint at a time. See the [Node SDK Migration Guide](MIGRATION.md) for upgrade instructions.
 
 ## Table of Contents
 
@@ -39,10 +37,12 @@ All users are strongly recommended to use a recent version of the library, as ol
 
 ## Getting started
 
+The examples in this README use the bundled previous SDK. Import it from `plaid/legacy`. For the new SDK, see the [migration guide](MIGRATION.md).
+
 Most endpoints require a valid `client_id` and `secret` as authentication. Attach them via the configuration.
 
 ```typescript
-import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
+import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid/legacy';
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments.sandbox,
@@ -205,7 +205,7 @@ For example:
 ```typescript
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
+import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid/legacy';
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments.sandbox,
@@ -441,7 +441,7 @@ products: ['auth', 'transactions'],
 
 // or
 
-const { Products } = require("plaid");
+const { Products } = require("plaid/legacy");
 
 products: [Products.Auth, Products.Transactions],
 ```

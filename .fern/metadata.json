@@ -1,0 +1,42 @@
+{
+    "cliVersion": "5.134.0",
+    "generatorName": "fernapi/fern-typescript-node-sdk",
+    "generatorVersion": "3.104.5",
+    "generatorConfig": {
+        "enableInlineTypes": true,
+        "inlineFileProperties": true,
+        "inlinePathParameters": true,
+        "namespaceExport": "Plaid",
+        "noSerdeLayer": true,
+        "guardProcessEnvAccess": true,
+        "useLegacyExports": false,
+        "maxRetries": 0,
+        "defaultTimeout": "infinity",
+        "packageJson": {
+            "dependencies": {
+                "axios": "^1.7.4"
+            },
+            "scripts": {
+                "build:legacy": "tsc --project ./legacy/tsconfig.json && node -e \"require('fs').writeFileSync('dist/legacy/package.json', '{}\\n')\"",
+                "postbuild": "pnpm build:legacy"
+            },
+            "exports": {
+                "./legacy": {
+                    "types": "./dist/legacy/index.d.ts",
+                    "default": "./dist/legacy/index.js"
+                }
+            },
+            "typesVersions": {
+                "*": {
+                    "legacy": ["./dist/legacy/index.d.ts"]
+                }
+            }
+        }
+    },
+    "originGitCommit": "6ae3668333220d8c0a5e9cc94bdd562f1d29efac",
+    "originGitCommitIsDirty": true,
+    "invokedBy": "ci",
+    "requestedVersion": "51.0.0",
+    "ciProvider": "github",
+    "sdkVersion": "51.0.0"
+}
