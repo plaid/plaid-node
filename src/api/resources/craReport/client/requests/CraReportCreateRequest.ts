@@ -8,8 +8,7 @@ import type * as Plaid from "../../../../index.js";
  *         user_id: "user_id",
  *         products: [{
  *                 product: "cra_base_report",
- *                 version: "version",
- *                 product: "cra_base_report"
+ *                 version: "version"
  *             }],
  *         scope: "PLAID_NETWORK",
  *         decision_stage: "PREQUALIFICATION",

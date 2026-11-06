@@ -8,8 +8,7 @@ import type * as Plaid from "../../../../index.js";
  *         user_id: "user_id",
  *         products: [{
  *                 product: "cra_qualify",
- *                 version: "version",
- *                 product: "cra_qualify"
+ *                 version: "version"
  *             }],
  *         decision_stage: "PREQUALIFICATION",
  *         consumer_report_permissible_purpose: "ACCOUNT_REVIEW_CREDIT"

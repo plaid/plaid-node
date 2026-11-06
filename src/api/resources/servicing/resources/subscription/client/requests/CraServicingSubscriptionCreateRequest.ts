@@ -9,8 +9,7 @@ import type * as Plaid from "../../../../../../index.js";
  *         scope: "PLAID_NETWORK",
  *         products: [{
  *                 product: "cra_qualify",
- *                 version: "version",
- *                 product: "cra_qualify"
+ *                 version: "version"
  *             }]
  *     }
  */

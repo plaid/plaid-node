@@ -35,7 +35,7 @@ export declare namespace PassthroughRequest {
         headers?: Record<string, unknown>;
         /** Default maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
-        /** Default number of times to retry the request. Defaults to 2. */
+        /** Default number of times to retry the request. Defaults to 0. */
         maxRetries?: number;
         /** A custom fetch function. */
         fetch?: typeof fetch;

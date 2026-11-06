@@ -3342,8 +3342,7 @@ await client.craReport.create({
     user_id: "user_id",
     products: [{
             product: "cra_base_report",
-            version: "version",
-            product: "cra_base_report"
+            version: "version"
         }],
     scope: "PLAID_NETWORK",
     decision_stage: "PREQUALIFICATION",
@@ -3415,8 +3414,7 @@ await client.craReport.get({
     user_id: "user_id",
     products: [{
             product: "cra_qualify",
-            version: "version",
-            product: "cra_qualify"
+            version: "version"
         }],
     decision_stage: "PREQUALIFICATION",
     consumer_report_permissible_purpose: "ACCOUNT_REVIEW_CREDIT"
@@ -21231,8 +21229,7 @@ await client.servicing.subscription.create({
     scope: "PLAID_NETWORK",
     products: [{
             product: "cra_qualify",
-            version: "version",
-            product: "cra_qualify"
+            version: "version"
         }]
 });
 

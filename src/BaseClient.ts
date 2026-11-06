@@ -23,7 +23,7 @@ export type BaseClientOptions = {
     headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     /** The default maximum time to wait for a response in seconds. */
     timeoutInSeconds?: number;
-    /** The default number of times to retry the request. Defaults to 2. */
+    /** The default number of times to retry the request. Defaults to 0. */
     maxRetries?: number;
     /** Provide a custom fetch implementation. Useful for platforms that don't have a built-in fetch or need a custom implementation. */
     fetch?: typeof fetch;
@@ -38,7 +38,7 @@ export type BaseClientOptions = {
 export interface BaseRequestOptions {
     /** The maximum time to wait for a response in seconds. */
     timeoutInSeconds?: number;
-    /** The number of times to retry the request. Defaults to 2. */
+    /** The number of times to retry the request. Defaults to 0. */
     maxRetries?: number;
     /** A hook to abort the request. */
     abortSignal?: AbortSignal;
