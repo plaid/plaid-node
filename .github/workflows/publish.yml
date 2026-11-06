@@ -163,4 +163,4 @@ jobs:
         env:
           TARBALL: ${{ needs.build.outputs.tarball }}
           DIST_TAG: ${{ steps.dist_tag.outputs.tag }}
-        run: npm publish "pack/$TARBALL" --tag "$DIST_TAG" --ignore-scripts
+        run: npm publish "./pack/$TARBALL" --tag "$DIST_TAG" --ignore-scripts
