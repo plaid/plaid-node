@@ -6,7 +6,7 @@ Learn how to migrate to version 51 of the Plaid Node SDK, or continue using the 
 
 Version 51 of `plaid` introduces a new SDK. Plaid can release updates to the new SDK more frequently, so new API features will be available in the SDK sooner after they launch.
 
-The new SDK also requires less code for common tasks. Responses come back as the response body rather than wrapped in an HTTP response, you can iterate over paginated results without writing your own loop, and errors are typed so you can match them without inspecting `error.response.data`.
+Version 51 also includes the previous SDK as a `legacy` entry point, and each version 51 release updates it with the same API changes as the new SDK. Plaid has not set a date to remove the `legacy` entry point, so you can migrate at your own pace.
 
 ### Summary of updates
 
@@ -22,18 +22,7 @@ The new SDK also requires less code for common tasks. Responses come back as the
 
 ## Migration walkthrough
 
-Version 51 also includes the previous SDK as a separate `legacy` entry point in the same package. This allows you to upgrade to version 51 without changing any calls, then migrate to the new SDK one endpoint at a time.
-
-The overall process for migrating is:
-
-1. [Install version 51](#install-version-51).
-2. [Switch your imports to the legacy entry point](#switch-your-imports-to-the-legacy-entry-point).
-3. [Create a client with the new SDK](#create-a-client-with-the-new-sdk).
-4. [Migrate calls one endpoint at a time](#migrate-calls-one-endpoint-at-a-time).
-5. [Update pagination logic](#update-pagination-logic).
-6. [Update error handling](#update-error-handling).
-7. [Test your integration](#test-your-integration).
-8. [Remove the legacy import](#remove-the-legacy-import).
+You can upgrade to version 51 without changing any calls, then migrate to the new SDK one endpoint at a time.
 
 ## Install version 51
 
@@ -71,8 +60,7 @@ grep -rn --include=\*.ts --include=\*.tsx --include=\*.js --include=\*.mjs \
 Review that list, then rewrite the matches with your editor's find-and-replace, changing
 `plaid` to `plaid/legacy` in `import`/`require` statements only. A blind
 search-and-replace will also hit the string `"plaid"` in comments, package names, and
-log messages, so check the diff before committing. After updating, run your project's
-tests.
+log messages, so check the diff before committing.
 
 > [!NOTE]
 > Import from `plaid/legacy` rather than from individual files. Deep imports such as `plaid/dist/api` no longer resolve and fail with `ERR_PACKAGE_PATH_NOT_EXPORTED`. If TypeScript reports that it cannot find `plaid/legacy`, set `moduleResolution` to `node16`, `nodenext`, or `bundler` in your `tsconfig.json`.
@@ -142,7 +130,7 @@ Before enabling retries for operations that move money, such as `/transfer/creat
 
 ## Migrate calls one endpoint at a time
 
-Replace each call to the previous SDK with the equivalent call to the new SDK. The following table summarizes the differences. TypeScript will flag most of these; for changes that it will not flag, see [Test your integration](#test-your-integration).
+Replace each call to the previous SDK with the equivalent call to the new SDK. The following table summarizes the differences. TypeScript flags most of these. It does not flag a client created [without an environment](#create-a-client-with-the-new-sdk) or a [deep import](#switch-your-imports-to-the-legacy-entry-point) such as `plaid/dist/api`.
 
 | Change             | Previous SDK                                      | New SDK                                                             |
 | ------------------ | ------------------------------------------------- | ------------------------------------------------------------------- |
@@ -341,7 +329,6 @@ The following endpoints do not provide an iterator, so continue to use your exis
 
 - `/transactions/sync` and `/processor/transactions/sync`, which return three arrays (`added`, `modified`, and `removed`) rather than a single list
 - `/transfer/event/sync` and `/bank_transfer/event/sync`, which paginate by event ID (`after_id`)
-- `/cashflow_report/get` and `/cashflow_report/transactions/get`
 - `/beta/webhook_events/list`
 
 To determine whether an endpoint provides an iterator, check its return type. Endpoints that return `Promise<core.Page<...>>` provide one.
@@ -439,14 +426,6 @@ if (err instanceof PlaidError) {
 
 > [!WARNING]
 > The previous SDK's error object carries the full Axios config, including your `PLAID-SECRET` header, which is why its README warns against logging the whole error. The new SDK's errors expose only `statusCode`, `body`, and `rawResponse`, so logging the error no longer risks leaking credentials.
-
-## Test your integration
-
-After migrating each endpoint, run your project's tests. Some changes do not cause type errors, so confirm the following:
-
-- Every client is created with an explicit environment. A client created without one sends requests to Production.
-- Every import of the previous SDK uses `plaid/legacy`, not a file path such as `plaid/dist/api`.
-- Any code that read `response.status` or `response.headers` now uses [`withRawResponse()`](#status-codes-and-headers).
 
 ## Remove the legacy import
 
