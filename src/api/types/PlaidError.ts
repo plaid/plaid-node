@@ -10,7 +10,7 @@ export interface PlaidError {
     /** The particular error code. Safe for programmatic use. */
     error_code: string;
     /**
-     * The specific reason for the error code. Currently, reasons are only supported for OAuth-based item errors; the field is omitted otherwise. Safe for programmatic use.
+     * The specific reason for the error code. Currently, reasons are only supported for OAuth-based item errors and expired Sandbox Items; the field is omitted otherwise. Safe for programmatic use.
      *
      * Possible values:
      *
@@ -19,6 +19,8 @@ export interface PlaidError {
      * `OAUTH_CONSENT_EXPIRED`: The user's access consent for this OAuth connection to this institution has expired.
      *
      * `OAUTH_USER_REVOKED`: The user's OAuth connection to this institution is invalid because the user revoked their connection.
+     *
+     * `SANDBOX_ITEM_EXPIRED`: The Sandbox Item reached the end of its 30-day lifetime. Sandbox only.
      */
     error_code_reason?: (string | null) | undefined;
     /** A developer-friendly representation of the error code. This may change over time and is not safe for programmatic use. */

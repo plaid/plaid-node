@@ -8,7 +8,7 @@ import type * as Plaid from "../index.js";
 export interface HoldingTaxLot {
     /** The financial institution's identifier for this lot. Null if the institution does not provide a lot identifier. */
     institution_lot_id: string | null;
-    /** The date and time this lot was acquired, in ISO 8601 format. Null if the institution does not provide acquisition datetime data. */
+    /** The date and time this lot was acquired, in ISO 8601 format. Null if the institution does not provide acquisition datetime data. When the institution only provides a date, the time defaults to `T00:00:00Z`; this does not mean the lot was acquired at midnight UTC. */
     original_purchase_datetime: string | null;
     /** The number of units of the security in this lot. */
     quantity: number | null;

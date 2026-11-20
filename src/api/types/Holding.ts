@@ -11,7 +11,7 @@ export interface Holding {
     /** The Plaid `security_id` associated with the holding. Security data is not specific to a user's account; any user who held the same security at the same financial institution at the same time would have identical security data. The `security_id` for the same security will typically be the same across different institutions, but this is not guaranteed. The `security_id` does not typically change, but may change if inherent details of the security change due to a corporate action, for example, in the event of a ticker symbol change or CUSIP change. */
     security_id: string;
     /** The last price given by the institution for this security. */
-    institution_price: number;
+    institution_price: number | null;
     /** The date at which `institution_price` was current. */
     institution_price_as_of?: (string | null) | undefined;
     /**
@@ -21,11 +21,11 @@ export interface Holding {
      */
     institution_price_datetime?: (string | null) | undefined;
     /** The value of the holding, as reported by the institution. */
-    institution_value: number;
+    institution_value: number | null;
     /** The total cost basis of the holding (e.g., the total amount spent to acquire all assets currently in the holding). */
     cost_basis: number | null;
     /** The total quantity of the asset held, as reported by the financial institution. If the security is an option, `quantity` will reflect the total number of options (typically the number of contracts multiplied by 100), not the number of contracts. */
-    quantity: number;
+    quantity: number | null;
     /** The ISO-4217 currency code of the holding. Always `null` if `unofficial_currency_code` is non-`null`. */
     iso_currency_code: string | null;
     /**
@@ -38,8 +38,8 @@ export interface Holding {
     vested_quantity?: (number | null) | undefined;
     /** The value of the vested holdings as reported by the institution. */
     vested_value?: (number | null) | undefined;
-    /** Per-lot acquisition data for this holding. An empty array indicates the institution does not provide lot-level data. */
-    tax_lots?: Plaid.HoldingTaxLot[] | undefined;
+    /** Per-lot acquisition data for this holding. An empty array indicates that lot-level data is unavailable for this response. */
+    tax_lots: Plaid.HoldingTaxLot[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

@@ -5,4 +5,4 @@ import type * as Plaid from "../index.js";
 /**
  * An object containing a Bacs account number and sort code. If an IBAN is not provided or if this recipient needs to accept domestic GBP-denominated payments, Bacs data is required.
  */
-export interface SenderBacsNullable extends Plaid.RecipientBacs {}
+export interface SenderBacsNullable extends Plaid.RecipientBacsInResponse {}

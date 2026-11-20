@@ -73,8 +73,8 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
         {
             "X-Fern-Language": "JavaScript",
             "X-Fern-SDK-Name": "plaid",
-            "X-Fern-SDK-Version": "51.0.0",
-            "User-Agent": "plaid/51.0.0",
+            "X-Fern-SDK-Version": "52.0.0",
+            "User-Agent": "plaid/52.0.0",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
             "PLAID-CLIENT-ID":

@@ -10,7 +10,7 @@ export interface CraReportGetHomeLendingResponseProduct {
     metadata: Plaid.CraReportGetHomeLendingMetadata | null;
     attributes: Plaid.CraReportGetHomeLendingAttributes | null;
     /** The Items, and their accounts, used to generate this product. Always empty when `scope` is `PLAID_NETWORK`, or if this product failed to generate. */
-    items: Plaid.CraReportGetEnrichedItem[];
+    items: Plaid.CraReportGetHomeLendingItem[];
     /** Product-level errors. Non-empty when this product failed to generate; empty on success. */
     errors: (Plaid.PlaidError | null)[];
     /** Accepts any additional properties */

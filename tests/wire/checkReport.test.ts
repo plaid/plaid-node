@@ -51,6 +51,14 @@ describe("CheckReportClient", () => {
                                         ],
                                     },
                                 ],
+                                consumer_disputes: [
+                                    {
+                                        consumer_dispute_id: "consumer_dispute_id",
+                                        dispute_field_create_date: "2023-01-15",
+                                        category: "TRANSACTION",
+                                        statement: "statement",
+                                    },
+                                ],
                             },
                         ],
                         bank_income_accounts: [
@@ -77,6 +85,14 @@ describe("CheckReportClient", () => {
                                                 },
                                             },
                                         ],
+                                    },
+                                ],
+                                consumer_disputes: [
+                                    {
+                                        consumer_dispute_id: "consumer_dispute_id",
+                                        dispute_field_create_date: "2023-01-15",
+                                        category: "TRANSACTION",
+                                        statement: "statement",
                                     },
                                 ],
                             },
@@ -1176,6 +1192,7 @@ describe("CheckReportClient", () => {
                                         ],
                                     },
                                 ],
+                                holder_category: "personal",
                                 ownership_type: null,
                                 account_insights: {
                                     average_inflow_amount: [

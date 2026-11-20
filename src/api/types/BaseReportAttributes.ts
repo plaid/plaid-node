@@ -11,13 +11,13 @@ export interface BaseReportAttributes {
     /** Value ranging from 0-1. The higher the score, the more confident we are of the account being the primary account. */
     primary_account_score?: (number | null) | undefined;
     /** The number of net NSF fee transactions for a given account within the report time range (not counting any fees that were reversed within the time range). */
-    nsf_overdraft_transactions_count?: number | undefined;
+    nsf_overdraft_transactions_count?: (number | null) | undefined;
     /** The number of net NSF fee transactions within the last 30 days for a given account (not counting any fees that were reversed within the time range). */
-    nsf_overdraft_transactions_count_30d?: number | undefined;
+    nsf_overdraft_transactions_count_30d?: (number | null) | undefined;
     /** The number of net NSF fee transactions within the last 60 days for a given account (not counting any fees that were reversed within the time range). */
-    nsf_overdraft_transactions_count_60d?: number | undefined;
+    nsf_overdraft_transactions_count_60d?: (number | null) | undefined;
     /** The number of net NSF fee transactions within the last 90 days for a given account (not counting any fees that were reversed within the time range). */
-    nsf_overdraft_transactions_count_90d?: number | undefined;
+    nsf_overdraft_transactions_count_90d?: (number | null) | undefined;
     total_inflow_amount?: (Plaid.TotalInflowAmount | null) | undefined;
     total_inflow_amount_30d?: (Plaid.TotalInflowAmount30D | null) | undefined;
     total_inflow_amount_60d?: (Plaid.TotalInflowAmount60D | null) | undefined;

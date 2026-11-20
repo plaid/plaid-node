@@ -7,13 +7,13 @@ import type * as Plaid from "../index.js";
  */
 export interface BaseReportUserAttributes {
     /** The number of net NSF fee transactions in the time range for the report (not counting any fees that were reversed within that time range). */
-    nsf_overdraft_transactions_count?: number | undefined;
+    nsf_overdraft_transactions_count?: (number | null) | undefined;
     /** The number of net NSF fee transactions in the last 30 days in the report (not counting any fees that were reversed within that time range). */
-    nsf_overdraft_transactions_count_30d?: number | undefined;
+    nsf_overdraft_transactions_count_30d?: (number | null) | undefined;
     /** The number of net NSF fee transactions in the last 60 days in the report (not counting any fees that were reversed within that time range). */
-    nsf_overdraft_transactions_count_60d?: number | undefined;
+    nsf_overdraft_transactions_count_60d?: (number | null) | undefined;
     /** The number of net NSF fee transactions in the last 90 days in the report (not counting any fees that were reversed within that time range). */
-    nsf_overdraft_transactions_count_90d?: number | undefined;
+    nsf_overdraft_transactions_count_90d?: (number | null) | undefined;
     total_inflow_amount?: (Plaid.TotalReportInflowAmount | null) | undefined;
     total_inflow_amount_30d?: (Plaid.TotalReportInflowAmount30D | null) | undefined;
     total_inflow_amount_60d?: (Plaid.TotalReportInflowAmount60D | null) | undefined;

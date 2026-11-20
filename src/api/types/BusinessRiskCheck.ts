@@ -9,7 +9,6 @@ export interface BusinessRiskCheck {
     status: Plaid.BusinessVerificationStatusRiskCheck;
     /** A score from 0 to 100 indicating the risk assessment for the business. `null` if no risk score is available for this verification. Industry classification may still be available when the risk score is `null`. A completed check can have `status: failed` and a `null` score when the risk assessment could not be completed; this does not represent a score of zero or a high-risk assessment. Read `status` separately to determine the check outcome; `null` does not mean the check is still running. */
     score: number | null;
-    industry_prediction: Plaid.BusinessIndustryPredictionNullable | null;
     /** Accepts any additional properties */
     [key: string]: any;
 }

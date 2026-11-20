@@ -31,7 +31,9 @@ export interface ExpenditureSummary {
      * The categories are sorted in descending order by the total value spent.
      * See the [category taxonomy](https://plaid.com/documents/credit-category-taxonomy.csv) for a full listing of category IDs.
      */
-    top_categories?: (Plaid.CategoryExpenses | null)[] | undefined;
+    top_categories: (Plaid.CategoryExpenses | null)[];
+    /** The monthly summaries of transactions in this expenditure group. */
+    monthly_summaries: (Plaid.MonthlySummary | null)[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

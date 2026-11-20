@@ -6,8 +6,8 @@
 export interface NumbersEft {
     /** The Plaid account ID associated with the account numbers */
     account_id: string;
-    /** The EFT account number for the account */
-    account: string;
+    /** The EFT account number for the account. May be `null` for some non-depository accounts, but is never `null` for depository accounts. */
+    account: string | null;
     /** The EFT institution number for the account */
     institution: string;
     /** The EFT branch number for the account */

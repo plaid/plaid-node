@@ -12,14 +12,16 @@ export interface AssetReportInvestmentHolding {
     security_id: string;
     /** The holding's trading symbol for publicly traded holdings, and otherwise a short identifier if available. */
     ticker_symbol: string | null;
+    /** The name of the security. */
+    name: string | null;
     /** The last price given by the institution for this security. */
-    institution_price: number;
+    institution_price: number | null;
     /** The date at which `institution_price` was current. */
     institution_price_as_of?: (string | null) | undefined;
     /** The value of the holding, as reported by the institution. */
-    institution_value: number;
+    institution_value: number | null;
     /** The total quantity of the asset held, as reported by the financial institution. If the security is an option, `quantity` will reflect the total number of options (typically the number of contracts multiplied by 100), not the number of contracts. */
-    quantity: number;
+    quantity: number | null;
     /** The total quantity of vested assets held, as reported by the financial institution. Vested assets are only associated with [equities](https://plaid.com/docs/api/products/investments/#investments-holdings-get-response-securities-type). */
     vested_quantity?: (number | null) | undefined;
     /** The value of the vested holdings as reported by the institution. */

@@ -13,7 +13,7 @@ export interface PaymentInitiationMetadata {
     maximum_payment_amount?: Plaid.PaymentInitiationMaximumPaymentAmount | undefined;
     /** Indicates whether the institution supports returning refund details when initiating a payment. */
     supports_refund_details: boolean;
-    standing_order_metadata: Plaid.PaymentInitiationStandingOrderMetadata | null;
+    standing_order_metadata?: (Plaid.PaymentInitiationStandingOrderMetadata | null) | undefined;
     /** Indicates whether the institution supports payment consents. */
     supports_payment_consents: boolean;
     /** Indicates whether the institution supports commercial variable recurring payment (cVRP) consents. */

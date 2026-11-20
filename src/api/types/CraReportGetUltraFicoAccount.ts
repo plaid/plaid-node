@@ -3,9 +3,9 @@
 import type * as Plaid from "../index.js";
 
 /**
- * An account used to generate a `/cra/report/get` product.
+ * A checking, savings, or money market account used to generate `cra_ultrafico`, with its owners, identity match scores, and primary account prediction.
  */
-export interface CraReportGetBaseAccount {
+export interface CraReportGetUltraFicoAccount {
     /**
      * Plaid's unique identifier for the account. This value will not change unless Plaid can't reconcile the account with the data returned by the financial institution. If this happens a new `account_id` will be assigned to the account.
      *
@@ -20,6 +20,10 @@ export interface CraReportGetBaseAccount {
     mask: string | null;
     type: Plaid.AccountType;
     subtype: Plaid.AccountSubtype | null;
+    primary_account: Plaid.CraReportGetAccountPrimaryAccount | null;
+    identity_match: Plaid.CraReportGetAccountIdentityMatch | null;
+    /** Data returned by the financial institution about the account owner or owners. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array. Empty if no owners are found. */
+    owners: Plaid.Owner[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

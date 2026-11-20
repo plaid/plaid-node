@@ -3,6 +3,8 @@
 /**
  * The type of document.
  *
+ * `DOCUMENT_TYPE_UNKNOWN`: Document type could not be determined.
+ *
  * `DOCUMENT_TYPE_PAYSTUB`: A paystub.
  *
  * `DOCUMENT_TYPE_BANK_STATEMENT`: A bank statement.
@@ -30,6 +32,7 @@
  * `UNKNOWN`: Document type could not be determined.
  */
 export const DocType = {
+    DocumentTypeUnknown: "DOCUMENT_TYPE_UNKNOWN",
     Unknown: "UNKNOWN",
     DocumentTypePaystub: "DOCUMENT_TYPE_PAYSTUB",
     DocumentTypeBankStatement: "DOCUMENT_TYPE_BANK_STATEMENT",

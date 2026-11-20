@@ -32,9 +32,11 @@ export interface BaseReportAccount {
     transactions: Plaid.BaseReportTransaction[];
     /** Data returned by the financial institution about the account owner or owners. For business accounts, the name reported may be either the name of the individual or the name of the business, depending on the institution. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array. This array can also be empty if no owners are found. */
     owners: Plaid.Owner[];
-    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is omitted when the extracted category is unavailable. */
-    holder_category?: (BaseReportAccount.HolderCategory | null) | undefined;
+    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is null when the extracted category is unavailable. */
+    holder_category: BaseReportAccount.HolderCategory | null;
     ownership_type: Plaid.OwnershipType | null;
+    /** This field contains investment data only for investment accounts when `include_investments` in `/cra/check_report/create` or `cra_options.include_investments` in `/link/token/create` is set to `true`. This field may be omitted if recent investment data was unavailable at report generation. The account remains in the report when this field is omitted. */
+    investments?: (Plaid.BaseReportInvestments | null) | undefined;
     /** Calculated data about the historical balances on the account. Currently not supported by `brokerage` or `investment` accounts. */
     historical_balances?: Plaid.BaseReportHistoricalBalance[] | undefined;
     account_insights?: Plaid.BaseReportAccountInsights | undefined;
@@ -44,7 +46,7 @@ export interface BaseReportAccount {
 }
 
 export namespace BaseReportAccount {
-    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is omitted when the extracted category is unavailable. */
+    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is null when the extracted category is unavailable. */
     export const HolderCategory = {
         Business: "business",
         Personal: "personal",

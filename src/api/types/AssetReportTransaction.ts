@@ -39,16 +39,16 @@ export interface AssetReportTransaction {
     date: string;
     /** The date on which the transaction took place, in ISO 8601 format. */
     date_transacted?: (string | null) | undefined;
-    location?: Plaid.Location | undefined;
+    location?: (Plaid.Location | null) | undefined;
     /**
      * The merchant name or transaction description. This is a legacy field that is no longer maintained. For merchant name, use the `merchant_name` field. For description, use the `original_description` field.
      *
      * This field will only appear in an Asset Report with Insights.
      */
-    name?: string | undefined;
+    name?: (string | null) | undefined;
     /** The merchant name, as enriched by Plaid. This is typically a more human-readable version of the merchant counterparty in the transaction. For some bank transactions (such as checks or account transfers) where there is no meaningful merchant name, this value will be `null`. */
     merchant_name?: (string | null) | undefined;
-    payment_meta?: Plaid.PaymentMeta | undefined;
+    payment_meta?: (Plaid.PaymentMeta | null) | undefined;
     /** When `true`, identifies the transaction as pending or unsettled. Pending transaction details (name, type, amount, category ID) may change before they are settled. */
     pending: boolean;
     /** The ID of a posted transaction's associated pending transaction, where applicable. */
@@ -57,7 +57,7 @@ export interface AssetReportTransaction {
     account_owner?: (string | null) | undefined;
     /** The unique ID of the transaction. Like all Plaid identifiers, the `transaction_id` is case sensitive. */
     transaction_id: string;
-    transaction_type?: Plaid.AssetReportTransactionType | undefined;
+    transaction_type?: (Plaid.AssetReportTransactionType | null) | undefined;
     /** A unique identifier for an income source. */
     income_source_id?: string | undefined;
     /** Accepts any additional properties */

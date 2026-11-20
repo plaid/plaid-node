@@ -25,7 +25,7 @@
  *
  * `client_return_recovered`: The client reported recovering the loss on a returned transfer, and Plaid debited the recovered amount from the client's ledger. The `event_amount` is the recovered amount.
  *
- * `plaid_return_recovered`: Plaid recovered the loss on a returned transfer by successfully reinitiating it. The `event_amount` is the recovered amount. Client should stop their return recovery effort.
+ * `plaid_return_recovered`: Plaid recovered the loss on a returned transfer by successfully reinitiating it. The `event_amount` is the original transfer amount. Plaid credits the client's ledger with the total of the recoveries the client had reported. Client should stop their return recovery effort.
  *
  * `swept`: The transfer was swept to / from the sweep account.
  *

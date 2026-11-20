@@ -11,7 +11,7 @@ export interface ExpenditureInsights {
     total_expenditure?: (Plaid.ExpenditureSummary | null) | undefined;
     essential_expenditure?: (Plaid.ExpenditureSummary | null) | undefined;
     non_essential_expenditure?: (Plaid.ExpenditureSummary | null) | undefined;
-    other?: (Plaid.ExpenditureSummary | null) | undefined;
+    other_expenditure?: (Plaid.ExpenditureSummary | null) | undefined;
     transfers_out?: (Plaid.ExpenditureSummary | null) | undefined;
     outlier_transactions?: (Plaid.OutlierTransactionsInsights | null) | undefined;
     /** Accepts any additional properties */

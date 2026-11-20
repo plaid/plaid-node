@@ -9,6 +9,8 @@
  *
  * `loan:` Loan account
  *
+ * `payroll:` Payroll account
+ *
  * `other:` Non-specified account type
  *
  * See the [Account type schema](https://plaid.com/docs/api/accounts#account-type-schema) for a full listing of account types and corresponding subtypes.
@@ -19,6 +21,7 @@ export const AccountType = {
     Depository: "depository",
     Loan: "loan",
     Brokerage: "brokerage",
+    Payroll: "payroll",
     Other: "other",
 } as const;
 export type AccountType = (typeof AccountType)[keyof typeof AccountType];

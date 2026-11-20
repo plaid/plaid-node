@@ -1119,7 +1119,7 @@ describe("ItemClient", () => {
                 error: null,
                 available_products: ["balance", "identity", "payment_initiation", "transactions"],
                 billed_products: ["assets", "auth"],
-                products: ["assets"],
+                products: ["assets", "auth"],
                 consented_products: ["assets"],
                 consent_expiration_time: null,
                 update_type: "background",

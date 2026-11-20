@@ -36,6 +36,20 @@ export interface CraReportGetBaseReportAccount {
     account_insights?: (Plaid.CraReportGetBaseReportAccountInsights | null) | undefined;
     attributes: Plaid.CraReportGetBaseReportAccountAttributes | null;
     identity_match?: (Plaid.CraReportGetBaseReportAccountIdentityMatch | null) | undefined;
+    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is null when the extracted category is unavailable. */
+    holder_category: CraReportGetBaseReportAccount.HolderCategory | null;
+    /** This field contains investment data only for investment accounts when `include_investments` in `/cra/report/create` or `cra_report_parameter.include_investments` in `/link/token/create` is set to `true`. This field may be omitted if recent investment data was unavailable at report generation. The account remains in the report when this field is omitted. */
+    investments?: (Plaid.BaseReportInvestments | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace CraReportGetBaseReportAccount {
+    /** This field contains the account holder category extracted from the financial institution. The value is `personal`, `business`, or `unrecognized`. The field is null when the extracted category is unavailable. */
+    export const HolderCategory = {
+        Business: "business",
+        Personal: "personal",
+        Unrecognized: "unrecognized",
+    } as const;
+    export type HolderCategory = (typeof HolderCategory)[keyof typeof HolderCategory];
 }

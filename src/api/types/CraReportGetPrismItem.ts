@@ -3,11 +3,9 @@
 import type * as Plaid from "../index.js";
 
 /**
- * An Item used to generate a `/cra/report/get` product, with each account's owners, identity match scores, and primary account prediction.
+ * An Item used to generate `cra_prism`.
  */
-export interface CraReportGetEnrichedItem {
-    /** The accounts on the Item used to generate the product. */
-    accounts: Plaid.CraReportGetEnrichedAccount[];
+export interface CraReportGetPrismItem {
     /** The ID of the financial institution associated with the Item. */
     institution_id: string;
     /** The full financial institution name associated with the Item. */
@@ -15,6 +13,8 @@ export interface CraReportGetEnrichedItem {
     item_id: Plaid.ItemId;
     /** The time when this Item's data was last retrieved from the financial institution prior to report generation. */
     last_updated_time: string;
+    /** The accounts on the Item used to generate the product. */
+    accounts: Plaid.CraReportGetPrismAccount[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

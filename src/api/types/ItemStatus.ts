@@ -8,7 +8,7 @@ import type * as Plaid from "../index.js";
 export interface ItemStatus {
     investments?: (Plaid.ItemStatusInvestments | null) | undefined;
     transactions?: (Plaid.ItemStatusTransactions | null) | undefined;
-    last_webhook?: (Plaid.ItemStatusLastWebhook | null) | undefined;
+    last_webhook: Plaid.ItemStatusLastWebhook | null;
     /** Accepts any additional properties */
     [key: string]: any;
 }

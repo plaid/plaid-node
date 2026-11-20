@@ -6,8 +6,8 @@ import type * as Plaid from "../index.js";
  * Metadata about the Item
  */
 export interface ItemWithConsentFields extends Plaid.Item {
-    /** The date and time when the Item was created, in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format. */
-    created_at?: string | undefined;
+    /** The date and time when the Item was created, in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format. This field is omitted if your Plaid client is not enabled to receive the `consented_use_cases` and `consented_data_scopes` fields on `/item/get`. */
+    created_at?: (string | null) | undefined;
     /**
      * A list of use cases that the user has consented to for the Item via [Data Transparency Messaging](https://plaid.com/docs/link/data-transparency-messaging-migration-guide).
      *

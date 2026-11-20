@@ -18,18 +18,38 @@ export interface InvestmentTransaction {
     date: string;
     /** Timestamp in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format (`YYYY-MM-DDTHH:mm:ssZ`) representing when the order was initiated. This field is returned for select financial institutions and reflects the value provided by the institution. When the institution only provides a date without time-of-day information, this field will reflect the date that the order was initiated with a time component that defaults to `T00:00:00Z`. This does not indicate that the order was initiated at midnight UTC. */
     transaction_datetime?: (string | null) | undefined;
-    /** The institution's description of the transaction. */
-    name: string;
-    /** The number of units of the security involved in this transaction. Positive for buy transactions; negative for sell transactions. */
-    quantity: number;
-    /** The complete value of the transaction. Positive values when cash is debited, e.g. purchases of stock; negative values when cash is credited, e.g. sales of stock. Treatment remains the same for cash-only movements unassociated with securities. For transactions representing a simultaneous cash contribution and purchase of a security, the portion of the transaction representing the purchase takes precedence, and the `amount` is represented as positive. */
-    amount: number;
-    /** The price of the security at which this transaction occurred. */
-    price: number;
+    /** The institution's description of the transaction. `null` if the institution does not provide a description. */
+    name: string | null;
+    /** The number of units of the security involved in this transaction. Positive for buy transactions; negative for sell transactions. `null` if the institution does not provide the quantity. */
+    quantity: number | null;
+    /** The complete value of the transaction. Positive values when cash is debited, e.g. purchases of stock; negative values when cash is credited, e.g. sales of stock. Treatment remains the same for cash-only movements unassociated with securities. For transactions representing a simultaneous cash contribution and purchase of a security, the portion of the transaction representing the purchase takes precedence, and the `amount` is represented as positive. `null` if the institution does not provide the amount. */
+    amount: number | null;
+    /** The price of the security at which this transaction occurred. `null` if the institution does not provide the price. */
+    price: number | null;
     /** The combined value of all fees applied to this transaction */
     fees: number | null;
-    type: Plaid.InvestmentTransactionType;
-    subtype: Plaid.InvestmentTransactionSubtype;
+    /**
+     * Value is one of the following:
+     *
+     * `buy`: Buying an investment
+     *
+     * `sell`: Selling an investment
+     *
+     * `cancel`: A cancellation of a pending transaction
+     *
+     * `cash`: Activity that modifies a cash position
+     *
+     * `fee`: A fee on the account
+     *
+     * `transfer`: Activity which modifies a position, but not through buy/sell activity e.g. options exercise, portfolio transfer
+     *
+     * For descriptions of possible transaction types and subtypes, see the [Investment transaction types schema](https://plaid.com/docs/api/accounts/#investment-transaction-types-schema).
+     *
+     * `null` if the institution does not provide the transaction type.
+     */
+    type: Plaid.InvestmentTransactionType | null;
+    /** For descriptions of possible transaction types and subtypes, see the [Investment transaction types schema](https://plaid.com/docs/api/accounts/#investment-transaction-types-schema). `null` if the institution does not provide the transaction subtype. */
+    subtype: Plaid.InvestmentTransactionSubtype | null;
     /** The ISO-4217 currency code of the transaction. Always `null` if `unofficial_currency_code` is non-`null`. */
     iso_currency_code: string | null;
     /**
