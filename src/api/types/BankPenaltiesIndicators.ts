@@ -18,11 +18,11 @@ export interface BankPenaltiesIndicators {
     unofficial_currency_code?: (string | null) | undefined;
     monthly_average?: (Plaid.MonthlyAverage | null) | undefined;
     /** Detailed categories view of all the transactions that fall into the `BANK_PENALTIES` credit category within the given time window, across all the accounts in the report. */
-    category_details?: (Plaid.CategoryExpenses | null)[] | undefined;
+    category_details: (Plaid.CategoryExpenses | null)[];
     /** The total number of transactions that fall into the `BANK_PENALTIES` credit category, across all the accounts in the report. */
     transactions_count?: (number | null) | undefined;
     /** The monthly summaries of the transactions that fall into the `BANK_PENALTIES` credit category within the given time window, across all the accounts in the report. */
-    monthly_summaries?: (Plaid.MonthlySummary | null)[] | undefined;
+    monthly_summaries: (Plaid.MonthlySummary | null)[];
     /** The number of days since the last transaction that falls into the `BANK_PENALTIES` credit category, across all the accounts in the report. */
     days_since_last_occurrence?: (number | null) | undefined;
     /**

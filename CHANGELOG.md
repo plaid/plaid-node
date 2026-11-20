@@ -1,5 +1,182 @@
 See full changelog for the OpenAPI schema (OAS) [here](https://github.com/plaid/plaid-openapi/blob/master/CHANGELOG.md).
 
+# 52.0.0
+- Updating to OAS 2020-09-14_1.822.2
+
+## OpenAPI Schema Changes
+### 2020-09-14_1.822.2
+
+- Give `network` in `/transfer/ledger/withdraw` its own description: withdrawals accept `ach` or `same-day-ach`, with limits of $10,000,000 per Standard ACH withdrawal and $1,000,000 per Same Day ACH withdrawal, and `same-day-ach` withdrawals submitted after the Same Day ACH cutoff may be downgraded to Standard ACH.
+
+### 2020-09-14_1.822.1
+
+- (pre-release) Align Business Verification response examples with the fictional ACME Widgets Sandbox business, including an initial active verification and completed optional checks.
+
+### 2020-09-14_1.822.0
+
+- [Breaking for Go] Return `[]` instead of `null` for `monthly_summaries`, `top_categories`, `category_details`, `top_providers` and `top_merchants` in Asset Report account insights when there's no data, and mark them required.
+
+### 2020-09-14_1.821.0
+
+- [Breaking for Go] Match the Auth number types to API behavior. API responses don't change.
+  - Mark `is_tokenized_account_number` in `NumbersACH` required: it's always returned.
+  - Mark `ach`, `eft`, `international` and `bacs` in `ProcessorNumber` required: they're always returned, as `null` for number types the account doesn't have.
+  - Mark `iban` and `bic` in `NumbersInternational` nullable: the one we don't have is `null`.
+  - Mark `account` and `routing` in `NumbersACH`, and `account` in `NumbersEFT`, nullable: they can be `null` for some non-depository accounts.
+- [Breaking for Go] Mark `network_status` in `AccountVerificationInsights` optional and nullable, and `previous_returns` nullable, to match API behavior: each is left out when that check wasn't run. API responses don't change.
+
+### 2020-09-14_1.820.0
+
+- [Breaking] Add response-only Bacs types, replacing `RecipientBACS`, `RecipientBACSNullable` and `WalletTransactionCounterparty` in responses: `RecipientBACSInResponse` for `numbers.bacs` in `/wallet/create`, `/wallet/get` and `/wallet/list`; `RecipientBACSNullableInResponse` for `bacs` in `/payment_initiation/recipient/get` and `/payment_initiation/recipient/list`, `refund_details.bacs` in `/payment_initiation/payment/get` and `/payment_initiation/payment/list`, and `payer_details.bacs` in `/payment_initiation/consent/get`; and `WalletTransactionCounterpartyInResponse` for `counterparty` in `/wallet/transaction/get` and `/wallet/transaction/list`. API responses don't change. Requests keep the existing types and validation.
+- [Breaking for Go] In these response types and in `SenderBACSNullable`, remove the `minLength` checks on `account` and `sort_code` and mark both required to match API behavior: they're always returned with `bacs`, as `""` when the account details are incomplete. This fixes client libraries that rejected those responses.
+- [Breaking for Go] Mark `standing_order_metadata` in `PaymentInitiationMetadata` optional to match API behavior: it's left out when the institution has no standing order data.
+
+### 2020-09-14_1.819.0
+
+- [Breaking for Go] Mark `location` in `BaseReportTransaction` nullable, matching `AssetReportTransaction`. Base Report transactions omit `location` when the report doesn't include transaction insights.
+
+### 2020-09-14_1.818.1
+
+- Add UltraFICO (`cra_ultrafico`) to `/cra/report/create`, `/cra/report/get`, and `cra_report_parameter` on `/link/token/create`. UltraFICO requires lender, application, and base FICO score inputs and returns its scores alongside the eligible accounts, owners, identity match scores, and primary account predictions used to generate them. The product is not yet available to clients.
+
+### 2020-09-14_1.817.1
+
+- Mark the `ITEM` `CONSENT_UPDATED` webhook as beta in its description.
+
+### 2020-09-14_1.817.0
+
+- [Breaking for Go] Mark `nsf_overdraft_transactions_count`, `nsf_overdraft_transactions_count_30d`, `nsf_overdraft_transactions_count_60d`, and `nsf_overdraft_transactions_count_90d` nullable in the report and account `attributes` of `/cra/check_report/base_report/get` and the account `attributes` of `/cra/monitoring_insights/get`. They stay optional, and are left out when a report has no NSF counts instead of being returned as `0`.
+
+### 2020-09-14_1.816.0
+
+- [Breaking for Go] Mark `products` in `Item` required to match API behavior: it's always returned, as `[]` when empty.
+- [Breaking for Go] Mark `last_webhook` in `ItemStatus` required to match API behavior: `/item/get` returns it as `null` when no webhook has been sent for the Item.
+- [Breaking for Go] Mark `created_at` in `ItemWithConsentFields` nullable so generated Go clients represent it as optional. It can be left out, and is never `null`.
+- Add `DATABASE_INSIGHTS_API` to `ItemAuthMethod`: `auth_method` is already `DATABASE_INSIGHTS_API` for Items whose Auth data was provided via `/auth/verify`.
+
+### 2020-09-14_1.815.2
+
+- Add `530a` as an investment account subtype, for Trump Accounts (IRC Section 530A).
+
+### 2020-09-14_1.815.1
+
+- Clarify the `income_insights_version` description. Integrations with a default Income Insights version configured should omit it to keep that version and set `II2` only when migrating to Income Insights V2; integrations without a configured default must set `II2`. The version is fixed when Income Insights is generated, so `/cra/check_report/income_insights/get` returns a report generated by `/link/token/create` or `/cra/check_report/create` at the version used in that call.
+
+### 2020-09-14_1.815.0
+
+- [Breaking for Go] Mark `holder_category` on accounts in `/cra/check_report/base_report/get`, `/cra/monitoring_insights/get`, and the `/cra/report/get` Base Report required and nullable. It is always returned, and is `null` when the extracted category is unavailable, instead of being omitted.
+
+### 2020-09-14_1.814.2
+
+- Deprecate `cra_document_upload_results` in the `/link/token/get` session `results` object and remove it from the API reference. The CRA document upload Link flow it reported on was never released, so the field has always been `null`; it remains in the response and in the client libraries for backward compatibility.
+
+### 2020-09-14_1.814.1
+
+- Allow `/identity_verification/create` and `/identity_verification/retry` to be called with a delegated OAuth2 access token carrying the new `identity_verification:write` scope, and `/identity_verification/get` and `/identity_verification/list` with the new `identity_verification:read` scope. Existing `client_id` and `secret` authentication is unchanged.
+
+### 2020-09-14_1.814.0
+
+- Add the `ITEM` `CONSENT_UPDATED` webhook, fired when a user changes their consent duration at their institution and the Item's `consent_expiration_time` changes. The payload carries the new `consent_expiration_time` value, or `null` when the Item no longer expires. Currently fired only for Chase items. `CONSENT_UPDATED` can also be fired from `/sandbox/item/fire_webhook`.
+
+### 2020-09-14_1.813.0
+
+- (pre-release) `/business_verification/create` and `/business_verification/get`: `business_verification.business_details` now also carries the business the data provider matched: its name, alternative names, entity type, incorporation date and state, addresses with deliverability and sources, phone numbers, email addresses, websites, officers, state registrations with their registered agents, and SEC EDGAR registrations. These are `null` or empty when there is no business search result. `business_verification.match_details` is removed; its data is now in `business_details`.
+
+### 2020-09-14_1.812.0
+
+- (pre-release) `/business_verification/create` and `/business_verification/get` add `business_verification.address.validation`, which reports how the data provider validated the submitted address: a validation `level`, the `standardized_address` with `lat` and `lon`, and its `deliverability`. It is `null` when the provider returned no validation result, which is always the case for addresses outside the US.
+
+### 2020-09-14_1.811.0
+
+- Add `acats_dtc_number` to the `numbers` override for `user_custom` Sandbox accounts. On a brokerage account it sets the DTC participant number returned in `numbers.acats[].dtc_numbers` by `/auth/get` and `/investments/auth/get`.
+
+### 2020-09-14_1.810.0
+
+- [Breaking for Go] Mark `verification_insights` in `AccountBase` nullable. API responses don't change: it's still left out for accounts without Database Auth insights.
+- Add `payroll` to `AccountType`. Payroll accounts already return it.
+
+### 2020-09-14_1.809.0
+
+- Add the optional `base_report_version` field, with the new `BaseReportVersion` enum, to `base_report` in `/cra/check_report/create` and `cra_options.base_report` in `/link/token/create`. The field is hidden from public documentation until it is generally available.
+- Add the optional `exclude_transactions` field to the `cra_base_report` product `options` in `/cra/report/create` and `cra_report_parameter.products` in `/link/token/create`. The field is hidden from public documentation until it is generally available.
+- Add the optional `holder_category` field to Base Report accounts in `/cra/report/get`. The field is hidden from public documentation until it is generally available.
+- Add the optional `investments` field to accounts in `/cra/check_report/base_report/get`. The field is hidden from public documentation until it is generally available.
+
+### 2020-09-14_1.808.0
+
+- Add an optional `investments` field to the Base Report accounts returned by `/cra/report/get`, including holdings, securities, and investment transactions. The field is hidden from documentation and is not yet returned by the API.
+
+### 2020-09-14_1.807.1
+
+- Update the limited-purpose checking account link in the `balances.available` and `balances.current` descriptions to point at the renamed documentation section. Description-only change.
+
+### 2020-09-14_1.807.0
+
+- (pre-release) Correct the Home Lending VOA account schema references so generated client libraries use the named balance, metadata, attribute, and ownership types. API responses are unchanged.
+
+### 2020-09-14_1.806.0
+
+- `/business_verification/create` and `/business_verification/get`: industry predictions now include confidence (`low`, `medium`, or `high`) and related MCC and SIC codes, with distinct `BusinessMerchantCategoryCode` and `BusinessStandardIndustrialClassificationCode` types.
+
+### 2020-09-14_1.805.1
+
+- Add Prism (`cra_prism`) to the `products` unions of `/cra/report/create`, `/cra/report/get`, and `cra_report_parameter` on `/link/token/create`. Prism requires an `options` object naming the version of each Prism product to evaluate (`cashscore`, `insights`, `detect`, `extend`); a product whose version is omitted is not evaluated. The product is not yet available to clients.
+
+### 2020-09-14_1.805.0
+
+- Add `consumer_disputes` to the accounts in `items` returned by `/cra/report/get` for `cra_income_insights` and `cra_income_complete`, and to the accounts in `items` returned by `/cra/check_report/income_insights/get`. It lists the consumer's dispute statements for the account's institution inside the report window, as `/cra/check_report/base_report/get` already does, and is `[]` when there are none.
+- [Breaking] Add the `/cra/report/get` Item and account types `CraReportGetIncomeInsightsItem`, `CraReportGetIncomeInsightsAccount`, `CraReportGetIncomeCompleteItem`, `CraReportGetIncomeCompleteAccount`, `CraReportGetLendScoreCompleteItem`, `CraReportGetLendScoreCompleteAccount`, `CraReportGetHomeLendingItem` and `CraReportGetHomeLendingAccount`, replacing `CraReportGetBaseItem`, `CraReportGetBaseAccount`, `CraReportGetEnrichedItem` and `CraReportGetEnrichedAccount`.
+
+### 2020-09-14_1.804.0
+
+- [Breaking] Rename `other` to `other_expenditure` in the Asset Report `ExpenditureInsights` to match API behavior. `other_expenditure` is what the API returns; `other` was never set.
+- [Breaking] Add `monthly_average` to `AmountWithCurrencyWithMonthlyAverage`, use it for `total_income` in `IncomeInsights`, and add `monthly_summaries` to `ExpenditureSummary`, to match API behavior: Asset Reports with account insights already return these fields.
+- [Breaking for Go] Mark `investments` in `AccountAssets`, and `location` and `payment_meta` in `AssetReportTransaction`, nullable so generated Go clients represent them as optional pointers. They're left out when the report has no investment data or no insights, and are never `null`.
+- [Breaking for Go] Mark `holdings`, `securities` and `transactions` in `AssetReportInvestments` required to match API behavior: they're always returned, as `[]` when empty.
+- [Breaking for Go] Mark `institution_price`, `institution_value` and `quantity` in `AssetReportInvestmentHolding`, `amount`, `name`, `price`, `quantity`, `type` and `subtype` in `AssetReportInvestmentTransaction`, and `name` in `AssetReportTransaction` nullable to match API behavior: they're `null` when the institution doesn't provide them.
+- [Breaking for Go] Add `name` to `AssetReportInvestmentHolding`: the security's name, which the API already returns.
+- [Breaking for Go] Mark `transaction_type` in `AssetReportTransaction` nullable to match API behavior: Asset Reports with insights return `null` when a transaction has no type.
+
+### 2020-09-14_1.803.1
+
+- Add `whop` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the Whop integration.
+
+### 2020-09-14_1.803.0
+
+- (pre-release) Add `cra_home_lending_voa` to `cra_report_parameter` on `/link/token/create` and to `/cra/report/create` and `/cra/report/get`, with support for the `VOA` and `EMPLOYMENT_REFRESH` report formats.
+- [Breaking for Go] Mark `institution_price`, `institution_value` and `quantity` in `Holding` nullable to match API behavior: they can be `null`.
+- [Breaking for Go] Mark `tax_lots` in `Holding` required to match API behavior: it's always returned, as `[]` when there are no lots.
+- [Breaking for Go] Mark `name`, `quantity`, `amount`, `price`, `type` and `subtype` in `InvestmentTransaction` nullable to match API behavior: they're `null` when the institution doesn't provide them.
+
+### 2020-09-14_1.802.4
+
+- Document `SANDBOX_ITEM_EXPIRED` as an `error_code_reason`. In Sandbox, an Item past its 30-day lifetime returns `ITEM_LOGIN_REQUIRED` with this reason.
+
+### 2020-09-14_1.802.3
+
+- Add `money market fund` to the possible `subtype` values for investment securities. Plaid now returns most money market funds with subtype `money market fund` instead of `mutual fund` or `other`; their `type` doesn't change.
+
+### 2020-09-14_1.802.2
+
+- Add `GENERAL_PURPOSE` and `AUTO_LOAN` to `LimitedPurposeType`. `account_filters.depository.limited_purpose_types` may be omitted or empty when `limited purpose checking` is in the depository subtypes, which connects only `GENERAL_PURPOSE` limited purpose checking accounts; `GENERAL_PURPOSE` accounts may be connected with any `limited_purpose_types` value.
+
+### 2020-09-14_1.802.1
+
+- Add `affina` to the `processor` enum on `/processor/token/create`, for creating processor tokens for the Affina integration.
+
+### 2020-09-14_1.802.0
+
+- [Breaking] `/business_verification/create` and `/business_verification/get`: a single nullable industry prediction is returned under `business_verification.business_details.industry.classification`. The old `risk_check.industry_prediction` field has been removed. `business_verification.score` can be null when classification is available without a business search result.
+
+### 2020-09-14_1.801.0
+
+- [Breaking] Website analysis and industry classification are now opt-in for new Business Verifications. Set `options.include_website_analysis` and `options.include_industry_classification` to `true` in `/business_verification/create` to enable them; omitted or `null` values disable the checks. Website analysis requires `business.website`. The create and get responses include `requested_checks` with the saved settings. Existing verifications retain their saved behavior.
+
+### 2020-09-14_1.800.0
+
+- [Breaking for Go] Mark `name`, `doc_id` and `doc_type` in `DocumentMetadata` required to match API behavior: `/income/verification/paystubs/get` and `/income/verification/taxforms/get` always return them. `name` and `doc_id` are `""` when empty, and `doc_type` is `DOCUMENT_TYPE_UNKNOWN` when the type is unknown.
+- Add `DOCUMENT_TYPE_UNKNOWN` to `DocType`. `/income/verification/paystubs/get` and `/income/verification/taxforms/get` already return it when the document type is unknown.
+
 # 51.0.0
 - Version 51 introduces a new SDK, with the previous SDK available through the `plaid/legacy` entry point. See the [migration guide](MIGRATION.md) for upgrade instructions.
 - Updating to OAS 2020-09-14_1.799.0

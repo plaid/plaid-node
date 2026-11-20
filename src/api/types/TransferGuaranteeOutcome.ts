@@ -7,7 +7,7 @@
  *
  * `PARTIAL_INSTANT_ONLY`: A partial amount is guaranteed and available instantly; the remainder is not guaranteed.
  *
- * `PARTIAL_INSTANT_WITH_OBSERVATION_WINDOW`: A partial amount is guaranteed instantly; an additional amount is conditionally guaranteed subject to an observation window.
+ * `PARTIAL_INSTANT_WITH_OBSERVATION_WINDOW`: None of the amount is guaranteed instantly. The full amount becomes guaranteed after an observation window if the transfer has not returned before the window expires.
  *
  * `NOT_GUARANTEED`: Plaid did not provide a guarantee for this transfer.
  */

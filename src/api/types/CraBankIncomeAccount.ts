@@ -28,4 +28,6 @@ export interface CraBankIncomeAccount {
     type: Plaid.CreditBankIncomeAccountType;
     /** Data returned by the financial institution about the account owner or owners. Identity information is optional, so field may return an empty array. */
     owners: Plaid.Owner[];
+    /** The valid dispute statements previously submitted by the consumer for this account. */
+    consumer_disputes: Plaid.ConsumerDispute[];
 }

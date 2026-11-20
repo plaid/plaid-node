@@ -110,6 +110,8 @@ export namespace ProcessorTokenCreateRequest {
         AdyenCa: "adyen_ca",
         Bitgo: "bitgo",
         Anchorage: "anchorage",
+        Affina: "affina",
+        Whop: "whop",
     } as const;
     export type Processor = (typeof Processor)[keyof typeof Processor];
 }

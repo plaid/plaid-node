@@ -19,4 +19,5 @@ import type * as Plaid from "../../../../index.js";
 export interface BusinessVerificationCreateRequest {
     client_user_id: Plaid.ClientUserId;
     business: Plaid.BusinessVerificationCreateRequestBusiness;
+    options?: Plaid.BusinessVerificationCreateRequestOptions | null;
 }

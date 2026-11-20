@@ -22,11 +22,11 @@ export interface GamblingIndicators {
      *
      * If the user has not spent money on any merchants in the given time window, this list will be empty.
      */
-    top_merchants?: string[] | undefined;
+    top_merchants: string[];
     /** The total number of transactions that fall into the `GAMBLING` credit category, across all the accounts in the report. */
     transactions_count?: (number | null) | undefined;
     /** The monthly summaries of the transactions that fall into the `GAMBLING` category within the given time window, across all the accounts in the report. */
-    monthly_summaries?: (Plaid.MonthlySummary | null)[] | undefined;
+    monthly_summaries: (Plaid.MonthlySummary | null)[];
     /** The number of days since the last transaction that falls into the `GAMBLING` category, across all the accounts in the report. */
     days_since_last_occurrence?: (number | null) | undefined;
     /**

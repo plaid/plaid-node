@@ -10,7 +10,7 @@ export interface OutlierTransactionsInsights {
     transactions_count?: (number | null) | undefined;
     total_amount?: (Plaid.AmountWithCurrency | null) | undefined;
     /** Up to 3 top categories of expenses in this group. */
-    top_categories?: (Plaid.CategoryExpenses | null)[] | undefined;
+    top_categories: (Plaid.CategoryExpenses | null)[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

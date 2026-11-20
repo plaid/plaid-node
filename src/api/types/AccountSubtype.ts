@@ -7,6 +7,7 @@ export const AccountSubtype = {
     FourHundredThreeB: "403B",
     FourHundredFiftySevenB: "457b",
     FiveHundredTwentyNine: "529",
+    FiveHundredThirtyA: "530a",
     Auto: "auto",
     Brokerage: "brokerage",
     Business: "business",

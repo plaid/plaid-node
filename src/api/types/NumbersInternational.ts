@@ -6,10 +6,10 @@
 export interface NumbersInternational {
     /** The Plaid account ID associated with the account numbers */
     account_id: string;
-    /** The International Bank Account Number (IBAN) for the account */
-    iban: string;
-    /** The Business Identifier Code (BIC) for the account */
-    bic: string;
+    /** The International Bank Account Number (IBAN) for the account. May be `null` if only the BIC is available. */
+    iban: string | null;
+    /** The Business Identifier Code (BIC) for the account. May be `null` if only the IBAN is available. */
+    bic: string | null;
     /** Accepts any additional properties */
     [key: string]: any;
 }

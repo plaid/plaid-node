@@ -40,6 +40,7 @@ export const Products = {
     CraHomeLending: "cra_home_lending",
     CraLendScoreComplete: "cra_lend_score_complete",
     CraIncomeComplete: "cra_income_complete",
+    CraHomeLendingVoa: "cra_home_lending_voa",
     Layer: "layer",
     PayByBank: "pay_by_bank",
     ProtectLinkedBank: "protect_linked_bank",

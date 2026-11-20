@@ -10,5 +10,5 @@ export interface ExternalPaymentRefundDetails {
     name: string;
     /** The International Bank Account Number (IBAN) for the account. */
     iban: string | null;
-    bacs: Plaid.RecipientBacsNullable | null;
+    bacs: Plaid.RecipientBacsNullableInResponse | null;
 }

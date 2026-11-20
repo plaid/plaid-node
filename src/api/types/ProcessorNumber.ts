@@ -6,10 +6,10 @@ import type * as Plaid from "../index.js";
  * An object containing identifying numbers used for making electronic transfers to and from the `account`. The identifying number type (ACH, EFT, IBAN, or Bacs) used will depend on the country of the account. An account may have more than one number type. If a particular identifying number type is not used by the `account` for which auth data has been requested, a null value will be returned.
  */
 export interface ProcessorNumber {
-    ach?: (Plaid.NumbersAchNullable | null) | undefined;
-    eft?: (Plaid.NumbersEftNullable | null) | undefined;
-    international?: (Plaid.NumbersInternationalNullable | null) | undefined;
-    bacs?: (Plaid.NumbersBacsNullable | null) | undefined;
+    ach: Plaid.NumbersAchNullable | null;
+    eft: Plaid.NumbersEftNullable | null;
+    international: Plaid.NumbersInternationalNullable | null;
+    bacs: Plaid.NumbersBacsNullable | null;
     /** Accepts any additional properties */
     [key: string]: any;
 }

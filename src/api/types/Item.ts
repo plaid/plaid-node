@@ -21,7 +21,7 @@ export interface Item {
     /** A list of products that have been billed for the Item. The contents of this array will be mutually exclusive with `available_products`. Note - `billed_products` is populated in all environments but only requests in Production are billed. Also note that products that are billed on a pay-per-call basis rather than a pay-per-Item basis, such as `balance`, will not appear here. */
     billed_products: Plaid.Products[];
     /** A list of products added to the Item. In almost all cases, this will be the same as the `billed_products` field. For some products, it is possible for the product to be added to an Item but not yet billed (e.g. Assets, before `/asset_report/create` has been called, or Auth or Identity when added as Optional Products but before their endpoints have been called), in which case the product may appear in `products` but not in `billed_products`. */
-    products?: Plaid.Products[] | undefined;
+    products: Plaid.Products[];
     /** A list of products that the user has consented to for the Item via [Data Transparency Messaging](https://plaid.com/docs/link/data-transparency-messaging-migration-guide). This will consist of all products where both of the following are true: the user has consented to the required data scopes for that product and you have Production access for that product. */
     consented_products?: Plaid.Products[] | undefined;
     /** The date and time at which the Item's access consent will expire, in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format. If the Item does not have consent expiration scheduled, this field will be `null`. Currently, only institutions in Europe and a small number of institutions in the US have expiring consent. For a list of US institutions that currently expire consent, see the [OAuth Guide](https://plaid.com/docs/link/oauth/#refreshing-item-consent). */
@@ -34,7 +34,7 @@ export interface Item {
      * `user_present_required` - Item requires user interaction to be updated
      */
     update_type: Item.UpdateType;
-    /** The `item_id` of the Item that was created alongside this one when a single Link session used both Plaid Inc and Plaid Check products (see [Using Plaid Check products alongside Plaid products](https://plaid.com/docs/check/add-to-app/#using-plaid-check-products-alongside-plaid-products)). For a Plaid Inc Item, this is the paired Plaid Check Item, and the reverse for a Plaid Check Item. The field is omitted for Items that have no paired Item. It is also omitted if Plaid cannot look up the paired Item at request time, so do not treat its absence as proof that an Item is unpaired. */
+    /** The `item_id` of the Item paired with this one. This is either the Item created alongside it when a single Link session used both Plaid Inc and Plaid Check products, or the Plaid Check Item created when Plaid Check products were added to an existing Plaid Inc Item through update mode (see [Using Plaid Check products alongside Plaid products](https://plaid.com/docs/check/add-to-app/#using-plaid-check-products-alongside-plaid-products)). For a Plaid Inc Item, this is the paired Plaid Check Item, and the reverse for a Plaid Check Item. The field is omitted for Items that have no paired Item. It is also omitted if Plaid cannot look up the paired Item at request time, so do not treat its absence as proof that an Item is unpaired. */
     paired_item_id?: (string | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;

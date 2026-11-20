@@ -7,7 +7,7 @@ import type * as Plaid from "../index.js";
  */
 export interface DocumentMetadata {
     /** The name of the document. */
-    name?: string | undefined;
+    name: string;
     /**
      * The processing status of the document.
      *
@@ -19,8 +19,8 @@ export interface DocumentMetadata {
      */
     status?: (string | null) | undefined;
     /** An identifier of the document that is also present in the paystub response. */
-    doc_id?: string | undefined;
-    doc_type?: Plaid.DocType | undefined;
+    doc_id: string;
+    doc_type: Plaid.DocType;
     /** Accepts any additional properties */
     [key: string]: any;
 }

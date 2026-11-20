@@ -53,6 +53,8 @@ const configuration = new Configuration({
     },
   },
 });
+
+const plaidClient = new PlaidApi(configuration);
 ```
 
 The `PlaidEnvironments` parameter dictates which Plaid API environment you will access. Values are:

@@ -1162,6 +1162,7 @@ describe("MonitoringInsightsClient", () => {
                                     ],
                                 },
                             ],
+                            holder_category: "personal",
                             ownership_type: null,
                             attributes: {
                                 total_inflow_amount: {

@@ -9,9 +9,12 @@ export type CraReportProduct =
     | Plaid.CraReportProduct.CraBaseReport
     | Plaid.CraReportProduct.CraCashflowInsights
     | Plaid.CraReportProduct.CraHomeLending
+    | Plaid.CraReportProduct.CraHomeLendingVoa
     | Plaid.CraReportProduct.CraIncomeInsights
     | Plaid.CraReportProduct.CraLendScore
     | Plaid.CraReportProduct.CraNetworkInsights
+    | Plaid.CraReportProduct.CraPrism
+    | Plaid.CraReportProduct.CraUltrafico
     | Plaid.CraReportProduct.CraQualify
     | Plaid.CraReportProduct.CraLendScoreComplete
     | Plaid.CraReportProduct.CraIncomeComplete;
@@ -29,6 +32,10 @@ export namespace CraReportProduct {
         product: "cra_home_lending";
     }
 
+    export interface CraHomeLendingVoa extends Plaid.CraReportCreateHomeLendingVoaProductConfig {
+        product: "cra_home_lending_voa";
+    }
+
     export interface CraIncomeInsights extends Plaid.CraReportCreateIncomeInsightsProductConfig {
         product: "cra_income_insights";
     }
@@ -39,6 +46,14 @@ export namespace CraReportProduct {
 
     export interface CraNetworkInsights extends Plaid.CraReportCreateNetworkInsightsProductConfig {
         product: "cra_network_insights";
+    }
+
+    export interface CraPrism extends Plaid.CraReportCreatePrismProductConfig {
+        product: "cra_prism";
+    }
+
+    export interface CraUltrafico extends Plaid.CraReportCreateUltraFicoProductConfig {
+        product: "cra_ultrafico";
     }
 
     export interface CraQualify extends Plaid.CraReportCreateQualifyProductConfig {

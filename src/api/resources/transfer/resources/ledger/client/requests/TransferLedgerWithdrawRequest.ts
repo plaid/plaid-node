@@ -19,5 +19,10 @@ export interface TransferLedgerWithdrawRequest {
     amount: string;
     description?: Plaid.SweepDescription | null;
     idempotency_key: Plaid.LedgerWithdrawIdempotencyKey;
+    /**
+     * The network or rails used for the withdrawal: `ach` for Standard ACH or `same-day-ach` for Same Day ACH. The limit for a single Standard ACH withdrawal is $10,000,000, and the limit for a single Same Day ACH withdrawal is $1,000,000; withdrawals above the limit for their network will fail.
+     *
+     * The Same Day ACH cutoff is 3:00 PM Eastern Time and the Standard ACH cutoff is 8:30 PM Eastern Time. If a `same-day-ach` withdrawal is submitted on a banking day after the Same Day ACH cutoff and before the Standard ACH cutoff, it may be downgraded to Standard ACH. Withdrawals submitted after the Standard ACH cutoff, or on a weekend or bank holiday, stay Same Day ACH and are submitted in the first Same Day ACH window of the next banking day. See [ACH processing windows](https://plaid.com/docs/transfer/creating-transfers/#ach-processing-windows).
+     */
     network: Plaid.TransferNetwork;
 }

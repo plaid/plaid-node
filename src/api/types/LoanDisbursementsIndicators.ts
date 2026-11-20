@@ -17,18 +17,18 @@ export interface LoanDisbursementsIndicators {
      */
     unofficial_currency_code?: (string | null) | undefined;
     /** Detailed categories view of all the transactions that fall into the `LOAN_DISBURSEMENTS` credit category within the given time window, across all the accounts in the report. */
-    category_details?: (Plaid.CategoryExpenses | null)[] | undefined;
+    category_details: (Plaid.CategoryExpenses | null)[];
     monthly_average?: (Plaid.MonthlyAverage | null) | undefined;
     /**
      * Up to 3 top service providers that the user had the most transactions for in the given time window, in descending order of total spend.
      *
      * If the user has not received money from any provider in the given time window, this list will be empty.
      */
-    top_providers?: string[] | undefined;
+    top_providers: string[];
     /** The total number of transactions that fall into the `LOAN_DISBURSEMENTS` credit category, across all the accounts in the report. */
     transactions_count?: (number | null) | undefined;
     /** The monthly summaries of the transactions that fall into the `LOAN_DISBURSEMENTS` category within the given time window, across all the accounts in the report. */
-    monthly_summaries?: (Plaid.MonthlySummary | null)[] | undefined;
+    monthly_summaries: (Plaid.MonthlySummary | null)[];
     /** The number of days since the last transaction that falls into the `LOAN_DISBURSEMENTS` credit category, across all the accounts in the report. */
     days_since_last_occurrence?: (number | null) | undefined;
     /**

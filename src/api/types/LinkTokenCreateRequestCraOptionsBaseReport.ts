@@ -20,4 +20,5 @@ export interface LinkTokenCreateRequestCraOptionsBaseReport {
      * Requests with `exclude_transactions` set to `true` are rejected with an `INVALID_FIELD` error if they also request GSE or Home Lending reports. A Base Report created with this option set to `true` cannot be used to generate those reports later.
      */
     exclude_transactions?: (boolean | null) | undefined;
+    base_report_version?: (Plaid.BaseReportVersion | null) | undefined;
 }

@@ -3,6 +3,6 @@
 import type * as Plaid from "../index.js";
 
 /**
- * An array of limited purpose types. Restricts which kinds of limited purpose checking accounts may be connected in Link to prevent users from connecting them for unsupported use cases. Required when 'limited purpose checking' is in the subtypes filter.
+ * An array of limited purpose types. Restricts which kinds of limited purpose checking accounts may be connected in Link to prevent users from connecting them for unsupported use cases. Only allowed when `limited purpose checking` is in `account_subtypes`. If omitted or empty while `limited purpose checking` is in `account_subtypes`, only `GENERAL_PURPOSE` limited purpose checking accounts may be connected. `GENERAL_PURPOSE` accounts may be connected with any `limited_purpose_types` value.
  */
 export type LimitedPurposeTypes = Plaid.LimitedPurposeType[];

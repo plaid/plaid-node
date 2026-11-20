@@ -6,4 +6,6 @@
 export interface CraReportCreateBaseReportOptions {
     /** Require the report to include identity information. If identity information is not available, report generation fails. */
     require_identity?: (boolean | null) | undefined;
+    /** Exclude transactions from the Base Report. Each account's `transactions` field is returned as an empty array. Insights and other products in the report are not affected. */
+    exclude_transactions?: (boolean | null) | undefined;
 }

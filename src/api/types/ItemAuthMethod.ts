@@ -17,6 +17,8 @@
  *
  * `DATABASE_INSIGHTS`: The Item's Auth data was provided via the Database Insights flow.
  *
+ * `DATABASE_INSIGHTS_API`: The Item's Auth data was provided via [`/auth/verify`](https://plaid.com/docs/api/products/auth/#authverify).
+ *
  * `TRANSFER_MIGRATED`: The Item's Auth data was provided via [`/transfer/migrate_account`](https://plaid.com/docs/api/products/transfer/account-linking/#migrate-account-into-transfers).
  *
  * `INVESTMENTS_FALLBACK`: The Item's Auth data for Investments Move was provided via a [fallback flow](https://plaid.com/docs/investments-move/#fallback-flows).
@@ -31,5 +33,6 @@ export const ItemAuthMethod = {
     DatabaseInsights: "DATABASE_INSIGHTS",
     TransferMigrated: "TRANSFER_MIGRATED",
     InvestmentsFallback: "INVESTMENTS_FALLBACK",
+    DatabaseInsightsApi: "DATABASE_INSIGHTS_API",
 } as const;
 export type ItemAuthMethod = (typeof ItemAuthMethod)[keyof typeof ItemAuthMethod];

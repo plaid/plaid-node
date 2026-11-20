@@ -13,7 +13,7 @@ export interface PaymentInitiationRecipient {
     address?: (Plaid.PaymentInitiationAddress | null) | undefined;
     /** The International Bank Account Number (IBAN) for the recipient. */
     iban?: (string | null) | undefined;
-    bacs?: (Plaid.RecipientBacsNullable | null) | undefined;
+    bacs?: (Plaid.RecipientBacsNullableInResponse | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
 }

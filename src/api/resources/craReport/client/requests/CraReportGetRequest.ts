@@ -38,7 +38,7 @@ export interface CraReportGetRequest {
      * `INSURANCE_UNDERWRITING`: In connection with the underwriting of insurance involving the consumer pursuant to FCRA Section 604(a)(3)(C).
      */
     consumer_report_permissible_purpose: CraReportGetRequest.ConsumerReportPermissiblePurpose;
-    /** A unique ID identifying a Consumer Report. Like all Plaid identifiers, this ID is case sensitive. When provided, that specific report is returned; when omitted, the most recent report matching the request is returned. Omit this field when retrieving a report without a prior `/cra/report/create` or `/link/token/create` request. */
+    /** A unique ID identifying a Consumer Report. Like all Plaid identifiers, this ID is case sensitive. Required when `scope` is `CLIENT_USER`. When provided, that specific report is returned. Otherwise, the most recent report matching the request is returned. Omit this field when retrieving a report without a prior `/cra/report/create` or `/link/token/create` request. */
     report_id?: string;
 }
 

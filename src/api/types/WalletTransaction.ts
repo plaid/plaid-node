@@ -37,7 +37,7 @@ export interface WalletTransaction {
     type: WalletTransaction.Type;
     scheme?: (Plaid.WalletPaymentScheme | null) | undefined;
     amount: Plaid.WalletTransactionAmount;
-    counterparty: Plaid.WalletTransactionCounterparty;
+    counterparty: Plaid.WalletTransactionCounterpartyInResponse;
     status: Plaid.WalletTransactionStatus;
     /** Timestamp when the transaction was created, in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format. */
     created_at: string;

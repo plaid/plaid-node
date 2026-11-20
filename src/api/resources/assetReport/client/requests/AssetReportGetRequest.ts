@@ -10,9 +10,9 @@ export interface AssetReportGetRequest {
     asset_report_token?: Plaid.AssetReportTokenNullable;
     /** The user token associated with the User for which to create an asset report for. The latest asset report associated with the User will be returned */
     user_token?: string;
-    /** `true` if you would like to retrieve the Asset Report with Insights, `false` otherwise. This field defaults to `false` if omitted. */
+    /** If `true`, retrieves the Asset Report with Insights. */
     include_insights?: boolean;
-    /** `true` to fetch "fast" version of asset report. Defaults to false if omitted. Can only be used if `/asset_report/create` was called with `options.add_ons` set to `["fast_assets"]`. */
+    /** If `true`, retrieves the Fast Asset Report. If `false`, retrieves the Full Asset Report. To set this field to `true`, you must call `/asset_report/create` with `options.add_ons` set to `["fast_assets"]`. */
     fast_report?: boolean;
     options?: Plaid.AssetReportGetRequestOptions;
 }

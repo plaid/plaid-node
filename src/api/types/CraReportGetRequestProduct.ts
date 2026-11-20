@@ -9,12 +9,15 @@ export type CraReportGetRequestProduct =
     | Plaid.CraReportGetRequestProduct.CraQualify
     | Plaid.CraReportGetRequestProduct.CraIncomeInsights
     | Plaid.CraReportGetRequestProduct.CraHomeLending
+    | Plaid.CraReportGetRequestProduct.CraHomeLendingVoa
     | Plaid.CraReportGetRequestProduct.CraBaseReport
     | Plaid.CraReportGetRequestProduct.CraLendScore
     | Plaid.CraReportGetRequestProduct.CraCashflowInsights
     | Plaid.CraReportGetRequestProduct.CraNetworkInsights
     | Plaid.CraReportGetRequestProduct.CraLendScoreComplete
-    | Plaid.CraReportGetRequestProduct.CraIncomeComplete;
+    | Plaid.CraReportGetRequestProduct.CraIncomeComplete
+    | Plaid.CraReportGetRequestProduct.CraPrism
+    | Plaid.CraReportGetRequestProduct.CraUltrafico;
 
 export namespace CraReportGetRequestProduct {
     export interface CraQualify extends Plaid.CraQualifyProduct {
@@ -27,6 +30,10 @@ export namespace CraReportGetRequestProduct {
 
     export interface CraHomeLending extends Plaid.CraHomeLendingProduct {
         product: "cra_home_lending";
+    }
+
+    export interface CraHomeLendingVoa extends Plaid.CraHomeLendingVoaProduct {
+        product: "cra_home_lending_voa";
     }
 
     export interface CraBaseReport extends Plaid.CraBaseReportProduct {
@@ -51,5 +58,13 @@ export namespace CraReportGetRequestProduct {
 
     export interface CraIncomeComplete extends Plaid.CraIncomeCompleteBundleProduct {
         product: "cra_income_complete";
+    }
+
+    export interface CraPrism extends Plaid.CraPrismProduct {
+        product: "cra_prism";
+    }
+
+    export interface CraUltrafico extends Plaid.CraUltraFicoProduct {
+        product: "cra_ultrafico";
     }
 }

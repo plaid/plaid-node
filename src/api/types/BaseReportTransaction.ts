@@ -33,7 +33,7 @@ export interface BaseReportTransaction {
     date: string;
     /** The date on which the transaction took place, in ISO 8601 format. */
     date_transacted?: (string | null) | undefined;
-    location?: Plaid.Location | undefined;
+    location?: (Plaid.Location | null) | undefined;
     /** The merchant name, as enriched by Plaid from the `name` field. This is typically a more human-readable version of the merchant counterparty in the transaction. For some bank transactions (such as checks or account transfers) where there is no meaningful merchant name, this value will be `null`. */
     merchant_name?: (string | null) | undefined;
     /** When `true`, identifies the transaction as pending or unsettled. Pending transaction details (name, type, amount, category ID) may change before they are settled. */

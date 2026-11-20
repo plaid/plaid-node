@@ -7,11 +7,11 @@ import type * as Plaid from "../index.js";
  */
 export interface AssetReportInvestments {
     /** Quantities and values of securities held in the investment account. Map to the `securities` array for security details. */
-    holdings?: Plaid.AssetReportInvestmentHolding[] | undefined;
+    holdings: Plaid.AssetReportInvestmentHolding[];
     /** Details of specific securities held in on the investment account. */
-    securities?: Plaid.AssetReportInvestmentSecurity[] | undefined;
+    securities: Plaid.AssetReportInvestmentSecurity[];
     /** Transaction history on the investment account. */
-    transactions?: Plaid.AssetReportInvestmentTransaction[] | undefined;
+    transactions: Plaid.AssetReportInvestmentTransaction[];
     /** Accepts any additional properties */
     [key: string]: any;
 }

@@ -3,9 +3,10 @@
 import type * as Plaid from "../index.js";
 
 /**
- * Nullable industry prediction details.
+ * Names the UltraFICO product at a given version.
  */
-export interface BusinessIndustryPredictionNullable extends Plaid.BusinessIndustryPrediction {
+export interface CraUltraFicoProduct {
+    version: Plaid.CraProductVersion;
     /** Accepts any additional properties */
     [key: string]: any;
 }

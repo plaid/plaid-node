@@ -6,7 +6,7 @@ import type * as Plaid from "../index.js";
  * An object representing the e-wallet account numbers
  */
 export interface WalletNumbers {
-    bacs?: (Plaid.RecipientBacs | null) | undefined;
+    bacs?: (Plaid.RecipientBacsInResponse | null) | undefined;
     international?: (Plaid.NumbersInternationalIban | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;

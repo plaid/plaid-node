@@ -3,6 +3,7 @@
 /** Valid account subtypes for investment accounts. For a list containing descriptions of each subtype, see [Account schemas](https://plaid.com/docs/api/accounts/#StandaloneAccountType-investment). */
 export const InvestmentAccountSubtype = {
     FiveHundredTwentyNine: "529",
+    FiveHundredThirtyA: "530a",
     FourHundredOneA: "401a",
     FourHundredOneK: "401k",
     FourHundredThreeB: "403B",

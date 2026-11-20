@@ -7,15 +7,15 @@ import type * as Plaid from "../index.js";
  */
 export interface BusinessVerificationCheck {
     status: Plaid.BusinessVerificationStatusBusinessVerificationCheck;
-    /** A score from 0 to 100 indicating the confidence in the identity verification of the business. */
-    score: number;
+    /** A score from 0 to 100 indicating confidence in the business identity assessment. `null` when no score is available, including when industry classification succeeds without a business search result. */
+    score: number | null;
     name: Plaid.BusinessFieldMatchSummary;
-    address: Plaid.BusinessFieldMatchSummary;
+    address: Plaid.BusinessAddressMatch;
     website: Plaid.BusinessFieldMatchSummary;
     tin: Plaid.BusinessTinMatch;
     officers: Plaid.BusinessFieldMatchSummary;
     registered_agent: Plaid.BusinessFieldMatchSummary;
-    match_details: Plaid.BusinessKybMatchDetails | null;
+    business_details: Plaid.BusinessDetails;
     /** Accepts any additional properties */
     [key: string]: any;
 }

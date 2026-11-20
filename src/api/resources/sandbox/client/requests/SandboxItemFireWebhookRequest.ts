@@ -27,6 +27,7 @@ export namespace SandboxItemFireWebhookRequest {
         UserPermissionRevoked: "USER_PERMISSION_REVOKED",
         UserAccountRevoked: "USER_ACCOUNT_REVOKED",
         PendingDisconnect: "PENDING_DISCONNECT",
+        ConsentUpdated: "CONSENT_UPDATED",
         RecurringTransactionsUpdate: "RECURRING_TRANSACTIONS_UPDATE",
         LoginRepaired: "LOGIN_REPAIRED",
         SyncUpdatesAvailable: "SYNC_UPDATES_AVAILABLE",

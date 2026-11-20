@@ -6050,6 +6050,8 @@ The `/sandbox/item/fire_webhook` endpoint is used to test that code correctly ha
 
 `PENDING_DISCONNECT`: Fired when an Item will stop working in the near future (e.g. due to a planned bank migration) and must be sent through update mode to continue working.
 
+`CONSENT_UPDATED`: Fired when the user changes the consent duration at their institution and the Item's `consent_expiration_time` changes. Sandbox Items have no stored consent expiration, so the payload's `consent_expiration_time` is one year from the time the webhook is fired.
+
 `RECURRING_TRANSACTIONS_UPDATE`: Recurring Transactions webhook to be fired for a given Sandbox Item. If your client is not enabled for Recurring Transactions, a `SANDBOX_PRODUCT_NOT_ENABLED` error will result.
 
 `SYNC_UPDATES_AVAILABLE`: Transactions webhook to be fired for a given Sandbox Item.  If your client is not enabled for Transactions, a `SANDBOX_PRODUCT_NOT_ENABLED` error will result.

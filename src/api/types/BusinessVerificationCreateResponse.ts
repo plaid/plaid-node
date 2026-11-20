@@ -12,6 +12,7 @@ export interface BusinessVerificationCreateResponse {
     completed_at: Plaid.TimestampNullable | null;
     redacted_at: Plaid.TimestampNullable | null;
     status: Plaid.BusinessVerificationStatusOverall;
+    requested_checks: Plaid.BusinessVerificationRequestedChecks;
     search_terms: Plaid.BusinessSearchTerms;
     business_verification: Plaid.BusinessVerificationCheck | null;
     risk_check: Plaid.BusinessRiskCheck | null;

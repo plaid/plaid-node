@@ -309,6 +309,14 @@ describe("CraReportClient", () => {
                                         mask: null,
                                         type: "investment",
                                         subtype: null,
+                                        consumer_disputes: [
+                                            {
+                                                consumer_dispute_id: "consumer_dispute_id",
+                                                dispute_field_create_date: "2023-01-15",
+                                                category: "TRANSACTION",
+                                                statement: "statement",
+                                            },
+                                        ],
                                     },
                                 ],
                             },
@@ -474,6 +482,7 @@ describe("CraReportClient", () => {
                                             },
                                         ],
                                         attributes: null,
+                                        holder_category: null,
                                     },
                                 ],
                             },

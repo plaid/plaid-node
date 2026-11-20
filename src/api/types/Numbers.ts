@@ -20,6 +20,8 @@ export interface Numbers {
     international_iban?: string | undefined;
     /** Bacs sort code */
     bacs_sort_code?: string | undefined;
+    /** 4-digit DTC participant number returned in `numbers.acats[].dtc_numbers` for a brokerage account. If not specified, Sandbox generates one from the `seed`. */
+    acats_dtc_number?: string | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
 }

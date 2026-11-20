@@ -6,8 +6,8 @@ import type * as Plaid from "../index.js";
  * Comprehensive income analysis including total income, income excluding transfers, and inbound transfer amounts.
  */
 export interface IncomeInsights {
-    /** The total amount of all income transactions in the given time period. */
-    total_income?: (Plaid.AmountWithCurrency | null) | undefined;
+    /** The total amount of all income transactions in the given time period, including a monthly average. */
+    total_income?: (Plaid.AmountWithCurrencyWithMonthlyAverage | null) | undefined;
     /** Income excluding account transfer transactions for the period, including a monthly average. */
     income_excluding_transfers?: (Plaid.AmountWithCurrencyWithMonthlyAverage | null) | undefined;
     /** Sum of inbound transfer transactions for the period, including a monthly average. */

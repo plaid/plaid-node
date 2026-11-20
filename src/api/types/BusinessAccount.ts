@@ -59,7 +59,7 @@ export interface BusinessAccount {
      * Omitted or empty string: Neither micro-deposit-based verification nor database verification are being used for the Item.
      */
     verification_status?: BusinessAccount.VerificationStatus | undefined;
-    verification_insights?: Plaid.AccountVerificationInsights | undefined;
+    verification_insights?: (Plaid.AccountVerificationInsights | null) | undefined;
     /** A unique and persistent identifier for accounts that can be used to trace multiple instances of the same account across different Items for depository accounts. This field is currently supported only for Items at institutions that use Tokenized Account Numbers (i.e., Chase, PNC, and US Bank). Because these accounts have a different account number each time they are linked, this field may be used instead of the account number to uniquely identify an account across multiple Items for payments use cases, helping to reduce duplicate Items or attempted fraud. In Sandbox, this field is populated for TAN-based institutions (`ins_56`, `ins_13`, `ins_127990`) as well as the OAuth Sandbox institution (`ins_127287`); in Production, it will only be populated for accounts at applicable institutions. */
     persistent_account_id?: string | undefined;
     /** The annual percentage yield (APY) on an interest-bearing deposit account, expressed as a percentage (e.g. `4.25` means 4.25%). In the event that the APY is not provided by the financial institution, Plaid will return a value of `null`. */

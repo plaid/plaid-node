@@ -15,17 +15,17 @@ export interface AssetReportInvestmentTransaction {
     /** The [ISO 8601](https://wikipedia.org/wiki/ISO_8601) posting date for the transaction. */
     date: string;
     /** The institution's description of the transaction. */
-    name: string;
+    name: string | null;
     /** The number of units of the security involved in this transaction. Positive for buy transactions; negative for sell transactions. */
-    quantity: number;
+    quantity: number | null;
     /** The complete value of the transaction. Positive values when cash is debited, e.g. purchases of stock; negative values when cash is credited, e.g. sales of stock. Treatment remains the same for cash-only movements unassociated with securities. For transactions representing a simultaneous cash contribution and purchase of a security, the portion of the transaction representing the purchase takes precedence, and the `amount` is represented as positive. */
-    amount: number;
+    amount: number | null;
     /** The price of the security at which this transaction occurred. */
-    price: number;
+    price: number | null;
     /** The combined value of all fees applied to this transaction */
     fees: number | null;
-    type: Plaid.InvestmentTransactionType;
-    subtype: Plaid.InvestmentTransactionSubtype;
+    type: Plaid.InvestmentTransactionType | null;
+    subtype: Plaid.InvestmentTransactionSubtype | null;
     /** The ISO-4217 currency code of the transaction. Always `null` if `unofficial_currency_code` is non-`null`. */
     iso_currency_code: string | null;
     /**

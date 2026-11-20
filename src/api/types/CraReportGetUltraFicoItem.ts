@@ -3,9 +3,9 @@
 import type * as Plaid from "../index.js";
 
 /**
- * An Item used to generate a `/cra/report/get` product.
+ * An Item used to generate `cra_ultrafico`, with each eligible account's owners, identity match scores, and primary account prediction.
  */
-export interface CraReportGetBaseItem {
+export interface CraReportGetUltraFicoItem {
     /** The ID of the financial institution associated with the Item. */
     institution_id: string;
     /** The full financial institution name associated with the Item. */
@@ -13,8 +13,8 @@ export interface CraReportGetBaseItem {
     item_id: Plaid.ItemId;
     /** The time when this Item's data was last retrieved from the financial institution prior to report generation. */
     last_updated_time: string;
-    /** The accounts on the Item used to generate the product. */
-    accounts: Plaid.CraReportGetBaseAccount[];
+    /** The checking, savings, and money market accounts on the Item used to generate UltraFICO. */
+    accounts: Plaid.CraReportGetUltraFicoAccount[];
     /** Accepts any additional properties */
     [key: string]: any;
 }
